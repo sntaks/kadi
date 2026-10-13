@@ -22,13 +22,16 @@
         "width": 512,
         "height": 512
     },
-    "contactPoint": {
-        "@@type": "ContactPoint",
-        "contactType": "customer support",
-        "email": "kadiapponline@gmail.com",
-        "availableLanguage": ["English", "Swahili"]
-    },
-    "sameAs": []
+    "contactPoint": {!! json_encode(array_filter([
+        '@type' => 'ContactPoint',
+        'contactType' => 'customer support',
+        'telephone' => \App\Support\Contact::phoneInternational(),
+        'email' => \App\Support\Contact::email(),
+        'areaServed' => 'KE',
+        'availableLanguage' => ['English', 'Swahili'],
+    ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!},
+    {{-- Profiles only: a WhatsApp chat link is not a profile page. --}}
+    "sameAs": {!! json_encode(array_values(array_column(\Illuminate\Support\Arr::except(\App\Support\Contact::socials(), ['whatsapp']), 'url')), JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) !!}
 }
 </script>
 @endif

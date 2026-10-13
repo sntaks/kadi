@@ -27,6 +27,39 @@ return [
     'terms_version' => '2026-09-24',
 
     /*
+    | Operator details shown on /terms and /privacy (the documents leave these to the website).
+    | Blank values are not shown, so set the address and licence number in .env before launch.
+    */
+    'legal' => [
+        'operator' => env('KADI_LEGAL_OPERATOR', 'Kizuka Na Michezo Limited'),
+        'website' => env('KADI_LEGAL_WEBSITE', 'https://kadi.online'),
+        'registered_address' => env('KADI_LEGAL_ADDRESS'),
+        'licence_number' => env('KADI_LICENCE_NUMBER'),
+    ],
+
+    /*
+    | Customer care, shown in the footer, FAQ, legal pages and structured data. Read it through
+    | App\Support\Contact, which formats the number for display and for tel: links.
+    | `phone` is the local Kenyan form (0XXXXXXXXX).
+    */
+    'support' => [
+        'phone' => env('KADI_SUPPORT_PHONE', '0182473265'),
+        'email' => env('KADI_SUPPORT_EMAIL', 'kadiapponline@gmail.com'),
+        'whatsapp' => env('KADI_SUPPORT_WHATSAPP', 'https://wa.me/kadi.OnlineKE'),
+    ],
+
+    /*
+    | Official social profiles: footer icons (public/socials/*) and Organization `sameAs`.
+    | Order here is the order on the page. Remove an entry to hide it.
+    */
+    'socials' => [
+        'facebook' => ['label' => 'Facebook', 'url' => 'https://www.facebook.com/profile.php?id=61579589735615', 'icon' => 'socials/facebook-icon.svg'],
+        'instagram' => ['label' => 'Instagram', 'url' => 'https://www.instagram.com/kadi.online', 'icon' => 'socials/instagram-icon.svg'],
+        'youtube' => ['label' => 'YouTube', 'url' => 'https://www.youtube.com/@KadiKingsLtd', 'icon' => 'socials/youtube.svg'],
+        'whatsapp' => ['label' => 'WhatsApp', 'url' => 'https://wa.me/kadi.OnlineKE', 'icon' => 'socials/whatsapp-icon.svg'],
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Web Push
     |--------------------------------------------------------------------------

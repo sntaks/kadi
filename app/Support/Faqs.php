@@ -48,7 +48,7 @@ class Faqs
             ],
             [
                 'q' => 'How do I contact support?',
-                'a' => 'Email kadiapponline@gmail.com or call +254790417280.',
+                'a' => 'Call customer care on '.Contact::phone().', chat with us on WhatsApp, or email '.Contact::email().'.',
             ],
         ];
     }
