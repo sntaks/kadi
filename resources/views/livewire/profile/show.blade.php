@@ -344,6 +344,14 @@
 
                 <div class="mb-4 border-t border-yellow-800/20 pt-4 text-left space-y-2">
                     <div class="flex justify-between text-sm">
+                        <span class="text-[#6b6b6b]">Player No</span>
+                        @if ($needsLoad)
+                            <x-skeleton inline class="h-4 w-20 rounded" />
+                        @else
+                            <span class="font-mono text-[#f5c542]" data-test="profile-player-no">{{ \App\Support\PlayerNumber::format($kadiCustomer['player_no'] ?? null) ?? '—' }}</span>
+                        @endif
+                    </div>
+                    <div class="flex justify-between text-sm">
                         <span class="text-[#6b6b6b]">Member since</span>
                         <span class="text-[#f5f5f0]">{{ auth()->user()->created_at->format('M Y') }}</span>
                     </div>

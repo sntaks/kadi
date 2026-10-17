@@ -49,6 +49,13 @@ return [
     ],
 
     /*
+    | M-Pesa Pay Bill number players load their wallet with by hand (account no. = their account_no),
+    | shown on the wallet, sportsbook, home and FAQ pages. Display only: STK push and the C2B API calls
+    | use MPESA_C2B_SHORTCODE (config/mpesa.php). Blank hides it everywhere.
+    */
+    'paybill' => env('MPESA_SHORTCODE'),
+
+    /*
     | Official social profiles: footer icons (public/socials/*) and Organization `sameAs`.
     | Order here is the order on the page. Remove an entry to hide it.
     */

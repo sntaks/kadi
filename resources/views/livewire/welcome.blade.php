@@ -129,13 +129,15 @@
                             </svg>
                             <span class="font-cinzel text-[11px] text-white/40">Licensed: BK-0001273 </span>
                         </div>
+                        @if (filled(config('kadi.paybill')))
                         <div class="w-px h-3 bg-white/10"></div>
                         <div class="flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5 text-white/40" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.69 0-3.267-.507-4.575-1.375l-.325-.2-2.875.855.855-2.875-.2-.325A7.963 7.963 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
                             </svg>
-                            <span class="font-cinzel text-[11px] text-white/40">M-PESA PAYBILL: 4007279</span>
+                            <span class="font-cinzel text-[11px] text-white/40" data-test="welcome-paybill">M-PESA PAYBILL: {{ config('kadi.paybill') }}</span>
                         </div>
+                        @endif
                     </div>
 
                 </div>

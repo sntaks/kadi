@@ -801,6 +801,8 @@ class Index extends Component
 
     public function render(): Factory|\Illuminate\Contracts\View\View|View
     {
-        return view('livewire.wallet.index')->layout('layouts.app');
+        return view('livewire.wallet.index', [
+            'paybill' => config('kadi.paybill'),
+        ])->layout('layouts.app');
     }
 }

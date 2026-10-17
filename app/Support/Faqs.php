@@ -40,7 +40,9 @@ class Faqs
             ],
             [
                 'q' => 'How do I deposit with M-Pesa?',
-                'a' => 'Use the M-Pesa Paybill number 4007279, or deposit from your wallet once you are signed in and verified.',
+                'a' => filled($paybill = config('kadi.paybill'))
+                    ? "Use M-Pesa Pay Bill: business number {$paybill}, with your Kadi account number (shown on your Vault page) as the account number. Or deposit from your wallet once you are signed in and verified."
+                    : 'Deposit from your wallet once you are signed in and verified.',
             ],
             [
                 'q' => 'What name can I use as a player?',

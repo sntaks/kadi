@@ -68,12 +68,20 @@
                         {{ __('Signup bonus: KES :amount left to play before you can withdraw it.', ['amount' => number_format($lockedBonus)]) }}
                     </p>
                 @endif
-                <div class="mb-4 text-xs text-[#6b6b6b]">
+                <div class="mb-1 text-xs text-[#6b6b6b]">
                     Account No:
                     @if ($needsLoad)
                         <x-skeleton inline class="h-3 w-20 rounded" />
                     @else
                         <span class="text-[#f5f5f0]/60 font-mono">{{ $kadiCustomer['account_no'] ?? '—' }}</span>
+                    @endif
+                </div>
+                <div class="mb-4 text-xs text-[#6b6b6b]">
+                    Player No:
+                    @if ($needsLoad)
+                        <x-skeleton inline class="h-3 w-20 rounded" />
+                    @else
+                        <span class="text-[#f5f5f0]/60 font-mono" data-test="wallet-player-no">{{ \App\Support\PlayerNumber::format($kadiCustomer['player_no'] ?? null) ?? '—' }}</span>
                     @endif
                 </div>
 
@@ -119,6 +127,14 @@
                     <p class="mt-4 text-center text-xs text-[#6b6b6b]">Minimum deposit: KES 10 · Minimum withdrawal: KES 50</p>
                 @endif
             </div>
+
+            {{-- Manual M-Pesa Pay Bill load. KadiApi's account_no is the bill ref it matches; the local one is the same value. --}}
+            @php
+                $paybillAccountNo = $kadiCustomer['account_no'] ?? auth()->user()->account_no;
+            @endphp
+            @if (filled($paybill) && filled($paybillAccountNo))
+                <x-wallet.mpesa-paybill :paybill="$paybill" :account-no="$paybillAccountNo" />
+            @endif
 
             {{-- Card 2: Coins Wallet --}}
             @if($coinsWalletCardEnabled)

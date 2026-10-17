@@ -1,4 +1,12 @@
-<div class="mx-3 mb-4 mt-2 rounded-xl overflow-hidden border border-green-800/40">
+{{-- KadiApi credits a Pay Bill payment to the account whose account_no matches the account number typed,
+     so signed-in players see their own; guests are told where to find it. Hidden when no paybill is set. --}}
+@php
+    $paybill = config('kadi.paybill');
+    $accountNo = auth()->user()?->account_no;
+@endphp
+
+@if (filled($paybill))
+<div class="mx-3 mb-4 mt-2 rounded-xl overflow-hidden border border-green-800/40" data-test="sportsbook-mpesa-card">
 
     {{-- M-Pesa header --}}
     <div class="px-4 py-3 flex items-center gap-3"
@@ -12,7 +20,7 @@
         </div>
         <div>
             <div class="text-white font-black text-sm tracking-wide">M-PESA</div>
-            <div class="text-green-200 text-[10px]">Deposit Instantly</div>
+            <div class="text-green-200 text-[10px]">Load your wallet with Pay Bill</div>
         </div>
         <div class="ml-auto">
             <svg class="w-5 h-5 text-white/70" fill="currentColor" viewBox="0 0 24 24">
@@ -28,10 +36,10 @@
         <div class="flex items-center justify-between">
             <span class="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Paybill No.</span>
             <div class="flex items-center gap-2">
-                <span class="text-white font-black text-base tracking-widest font-mono">XXXXXX</span>
+                <span class="text-white font-black text-base tracking-widest font-mono" data-test="sportsbook-paybill">{{ $paybill }}</span>
                 <button
                     x-data="{ copied: false }"
-                    @click="navigator.clipboard.writeText('247247'); copied = true; setTimeout(() => copied = false, 2000)"
+                    @click="navigator.clipboard.writeText(@js((string) $paybill)); copied = true; setTimeout(() => copied = false, 2000)"
                     class="text-[10px] px-2 py-0.5 rounded border transition-colors duration-150
                            border-green-700 text-green-400 hover:bg-green-700 hover:text-white"
                     :class="copied ? 'bg-green-700 text-white' : ''"
@@ -43,19 +51,23 @@
         <div class="h-px bg-green-900/30"></div>
 
         {{-- Account number --}}
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-3">
             <span class="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Account No.</span>
-            <div class="flex items-center gap-2">
-                <span class="text-white font-black text-base tracking-widest font-mono">YOUR PHONE NO</span>
-                <!--<button
-                    x-data="{ copied: false }"
-                    @click="navigator.clipboard.writeText('ANGEL001'); copied = true; setTimeout(() => copied = false, 2000)"
-                    class="text-[10px] px-2 py-0.5 rounded border transition-colors duration-150
-                           border-green-700 text-green-400 hover:bg-green-700 hover:text-white"
-                    :class="copied ? 'bg-green-700 text-white' : ''"
-                    x-text="copied ? '✓ Copied' : 'Copy'"
-                ></button>-->
-            </div>
+            @if (filled($accountNo))
+                <div class="flex min-w-0 items-center gap-2">
+                    <span class="break-all text-white font-black text-base tracking-widest font-mono" data-test="sportsbook-account-no">{{ $accountNo }}</span>
+                    <button
+                        x-data="{ copied: false }"
+                        @click="navigator.clipboard.writeText(@js((string) $accountNo)); copied = true; setTimeout(() => copied = false, 2000)"
+                        class="shrink-0 text-[10px] px-2 py-0.5 rounded border transition-colors duration-150
+                               border-green-700 text-green-400 hover:bg-green-700 hover:text-white"
+                        :class="copied ? 'bg-green-700 text-white' : ''"
+                        x-text="copied ? '✓ Copied' : 'Copy'"
+                    ></button>
+                </div>
+            @else
+                <span class="text-right text-xs font-semibold text-white">Your Kadi account no.</span>
+            @endif
         </div>
 
         <div class="h-px bg-green-900/30"></div>
@@ -64,13 +76,11 @@
         <div class="text-[10px] text-gray-500 leading-relaxed">
             Go to <span class="text-green-400 font-semibold">M-Pesa</span> →
             Lipa na M-Pesa → Pay Bill → Enter paybill &amp; account → Amount → PIN
-        </div>
-
-        {{-- Minimum deposit note --}}
-        <div class="flex items-center justify-between pt-0.5">
-            <span class="text-[10px] text-gray-600">Min. deposit</span>
-            <span class="text-green-400 font-bold text-xs">KES 50</span>
+            @guest
+                <br>Sign in to see your account number on your Vault page.
+            @endguest
         </div>
 
     </div>
 </div>
+@endif

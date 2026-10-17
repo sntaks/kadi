@@ -139,9 +139,11 @@ class Show extends Component
                     'phone_no' => $settingPhone ? $user->phone : null,
                 ], fn ($v) => $v !== null && $v !== ''));
 
-                if (isset($response['data'])) {
-                    Cache::put('kadi.customer.'.auth()->id(), $response['data'], now()->addHour());
-                    $this->kadiCustomer = $response['data'];
+                if (is_array($response['data'] ?? null)) {
+                    // Merged, not overwritten: fields the update response leaves out (player_no,
+                    // balance) must not disappear from the profile and wallet until the next fetch.
+                    $this->kadiCustomer = array_merge($this->kadiCustomer, $response['data']);
+                    Cache::put('kadi.customer.'.auth()->id(), $this->kadiCustomer, now()->addHour());
                 }
             } catch (\Throwable $e) {
                 Log::error('KadiApi profile update failed: '.$e->getMessage());
