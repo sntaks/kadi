@@ -384,7 +384,7 @@ class KadiApiService
         try {
             $response = $this->withIdempotencyKey($idempotencyKey)
                 ->post('withdraw/'.encryptOpenSSL($user->linked_id), [
-                    'amount' => $amount,
+                    'amount' => intval($amount),
                 ]);
         } catch (ConnectionException $e) {
             Log::warning("Withdrawal connection error for user {$user->id}: {$e->getMessage()}");
