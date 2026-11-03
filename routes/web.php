@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\NameUpdateController;
 use App\Http\Controllers\Dev\MailPreviewController;
 use App\Http\Controllers\Dev\UiGalleryController;
 use App\Http\Controllers\GameLaunchController;
+use App\Http\Controllers\GameSearchController;
 use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\PushTestController;
@@ -35,6 +36,10 @@ Route::get('/', Welcome::class)->name('home');
 Route::get('/how-to', Rules::class)->name('rules');
 Route::get('/games-guide', GameGuide::class)->name('game-guide');
 Route::get('/faq', Faq::class)->name('faq');
+
+// Top bar search index (fetched on first focus). Only once games open inside the site.
+Route::get('/games/search', GameSearchController::class)
+    ->middleware([RequirePlatformFlag::class.':token_launch', 'throttle:60,1'])->name('games.search');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/consent', [ConsentController::class, 'show'])->name('consent.show');

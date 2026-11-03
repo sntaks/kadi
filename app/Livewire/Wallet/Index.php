@@ -43,8 +43,6 @@ class Index extends Component
      */
     public bool $depositWithdrawEnabled = true;
 
-    public bool $coinsLogicEnabled = false;
-
     public bool $coinsWalletCardEnabled = false;
 
     public bool $withdrawalsTabEnabled = true;

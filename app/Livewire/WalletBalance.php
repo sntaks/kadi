@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -33,6 +34,10 @@ class WalletBalance extends Component
      * still produces a valid, harmless channel name instead of a malformed placeholder.
      */
     public int $userId = 0;
+
+    /** `legacy` for the old layouts, `pill` for the site shell's top bar (balance and Deposit). */
+    #[Locked]
+    public string $variant = 'legacy';
 
     public function mount(): void
     {

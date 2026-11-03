@@ -87,24 +87,6 @@
 
 
                 <div class="mb-2 h-px bg-yellow-800/20"></div>
-                @if($coinsLogicEnabled)
-                    <div class="mt-4 space-y-3">
-                        <a
-                            href="{{ route('buy-coins') }}"
-                            wire:navigate
-                            class="btn-casino-primary flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm"
-                        >
-                            + Buy Coins
-                        </a>
-                        <a
-                            href="{{ route('earn-coins') }}"
-                            wire:navigate
-                            class="btn-casino-ghost flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm"
-                        >
-                            + Earn Coins
-                        </a>
-                    </div>
-                @endif
 
                 @if($depositWithdrawEnabled)
                     <div class="mt-4 space-y-3">

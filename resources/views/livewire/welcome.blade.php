@@ -1,6 +1,6 @@
 <div>
-    {{-- ===================== EMAIL VERIFICATION BANNER ===================== --}}
-    @if ($this->hasUnverifiedEmail)
+    {{-- ===================== EMAIL VERIFICATION BANNER (the site shell has its own notice strip) ===================== --}}
+    @if ($this->hasUnverifiedEmail && ! config('platform.ui_v2'))
         <div class="fixed top-16 left-0 right-0 z-40 mx-auto max-w-7xl rounded-b-lg border border-t-0 border-amber-700/40 bg-amber-900/20 px-4 py-3 text-sm text-amber-400">
             {{ __('Please verify your email address. Check your inbox for the verification link.') }}
 
@@ -17,7 +17,7 @@
     @endif
 
     {{-- ===================== HERO ===================== --}}
-    <section class="relative overflow-hidden bg-[#0a0a0a] min-h-[420px] md:min-h-[480px] flex items-center {{ $this->hasUnverifiedEmail ? 'pt-16' : '' }}">
+    <section class="relative overflow-hidden bg-[#0a0a0a] min-h-[420px] md:min-h-[480px] flex items-center {{ $this->hasUnverifiedEmail && ! config('platform.ui_v2') ? 'pt-16' : '' }}">
 
         {{-- Radial gold glow behind left content --}}
         <div class="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2

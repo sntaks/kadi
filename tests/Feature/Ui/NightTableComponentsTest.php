@@ -3,6 +3,7 @@
 use App\Games\GameTitle;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 function ui(string $blade, array $data = []): string
 {
@@ -175,7 +176,8 @@ test('Night table tokens never reuse a class name existing pages already use', f
     preg_match_all('/--color-([a-z0-9-]+):/', $css, $m);
 
     $views = collect(File::allFiles(resource_path('views')))
-        ->reject(fn ($f) => str_contains($f->getPathname(), 'components/ui/') || str_contains($f->getPathname(), 'dev/ui-gallery'))
+        // Night table's own views (components, the site shell, the gallery) are meant to use the tokens.
+        ->reject(fn ($f) => Str::contains($f->getPathname(), ['components/ui/', 'components/site/', 'layouts/site.blade.php', 'dev/ui-gallery']))
         ->map(fn ($f) => $f->getContents())->implode("\n");
 
     foreach ($m[1] as $token) {

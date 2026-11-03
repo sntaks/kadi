@@ -1,4 +1,6 @@
-<div x-data="{ tab: ['info', 'security', 'connected', 'notifications'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'info' }" class="mx-auto max-w-5xl space-y-6" @if ($needsLoad) wire:init="loadCustomer" @endif>
+<div x-data="{ tab: ['info', 'security', 'connected', 'notifications'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'info' }"
+     {{-- The account menu links to #security, #notifications…: follow the hash when it changes on this page too. --}}
+     x-on:hashchange.window="if (['info', 'security', 'connected', 'notifications'].includes(location.hash.slice(1))) tab = location.hash.slice(1)" class="mx-auto max-w-5xl space-y-6" @if ($needsLoad) wire:init="loadCustomer" @endif>
 {{-- google-linked session flash --}}
 @if (session('status') === 'google-linked')
     <div class="rounded-lg border border-green-700 bg-green-900/30 p-4 text-sm text-green-400">

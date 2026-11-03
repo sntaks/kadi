@@ -1,6 +1,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#f5c542">
+<meta name="theme-color" content="{{ $themeColor ?? '#f5c542' }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @if ($vapidPublicKey = config('webpush.vapid.public_key'))
 <meta name="vapid-public-key" content="{{ $vapidPublicKey }}">
