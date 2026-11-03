@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetCacheHeaders
 {
-    private const PUBLIC_ROUTES = ['home', 'guest.games'];
+    private const PUBLIC_ROUTES = ['home', 'guest.games', 'games.search'];
 
     public function handle(Request $request, Closure $next): Response
     {

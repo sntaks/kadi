@@ -9,6 +9,7 @@
       chip    compact pill for a page's title row or a nav cluster. Adds no height.
       hero    outline button sized to sit beside a hero's primary button. Phones/tablets only.
       menu    row for a dropdown menu. Uses the menu's Alpine scope (menuOpen) to close it.
+      shell   row for the site shell's account menu and drawer (layouts/site.blade.php).
 
     `wire:ignore` on each root stops Livewire re-renders from resetting the inline
     display that Alpine's x-show manages, which would make the button vanish.
@@ -107,6 +108,20 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
         </svg>
         <span>Install app</span>
+    </button>
+@elseif ($variant === 'shell')
+    <button
+        type="button"
+        wire:ignore
+        x-show="$store.pwaInstall.visible"
+        style="display: none;"
+        data-test="pwa-install-shell"
+        @click="$store.pwaInstall.activate()"
+        :aria-haspopup="$store.pwaInstall.mode === 'prompt' ? null : 'dialog'"
+        {{ $attributes->class('nt-mi') }}
+    >
+        <x-site.icon name="down" />
+        <span>Install the app</span>
     </button>
 @else
     <button

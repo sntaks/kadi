@@ -1,4 +1,28 @@
 @auth
+@if ($variant === 'pill')
+    {{-- Site shell: one pill with the balance (opens the wallet) and Deposit. Same loading, poll and real-time paths. --}}
+    <div
+        @if($needsLoad) wire:init="loadBalance" @endif
+        wire:poll.30s.visible="pollBalance"
+        x-on:visibilitychange.window="if (! document.hidden) $wire.pollBalance()"
+        class="nt-wallet"
+        data-test="wallet-pill"
+    >
+        <a href="{{ route('wallet') }}" wire:navigate class="nt-bal nt-num" title="{{ __('Open your wallet') }}">
+            @if ($hasError)
+                <span class="nt-bal-note"><span class="max-[640px]:sr-only">{{ __('Balance unavailable') }}</span><span class="min-[641px]:hidden" aria-hidden="true">—</span></span>
+            @elseif ($balance !== null)
+                <small>KES</small>{{ \App\Support\WalletAmount::format($balance) }}
+            @elseif (! $needsLoad)
+                <span class="nt-bal-note">—</span>
+            @else
+                <span class="sr-only">{{ __('Loading balance…') }}</span>
+                <x-skeleton inline class="h-4 w-14 rounded" data-test="balance-skeleton" />
+            @endif
+        </a>
+        <x-ui.button size="sm" :href="route('wallet')" wire:navigate>{{ __('Deposit') }}</x-ui.button>
+    </div>
+@else
     <div
         @if($needsLoad) wire:init="loadBalance" @endif
         wire:poll.30s.visible="pollBalance"
@@ -73,4 +97,5 @@
             </svg>
         </button>
     </div>
+@endif
 @endauth

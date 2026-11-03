@@ -126,8 +126,9 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     {
         return Str::of($this->name)
             ->explode(' ')
+            ->filter()
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::upper(Str::substr($word, 0, 1)))
             ->implode('');
     }
 

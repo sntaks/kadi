@@ -4,10 +4,15 @@
     - Launcher on, Kadi not framed yet: a POST through the launcher, which logs the launch and opens Kadi
       in this page.
     - Launcher off: Kadi's existing ggid form, posted straight to the Kadi play URL.
+    - Disabled (a disabled button) when asked, and always while the player's e-mail is unverified.
     No inline JavaScript: every variant is a real link or form.
 --}}
 @props(['disabled' => false])
 @php
+    // Kadi needs a verified e-mail (the `verified` middleware), and the ggid form posts off-site where
+    // no middleware runs, so every Play Kadi control is disabled until the e-mail is verified.
+    $user = auth()->user();
+    $disabled = $disabled || ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail());
     $viaLauncher = (bool) config('platform.token_launch');
     $framed = \App\Games\Game::framed('kadi');
 @endphp

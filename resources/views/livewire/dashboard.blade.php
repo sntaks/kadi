@@ -7,8 +7,8 @@
         </div>
     @endif
 
-    {{-- Phone not confirmed yet: needed before deposits, withdrawals and referral payouts --}}
-    @unless (auth()->user()->hasVerifiedPhone())
+    {{-- Phone not confirmed yet: needed before deposits, withdrawals and referral payouts. The site shell has its own notice strip. --}}
+    @unless (config('platform.ui_v2') || auth()->user()->hasVerifiedPhone())
         <div class="flex flex-col gap-3 rounded-lg border border-amber-600/50 bg-amber-900/20 p-4 text-sm text-amber-300 sm:flex-row sm:items-center sm:justify-between"
              x-data="{ done: false }" x-show="! done" x-on:phone-verified.window="done = true" data-test="verify-phone-banner">
             <span class="flex items-center gap-2">
@@ -28,8 +28,10 @@
         </div>
     @endunless
 
-    {{-- Install suggestion (hidden unless installable, or after being dismissed) --}}
-    <x-pwa.install-button variant="banner" />
+    {{-- Install suggestion (hidden unless installable, or after being dismissed). The site shell offers it in the account menu. --}}
+    @unless (config('platform.ui_v2'))
+        <x-pwa.install-button variant="banner" />
+    @endunless
 
     {{-- ── Row 1: Welcome + Balance ── --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">

@@ -5,11 +5,16 @@ namespace App\Livewire;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class NotificationsBell extends Component
 {
     public bool $open = false;
+
+    /** `legacy` for the old layouts, `shell` for the site shell (Night table trigger and panel). */
+    #[Locked]
+    public string $variant = 'legacy';
 
     public function show(): void
     {

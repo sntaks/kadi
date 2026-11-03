@@ -1,5 +1,20 @@
 <div x-data="{ open: false }" @keydown.escape.window="open = false">
     {{-- Bell trigger --}}
+    @if ($variant === 'shell')
+        <button
+            type="button"
+            wire:click="show"
+            x-on:click="open = true"
+            class="nt-icon-btn"
+            aria-label="{{ $unreadCount > 0 ? __('Notifications, :count new', ['count' => $unreadLabel]) : __('Notifications') }}"
+            :aria-expanded="open"
+        >
+            <x-site.icon name="bell" />
+            @if ($unreadCount > 0)
+                <span class="nt-count-badge" aria-hidden="true">{{ $unreadLabel }}</span>
+            @endif
+        </button>
+    @else
     <button
         type="button"
         wire:click="show"
@@ -15,6 +30,8 @@
             >{{ $unreadLabel }}</span>
         @endif
     </button>
+
+    @endif
 
     {{-- Backdrop + slide-over panel — teleported to body to escape stacking context --}}
     <template x-teleport="body">
@@ -41,12 +58,18 @@
                 x-transition:leave-end="translate-x-full"
                 role="dialog"
                 aria-modal="true"
+                @if ($variant === 'shell') x-trap.inert.noscroll="open" @endif
                 aria-label="{{ __('Notifications') }}"
-                class="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l border-yellow-800/40 bg-[#111111] shadow-2xl"
+                @class([
+                    'absolute inset-y-0 right-0 flex w-full max-w-sm flex-col shadow-2xl',
+                    'nt-bell-panel' => $variant === 'shell',
+                    'border-l border-yellow-800/40 bg-[#111111]' => $variant !== 'shell',
+                ])
             >
                 {{-- Panel header --}}
                 <div class="flex h-16 flex-shrink-0 items-center justify-between border-b border-yellow-800/20 px-5">
-                    <h2 class="text-lg font-bold text-[#f5f5f0]" style="font-family: 'Cinzel', serif;">
+                    <h2 @class(['nt-bell-title' => $variant === 'shell', 'text-lg font-bold text-[#f5f5f0]' => $variant !== 'shell'])
+                        @if ($variant !== 'shell') style="font-family: 'Cinzel', serif;" @endif>
                         {{ __('Notifications') }}
                     </h2>
                     <button

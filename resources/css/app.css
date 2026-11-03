@@ -18,6 +18,7 @@
 @import '@fontsource/outfit/800.css';
 
 @import './night-table.css';
+@import './site-shell.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
