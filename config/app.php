@@ -43,6 +43,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Mail Template Previews
+    |--------------------------------------------------------------------------
+    |
+    | Serves /email/preview/{type} with a made-up player so the mail templates
+    | can be checked in a browser. On by default in the local environment only.
+    |
+    */
+
+    'mail_previews' => (bool) env('MAIL_PREVIEWS', env('APP_ENV') === 'local'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |

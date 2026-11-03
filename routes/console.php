@@ -9,5 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // Schedule::command('sitemap:generate')->daily();
-// Schedule::command('sportsbook:fetch-odds')->everyTwoHours();
 // Schedule::command('odds:sync')->everyFiveMinutes();

@@ -92,52 +92,6 @@
                             class="text-sm font-medium whitespace-nowrap">Dashboard</span>
                     </a>
 
-                    {{-- Divider
-                    <div class="my-4 border-t border-yellow-800/20"></div>
-                    --}}
-                    {{-- ================= GAMING =================
-                    <div
-                        x-show="showLabels()"
-                        class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-500"
-                    >
-                        Gaming
-                    </div>
-                    --}}
-                    {{-- Games
-                    <a href="{{ route('games') }}" wire:navigate
-                       :class="expanded ? 'justify-start' : 'justify-center px-0'"
-                       :title="!expanded ? 'Casino' : ''"
-                       @class([
-                           'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all',
-                           'bg-[#f5c542]/10 text-[#f5c542] border-l-2 border-[#f5c542]'                             => request()->routeIs('games'),
-                           'text-gray-400 hover:text-white hover:bg-[#161616] border-l-2 border-transparent'        => !request()->routeIs('games'),
-                       ])>
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                        </svg>
-                        <span x-show="expanded" x-transition:enter="transition-opacity duration-200"
-                              x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                              class="text-sm font-medium whitespace-nowrap">Games</span>
-                    </a>
-                    --}}
-                    {{-- Sportsbook
-                    <a href="{{ route('dashboard.sportsbook') }}" wire:navigate
-                       :class="expanded ? 'justify-start' : 'justify-center px-0'"
-                       :title="!expanded ? 'Sportsbook' : ''"
-                       @class([
-                           'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all',
-                           'bg-[#f5c542]/10 text-[#f5c542] border-l-2 border-[#f5c542]'                             => request()->routeIs('dashboard.sportsbook'),
-                           'text-gray-400 hover:text-white hover:bg-[#161616] border-l-2 border-transparent'        => !request()->routeIs('dashboard.sportsbook'),
-                       ])>
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                        </svg>
-                        <span x-show="expanded" x-transition:enter="transition-opacity duration-200"
-                              x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                              class="text-sm font-medium whitespace-nowrap">Sportsbook</span>
-                    </a>
-                    --}}
-
                     {{-- Divider --}}
                     <div class="my-4 border-t border-yellow-800/20"></div>
                     {{-- ================= WALLET ================= --}}
@@ -203,25 +157,6 @@
                               class="text-sm font-medium whitespace-nowrap">Invite &amp; Earn</span>
                     </a>
                     @endif
-                    {{-- Buy Coins
-                    <a href="{{ route('buy-coins') }}" wire:navigate
-                       :class="showLabels() ? 'justify-start' : 'justify-center px-0'"
-                       :title="!expanded ? 'Buy Coins' : ''"
-                        @class([
-                            'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all',
-                            'bg-[#f5c542]/10 text-[#f5c542] border-l-2 border-[#f5c542]'                             => request()->routeIs('buy-coins'),
-                            'text-gray-400 hover:text-white hover:bg-[#161616] border-l-2 border-transparent'        => !request()->routeIs('buy-coins'),
-                        ])>
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="8"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8M8 12h8"/>
-                        </svg>
-                        <span x-show="showLabels()" x-transition:enter="transition-opacity duration-200"
-                              x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                              class="text-sm font-medium whitespace-nowrap">Buy Coins</span>
-                    </a>
-                    --}}
-
                     {{-- Divider --}}
                     <div class="my-4 border-t border-yellow-800/20"></div>
                     {{-- ================= ACCOUNT ================= --}}
