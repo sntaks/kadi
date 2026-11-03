@@ -5,13 +5,16 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\GoogleLinkController;
 use App\Http\Controllers\Auth\NameUpdateController;
 use App\Http\Controllers\Dev\MailPreviewController;
+use App\Http\Controllers\GameLaunchController;
 use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\PushTestController;
+use App\Http\Middleware\RequirePlatformFlag;
 use App\Livewire\Dashboard;
 use App\Livewire\Faq;
 use App\Livewire\GameGuide;
 use App\Livewire\Games\History as GameHistory;
+use App\Livewire\Games\Play;
 use App\Livewire\Legal\Privacy;
 use App\Livewire\Legal\Terms;
 use App\Livewire\Profile\Show;
@@ -48,6 +51,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/wallet', Index::class)->name('wallet');
     Route::get('/games/history', GameHistory::class)->name('games.history');
     Route::get('/referrals', ReferralsIndex::class)->name('referrals');
+
+    // Games inside the site (plan §4a). The page never holds a launch token: its form posts
+    // to play.launch inside the frame, which redirects once to play.open, which posts on to the game.
+    // Every page that can start a game handles errors itself (frame message), so none are blank.
+    Route::middleware(RequirePlatformFlag::class.':token_launch')->group(function () {
+        Route::post('/play/{game}', [GameLaunchController::class, 'store'])
+            ->middleware('throttle:game-launch')->name('play.launch');
+        Route::get('/play/{game}/open/{handoff}', [GameLaunchController::class, 'open'])->name('play.open');
+        Route::get('/play/{game}/{title?}', Play::class)->where('title', '[a-z0-9-]+')->name('play');
+    });
 
     // Web push device registration. Throttled per user; CSRF applies like any other web POST/DELETE.
     Route::middleware('throttle:push')->prefix('push/subscriptions')->name('push.subscriptions.')->group(function () {

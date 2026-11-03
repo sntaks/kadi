@@ -18,10 +18,6 @@ class Dashboard extends Component
 
     public string $selectedGame = '';
 
-    public string $googleId = '';
-
-    public string $playKadiUrl;
-
     /** Both balance caches are cold: loadBalance() fetches after first paint, the card shows a skeleton. */
     public bool $needsLoad = false;
 
@@ -34,10 +30,6 @@ class Dashboard extends Component
         $user = auth()->user();
 
         $this->userId = $user->id;
-
-        $this->googleId = $user->account_no ?? null;
-
-        $this->playKadiUrl = rtrim((string) config('services.kadi_api.play_url'), '/');
 
         $this->needsLoad = $user->linked_id && app(WalletBalanceFetcher::class)->cached($user) === null;
     }
@@ -148,8 +140,6 @@ class Dashboard extends Component
 
         return view('livewire.dashboard', [
             'recentTransactions' => $recentTransactions,
-            'playKadiUrl' => $this->playKadiUrl,
-            'googleId' => $this->googleId,
             'kadiBalance' => $kadiBalance,
             'jackpotAmount' => $this->progressiveJackpot($now),
             'drawInSeconds' => $this->secondsUntilNextDraw($now),

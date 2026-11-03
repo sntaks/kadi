@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Events\PasswordChanged;
 use App\Games\GameCatalogue;
+use App\Games\LaunchFailed;
+use App\Http\Controllers\GameLaunchController;
 use App\Listeners\RecordSecurityAudit;
 use App\Listeners\SendSecurityNotification;
 use App\Models\User;
@@ -87,6 +89,15 @@ class AppServiceProvider extends ServiceProvider
         // Server-to-server push API: per API key (falls back to IP), so one key cannot starve others.
         RateLimiter::for('push-api', fn (Request $request) => Limit::perMinute((int) config('kadi.push_api.requests_per_minute'))
             ->by($request->attributes->get('push_api_key_id') ?: $request->ip()));
+
+        // Each launch spends one of the site key's 30 launch tokens a minute (Kadi API), so one
+        // player can't use them up. Over the limit the frame shows a plain "wait a minute".
+        RateLimiter::for('game-launch', fn (Request $request) => Limit::perMinute((int) config('games.launch.per_minute', 6))
+            ->by('game-launch:'.($request->user()?->getAuthIdentifier() ?: $request->ip()))
+            ->response(fn () => GameLaunchController::page([
+                'error' => LaunchFailed::MESSAGES['rate_limited'],
+                'game' => null,
+            ], 429)));
 
         // Test sends hit a real push service, so keep them well below the subscription limit.
         RateLimiter::for('push-test', fn (Request $request) => Limit::perMinute(5)->by($request->user()?->getAuthIdentifier() ?: $request->ip()));

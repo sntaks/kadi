@@ -27,6 +27,35 @@ final readonly class Game
         return $this->titles !== [];
     }
 
+    public function titleBySlug(string $slug): ?GameTitle
+    {
+        foreach ($this->titles as $title) {
+            if ($title->slug() === $slug) {
+                return $title;
+            }
+        }
+
+        return null;
+    }
+
+    /** Plays inside the site's frame (config `games.games.{code}.frame`, default true). */
+    public function playsInFrame(): bool
+    {
+        return self::framed($this->code);
+    }
+
+    /** The same rule without a catalogue lookup, for buttons rendered on every page. */
+    public static function framed(string $code): bool
+    {
+        return (bool) config("games.games.{$code}.frame", true);
+    }
+
+    /** Launched with Kadi's own `ggid` form instead of an API launch token. */
+    public function usesGgid(): bool
+    {
+        return config("games.games.{$this->code}.launch") === 'ggid';
+    }
+
     public function title(string $code): ?GameTitle
     {
         foreach ($this->titles as $title) {

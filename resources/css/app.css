@@ -1199,3 +1199,18 @@ select:focus[data-flux-control] {
 .legal-toc-list::-webkit-scrollbar { width: 6px; }
 .legal-toc-list::-webkit-scrollbar-thumb { background: rgba(245, 197, 66, 0.25); border-radius: 9999px; }
 .legal-toc-list::-webkit-scrollbar-track { background: transparent; }
+
+/* ─── In-site game page (livewire/games/play) ───────────── */
+.game-stage {
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 13rem);
+}
+@media (max-width: 640px) {
+  .game-stage { aspect-ratio: auto; height: calc(100dvh - 15rem); max-height: none; }
+}
+/* iPhone has no fullscreen for frames: the page hides its own bars and the stage fills the screen. */
+.game-immersive .game-stage {
+  position: fixed; inset: 0; z-index: 60; height: 100dvh; max-height: none; aspect-ratio: auto; border-radius: 0; border: 0;
+}
+.game-immersive .game-immersive-back { display: inline-flex; }
+.game-stage:fullscreen { max-height: none; border-radius: 0; }

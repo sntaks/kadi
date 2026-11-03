@@ -28,6 +28,15 @@ final readonly class GameTitle
         return $this->presented;
     }
 
+    /** URL slug: the product code without its game prefix, in kebab case (`slots_berry_blast` → `berry-blast`). */
+    public function slug(): string
+    {
+        $prefix = (string) config("games.games.{$this->game}.prefix", '');
+        $name = $prefix !== '' && str_starts_with($this->code, $prefix) ? substr($this->code, strlen($prefix)) : $this->code;
+
+        return str_replace('_', '-', $name);
+    }
+
     public function hasBadge(string $badge): bool
     {
         return in_array($badge, $this->badges, true);

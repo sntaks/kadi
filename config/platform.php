@@ -20,7 +20,8 @@ return [
     // Kadi play form, and play it inside the site.
     'token_launch' => (bool) env('PLATFORM_TOKEN_LAUNCH', false),
 
-    // Shareable /play/{game}/{title} links that open a game directly.
+    // Crawlable game pages (/slots, /scratch-cards, /games/{slug}) that link straight into
+    // /play/{game}/{title}. The play links themselves follow token_launch.
     'deep_link' => (bool) env('PLATFORM_DEEP_LINK', false),
 
     // Sports pages: fixtures, odds and the bet slip (browse only).

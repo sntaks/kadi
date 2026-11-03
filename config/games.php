@@ -49,6 +49,12 @@ return [
     'games' => [
         'kadi' => [
             'titles' => false,
+            // Kadi keeps its own launch: a form POST of `ggid` (the player's account_no) to
+            // services.kadi_api.play_url. Every other game uses a single-use API launch token.
+            'launch' => 'ggid',
+            // Only inside the site's frame once Kadi's web build is confirmed single-threaded
+            // (plan §4a). Until then Play Kadi goes through the launcher and opens in its own page.
+            'frame' => (bool) env('KADI_IN_FRAME', false),
             'tagline' => 'Classic Kenyan Kadi: singles, tournaments and jackpots.',
         ],
         'slots' => [
@@ -60,6 +66,7 @@ return [
         'scratch' => [
             'titles' => true,
             'tagline' => 'Scratch the foil, see the prize.',
+            'prefix' => 'scratch_',
             'artwork_map' => [
                 'scratch_fantasy_quest' => 'games/scratch_games/fantasy.png',
                 'scratch_fruit_fiesta' => 'games/scratch_games/fruit.png',
@@ -186,6 +193,16 @@ return [
             'slots_cursed_cauldron_jackpot',
             'slots_triple_jackpot_fruits',
         ],
+    ],
+
+    /*
+    | Launching (App\Games\GameLauncher). A launch token lives 120 seconds and the Kadi API allows
+    | 30 launch tokens a minute for the whole site key, so players are limited too.
+    */
+    'launch' => [
+        'per_minute' => (int) env('GAMES_LAUNCHES_PER_MINUTE', 6),
+        // Seconds the play page waits for the game before offering "Open in its own tab".
+        'fallback_after_seconds' => 8,
     ],
 
     'featured' => [

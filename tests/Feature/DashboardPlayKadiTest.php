@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 
 test('play form posts to the play url', function () {
@@ -57,17 +58,42 @@ test('balance card prefers the fresher wallet balance cache over the stale profi
         ->assertSee('KES 777', false);
 });
 
-test('dashboard play buttons submit the hidden play form', function () {
-    $user = User::factory()->create();
-    $this->actingAs($user);
+test('with the launcher off, every Play Kadi button is its own ggid form posted to the play url', function () {
+    config(['platform.token_launch' => false]);
+    $user = User::factory()->create(['account_no' => 'KK-FORM-1']);
 
-    $html = $this->get(route('dashboard'))->getContent();
+    $html = preg_replace('/<!--.*?-->/s', '', $this->actingAs($user)->get(route('dashboard'))->getContent());
 
-    // The play form is a hidden POST form...
-    expect($html)->toContain('id="kadiPlayForm"')
-        ->and($html)->toMatch('/<form[^>]*id="kadiPlayForm"[^>]*method="POST"/s');
+    expect($html)->not->toContain('onclick=')
+        ->and($html)->not->toContain('kadiPlayForm')
+        ->and(preg_match_all('#<form method="POST" class="contents" data-play-kadi\s+action="'.preg_quote(config('services.kadi_api.play_url'), '#').'">\s*<input type="hidden" name="ggid" value="KK-FORM-1">\s*<button type="submit"#', $html))
+        ->toBeGreaterThanOrEqual(2);
+});
 
-    // ...and the visible play buttons submit it.
-    expect(substr_count($html, "document.getElementById('kadiPlayForm').submit()"))
-        ->toBeGreaterThanOrEqual(1);
+test('with the launcher on, Play Kadi posts through the launcher and never prints the ggid', function () {
+    config(['platform.token_launch' => true, 'games.games.kadi.frame' => false]);
+    $user = User::factory()->create(['account_no' => 'KK-LAUNCH-1']);
+
+    $html = $this->actingAs($user)->get(route('dashboard'))->getContent();
+
+    expect($html)->toContain('action="'.route('play.launch', ['game' => 'kadi']).'"')
+        ->and($html)->not->toContain('KK-LAUNCH-1"')
+        ->and($html)->not->toContain('name="ggid"');
+});
+
+test('a disabled Play Kadi is a disabled button, never a live link', function () {
+    config(['platform.token_launch' => true, 'games.games.kadi.frame' => true]);
+    $this->actingAs(User::factory()->create());
+
+    $html = Blade::render('<x-play-kadi :disabled="true">Play</x-play-kadi>');
+
+    expect($html)->toContain('<button type="button" disabled data-play-kadi')->not->toContain('href=');
+});
+
+test('with the launcher on and Kadi framed, Play Kadi links to the in-site play page', function () {
+    config(['platform.token_launch' => true, 'games.games.kadi.frame' => true]);
+
+    $html = $this->actingAs(User::factory()->create())->get(route('dashboard'))->getContent();
+
+    expect($html)->toContain('href="'.route('play', ['game' => 'kadi']).'" data-play-kadi');
 });

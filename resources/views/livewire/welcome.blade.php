@@ -87,9 +87,7 @@
                     {{-- CTA — gold used sparingly, game-authentic --}}
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
                         @auth
-                            <button type="button"
-                                    onclick="document.getElementById('kadiPlayForm').submit()"
-                                    @if ($this->hasUnverifiedEmail) disabled @endif
+                            <x-play-kadi :disabled="$this->hasUnverifiedEmail"
                                     class="font-cinzel inline-flex items-center gap-2.5
                                       rounded-full px-7 py-3.5 text-sm font-bold
                                       bg-[#f5c542] text-[#0a0a0a]
@@ -100,9 +98,7 @@
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                 </svg>
-                            </button>
-
-                            @include('partials.kadi-play-form')
+                            </x-play-kadi>
 
                             {{-- Phones/tablets: the nav pill is desktop-only and the menu entry is easy to miss. --}}
                             <x-pwa.install-button variant="hero" />
