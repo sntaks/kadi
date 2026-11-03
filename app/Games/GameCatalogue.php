@@ -73,6 +73,52 @@ class GameCatalogue
         return $this->titles()->first(fn (GameTitle $title) => $title->code === $code);
     }
 
+    /** Paths under /games/ that are other pages, never a game's slug. */
+    public const RESERVED_SLUGS = ['history', 'search'];
+
+    /** @var array<string, GameTitle>|null slug => title, for titles that get a game page */
+    private ?array $pages = null;
+
+    /**
+     * The title behind a /games/{slug} page. Slugs come from API product codes, so a title only gets a
+     * page when its slug is a clean URL segment, not reserved, and not already taken by an earlier
+     * title (a slot and a scratch card with the same name: the first keeps the page).
+     */
+    public function titleBySlug(string $slug): ?GameTitle
+    {
+        return $this->pages()[$slug] ?? null;
+    }
+
+    /** The crawlable game page, or null when those pages are off or the title has none. */
+    public function pageUrl(GameTitle $title): ?string
+    {
+        if (! config('platform.ui_v2') || ! config('platform.deep_link')) {
+            return null;
+        }
+
+        $slug = $title->slug();
+
+        return ($this->pages()[$slug] ?? null)?->code === $title->code ? route('games.show', ['slug' => $slug]) : null;
+    }
+
+    /** @return array<string, GameTitle> */
+    private function pages(): array
+    {
+        if ($this->pages === null) {
+            $this->pages = [];
+
+            foreach ($this->titles() as $title) {
+                $slug = $title->slug();
+
+                if (preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $slug) && ! in_array($slug, self::RESERVED_SLUGS, true)) {
+                    $this->pages[$slug] ??= $title;
+                }
+            }
+        }
+
+        return $this->pages;
+    }
+
     /** @return Collection<int, GameTitle> */
     public function collection(string $key): Collection
     {
@@ -95,6 +141,7 @@ class GameCatalogue
     {
         Cache::forget(self::FRESH_KEY);
         $this->games = null;
+        $this->pages = null;
     }
 
     /** @return list<array<string, mixed>> */

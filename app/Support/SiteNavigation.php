@@ -47,7 +47,7 @@ final class SiteNavigation
         return array_values(array_filter([
             $this->sportsOn() ? $this->link('Sports', 'sports', 'ball', active: 'sports*') : null,
             $this->playKadi('Kadi'),
-            Route::has('casino') ? $this->link('Casino', 'casino', 'slot', active: 'casino*') : null,
+            $this->casinoOn() ? $this->link('Casino', 'casino', 'slot', active: 'casino') : null,
         ]));
     }
 
@@ -72,9 +72,13 @@ final class SiteNavigation
             $this->link('Games & prizes', 'game-guide', 'gift'),
         ]];
 
-        if (Route::has('casino')) {
+        if ($this->casinoOn()) {
             $groups[] = ['key' => 'casino', 'label' => 'Casino', 'icon' => 'slot', 'items' => [
-                $this->link('All casino games', 'casino', 'slot', active: 'casino*'),
+                $this->casinoLink('All games', null),
+                $this->casinoLink('Slots', 'slots'),
+                $this->casinoLink('Scratch cards', 'scratch-cards'),
+                $this->casinoLink('Jackpot slots', 'jackpot'),
+                $this->casinoLink('Favourites', 'favourites'),
             ]];
         }
 
@@ -102,7 +106,7 @@ final class SiteNavigation
             $this->link('How to play', 'rules', 'cards'),
             $this->link('Games & prizes', 'game-guide', 'gift'),
             $this->link('FAQ', 'faq', 'help'),
-            $whatsapp ? $this->item('WhatsApp support', $whatsapp, 'chat', external: true) : null,
+            $whatsapp ? $this->item('WhatsApp', $whatsapp, 'chat', external: true) : null,
             $this->link('Terms', 'legal.terms', 'doc'),
             $this->link('Privacy', 'legal.privacy', 'doc'),
         ]));
@@ -141,7 +145,7 @@ final class SiteNavigation
             ['kind' => 'menu', 'label' => 'Menu', 'icon' => 'menu'],
             $sports ? $this->link('Sports', 'sports', 'ball', active: 'sports*') : $this->link('Wallet', 'wallet', 'wallet', needsAccount: true),
             ['kind' => 'kadi', 'label' => 'Kadi', 'icon' => 'cards'],
-            Route::has('casino') ? $this->link('Casino', 'casino', 'slot', active: 'casino*') : $this->link('Home', 'home', 'home'),
+            $this->casinoOn() ? $this->link('Casino', 'casino', 'slot', active: 'casino') : $this->link('Home', 'home', 'home'),
             $sports ? ['kind' => 'slip', 'label' => 'Bet slip', 'icon' => 'slip'] : $this->link('Account', 'profile', 'user', needsAccount: true),
         ];
     }
@@ -149,11 +153,32 @@ final class SiteNavigation
     /** Footer columns. @return array<string, list<array<string, mixed>>> */
     public function footer(): array
     {
+        $deepLinks = config('platform.ui_v2') && config('platform.deep_link');
+
         return [
-            'Play' => $this->products(),
+            'Play' => array_values(array_filter([
+                ...$this->products(),
+                $deepLinks ? $this->link('Slots', 'games.slots', 'slot') : null,
+                $deepLinks ? $this->link('Scratch cards', 'games.scratch', 'slot') : null,
+            ])),
             'Account' => $this->accountLinks(),
             'Help' => array_values(array_filter($this->helpLinks(), fn (array $item) => ! $item['external'])),
         ];
+    }
+
+    /** The casino browse page exists once the new look is on and games open inside the site. */
+    private function casinoOn(): bool
+    {
+        return config('platform.ui_v2') && config('platform.token_launch') && Route::has('casino');
+    }
+
+    /** @return array<string, mixed> */
+    private function casinoLink(string $label, ?string $filter): array
+    {
+        $item = $this->item($label, route('casino', array_filter(['filter' => $filter])), 'slot');
+        $item['active'] = request()->routeIs('casino') && request()->route('filter') === $filter;
+
+        return $item;
     }
 
     private function sportsOn(): bool

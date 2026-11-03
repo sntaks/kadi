@@ -45,7 +45,7 @@
         {{-- Faded background images (cached) --}}
         @php
             $casinoImages = cache()->remember('welcome_casino_bg_images', 3600, function () {
-                return array_slice(glob(public_path('casino/*.{png,jpg,webp}'), GLOB_BRACE), 0, 4);
+                return array_slice(glob(public_path('images/casino/*.{png,jpg,webp}'), GLOB_BRACE), 0, 4);
             });
             $bgPositions = [
                 ['top-4 -left-8 md:top-8 md:-left-4', 'rotate-[-15deg]'],
@@ -56,7 +56,7 @@
         @endphp
         @foreach($casinoImages as $i => $imgPath)
             @php [$pos, $rot] = $bgPositions[$i] ?? ['top-0 left-0', '']; @endphp
-            <img src="{{ asset('casino/' . basename($imgPath)) }}"
+            <img src="{{ asset('images/casino/' . basename($imgPath)) }}"
                  alt=""
                  width="208"
                  height="208"

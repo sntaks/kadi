@@ -37,6 +37,34 @@ final readonly class GameTitle
         return str_replace('_', '-', $name);
     }
 
+    /** The in-site play page, or null while games do not open inside the site (PLATFORM_TOKEN_LAUNCH off). */
+    public function playUrl(): ?string
+    {
+        return config('platform.token_launch') ? route('play', ['game' => $this->game, 'title' => $this->slug()]) : null;
+    }
+
+    /** The crawlable game page (/games/{slug}), or null while those pages are off or this title has none. */
+    public function pageUrl(): ?string
+    {
+        return app(GameCatalogue::class)->pageUrl($this);
+    }
+
+    /** "Slot" or "Scratch card". */
+    public function typeLabel(): string
+    {
+        return $this->game === 'scratch' ? 'Scratch card' : 'Slot';
+    }
+
+    /** "Pharaoh's vault", "Scratch card"… the line under the tile name. */
+    public function kindLabel(): ?string
+    {
+        if ($this->collection !== null) {
+            return config("games.collections.{$this->collection}.label");
+        }
+
+        return $this->game === 'scratch' ? 'Scratch card' : null;
+    }
+
     public function hasBadge(string $badge): bool
     {
         return in_array($badge, $this->badges, true);

@@ -177,7 +177,7 @@ test('Night table tokens never reuse a class name existing pages already use', f
 
     $views = collect(File::allFiles(resource_path('views')))
         // Night table's own views (components, the site shell, the gallery) are meant to use the tokens.
-        ->reject(fn ($f) => Str::contains($f->getPathname(), ['components/ui/', 'components/site/', 'layouts/site.blade.php', 'dev/ui-gallery']))
+        ->reject(fn ($f) => Str::contains($f->getPathname(), ['components/ui/', 'components/site/', 'components/lobby/', 'livewire/lobby/', 'layouts/site.blade.php', 'dev/ui-gallery']))
         ->map(fn ($f) => $f->getContents())->implode("\n");
 
     foreach ($m[1] as $token) {
