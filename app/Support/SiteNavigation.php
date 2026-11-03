@@ -90,10 +90,10 @@ final class SiteNavigation
     {
         return array_values(array_filter([
             $this->link('Wallet', 'wallet', 'wallet', needsAccount: true),
-            $this->link('Game history', 'games.history', 'list', needsAccount: true),
+            $this->activityLink(needsAccount: true),
             Route::has('promotions') ? $this->link('Promotions', 'promotions', 'gift') : null,
             config('kadi.referrals.enabled') ? $this->link('Invite & Earn', 'referrals', 'invite', needsAccount: true) : null,
-            Route::has('responsible-play') ? $this->link('Responsible play', 'responsible-play', 'shield', needsAccount: true) : null,
+            $this->responsiblePlayOn() ? $this->link('Responsible play', 'responsible-play', 'shield', needsAccount: true) : null,
         ]));
     }
 
@@ -112,10 +112,25 @@ final class SiteNavigation
         ]));
     }
 
+    /**
+     * The account area's sub-tabs: the account page, wallet, activity, Invite & Earn and responsible play
+     * share one header (plan Phase 6). @return list<array<string, mixed>>
+     */
+    public function accountArea(): array
+    {
+        return array_values(array_filter([
+            $this->link('Account', $this->accountRoute(), 'user'),
+            $this->link('Wallet', 'wallet', 'wallet'),
+            $this->activityLink(),
+            config('kadi.referrals.enabled') ? $this->link('Invite & Earn', 'referrals', 'invite') : null,
+            $this->responsiblePlayOn() ? $this->link('Responsible play', 'responsible-play', 'shield') : null,
+        ]));
+    }
+
     /** The avatar menu (players only). Hash links open the matching profile tab. @return list<list<array<string, mixed>>> sections */
     public function accountMenu(): array
     {
-        $profile = route('profile');
+        $profile = route($this->accountRoute());
 
         return [
             [
@@ -125,8 +140,9 @@ final class SiteNavigation
             ],
             array_values(array_filter([
                 $this->link('Wallet', 'wallet', 'wallet'),
-                $this->link('Game history', 'games.history', 'list'),
+                $this->activityLink(),
                 config('kadi.referrals.enabled') ? $this->link('Invite & Earn', 'referrals', 'invite') : null,
+                $this->responsiblePlayOn() ? $this->link('Responsible play', 'responsible-play', 'shield') : null,
             ])),
         ];
     }
@@ -146,7 +162,7 @@ final class SiteNavigation
             $sports ? $this->link('Sports', 'sports', 'ball', active: 'sports*') : $this->link('Wallet', 'wallet', 'wallet', needsAccount: true),
             ['kind' => 'kadi', 'label' => 'Kadi', 'icon' => 'cards'],
             $this->casinoOn() ? $this->link('Casino', 'casino', 'slot', active: 'casino') : $this->link('Home', 'home', 'home'),
-            $sports ? ['kind' => 'slip', 'label' => 'Bet slip', 'icon' => 'slip'] : $this->link('Account', 'profile', 'user', needsAccount: true),
+            $sports ? ['kind' => 'slip', 'label' => 'Bet slip', 'icon' => 'slip'] : $this->link('Account', $this->accountRoute(), 'user', needsAccount: true),
         ];
     }
 
@@ -164,6 +180,25 @@ final class SiteNavigation
             'Account' => $this->accountLinks(),
             'Help' => array_values(array_filter($this->helpLinks(), fn (array $item) => ! $item['external'])),
         ];
+    }
+
+    /** The account page: /account in the new look (Phase 6), /profile before it. */
+    public function accountRoute(): string
+    {
+        return config('platform.ui_v2') && Route::has('account') ? 'account' : 'profile';
+    }
+
+    /** Activity (/activity, every game) in the new look; Kadi's game history before it. @return array<string, mixed> */
+    private function activityLink(bool $needsAccount = false): array
+    {
+        return config('platform.ui_v2') && Route::has('activity')
+            ? $this->link('Activity', 'activity', 'list', needsAccount: $needsAccount)
+            : $this->link('Game history', 'games.history', 'list', needsAccount: $needsAccount);
+    }
+
+    private function responsiblePlayOn(): bool
+    {
+        return config('platform.ui_v2') && Route::has('responsible-play');
     }
 
     /** The casino browse page exists once the new look is on and games open inside the site. */
@@ -189,7 +224,7 @@ final class SiteNavigation
     /** @return array<string, mixed> */
     private function link(string $label, string $route, string $icon, bool $needsAccount = false, ?string $active = null): array
     {
-        return $this->item($label, route($route), $icon, active: request()->routeIs($active ?? $route), needsAccount: $needsAccount && $this->isGuest());
+        return $this->item($label, route($route), $icon, active: request()->routeIs($active ?? $route), needsAccount: $needsAccount && $this->isGuest()) + ['route' => $route];
     }
 
     /** @return array<string, mixed> */

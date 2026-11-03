@@ -1,4 +1,5 @@
 <div class="mx-auto max-w-7xl space-y-4"
+     data-game-page
      x-data="gameFrame({ origins: @js($origins), fallbackAfter: {{ (int) config('games.launch.fallback_after_seconds', 8) }}, framed: @js($gameModel->playsInFrame()), lobby: @js(route('home')) })"
      :class="immersive && 'game-immersive'">
 

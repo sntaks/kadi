@@ -1,0 +1,85 @@
+/*
+ * The account area (plan Phase 6): account header and sub-tabs, forms, the deposit sheet, activity and
+ * responsible play. Night table tokens only; `nt-` prefixed so the reduced-motion rule covers it.
+ */
+
+@layer components {
+    /* ── Header and sub-tabs shared by Account, Wallet, Activity, Invite & Earn, Responsible play ── */
+    .nt-acct-head {
+        display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 20px 22px; margin-bottom: 14px;
+        background: radial-gradient(70% 140% at 100% 0%, rgb(248 192 56 / .12), transparent 60%), var(--color-felt);
+    }
+    .nt-acct-head .nt-avatar { width: 58px; height: 58px; font-size: 20px; }
+    .nt-acct-head h1 { margin: 0; font-size: 24px; font-weight: 800; line-height: 1.15; color: var(--color-ivory); }
+    .nt-acct-head .nt-acct-sub { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; font-size: 13px; color: var(--color-ash); }
+    .nt-acct-head .nt-acct-bal { margin-left: auto; text-align: right; }
+    .nt-acct-head .nt-acct-bal > span { display: block; font-size: 12.5px; color: var(--color-ash); }
+    .nt-acct-head .nt-acct-bal b { font-size: 26px; font-weight: 800; color: var(--color-gold); }
+    .nt-subnav { margin: 0 0 20px; }
+    @media (max-width: 640px) {
+        .nt-acct-head { padding: 16px; }
+        .nt-acct-head .nt-acct-bal { margin-left: 0; width: 100%; text-align: left; }
+    }
+
+    /* ── Cards, forms and rows ────────────────────────────── */
+    .nt-card-pad { padding: 22px; }
+    .nt-card-pad > h2, .nt-card-title { margin: 0 0 4px; font-size: 18px; font-weight: 800; color: var(--color-ivory); }
+    .nt-card-pad > h2 + p, .nt-lead { margin: 0 0 16px; color: var(--color-soft); font-size: 14px; }
+    @media (max-width: 640px) { .nt-card-pad { padding: 16px; } }
+    .nt-area { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+    .nt-area > * { min-width: 0; }
+    .nt-stack { display: grid; gap: 18px; }
+    @media (max-width: 1240px) { .nt-area { grid-template-columns: minmax(0, 1fr); } }
+
+    .nt-field { display: grid; gap: 6px; }
+    .nt-field > span { font-size: 13px; font-weight: 600; color: var(--color-soft); }
+    .nt-field input, .nt-field select, .nt-field textarea {
+        height: 46px; padding: 0 14px; border-radius: var(--radius-control); background: var(--color-felt-2);
+        border: 1px solid var(--color-line); color: var(--color-ivory); font-size: 15px; outline: none; transition: border-color .15s;
+    }
+    .nt-field textarea { height: auto; min-height: 96px; padding: 12px 14px; }
+    .nt-field input:focus, .nt-field select:focus, .nt-field textarea:focus { border-color: rgb(248 192 56 / .6); }
+    .nt-field input[disabled] { color: var(--color-ash); }
+    .nt-hint { margin: 0; font-size: 13px; color: var(--color-ash); }
+    .nt-error { margin: 0; font-size: 13.5px; color: #f4b0a6; }
+    .nt-ok { margin: 0; font-size: 13.5px; color: #7fdc9c; }
+    .nt-callout { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--radius-tile); border: 1px solid var(--color-line-2); background: rgb(248 192 56 / .06); color: var(--color-soft); font-size: 14px; }
+    .nt-callout b { color: var(--color-ivory); }
+    .nt-callout .nt-btn { margin-left: auto; flex: none; }
+    @media (max-width: 640px) { .nt-callout { flex-wrap: wrap; } .nt-callout .nt-btn { margin-left: 0; } }
+
+    .nt-breakdown { display: grid; gap: 6px; margin: 0; padding: 12px 14px; border-radius: var(--radius-control); background: var(--color-felt-2); font-size: 14px; }
+    .nt-breakdown > div { display: flex; justify-content: space-between; gap: 12px; }
+    .nt-breakdown dt { color: var(--color-ash); }
+    .nt-breakdown dd { margin: 0; color: var(--color-ivory); }
+    .nt-deposit-state { margin: 14px 0 18px; padding: 16px; border-radius: var(--radius-tile); background: var(--color-felt-2); color: var(--color-soft); }
+    .nt-deposit-state p { margin: 0 0 6px; }
+    .nt-deposit-state b { color: var(--color-ivory); }
+
+    .nt-list { margin: 0; padding: 0; list-style: none; }
+    .nt-list-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 18px 22px 10px; }
+    .nt-list-head h2 { margin: 0; font-size: 18px; font-weight: 800; color: var(--color-ivory); }
+    .nt-list-head .nt-tabs { margin-left: auto; }
+    .nt-list-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 22px 18px; font-size: 13px; color: var(--color-ash); }
+    @media (max-width: 640px) {
+        .nt-list-head { padding: 16px 16px 10px; }
+        .nt-list-head .nt-tabs { margin-left: 0; width: 100%; }
+        .nt-list-foot { padding: 12px 16px 16px; }
+    }
+
+    /* ── Responsible play ─────────────────────────────────── */
+    .nt-limits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .nt-limit { padding: 16px; border-radius: var(--radius-tile); background: var(--color-felt-2); }
+    .nt-limit h3 { margin: 0 0 2px; font-size: 15px; font-weight: 700; color: var(--color-ivory); }
+    .nt-limit .nt-limit-now { font-size: 22px; font-weight: 800; color: var(--color-gold); }
+    @media (max-width: 1023.98px) { .nt-limits { grid-template-columns: minmax(0, 1fr); } }
+    .nt-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nt-option { position: relative; }
+    .nt-option input { position: absolute; opacity: 0; pointer-events: none; }
+    .nt-option span {
+        display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 11px; cursor: pointer;
+        background: var(--color-felt-2); border: 1px solid var(--color-line); font-weight: 600; color: var(--color-soft);
+    }
+    .nt-option input:checked + span { background: var(--color-ivory); color: var(--color-night); border-color: transparent; }
+    .nt-option input:focus-visible + span { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+}

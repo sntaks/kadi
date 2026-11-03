@@ -281,7 +281,7 @@ test('only catalogue titles have a game page', function () {
 });
 
 test('game history and search keep their own addresses', function () {
-    $this->actingAs(User::factory()->create())->get('/games/history')->assertOk()->assertDontSee('nt-game', false);
+    $this->actingAs(User::factory()->create())->get('/games/history')->assertRedirect(route('activity'));
     $this->get('/games/search')->assertOk()->assertJsonStructure(['data']);
 });
 

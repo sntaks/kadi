@@ -17,7 +17,7 @@
         <div class="nt-side-acct">
             <div class="nt-who"><div><b>{{ $user->name }}</b><span>{{ $user->email }}</span></div></div>
             <div class="grid grid-cols-2 gap-1.5">
-                <x-ui.button variant="ghost" :href="route('profile')" wire:navigate>Account</x-ui.button>
+                <x-ui.button variant="ghost" :href="route($nav->accountRoute())" wire:navigate>Account</x-ui.button>
                 <form method="POST" action="{{ route('logout') }}" class="contents">
                     @csrf
                     <x-ui.button variant="ghost" type="submit">Log out</x-ui.button>

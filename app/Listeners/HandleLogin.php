@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Account\ResponsiblePlay;
 use App\Facades\KadiApi;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
@@ -22,6 +23,9 @@ class HandleLogin implements ShouldQueue
         if (! $user->linked_id) {
             return;
         }
+
+        // Learn of any break now, so Play Kadi (which never waits on KadiApi) knows it on the first page.
+        dispatch(fn () => app(ResponsiblePlay::class)->state($user))->afterResponse();
 
         try {
             $response = KadiApi::getCustomer($user->linked_id);

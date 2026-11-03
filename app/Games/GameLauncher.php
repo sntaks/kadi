@@ -2,6 +2,7 @@
 
 namespace App\Games;
 
+use App\Account\ResponsiblePlay;
 use App\Models\GameLaunch;
 use App\Models\User;
 use App\Services\KadiApiService;
@@ -24,6 +25,7 @@ class GameLauncher
     public function __construct(
         private readonly GameCatalogue $catalogue,
         private readonly KadiApiService $api,
+        private readonly ResponsiblePlay $responsiblePlay,
     ) {}
 
     /**
@@ -49,6 +51,12 @@ class GameLauncher
     public function launch(User $user, Game $game, ?GameTitle $title, ?string $ip): LaunchForm
     {
         try {
+            // A break covers every game. KadiApi refuses token launches itself (player_excluded); Kadi's
+            // ggid form never asks the API, so for Kadi the site checks first.
+            if ($game->usesGgid() && $this->responsiblePlay->onBreak($user)) {
+                throw new LaunchFailed('on_break');
+            }
+
             $form = $game->usesGgid() ? $this->ggidForm($user) : $this->tokenForm($user, $game, $title, $ip);
         } catch (LaunchFailed $e) {
             $this->record($user, $game, $title, 'failed', $e->reason);
@@ -88,6 +96,7 @@ class GameLauncher
             $reason = match (true) {
                 $e->response->status() === 429 => 'rate_limited',
                 $e->response->json('code') === 'player_inactive' => 'player_inactive',
+                $e->response->json('code') === 'player_excluded' => 'on_break',
                 $e->response->status() === 404 && $e->response->json('message') === 'Customer not found' => 'not_linked',
                 $e->response->json('code') === 'game_unavailable', $e->response->status() === 404 => 'game_unavailable',
                 default => 'unreachable',

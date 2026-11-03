@@ -23,10 +23,12 @@
 
     <div class="flex items-center justify-between gap-3">
         <div>
-            <h1 class="flex items-center gap-2 text-3xl font-bold text-[#f5f5f0]" style="font-family: 'Cinzel', serif;">
-                <flux:icon.clock variant="outline" class="size-7 shrink-0 text-[#f5c542]" aria-hidden="true" />
-                Game History
-            </h1>
+            @unless ($embedded)
+                <h1 class="flex items-center gap-2 text-3xl font-bold text-[#f5f5f0]" style="font-family: 'Cinzel', serif;">
+                    <flux:icon.clock variant="outline" class="size-7 shrink-0 text-[#f5c542]" aria-hidden="true" />
+                    Game History
+                </h1>
+            @endunless
             <p class="mt-1 text-sm text-[#6b6b6b]">Your latest games. Lost one unfairly? Report it within {{ $reportWindow }} of playing and our team will review it.</p>
         </div>
 

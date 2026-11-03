@@ -13,6 +13,8 @@ use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\PushTestController;
 use App\Http\Middleware\RequirePlatformFlag;
+use App\Livewire\Account\Activity;
+use App\Livewire\Account\ResponsiblePlay as ResponsiblePlayPage;
 use App\Livewire\Dashboard;
 use App\Livewire\Faq;
 use App\Livewire\GameGuide;
@@ -70,6 +72,14 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/profile', Show::class)->name('profile');
+
+    // The account area in the new look (plan Phase 6): one header and sub-tabs for the account page,
+    // wallet, activity, Invite & Earn and responsible play.
+    Route::middleware(RequirePlatformFlag::class.':ui_v2')->group(function () {
+        Route::get('/account', Show::class)->name('account');
+        Route::get('/activity', Activity::class)->name('activity');
+        Route::get('/responsible-play', ResponsiblePlayPage::class)->name('responsible-play');
+    });
     Route::post('/profile/picture', [ProfilePictureController::class, 'upload'])->name('profile.picture');
     Route::get('/wallet', Index::class)->name('wallet');
     Route::get('/games/history', GameHistory::class)->name('games.history');

@@ -3,7 +3,7 @@
         <flux:icon.lock-closed variant="outline" class="mt-0.5 size-5 shrink-0 text-[#f5c542]" />
 
         <div class="w-full">
-            <h4 class="text-sm font-bold text-[#f5f5f0]" style="font-family: 'Cinzel', serif;">
+            <h4 class="text-sm font-bold text-[#f5f5f0]" @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless>
                 {{ __('Confirm your password') }}
             </h4>
             <p class="mt-1 text-xs text-[#6b6b6b]">

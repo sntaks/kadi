@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Account\ResponsiblePlay;
 use App\Events\PasswordChanged;
 use App\Games\GameCatalogue;
 use App\Games\LaunchFailed;
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // One catalogue per request (and per queued job): a layout and a component share one pass.
         $this->app->scoped(GameCatalogue::class);
+        $this->app->scoped(ResponsiblePlay::class);
 
         $this->app->singleton(KadiApiService::class, function ($app) {
             return new KadiApiService;

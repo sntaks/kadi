@@ -18,7 +18,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         {{-- A meta tag needs a literal colour: the Night table `night` token. --}}
-        @include('partials.head', ['themeColor' => '#0e0d0b'])
+        @include('partials.head', ['themeColor' => '#0e0d0b', 'darkOnly' => true])
     </head>
     <body class="nt-site min-h-screen antialiased" data-shell="{{ $shell }}"
           x-data="{ menuOpen: false }"
@@ -63,6 +63,7 @@
         <x-structured-data :page="$page ?? ($shell === 'page' ? 'home' : 'dashboard')" :noindex="$noindex ?? $shell !== 'page'" />
         @if (auth()->check() && ! $nav->isGated())
             <livewire:phone-required />
+            <livewire:wallet.deposit-sheet />
             <x-pwa.install-dialog />
         @endif
         @fluxScripts

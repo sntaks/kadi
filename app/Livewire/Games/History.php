@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -27,6 +28,10 @@ class History extends Component
 
     #[Url(except: PlayedGame::GAME)]
     public string $tab = PlayedGame::GAME;
+
+    /** Shown as the Kadi tab of /activity, whose header names the page. */
+    #[Locked]
+    public bool $embedded = false;
 
     /** @var array<string, list<array<string, mixed>>> */
     public array $games = [];
@@ -56,6 +61,13 @@ class History extends Component
 
     public function mount(): void
     {
+        // The new look shows this history as the Kadi tab of /activity (plan Phase 6).
+        if (config('platform.ui_v2') && request()->routeIs('games.history')) {
+            $this->redirectRoute('activity');
+
+            return;
+        }
+
         if (! array_key_exists($this->tab, PlayedGame::LABELS)) {
             $this->tab = PlayedGame::GAME;
         }

@@ -5,7 +5,7 @@
 <div class="space-y-4">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h3 class="flex items-center gap-2 text-lg font-bold text-[#f5f5f0]" style="font-family: 'Cinzel', serif;">
+            <h3 class="flex items-center gap-2 text-lg font-bold text-[#f5f5f0]" @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless>
                 <flux:icon.finger-print variant="outline" class="size-5 text-[#f5c542]" />
                 {{ __('Passkeys') }}
             </h3>

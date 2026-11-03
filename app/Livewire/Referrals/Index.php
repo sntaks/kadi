@@ -389,7 +389,7 @@ class Index extends Component
 
     public function render(): Factory|\Illuminate\Contracts\View\View|View
     {
-        return view('livewire.referrals.index', [
+        return view(config('platform.ui_v2') ? 'livewire.account.referrals' : 'livewire.referrals.index', [
             'statuses' => self::STATUSES,
             'withdrawalStatuses' => self::WITHDRAWAL_STATUSES,
         ])->layout('layouts.app');

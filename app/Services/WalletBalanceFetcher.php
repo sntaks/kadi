@@ -85,6 +85,19 @@ class WalletBalanceFetcher
         }
     }
 
+    /**
+     * Ask KadiApi now, skipping the balance cache (after a deposit request or a game). Still one call
+     * per player at a time through fetch()'s lock.
+     *
+     * @return array{balance: ?float, fresh: bool}
+     */
+    public function refresh(User $user): array
+    {
+        Cache::forget("wallet_balance_{$user->id}");
+
+        return $this->fetch($user);
+    }
+
     private function profileBalance(User $user): ?float
     {
         $profile = Cache::get("kadi.customer.{$user->id}");

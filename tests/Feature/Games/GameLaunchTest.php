@@ -1,5 +1,6 @@
 <?php
 
+use App\Account\ResponsiblePlay;
 use App\Games\GameCatalogue;
 use App\Jobs\RevokeGameSessions;
 use App\Livewire\Games\Play;
@@ -7,6 +8,7 @@ use App\Models\GameLaunch;
 use App\Models\User;
 use App\Services\KadiApiService;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -33,10 +35,13 @@ function launchCatalogue(string $slotsUrl = 'https://slots.kadi.online'): array
     ]];
 }
 
-function fakeLaunchApi(mixed $launch = null, ?array $catalogue = null): void
+function fakeLaunchApi(mixed $launch = null, ?array $catalogue = null, ?array $exclusion = null): void
 {
     Http::fake([
         LAUNCH_API.'games' => Http::response($catalogue ?? launchCatalogue()),
+        LAUNCH_API.'customers/*/responsible-gambling' => Http::response(['success' => true, 'data' => [
+            'status' => 1, 'can_play' => $exclusion === null, 'exclusion' => $exclusion, 'deposit_limits' => [], 'deposit_remaining' => null,
+        ]]),
         LAUNCH_API.'customers/*/launch-tokens' => $launch ?? Http::response(['success' => true, 'data' => [
             'token' => LAUNCH_TOKEN, 'expires_at' => '2026-11-03T12:02:00+03:00', 'launch_url' => 'https://slots.kadi.online/launch',
         ]], 201),
@@ -317,6 +322,49 @@ test('players are limited to a few launches a minute', function () {
     $this->post('/play/slots', ['product' => 'slots_berry_blast'])->assertStatus(429)->assertSee('Wait a minute');
 
     Http::assertSentCount(3); // the catalogue and two launch tokens
+});
+
+// ─── Breaks from play ───────────────────────────────────────────────────────
+
+test('a player on a break cannot open Kadi, whose form never asks KadiApi', function () {
+    fakeLaunchApi(exclusion: ['type' => 'cool_off', 'ends_at' => now()->addDay()->toIso8601String()]);
+    $this->actingAs(player());
+
+    $this->get(launchFor($this, 'kadi'))->assertStatus(422)->assertSee('taking a break from play', false);
+
+    expect(GameLaunch::query()->latest('id')->first()->error)->toBe('on_break');
+});
+
+test('token games leave the break check to KadiApi, with no extra lookup', function () {
+    fakeLaunchApi();
+    $this->actingAs(player());
+
+    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']))->assertOk();
+
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), 'responsible-gambling'));
+});
+
+test('a break that has ended no longer blocks Kadi', function () {
+    fakeLaunchApi(exclusion: ['type' => 'cool_off', 'ends_at' => now()->subMinute()->toIso8601String()]);
+    $this->actingAs(player());
+
+    $this->get(launchFor($this, 'kadi'))->assertOk();
+});
+
+test('the API refusing a launch for a break shows the break message', function () {
+    fakeLaunchApi(Http::response(['success' => false, 'code' => 'player_excluded', 'message' => 'This player is taking a break from play'], 403));
+    $this->actingAs(player());
+
+    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']))->assertStatus(422)->assertSee('taking a break from play', false);
+});
+
+test('Play Kadi is disabled during a break', function () {
+    config(['platform.token_launch' => false]);
+    fakeLaunchApi(exclusion: ['type' => 'self_exclusion', 'ends_at' => now()->addMonths(6)->toIso8601String()]);
+    $this->actingAs($user = player());
+    app(ResponsiblePlay::class)->state($user); // a page or launch already learned of the break
+
+    expect(Blade::render('<x-play-kadi>Play</x-play-kadi>'))->toContain('disabled data-play-kadi')->not->toContain('ggid');
 });
 
 // ─── Logout ─────────────────────────────────────────────────────────────────

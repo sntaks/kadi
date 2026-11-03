@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Wallet;
 
+use App\Account\ResponsiblePlay;
 use App\Facades\KadiApi;
 use App\Livewire\WalletBalance;
 use App\Models\User;
@@ -114,6 +115,8 @@ class Index extends Component
     public const MAX_DEPOSIT_POLLS = 24;
 
     public const MIN_DEPOSIT = 10;
+
+    public const ON_BREAK_MESSAGE = "You're on a break from play, so deposits are paused until it ends.";
 
     /** Excise duty withheld from every deposit; the rest is loaded into the wallet. */
     public const EXCISE_DUTY_RATE = 0.05;
@@ -342,6 +345,12 @@ class Index extends Component
             return;
         }
 
+        if ($this->onBreak()) {
+            $this->purchaseError = self::ON_BREAK_MESSAGE;
+
+            return;
+        }
+
         if (! auth()->user()->hasVerifiedPhone()) {
             $this->purchaseError = 'Please confirm your phone number to complete this purchase';
             $this->dispatch('open-phone-required', purpose: 'coins');
@@ -457,6 +466,12 @@ class Index extends Component
             return;
         }
 
+        if ($this->onBreak()) {
+            $this->depositError = self::ON_BREAK_MESSAGE;
+
+            return;
+        }
+
         if ((float) $this->depositAmount < self::MIN_DEPOSIT) {
             $this->depositError = 'Minimum deposit amount is KES '.self::MIN_DEPOSIT.'.';
 
@@ -560,6 +575,14 @@ class Index extends Component
         }
 
         if ($this->promptForPhoneIfMissing()) {
+            return;
+        }
+
+        // Checked again here: confirmDeposit() is a public action and can be called without step 1.
+        if ($this->onBreak()) {
+            $this->confirmingDeposit = false;
+            $this->depositError = self::ON_BREAK_MESSAGE;
+
             return;
         }
 
@@ -797,9 +820,17 @@ class Index extends Component
         return $phone;
     }
 
+    /** No deposits during a break (KadiApi decides; checked here so no STK push is sent at all). */
+    protected function onBreak(): bool
+    {
+        $user = auth()->user();
+
+        return $user instanceof User && app(ResponsiblePlay::class)->onBreak($user);
+    }
+
     public function render(): Factory|\Illuminate\Contracts\View\View|View
     {
-        return view('livewire.wallet.index', [
+        return view(config('platform.ui_v2') ? 'livewire.account.wallet' : 'livewire.wallet.index', [
             'paybill' => config('kadi.paybill'),
         ])->layout('layouts.app');
     }

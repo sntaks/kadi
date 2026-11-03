@@ -13,6 +13,7 @@ class LaunchFailed extends RuntimeException
     public const MESSAGES = [
         'not_linked' => 'Your account is still being set up. Try again in a minute.',
         'player_inactive' => "Your account can't play right now. Contact support and we'll help.",
+        'on_break' => "You're taking a break from play. Games open again when it ends; see Responsible play.",
         'game_unavailable' => 'This game is closed right now. Try another one.',
         'rate_limited' => 'Too many games opened at once. Wait a minute and try again.',
         'unreachable' => "We couldn't reach the game. Try again.",
