@@ -55,6 +55,32 @@ class KadiApiService
     }
 
     /**
+     * The game catalogue (`GET /games`): active games in lobby order, each with its products.
+     *
+     * @return list<array<string, mixed>>
+     *
+     * @throws RequestException|ConnectionException|\UnexpectedValueException
+     */
+    public function games(int $timeoutSeconds = 5): array
+    {
+        $data = (clone $this->http)->timeout($timeoutSeconds)->get('games')->throw()->json('data');
+
+        // A 200 that is not a list of games (an object, an empty list, a proxy page) must never
+        // replace a good catalogue, so it counts as a failure.
+        $games = is_array($data) && array_is_list($data)
+            ? array_values(array_filter($data, fn ($game) => is_array($game)
+                && is_string($game['code'] ?? null)
+                && is_string($game['launch_url'] ?? null)))
+            : [];
+
+        if ($games === []) {
+            throw new \UnexpectedValueException('The games catalogue response has no games.');
+        }
+
+        return $games;
+    }
+
+    /**
      * Make a POST request
      *
      * @throws RequestException|ConnectionException

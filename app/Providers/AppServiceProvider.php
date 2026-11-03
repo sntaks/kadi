@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\PasswordChanged;
+use App\Games\GameCatalogue;
 use App\Listeners\RecordSecurityAudit;
 use App\Listeners\SendSecurityNotification;
 use App\Models\User;
@@ -35,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // One catalogue per request (and per queued job): a layout and a component share one pass.
+        $this->app->scoped(GameCatalogue::class);
+
         $this->app->singleton(KadiApiService::class, function ($app) {
             return new KadiApiService;
         });
