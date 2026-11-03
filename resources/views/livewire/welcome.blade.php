@@ -33,7 +33,7 @@
         {{-- Faded background images (cached) --}}
         @php
             $casinoImages = cache()->remember('welcome_casino_bg_images', 3600, function () {
-                return array_slice(glob(public_path('casino/*.{png,jpg,webp}'), GLOB_BRACE), 0, 4);
+                return array_slice(glob(public_path('images/casino/*.{png,jpg,webp}'), GLOB_BRACE), 0, 4);
             });
             $bgPositions = [
                 ['top-4 -left-8 md:top-8 md:-left-4', 'rotate-[-15deg]'],
@@ -44,7 +44,7 @@
         @endphp
         @foreach($casinoImages as $i => $imgPath)
             @php [$pos, $rot] = $bgPositions[$i] ?? ['top-0 left-0', '']; @endphp
-            <img src="{{ asset('casino/' . basename($imgPath)) }}"
+            <img src="{{ asset('images/casino/' . basename($imgPath)) }}"
                  alt=""
                  width="208"
                  height="208"
@@ -242,22 +242,22 @@
                     </div>
 
                     {{-- Orbiting suit / chip art around the centerpiece
-                    <img src="{{ asset('casino/crown.png') }}" alt="" width="64" height="64" loading="lazy" decoding="async"
+                    <img src="{{ asset('images/casino/crown.png') }}" alt="" width="64" height="64" loading="lazy" decoding="async"
                          class="hero-orbit-icon absolute top-0 left-2 md:left-6 w-12 md:w-16 object-contain" style="animation-duration:7s;" />
-                    <img src="{{ asset('casino/poker.png') }}" alt="" width="72" height="72" loading="lazy" decoding="async"
+                    <img src="{{ asset('images/casino/poker.png') }}" alt="" width="72" height="72" loading="lazy" decoding="async"
                          class="hero-orbit-icon absolute bottom-6 right-0 md:right-2 w-16 md:w-20 object-contain" style="animation-duration:8.5s; animation-delay:.6s;" />
-                    <img src="{{ asset('casino/dice.png') }}" alt="" width="56" height="56" loading="lazy" decoding="async"
+                    <img src="{{ asset('images/casino/dice.png') }}" alt="" width="56" height="56" loading="lazy" decoding="async"
                          class="hero-orbit-icon absolute bottom-2 left-0 w-11 md:w-14 object-contain" style="animation-duration:6.5s; animation-delay:1.1s;" />
-                    <img src="{{ asset('casino/diamond.png') }}" alt="" width="56" height="56" loading="lazy" decoding="async"
+                    <img src="{{ asset('images/casino/diamond.png') }}" alt="" width="56" height="56" loading="lazy" decoding="async"
                          class="hero-orbit-icon absolute top-6 right-0 md:right-6 w-11 md:w-14 object-contain" style="animation-duration:7.5s; animation-delay:.3s;" />
-                    <img src="{{ asset('casino/cherry.png') }}" alt="" width="48" height="48" loading="lazy" decoding="async"
+                    <img src="{{ asset('images/casino/cherry.png') }}" alt="" width="48" height="48" loading="lazy" decoding="async"
                          class="hero-orbit-icon absolute top-1/2 -left-2 w-10 md:w-12 object-contain hidden sm:block" style="animation-duration:9s; animation-delay:1.6s;" />
 
                     {{-- Centerpiece medallion
                     <div class="relative z-10 w-40 h-40 md:w-52 md:h-52 rounded-full flex items-center justify-center
                                 bg-gradient-to-b from-[#1a1200] to-[#0a0a0a] border-2 border-[#f5c542]/40"
                          style="box-shadow: 0 0 60px rgba(245,197,66,0.22), inset 0 1px 0 rgba(245,197,66,0.15);">
-                        <img src="{{ asset('casino/kadi.png') }}" alt="Kadi"
+                        <img src="{{ asset('images/casino/kadi.png') }}" alt="Kadi"
                              width="176" height="176" loading="eager" fetchpriority="high" decoding="async"
                              class="w-28 h-28 md:w-36 md:h-36 object-contain" style="filter: drop-shadow(0 0 22px rgba(245,197,66,0.4));" />
                     </div>

@@ -26,6 +26,13 @@ class Dashboard extends Component
 
     public function mount(): void
     {
+        // The new site has no dashboard: home is the landing, for guests and players (plan §2).
+        if (config('platform.ui_v2')) {
+            $this->redirectRoute('home');
+
+            return;
+        }
+
         /** @var User $user */
         $user = auth()->user();
 
@@ -143,7 +150,6 @@ class Dashboard extends Component
             'kadiBalance' => $kadiBalance,
             'jackpotAmount' => $this->progressiveJackpot($now),
             'drawInSeconds' => $this->secondsUntilNextDraw($now),
-            'kadiPlaying' => (int) round(280 + 520 * min(max((($now->hour + $now->minute / 60) - 9) / 12, 0), 1)),
         ] + $stats)
             ->layout('layouts.app')
             ->layoutData([

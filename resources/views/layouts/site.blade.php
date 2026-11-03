@@ -60,7 +60,7 @@
             @endpersist
         @endif
 
-        <x-structured-data :page="$page ?? ($shell === 'page' ? 'home' : 'dashboard')" :noindex="$shell !== 'page'" />
+        <x-structured-data :page="$page ?? ($shell === 'page' ? 'home' : 'dashboard')" :noindex="$noindex ?? $shell !== 'page'" />
         @if (auth()->check() && ! $nav->isGated())
             <livewire:phone-required />
             <x-pwa.install-dialog />

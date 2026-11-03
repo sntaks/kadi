@@ -19,6 +19,7 @@
 
 @import './night-table.css';
 @import './site-shell.css';
+@import './lobby.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

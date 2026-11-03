@@ -1,5 +1,6 @@
 <?php
 
+use App\Games\GameCatalogue;
 use App\Http\Controllers\Auth\ConsentController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\GoogleLinkController;
@@ -19,6 +20,9 @@ use App\Livewire\Games\History as GameHistory;
 use App\Livewire\Games\Play;
 use App\Livewire\Legal\Privacy;
 use App\Livewire\Legal\Terms;
+use App\Livewire\Lobby\Casino;
+use App\Livewire\Lobby\GameIndex;
+use App\Livewire\Lobby\GameShow;
 use App\Livewire\Profile\Show;
 use App\Livewire\Referrals\Index as ReferralsIndex;
 use App\Livewire\Rules;
@@ -36,6 +40,19 @@ Route::get('/', Welcome::class)->name('home');
 Route::get('/how-to', Rules::class)->name('rules');
 Route::get('/games-guide', GameGuide::class)->name('game-guide');
 Route::get('/faq', Faq::class)->name('faq');
+
+// The casino (plan Phase 5): browse for everyone once games open inside the site.
+Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':token_launch'])->group(function () {
+    Route::get('/casino/{filter?}', Casino::class)->where('filter', '[a-z-]+')->name('casino');
+});
+
+// Crawlable game pages (PLATFORM_DEEP_LINK), built on the new look. Their Play buttons follow token_launch.
+Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':deep_link'])->group(function () {
+    Route::get('/slots', GameIndex::class)->defaults('game', 'slots')->name('games.slots');
+    Route::get('/scratch-cards', GameIndex::class)->defaults('game', 'scratch')->name('games.scratch');
+    // Never /games/history or /games/search, which are their own pages.
+    Route::get('/games/{slug}', GameShow::class)->where('slug', '(?!(?:'.implode('|', GameCatalogue::RESERVED_SLUGS).')$)[a-z0-9-]+')->name('games.show');
+});
 
 // Top bar search index (fetched on first focus). Only once games open inside the site.
 Route::get('/games/search', GameSearchController::class)

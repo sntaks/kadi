@@ -193,7 +193,7 @@
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             @php
                 $popularGames = [
-                    ['img'=>'/casino/kadi.png', 'name'=>'Kadi', 'desc'=>'Classic Kenyan card game. Thrilling Singles. Conquer Tournaments.', 'badge1'=>'🟢 Live Dealer', 'badge2'=>number_format($kadiPlaying).' Playing', 'btn'=>'Join Now'],
+                    ['img'=>'/images/casino/kadi.png', 'name'=>'Kadi', 'desc'=>'Classic Kenyan card game. Thrilling Singles. Conquer Tournaments.', 'badge1'=>'Head to head', 'badge2'=>null, 'btn'=>'Join Now'],
                 ];
             @endphp
             @foreach ($popularGames as $pg)
@@ -205,7 +205,7 @@
                     <div class="flex flex-1 flex-col p-4">
                         <div class="mb-2 flex flex-wrap gap-1.5">
                             <span class="stat-badge">{{ $pg['badge1'] }}</span>
-                            <span class="stat-badge">{{ $pg['badge2'] }}</span>
+                            @if ($pg['badge2'])<span class="stat-badge">{{ $pg['badge2'] }}</span>@endif
                         </div>
                         <h3 class="mb-1 font-bold text-[#f5c542]" style="font-family: 'Cinzel', serif;">{{ $pg['name'] }}</h3>
                         <p class="mb-3 flex-1 text-xs text-[#f5f5f0]/50 line-clamp-2" style="font-family: 'Outfit', sans-serif;">{{ $pg['desc'] }}</p>

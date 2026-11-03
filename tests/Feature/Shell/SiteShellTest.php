@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 dataset('guest pages', [
-    'landing' => ['home', 'page'],
+    'landing' => ['home', 'app'],
     'how to play' => ['rules', 'page'],
     'games and prizes' => ['game-guide', 'page'],
     'faq' => ['faq', 'page'],
@@ -31,7 +31,6 @@ dataset('guest pages', [
 ]);
 
 dataset('player pages', [
-    'dashboard' => ['dashboard', 'app'],
     'profile' => ['profile', 'app'],
     'wallet' => ['wallet', 'app'],
     'game history' => ['games.history', 'app'],
@@ -144,16 +143,6 @@ test('an unconfirmed phone shows the phone notice on every page', function (stri
         ->assertSee('data-test="notice-phone"', false)
         ->assertSee("open-phone-required', { purpose: 'verify' }", false);
 })->with(['faq', 'wallet', 'profile']);
-
-test('the dashboard drops its own phone banner when the shell shows the notice', function () {
-    config(['platform.ui_v2' => true]);
-    $user = User::factory()->phoneUnverified()->create();
-
-    $html = $this->actingAs($user)->get(route('dashboard'))->assertOk()->getContent();
-
-    expect(substr_count($html, 'data-test="notice-phone"'))->toBe(1)
-        ->and($html)->not->toContain('data-test="verify-phone-banner"');
-});
 
 test('a verified player sees no notice', function () {
     config(['platform.ui_v2' => true]);

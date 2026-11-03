@@ -138,7 +138,7 @@ test('the home page makes no KadiApi call for a signed-in player with a cold cac
 });
 
 test('a failing live-players call shows the last good count, not 0', function () {
-    Cache::forever('kadi.live_players.last', 42);
+    Cache::forever('kadi.tables.last', ['single' => 40, 'tournaments' => 2, 'jackpots' => 0, 'total' => 42]);
     Http::fake([LAR_GAME_API => fn () => throw new ConnectionException('timed out')]);
 
     $this->get(route('home'))
@@ -151,7 +151,7 @@ test('a successful live-players call is remembered as the last good count', func
 
     $this->get(route('home'))->assertOk()->assertSee('Live Now · 6 Players');
 
-    expect(Cache::get('kadi.live_players.last'))->toBe(6);
+    expect(Cache::get('kadi.tables.last'))->toBe(['single' => 2, 'tournaments' => 3, 'jackpots' => 1, 'total' => 6]);
 });
 
 test('the how-to page posts the play form from account_no without calling KadiApi', function () {

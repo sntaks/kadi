@@ -56,6 +56,8 @@ return [
             // (plan §4a). Until then Play Kadi goes through the launcher and opens in its own page.
             'frame' => (bool) env('KADI_IN_FRAME', false),
             'tagline' => 'Classic Kenyan Kadi: singles, tournaments and jackpots.',
+            // Players seated right now per mode (App\Games\KadiTables). The only seat counts the site shows.
+            'totals_url' => env('KADI_TOTALS_URL') ?: 'https://gameapi.kadi.online/kadi/get_user_totals.php',
         ],
         'slots' => [
             'titles' => true,
@@ -204,6 +206,9 @@ return [
         // Seconds the play page waits for the game before offering "Open in its own tab".
         'fallback_after_seconds' => 8,
     ],
+
+    // Most titles a player can heart.
+    'favourites_limit' => 100,
 
     'featured' => [
         'slots_dragon_fire_fortune',
