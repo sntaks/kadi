@@ -41,11 +41,9 @@
             </h2>
             <p class="mb-6 text-[#6b6b6b]" style="font-family: 'Outfit', sans-serif;">Ready to play? Your luck starts now.</p>
             <div class="flex flex-wrap gap-3">
-                <button type="button"
-                        onclick="document.getElementById('kadiPlayForm').submit()"
-                        class="btn-casino-primary inline-block rounded-full px-5 py-2 text-sm no-underline">
+                <x-play-kadi class="btn-casino-primary inline-block rounded-full px-5 py-2 text-sm no-underline">
                     Play Kadi
-                </button>
+                </x-play-kadi>
                 <a href="{{ route('wallet') }}" wire:navigate
                    class="btn-casino-ghost inline-block rounded-full px-5 py-2 text-sm no-underline">
                     View Wallet
@@ -209,11 +207,9 @@
                         </div>
                         <h3 class="mb-1 font-bold text-[#f5c542]" style="font-family: 'Cinzel', serif;">{{ $pg['name'] }}</h3>
                         <p class="mb-3 flex-1 text-xs text-[#f5f5f0]/50 line-clamp-2" style="font-family: 'Outfit', sans-serif;">{{ $pg['desc'] }}</p>
-                        <button type="button"
-                                onclick="document.getElementById('kadiPlayForm').submit()"
-                                class="btn-casino-primary block w-full rounded-xl py-2 text-center text-xs no-underline">
+                        <x-play-kadi class="btn-casino-primary block w-full rounded-xl py-2 text-center text-xs no-underline">
                             {{ $pg['btn'] }}
-                        </button>
+                        </x-play-kadi>
                     </div>
                 </div>
             @endforeach
@@ -288,6 +284,5 @@
         </div>
     </flux:modal>
 
-    @include('partials.kadi-play-form')
 
 </div>

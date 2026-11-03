@@ -154,13 +154,15 @@ test('a successful live-players call is remembered as the last good count', func
     expect(Cache::get('kadi.live_players.last'))->toBe(6);
 });
 
-test('the how-to page builds the play link from account_no without calling KadiApi', function () {
+test('the how-to page posts the play form from account_no without calling KadiApi', function () {
+    config(['platform.token_launch' => false]);
     Http::fake();
     $user = User::factory()->create(['linked_id' => 7302, 'account_no' => 'KK-HOWTO-1']);
 
     $this->actingAs($user)->get(route('rules'))
         ->assertOk()
-        ->assertSee('ggid=KK-HOWTO-1', false);
+        ->assertSee('<input type="hidden" name="ggid" value="KK-HOWTO-1">', false)
+        ->assertDontSee('?ggid=', false);
 
     Http::assertNothingSent();
 });

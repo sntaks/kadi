@@ -22,11 +22,11 @@ const OFFLINE_URL = '/offline.html';
 // precache-fingerprint: 60574c239b03ac8c
 const PRECACHE = [OFFLINE_URL, '/pwa-icons/icon-192.png'];
 
-// Routes the worker must leave completely alone (OAuth redirects, auth, sessions,
+// Routes the worker must leave completely alone (OAuth redirects, auth, sessions, game launches,
 // Livewire, uploads, and the Godot game assets).
 const NEVER_HANDLE = new RegExp(
     '^/(livewire|broadcasting|sanctum|api|login|logout|register|forgot-password|reset-password|' +
-    'two-factor-challenge|passkeys|email|user|consent|auth|push|storage|kadig|up|flux|_boost)(/|-|$)'
+    'two-factor-challenge|passkeys|email|user|consent|auth|push|storage|kadig|up|flux|_boost|play)(/|-|$)'
 );
 
 self.addEventListener('install', (event) => {

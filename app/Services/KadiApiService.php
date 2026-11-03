@@ -81,6 +81,53 @@ class KadiApiService
     }
 
     /**
+     * A single-use launch token for this player and game (`POST customers/{id}/launch-tokens`).
+     * Valid 120 seconds. Not idempotent on purpose, so never retried automatically: a retry
+     * would only burn another token from the site's 30-a-minute budget.
+     *
+     * The returned token must never be logged, put in a URL or stored anywhere but the encrypted,
+     * read-once App\Games\LaunchHandoff.
+     *
+     * @return array{token: string, launch_url: string, expires_at: ?string}
+     *
+     * @throws RequestException|ConnectionException|\UnexpectedValueException
+     */
+    public function issueLaunchToken(int $customerId, string $game, ?string $ip = null): array
+    {
+        $data = (clone $this->http)->timeout(8)
+            ->post('customers/'.encryptOpenSSL((string) $customerId).'/launch-tokens', array_filter([
+                'game' => $game,
+                'ip' => $ip,
+            ]))
+            ->throw()
+            ->json('data');
+
+        if (! is_array($data) || ! is_string($data['token'] ?? null) || ! is_string($data['launch_url'] ?? null)) {
+            throw new \UnexpectedValueException('The launch token response is incomplete.');
+        }
+
+        return [
+            'token' => $data['token'],
+            'launch_url' => $data['launch_url'],
+            'expires_at' => is_string($data['expires_at'] ?? null) ? $data['expires_at'] : null,
+        ];
+    }
+
+    /**
+     * End the player's game sessions (`POST customers/{id}/player-tokens/revoke`), for every game
+     * or one. Repeating it is harmless.
+     *
+     * @throws RequestException|ConnectionException
+     */
+    public function revokePlayerTokens(int $customerId, ?string $game = null): int
+    {
+        return (int) (clone $this->http)->timeout(10)
+            ->post('customers/'.encryptOpenSSL((string) $customerId).'/player-tokens/revoke', array_filter(['game' => $game]))
+            ->throw()
+            ->json('data.revoked', 0);
+    }
+
+    /**
      * Make a POST request
      *
      * @throws RequestException|ConnectionException

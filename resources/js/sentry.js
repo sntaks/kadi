@@ -53,6 +53,20 @@ function scrubEvent(event) {
     return event;
 }
 
+// SDK v11 streams spans by default (traceLifecycle 'stream'), and then beforeSendTransaction never
+// runs: every span goes through beforeSendSpan instead. Scrub its name and any string attribute
+// (url.full, http.url, page paths, raw or { value } form).
+function scrubSpan(span) {
+    if (span.name) span.name = scrubUrl(span.name);
+
+    for (const [key, attr] of Object.entries(span.attributes ?? {})) {
+        if (typeof attr === 'string') span.attributes[key] = scrubUrl(attr);
+        else if (attr && typeof attr.value === 'string') attr.value = scrubUrl(attr.value);
+    }
+
+    return span;
+}
+
 // An empty env value ("VITE_SENTRY_TRACES_SAMPLE_RATE=") means "use the default", not 0.
 function sampleRate(value, fallback) {
     const rate = Number.parseFloat(value);
@@ -87,7 +101,7 @@ if (dsn) {
             return breadcrumb;
         },
         beforeSend: scrubEvent,
-        beforeSendTransaction: scrubEvent,
+        beforeSendSpan: scrubSpan,
 
         integrations: [Sentry.browserTracingIntegration()],
         tracesSampleRate: sampleRate(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE, 0.2),

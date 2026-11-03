@@ -375,10 +375,9 @@
             </p>
             <div class="flex flex-wrap items-center justify-center gap-3">
                 @auth
-                    <a href="{{ $playKadiUrl ?? route('home') }}" @if(isset($playKadiUrl)) target="_blank" rel="noopener noreferrer" @endif
-                    class="btn-casino-primary inline-block rounded-full px-8 py-4 no-underline">
+                    <x-play-kadi class="btn-casino-primary inline-block rounded-full px-8 py-4 no-underline">
                         Play Kadi →
-                    </a>
+                    </x-play-kadi>
                 @else
                     <a href="{{ route('register') }}" wire:navigate
                        class="btn-casino-primary inline-block rounded-full px-8 py-4 no-underline">

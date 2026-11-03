@@ -19,24 +19,6 @@ use Livewire\Component;
 #[Title('Kadi Online — Play the Kenyan Kadi Card Game')]
 class Welcome extends Component
 {
-    public string $googleId = '';
-
-    public string $playKadiUrl;
-
-    public function mount(): void
-    {
-        $this->playKadiUrl = config('services.kadi_api.play_url');
-
-        /** @var User|null $user */
-        $user = auth()->user();
-
-        // No KadiApi call here: nothing on this page uses the profile, and pages that do (wallet,
-        // dashboard, profile) fetch it themselves after first paint.
-        if ($user) {
-            $this->googleId = (string) ($user->account_no ?? '');
-        }
-    }
-
     /**
      * Players online, from the game server. Fresh for 5 minutes, then served stale for up to 15
      * while it refreshes after the response is sent, so no visitor waits on the game server. A
@@ -92,8 +74,6 @@ class Welcome extends Component
         return view('livewire.welcome', [
             'livePlayers' => $this->livePlayers(),
             'users' => User::count(),
-            'playKadiUrl' => $this->playKadiUrl,
-            'googleId' => $this->googleId,
         ])
             ->layout('layouts.guest')
             ->layoutData([
