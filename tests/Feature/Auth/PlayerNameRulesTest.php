@@ -66,16 +66,16 @@ test('registration accepts a valid name', function () {
 test('a name can be changed once, which starts the one-year wait', function () {
     $user = User::factory()->create(['name' => 'OldName1', 'linked_id' => null]);
 
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'NewName1')->set('email', $user->email)
-        ->call('updateProfileInformation')->assertHasNoErrors();
+    Livewire::actingAs($user)->test(Show::class)
+        ->set('name', 'NewName1')
+        ->call('updateProfile')->assertHasNoErrors();
 
     expect($user->fresh()->name)->toBe('NewName1')
         ->and($user->fresh()->name_changed_at)->not->toBeNull();
 
-    Livewire::actingAs($user->fresh())->test('pages::settings.profile')
-        ->set('name', 'Another1')->set('email', $user->email)
-        ->call('updateProfileInformation')->assertHasErrors('name');
+    Livewire::actingAs($user->fresh())->test(Show::class)
+        ->set('name', 'Another1')
+        ->call('updateProfile')->assertHasErrors('name');
 
     expect($user->fresh()->name)->toBe('NewName1');
 });
@@ -84,22 +84,22 @@ test('the name can be changed again after a year', function () {
     $user = User::factory()->create(['name' => 'OldName1', 'linked_id' => null]);
     $user->forceFill(['name_changed_at' => now()->subYear()->subDay()])->save();
 
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'Another1')->set('email', $user->email)
-        ->call('updateProfileInformation')->assertHasNoErrors();
+    Livewire::actingAs($user)->test(Show::class)
+        ->set('name', 'Another1')
+        ->call('updateProfile')->assertHasNoErrors();
 
     expect($user->fresh()->name)->toBe('Another1');
 });
 
 test('saving other details is fine during the wait when the name is unchanged', function () {
-    $user = User::factory()->create(['name' => 'OldName1', 'linked_id' => null]);
+    $user = User::factory()->create(['name' => 'OldName1', 'linked_id' => null, 'phone' => null]);
     $user->forceFill(['name_changed_at' => now()->subMonth()])->save();
 
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('email', 'other@example.com')
-        ->call('updateProfileInformation')->assertHasNoErrors();
+    Livewire::actingAs($user)->test(Show::class)
+        ->set('phoneNo', '0712345678')
+        ->call('updateProfile')->assertHasNoErrors();
 
-    expect($user->fresh()->email)->toBe('other@example.com');
+    expect($user->fresh()->phone)->toBe('254712345678')->and($user->fresh()->name)->toBe('OldName1');
 });
 
 test('the profile page enforces the format and the yearly limit', function () {

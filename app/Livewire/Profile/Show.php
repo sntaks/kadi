@@ -56,6 +56,15 @@ class Show extends Component
 
     public function mount(): void
     {
+        // The new look gathers the profile into /account (plan Phase 6). The browser keeps the #tab.
+        if (config('platform.ui_v2') && request()->routeIs('profile')) {
+            // Keep what was flashed for /profile (Google linked, a link error) for the account page.
+            session()->reflash();
+            $this->redirectRoute('account');
+
+            return;
+        }
+
         $user = auth()->user();
         $this->isGoogleUser = $user->google_id !== null;
         $this->name = $user->name;
@@ -250,6 +259,10 @@ class Show extends Component
 
     public function render(): Factory|\Illuminate\Contracts\View\View|View
     {
+        if (config('platform.ui_v2')) {
+            return view('livewire.account.show')->layout('layouts.app')->title('Account · Kadi');
+        }
+
         return view('livewire.profile.show')
             ->layout('layouts.app');
     }

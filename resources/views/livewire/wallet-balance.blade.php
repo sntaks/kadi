@@ -20,7 +20,7 @@
                 <x-skeleton inline class="h-4 w-14 rounded" data-test="balance-skeleton" />
             @endif
         </a>
-        <x-ui.button size="sm" :href="route('wallet')" wire:navigate>{{ __('Deposit') }}</x-ui.button>
+        <x-ui.button size="sm" x-on:click="$dispatch('open-deposit')" aria-haspopup="dialog">{{ __('Deposit') }}</x-ui.button>
     </div>
 @else
     <div

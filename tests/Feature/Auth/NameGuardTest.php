@@ -155,100 +155,7 @@ test('a google sign-up keeps the name google verified, even if it is on the list
     Queue::assertPushed(ProcessVerifiedUser::class);
 });
 
-// --- Changing the name: the settings page ----------------------------------
-
-test('the settings page refuses a blocked new name and keeps the old one', function () {
-    $user = User::factory()->create(['name' => 'RealPerson']);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'Support_Team')->set('email', $user->email)
-        ->call('updateProfileInformation')
-        ->assertHasErrors('name');
-
-    expect($user->fresh()->name)->toBe('RealPerson');
-});
-
-test('saving without changing the name is never blocked, even if the list grew since they joined', function () {
-    $user = User::factory()->create(['name' => 'Champion1']);
-    BlockedName::create(['term' => 'champion']);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('email', 'changed-email@example.com')
-        ->call('updateProfileInformation')
-        ->assertHasNoErrors();
-
-    expect($user->fresh()->email)->toBe('changed-email@example.com');
-});
-
-test('the settings page still allows a normal name change', function () {
-    $user = User::factory()->create(['name' => 'OldName1']);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'NewName1')->set('email', $user->email)
-        ->call('updateProfileInformation')
-        ->assertHasNoErrors();
-
-    expect($user->fresh()->name)->toBe('NewName1');
-});
-
-test('the settings page copies a changed name to kadi.accounts', function () {
-    fakeKadiAccounts([['id' => 555, 'name' => 'Old', 'email' => 'old@example.com']]);
-    $user = User::factory()->create(['name' => 'OldName1', 'email' => 'old@example.com', 'linked_id' => 555]);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'WanjiruK')->set('email', 'old@example.com')
-        ->call('updateProfileInformation')->assertHasNoErrors();
-
-    // The game shows a first name only, the same rule the account was created with.
-    expect(DB::connection('kadi')->table('accounts')->where('id', 555)->value('name'))->toBe('WanjiruK');
-});
-
-test('the game account is found by customer id even when the e-mail changes in the same save', function () {
-    fakeKadiAccounts([['id' => 556, 'name' => 'Old', 'email' => 'old@example.com']]);
-    $user = User::factory()->create(['name' => 'OldName1', 'email' => 'old@example.com', 'linked_id' => 556]);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'BrianOtieno')->set('email', 'brand-new@example.com')
-        ->call('updateProfileInformation')->assertHasNoErrors();
-
-    expect(DB::connection('kadi')->table('accounts')->where('id', 556)->value('name'))->toBe('BrianOtieno');
-});
-
-test('an unlinked player is found by the e-mail they had before the save', function () {
-    fakeKadiAccounts([['id' => 557, 'name' => 'Old', 'email' => 'old@example.com']]);
-    $user = User::factory()->create(['name' => 'OldName1', 'email' => 'old@example.com', 'linked_id' => null]);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'GraceAchi')->set('email', 'moved@example.com')
-        ->call('updateProfileInformation')->assertHasNoErrors();
-
-    expect(DB::connection('kadi')->table('accounts')->where('id', 557)->value('name'))->toBe('GraceAchi');
-});
-
-test('nothing is written to kadi.accounts when the name did not change', function () {
-    fakeKadiAccounts([['id' => 558, 'name' => 'Untouched', 'email' => 'same@example.com']]);
-    $user = User::factory()->create(['name' => 'SameName1', 'email' => 'same@example.com', 'linked_id' => 558]);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('email', 'same@example.com')->call('updateProfileInformation')->assertHasNoErrors();
-
-    expect(DB::connection('kadi')->table('accounts')->where('id', 558)->value('name'))->toBe('Untouched');
-});
-
-test('a game database that is down never stops a profile save', function () {
-    // The kadi connection points at a database that has no accounts table: the write throws.
-    config(['database.connections.kadi' => ['driver' => 'sqlite', 'database' => ':memory:', 'prefix' => '']]);
-    DB::purge('kadi');
-    $user = User::factory()->create(['name' => 'OldName1', 'linked_id' => 559]);
-
-    Livewire::actingAs($user)->test('pages::settings.profile')
-        ->set('name', 'StillSaved')->set('email', $user->email)
-        ->call('updateProfileInformation')->assertHasNoErrors();
-
-    expect($user->fresh()->name)->toBe('StillSaved');
-});
-
-// --- Changing the name: the profile page -----------------------------------
+// --- Changing the name: the account (profile) page ---------------------------
 
 test('the profile page refuses a blocked new name', function () {
     $user = User::factory()->create(['name' => 'RealPerson', 'linked_id' => null]);
@@ -271,6 +178,24 @@ test('the profile page copies a changed name to kadi.accounts', function () {
 
     expect($user->fresh()->name)->toBe('OtienoJnr')
         ->and(DB::connection('kadi')->table('accounts')->where('email', 'p@example.com')->value('name'))->toBe('OtienoJnr');
+});
+
+test('saving without changing the name is never blocked, even if the list grew since they joined', function () {
+    $user = User::factory()->create(['name' => 'Kadi_Official', 'linked_id' => null]);
+
+    Livewire::actingAs($user)->test(Show::class)->call('updateProfile')->assertHasNoErrors();
+
+    expect($user->fresh()->name)->toBe('Kadi_Official');
+});
+
+test('a game database that is down never stops a profile save', function () {
+    config(['database.connections.kadi' => ['driver' => 'sqlite', 'database' => '/nonexistent/kadi.sqlite', 'prefix' => '']]);
+    DB::purge('kadi');
+    $user = User::factory()->create(['name' => 'OldName1', 'linked_id' => null]);
+
+    Livewire::actingAs($user)->test(Show::class)->set('name', 'StillSaved')->call('updateProfile')->assertHasNoErrors();
+
+    expect($user->fresh()->name)->toBe('StillSaved');
 });
 
 // --- The helper ------------------------------------------------------------

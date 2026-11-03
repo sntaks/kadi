@@ -114,6 +114,113 @@ class KadiApiService
     }
 
     /**
+     * The player's responsible-play state (`GET customers/{id}/responsible-gambling`): can_play, the running
+     * break (type, ends_at), deposit limits with what remains, and the deposit allowance left now.
+     *
+     * @return array<string, mixed>
+     *
+     * @throws RequestException|ConnectionException|\UnexpectedValueException
+     */
+    public function responsibleGambling(int $customerId): array
+    {
+        $data = (clone $this->http)->timeout(5)
+            ->get('customers/'.encryptOpenSSL((string) $customerId).'/responsible-gambling')
+            ->throw()
+            ->json('data');
+
+        if (! is_array($data) || ! array_key_exists('can_play', $data)) {
+            throw new \UnexpectedValueException('The responsible-gambling response is incomplete.');
+        }
+
+        return $data;
+    }
+
+    /**
+     * Start (or lengthen) a break from play (`POST customers/{id}/exclusion`). A break can never be
+     * shortened or ended early; the API refuses a shorter one with `exclusion_shorter`.
+     *
+     * @return array<string, mixed> the break: type, duration, starts_at, ends_at
+     *
+     * @throws RequestException|ConnectionException
+     */
+    public function startBreak(int $customerId, string $type, string $duration, string $idempotencyKey): array
+    {
+        return $this->withIdempotencyKey($idempotencyKey)->timeout(8)
+            ->post('customers/'.encryptOpenSSL((string) $customerId).'/exclusion', ['type' => $type, 'duration' => $duration])
+            ->throw()
+            ->json('data') ?? [];
+    }
+
+    /**
+     * Set, cut, raise or remove (null) one deposit limit (`PUT customers/{id}/deposit-limits/{period}`).
+     * A cut applies at once; a raise or removal waits a day.
+     *
+     * @return array<string, mixed> the limit: period, amount, pending_amount, pending_from
+     *
+     * @throws RequestException|ConnectionException
+     */
+    public function setDepositLimit(int $customerId, string $period, ?int $amount, string $idempotencyKey): array
+    {
+        return $this->withIdempotencyKey($idempotencyKey)->timeout(8)
+            ->put('customers/'.encryptOpenSSL((string) $customerId).'/deposit-limits/'.$period, ['amount' => $amount])
+            ->throw()
+            ->json('data') ?? [];
+    }
+
+    /**
+     * A page of the player's wagers across the API's games (`GET customers/{id}/wagers`), newest first.
+     *
+     * @return array{items: list<array<string, mixed>>, pagination: array<string, int>}
+     *
+     * @throws RequestException|ConnectionException|\UnexpectedValueException
+     */
+    public function wagers(int $customerId, ?string $game = null, int $page = 1, int $perPage = 20): array
+    {
+        $data = (clone $this->http)->timeout(5)
+            ->get('customers/'.encryptOpenSSL((string) $customerId).'/wagers', array_filter([
+                'game' => $game,
+                'page' => $page,
+                'per_page' => $perPage,
+            ]))
+            ->throw()
+            ->json('data');
+
+        if (! is_array($data) || ! is_array($data['items'] ?? null)) {
+            throw new \UnexpectedValueException('The wagers response is incomplete.');
+        }
+
+        return [
+            'items' => array_values(array_filter($data['items'], 'is_array')),
+            'pagination' => is_array($data['pagination'] ?? null) ? $data['pagination'] : ['page' => $page, 'last_page' => 1, 'total' => count($data['items'])],
+        ];
+    }
+
+    /**
+     * Close the player's KadiApi customer (`DELETE customers/{id}`, a soft delete). KadiApi refuses with
+     * 409 and the reasons in `open` while the player holds money or has activity in progress.
+     *
+     * @return array{deleted: bool, open: list<string>} a 404 counts as already deleted
+     *
+     * @throws RequestException|ConnectionException
+     */
+    public function deleteCustomer(int $customerId): array
+    {
+        $response = (clone $this->http)->timeout(8)->delete('customers/'.encryptOpenSSL((string) $customerId));
+
+        if ($response->status() === 409) {
+            return ['deleted' => false, 'open' => array_values(array_filter((array) $response->json('open'), 'is_string'))];
+        }
+
+        if ($response->status() === 404) {
+            return ['deleted' => true, 'open' => []];
+        }
+
+        $response->throw();
+
+        return ['deleted' => true, 'open' => []];
+    }
+
+    /**
      * End the player's game sessions (`POST customers/{id}/player-tokens/revoke`), for every game
      * or one. Repeating it is harmless.
      *

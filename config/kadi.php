@@ -225,6 +225,32 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Responsible play
+    |--------------------------------------------------------------------------
+    |
+    | KadiApi owns breaks and deposit limits for every game (one wallet). This
+    | site shows them on /responsible-play, lets players start a break or set a
+    | limit, and refuses game launches during a break. A break can only be
+    | lengthened, never shortened or ended early, by anyone.
+    |
+    */
+
+    'responsible_play' => [
+        // How long the player's state is trusted before asking KadiApi again. The last known
+        // state is kept for a day, so a KadiApi outage never forgets a running break.
+        'cache_seconds' => 60,
+        'breaks' => [
+            'cool_off' => ['24h' => '24 hours', '7d' => '7 days', '30d' => '30 days'],
+            'self_exclusion' => ['6m' => '6 months', '1y' => '1 year', '5y' => '5 years'],
+        ],
+        'limit_periods' => ['day' => 'Daily', 'week' => 'Weekly', 'month' => 'Monthly'],
+        // KadiApi's own bounds (whole shillings); checked here too so mistakes are caught before the call.
+        'limit_min' => 10,
+        'limit_max' => 1_000_000,
+    ],
+
     'promotions' => [
         'enabled' => (bool) env('KADI_PROMOTIONS_ENABLED', true),
         'cookie' => 'kadi_promo',

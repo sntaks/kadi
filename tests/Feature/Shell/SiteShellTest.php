@@ -31,12 +31,18 @@ dataset('guest pages', [
 ]);
 
 dataset('player pages', [
-    'profile' => ['profile', 'app'],
+    'account' => ['account', 'app'],
     'wallet' => ['wallet', 'app'],
-    'game history' => ['games.history', 'app'],
-    'settings profile' => ['profile.edit', 'app'],
-    'settings appearance' => ['appearance.edit', 'app'],
+    'activity' => ['activity', 'app'],
+    'responsible play' => ['responsible-play', 'app'],
     'confirm password' => ['password.confirm', 'panel'],
+]);
+
+dataset('old player pages', [
+    'profile' => ['profile'],
+    'wallet' => ['wallet'],
+    'game history' => ['games.history'],
+    'confirm password' => ['password.confirm'],
 ]);
 
 test('with the new UI on, a public page opens in the site shell', function (string $route, string $shell) {
@@ -68,7 +74,7 @@ test('with the new UI off, a player page keeps its old layout', function (string
 
     $this->actingAs(User::factory()->create())
         ->get(route($route))->assertOk()->assertDontSee('data-shell=', false);
-})->with('player pages');
+})->with('old player pages');
 
 test('the referrals page opens in the shell when referrals are on', function () {
     config(['platform.ui_v2' => true, 'kadi.referrals.enabled' => true]);
@@ -110,7 +116,7 @@ test('a player sees the wallet pill and the account menu, not Log in and Join', 
     expect($html)->toContain('data-test="wallet-pill"')
         ->and($html)->toContain('aria-label="Your account"')
         ->and($html)->toContain('>JW</button>')
-        ->and($html)->toContain('href="'.route('profile').'#security"')
+        ->and($html)->toContain('href="'.route('account').'#security"')
         ->and($html)->toContain('action="'.route('logout').'"')
         ->and($html)->not->toContain('data-needs-account')
         ->and($html)->not->toMatch('#<a href="'.preg_quote(route('login'), '#').'"#');
@@ -142,7 +148,7 @@ test('an unconfirmed phone shows the phone notice on every page', function (stri
     $this->actingAs($user)->get(route($route))->assertOk()
         ->assertSee('data-test="notice-phone"', false)
         ->assertSee("open-phone-required', { purpose: 'verify' }", false);
-})->with(['faq', 'wallet', 'profile']);
+})->with(['faq', 'wallet', 'account']);
 
 test('a verified player sees no notice', function () {
     config(['platform.ui_v2' => true]);

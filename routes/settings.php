@@ -1,25 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
 
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+/*
+ * The old Flux settings pages are gone (plan Phase 6). Their addresses still work: each sends the
+ * player to the matching tab of the account page (/account in the new look, /profile before it).
+ * Names are kept so any old link still resolves.
+ */
+$settingsTab = fn (string $tab) => fn () => redirect()->to(
+    route(config('platform.ui_v2') ? 'account' : 'profile').'#'.(config('platform.ui_v2') ? $tab : ($tab === 'profile' ? 'info' : $tab))
+);
 
-    Route::livewire('settings/profile', 'pages::settings.profile')->name('profile.edit');
-});
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::livewire('settings/appearance', 'pages::settings.appearance')->name('appearance.edit');
-
-    Route::livewire('settings/security', 'pages::settings.security')
-        ->middleware(
-            when(
-                Features::canManageTwoFactorAuthentication()
-                    && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
-                ['password.confirm'],
-                [],
-            ),
-        )
-        ->name('security.edit');
+Route::middleware(['auth'])->group(function () use ($settingsTab) {
+    Route::get('settings', $settingsTab('profile'));
+    Route::get('settings/profile', $settingsTab('profile'))->name('profile.edit');
+    Route::get('settings/appearance', $settingsTab('profile'))->name('appearance.edit');
+    Route::get('settings/security', $settingsTab('security'))->name('security.edit');
 });

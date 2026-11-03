@@ -38,7 +38,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+{{-- The new site is dark only (plan §2): Flux's appearance script would follow a light system setting and drop .dark. --}}
+@unless ($darkOnly ?? false)
 @fluxAppearance
+@endunless
 
 @if ($gaId = config('services.analytics.ga_measurement_id'))
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>

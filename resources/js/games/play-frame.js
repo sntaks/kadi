@@ -1,6 +1,8 @@
 // The in-site game page (resources/views/livewire/games/play.blade.php, plan §4a).
 // Posts the launch into the frame, shows a loading state, offers "Open in its own tab" when the
 // game is slow, and listens to the game servers (and only them) for ready / balance / close.
+import { markGameReturn } from './return.js';
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('gameFrame', ({ origins, fallbackAfter, framed, lobby }) => ({
         loaded: false,
@@ -27,6 +29,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         destroy() {
+            // Leaving the game page: the next page asks KadiApi for the balance (resources/js/games/return.js).
+            markGameReturn();
             window.removeEventListener('message', this.onMessage);
             this.timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
         },
@@ -83,7 +87,10 @@ document.addEventListener('alpine:init', () => {
             if (type === 'ready') this.loaded = true;
             // The balance itself still comes from the wallet webhook; this only asks for the usual refresh.
             if (type === 'balance') window.Livewire?.dispatch('wallet-refreshed');
-            if (type === 'close') window.location.assign(lobby);
+            if (type === 'close') {
+                markGameReturn();
+                window.location.assign(lobby);
+            }
         },
 
         fullscreen() {

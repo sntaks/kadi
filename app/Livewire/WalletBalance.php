@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -183,6 +184,32 @@ class WalletBalance extends Component
         } catch (\Throwable $e) {
             // Non-blocking — log and continue to balance fetch
             Log::warning("WalletBalance: kadi DB check failed for user {$user->id}: ".$e->getMessage());
+        }
+    }
+
+    /**
+     * Back from a game (resources/js/games/return.js): the balance may have moved while playing, so
+     * ask KadiApi now rather than at the next poll. At most once every 10 seconds per player.
+     */
+    #[On('game-returned')]
+    public function afterGame(): void
+    {
+        $user = auth()->user();
+
+        if (! $user instanceof User || ! $user->linked_id || ! RateLimiter::attempt('game-returned:'.$user->id, 1, fn () => true, 10)) {
+            return;
+        }
+
+        $result = app(WalletBalanceFetcher::class)->refresh($user);
+
+        if ($result['balance'] !== null) {
+            $this->balance = $result['balance'];
+            $this->hasError = false;
+            $this->needsLoad = false;
+        }
+
+        if ($result['fresh']) {
+            $this->dispatch('wallet-refreshed');
         }
     }
 

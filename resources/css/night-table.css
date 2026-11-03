@@ -103,7 +103,7 @@
         transition: border-color .15s, background-color .15s, color .15s;
     }
     .nt-chip:hover { border-color: var(--color-line-2); color: var(--color-ivory); }
-    .nt-chip[aria-pressed='true'] { background: var(--color-ivory); color: var(--color-night); border-color: transparent; }
+    .nt-chip[aria-pressed='true'], .nt-chip[aria-selected='true'] { background: var(--color-ivory); color: var(--color-night); border-color: transparent; }
     .nt-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
     .nt-chips::-webkit-scrollbar { display: none; }
 
