@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\ConsentController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\GoogleLinkController;
 use App\Http\Controllers\Auth\NameUpdateController;
+use App\Http\Controllers\Dev\MailPreviewController;
 use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\PushTestController;
@@ -18,7 +19,6 @@ use App\Livewire\Referrals\Index as ReferralsIndex;
 use App\Livewire\Rules;
 use App\Livewire\Wallet\Index;
 use App\Livewire\Welcome;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
@@ -62,30 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/terms', Terms::class)->name('legal.terms');
 Route::get('/privacy', Privacy::class)->name('legal.privacy');
 
-Route::get('/email/preview/{type}', function (string $type) {
-    $user = auth()->user() ?? User::first();
-
-    return match ($type) {
-        'verify' => view('mail.verify-email', [
-            'user' => (object) ['name' => $user->name],
-            'verificationUrl' => '#',
-            'appName' => config('app.name'),
-        ]),
-        'welcome' => view('mail.welcome', [
-            'user' => $user,
-            'appName' => config('app.name'),
-            'appUrl' => config('app.url'),
-        ]),
-        'security' => view('mail.security-alert', [
-            'user' => $user,
-            'change' => 'Email address changed',
-            'when' => now()->format('j M Y, H:i T'),
-            'appName' => config('app.name'),
-            'appUrl' => config('app.url'),
-        ]),
-        default => abort(404),
-    };
-});
+Route::get('/email/preview/{type}', MailPreviewController::class)->name('mail.preview');
 
 Route::get('/sitemap.xml', function () {
     $path = public_path('sitemap.xml');

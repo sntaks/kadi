@@ -70,7 +70,7 @@ function fakeKadi(?array $complaint = null, int $status = 201, array $open = [],
  * game:812 → GAME-5521; the tournament's rounds → TOURN-88 (level 2 = round 9042, level 1 = round 9030).
  */
 const FIXTURE_DEADLINES = [
-    'GAME-5521' => [null => '2026-09-22 18:07:11'],
+    'GAME-5521' => ['' => '2026-09-22 18:07:11'], // single games have no level
     'TOURN-88' => [2 => '2026-09-22 18:06:47', 1 => '2026-09-22 18:06:00'],
 ];
 
@@ -111,7 +111,7 @@ function fakeGameLevelPending(?array $rows = null): void
         $deadlines = FIXTURE_DEADLINES[$row['game_id'] ?? ''] ?? [];
         $row['expires_at'] = isset($row['expires_at'])
             ? kadiTimestamp($row['expires_at'])
-            : (isset($deadlines[$row['level'] ?? null]) || $deadlines !== [] ? kadiTimestamp($deadlines[$row['level'] ?? null] ?? max($deadlines)) : null);
+            : ($deadlines !== [] ? kadiTimestamp($deadlines[$row['level'] ?? ''] ?? max($deadlines)) : null);
 
         DB::connection('kadi')->table('game_level_pending')->insert($row);
     }

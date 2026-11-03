@@ -194,11 +194,6 @@
             @php
                 $popularGames = [
                     ['img'=>'/casino/kadi.png', 'name'=>'Kadi', 'desc'=>'Classic Kenyan card game. Thrilling Singles. Conquer Tournaments.', 'badge1'=>'🟢 Live Dealer', 'badge2'=>number_format($kadiPlaying).' Playing', 'btn'=>'Join Now'],
-                    /* Non-Kadi games commented out (client focus: Kadi only)
-                    ['img'=>'/casino/slots.png',      'name'=>'Golden Slots',  'desc'=>'Luxury slot action with rich visuals, bonus rounds, and glittering jackpots.','badge1'=>'📊 RTP 97.4%','badge2'=>rand(200,1200).' Playing','btn'=>'Spin Now'],
-                    ['img'=>'/casino/roulette.png',   'name'=>'Roulette Noir', 'desc'=>'Spin the golden wheel and chase high-value wins in elegant style.','badge1'=>'👑 VIP Room','badge2'=>rand(80,600).' Playing','btn'=>'Spin Now'],
-                    ['img'=>'/casino/poker.png',      'name'=>'Royal Poker',   'desc'=>'Challenge top players in the crown room and build your tournament stack.','badge1'=>'🏆 Prize Pool','badge2'=>rand(50,400).' Playing','btn'=>'Enter Room'],
-                    */
                 ];
             @endphp
             @foreach ($popularGames as $pg)
@@ -224,39 +219,6 @@
             @endforeach
         </div>
     </section>
-
-    {{-- ── Games Grid ── --}}
-    {{--
-    <section>
-        <h3 class="mb-6 text-xl font-bold text-[#f5f5f0]" style="font-family: 'Cinzel', serif;">Quick Play</h3>
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            @php
-                $quickPlayGames = [
-                    ['img'=>'/casino/kadi.png', 'name'=>'Kadi'],
-                    /* Non-Kadi games commented out (client focus: Kadi only)
-                    ['img'=>'/casino/slots.png',    'name'=>'Golden Slots'],
-                    ['img'=>'/casino/roulette.png', 'name'=>'Roulette'],
-                    ['img'=>'/casino/poker.png',    'name'=>'Royal Poker'],
-                    ['img'=>'/casino/dice.png',     'name'=>'Royal Dice'],
-                    */
-                ];
-            @endphp
-            @foreach ($quickPlayGames as $game)
-                <a href="{{ route('kadi') }}" wire:navigate
-                   class="group flex flex-col items-center gap-3 rounded-xl border border-yellow-900/30 bg-[#1a1a1a] p-5 text-center transition hover:-translate-y-1 hover:border-[#f5c542]/50">
-                    <img src="{{ $game['img'] }}" class="w-10 h-10 object-contain" alt="{{ $game['name'] }}" />
-                    <span class="text-xs font-semibold text-[#f5c542]" style="font-family: 'Cinzel', serif;">{{ $game['name'] }}</span>
-                    <span class="text-xs text-[#6b6b6b] group-hover:text-[#f5c542]">Play →</span>
-                </a>
-            @endforeach
-        </div>
-    </section>
-    --}}
-
-
-    {{-- Sports Betting Preview commented out (client focus: Kadi only)
-    <livewire:dashboard.sports-betting-preview />
-    --}}
 
     {{-- ── Recent Transactions ── --}}
     {{--

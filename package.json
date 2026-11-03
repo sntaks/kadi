@@ -11,6 +11,7 @@
         "@fontsource/cinzel-decorative": "^5.3.0",
         "@fontsource/outfit": "^5.3.0",
         "@laravel/passkeys": "^0.2.0",
+        "@sentry/browser": "^11.10.0",
         "autoprefixer": "^10.4.20",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.0.0",
@@ -23,6 +24,7 @@
         "lightningcss-linux-x64-gnu": "^1.29.1"
     },
     "devDependencies": {
+        "@sentry/vite-plugin": "^11.10.0",
         "@tailwindcss/vite": "^4.3.3",
         "laravel-echo": "^2.5.0",
         "pusher-js": "^8.6.0",

@@ -1,0 +1,157 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Actions/Fortify/AttemptToAuthenticate.php
+
+		-
+			message: '#^Method App\\Actions\\Fortify\\CreateNewUser\:\:nameRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\Rule\|string\> but returns array\<int, App\\Rules\\AllowedName\|App\\Rules\\NameChangeCooldown\|App\\Rules\\PlayerNameFormat\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Fortify/CreateNewUser.php
+
+		-
+			message: '#^Parameter \#1 \$string of function htmlentities expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Helpers/helper.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$has_device\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/PushApiController.php
+
+		-
+			message: '#^Call to method Illuminate\\Support\\Collection\<int,\*NEVER\*\>\:\:isNotEmpty\(\) will always evaluate to false\.$#'
+			identifier: method.impossibleType
+			count: 1
+			path: app/Http/Controllers/Api/PushApiController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\NameUpdateController\:\:nameRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\Rule\|string\> but returns array\<int, App\\Rules\\AllowedName\|App\\Rules\\NameChangeCooldown\|App\\Rules\\PlayerNameFormat\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/NameUpdateController.php
+
+		-
+			message: '#^Method App\\Jobs\\ProcessVerifiedUser\:\:registerWithBugsApi\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Jobs/ProcessVerifiedUser.php
+
+		-
+			message: '#^Parameter \#1 \$user of job class App\\Jobs\\ProcessVerifiedUser constructor expects App\\Models\\User in App\\Jobs\\ProcessVerifiedUser\:\:dispatch\(\), Illuminate\\Contracts\\Auth\\MustVerifyEmail given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Listeners/HandleEmailVerified.php
+
+		-
+			message: '#^Method App\\Livewire\\Dashboard\:\:progressiveJackpot\(\) should return int but returns float\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Dashboard.php
+
+		-
+			message: '#^Method App\\Livewire\\PhoneRequired\:\:nameRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\Rule\|string\> but returns array\<int, App\\Rules\\AllowedName\|App\\Rules\\NameChangeCooldown\|App\\Rules\\PlayerNameFormat\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/PhoneRequired.php
+
+		-
+			message: '#^Method App\\Livewire\\Profile\\Show\:\:nameRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\Rule\|string\> but returns array\<int, App\\Rules\\AllowedName\|App\\Rules\\NameChangeCooldown\|App\\Rules\\PlayerNameFormat\|string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Profile/Show.php
+
+		-
+			message: '#^Call to function is_null\(\) with bool will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Livewire/Wallet/Index.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: app/Livewire/Wallet/Index.php
+
+		-
+			message: '#^Offset ''locked_amount'' on array\{locked_amount\: float, items\: list\<array\<string, mixed\>\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Wallet/Index.php
+
+		-
+			message: '#^Instanceof between App\\Models\\User and Illuminate\\Contracts\\Auth\\MustVerifyEmail will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: app/Livewire/Welcome.php
+
+		-
+			message: '#^Parameter \#1 \$message of static method Symfony\\Component\\Mime\\MessageConverter\:\:toEmail\(\) expects Symfony\\Component\\Mime\\Message, Symfony\\Component\\Mime\\RawMessage given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Mail/Transport/BrevoTransport.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/PushBroadcast.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects bool, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Mpesa/Auth.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects bool, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Mpesa/Core.php
+
+		-
+			message: '#^Call to an undefined static method Nnjeim\\World\\World\:\:countries\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/CurrencyService.php
+
+		-
+			message: '#^Parameter \#1 \$plainValue of function encryptOpenSSL expects string, int given\.$#'
+			identifier: argument.type
+			count: 5
+			path: app/Services/KadiApiService.php
+
+		-
+			message: '#^Parameter \#1 \$plainValue of function encryptOpenSSL expects string, int\|null given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Services/KadiApiService.php
+
+		-
+			message: '#^Property App\\Services\\KadiProfileImageService\:\:\$manager \(Intervention\\Image\\ImageManager\) does not accept Intervention\\Image\\Interfaces\\ImageManagerInterface\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Services/KadiProfileImageService.php
+
+		-
+			message: '#^Cannot call method copy\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Support/PlayerName.php
+
+		-
+			message: '#^Parameter \#1 \$array \(array\{0\: ''very\-low'', 1\: ''low'', 2\: ''normal'', 3\?\: ''high''\}\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: config/kadi.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Console\\Command\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: database/seeders/RoleSeeder.php

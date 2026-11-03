@@ -1,0 +1,5 @@
+{
+    "_comment": "Read by resources/js/sentry.js and app/Support/SentryScrubber.php. Query parameters whose name contains one of these terms, and the secret path segments, never reach Sentry.",
+    "queryParams": ["ref", "promo", "email", "phone", "code", "otp", "token", "signature", "hash"],
+    "secretPaths": ["/reset-password/", "/email/verify/"]
+}

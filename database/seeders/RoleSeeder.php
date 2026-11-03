@@ -17,9 +17,6 @@ class RoleSeeder extends Seeder
 
         // Define Permissions
         $permissions = [
-            // Existing /admin/sportsbook page
-            'manage sportsbook admin',
-
             // Assigning roles/permissions to users. No UI for this yet, but
             // it's the permission that should gate one whenever it's built —
             // seeding it now is what actually makes 'admin' vs 'super-admin'
@@ -37,9 +34,7 @@ class RoleSeeder extends Seeder
             'super-admin' => $permissions,
 
             // Day-to-day operational access — everything except role management.
-            'admin' => [
-                'manage sportsbook admin',
-            ],
+            'admin' => [],
 
             // Default authenticated user. No admin permissions — access to
             // /dashboard, /wallet, etc. is already governed by the 'auth' +
