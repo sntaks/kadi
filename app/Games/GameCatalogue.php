@@ -226,8 +226,13 @@ class GameCatalogue
         return false;
     }
 
-    /** @param  array<string, mixed>  $product */
-    private function presentTitle(string $game, array $product): GameTitle
+    /**
+     * A lobby tile for one product: the API's code and name joined with config/games.php. Public so
+     * the /_ui gallery builds its sample tiles exactly like the lobby does.
+     *
+     * @param  array<string, mixed>  $product  at least `code`; `name` from the API
+     */
+    public function presentTitle(string $game, array $product): GameTitle
     {
         $code = $product['code'];
 

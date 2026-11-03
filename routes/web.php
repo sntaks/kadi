@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\GoogleLinkController;
 use App\Http\Controllers\Auth\NameUpdateController;
 use App\Http\Controllers\Dev\MailPreviewController;
+use App\Http\Controllers\Dev\UiGalleryController;
 use App\Http\Controllers\GameLaunchController;
 use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\PushSubscriptionController;
@@ -76,6 +77,7 @@ Route::get('/terms', Terms::class)->name('legal.terms');
 Route::get('/privacy', Privacy::class)->name('legal.privacy');
 
 Route::get('/email/preview/{type}', MailPreviewController::class)->name('mail.preview');
+Route::get('/_ui', UiGalleryController::class)->name('ui.gallery');
 
 Route::get('/sitemap.xml', function () {
     $path = public_path('sitemap.xml');

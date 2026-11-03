@@ -55,6 +55,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | UI Gallery
+    |--------------------------------------------------------------------------
+    |
+    | Serves /_ui, every Night table component in every state, for design work.
+    | On by default in the local environment only.
+    |
+    */
+
+    'ui_gallery' => (bool) env('UI_GALLERY', env('APP_ENV') === 'local'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |
