@@ -41,13 +41,16 @@ test('every multi-game platform switch exists and is off by default', function (
         ->and(array_filter($flags))->toBe([]);
 });
 
-test('mail previews default to on only in the local environment', function (string $env, bool $expected) {
+test('mail previews and the UI gallery default to on only in the local environment', function (string $env, bool $expected) {
     $previous = [$_ENV['APP_ENV'] ?? null, $_SERVER['APP_ENV'] ?? null, getenv('APP_ENV')];
     $_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = $env;
     putenv("APP_ENV={$env}");
 
     try {
-        expect(configDefaults('app.php', ['MAIL_PREVIEWS'])['mail_previews'])->toBe($expected);
+        $app = configDefaults('app.php', ['MAIL_PREVIEWS', 'UI_GALLERY']);
+
+        expect($app['mail_previews'])->toBe($expected)
+            ->and($app['ui_gallery'])->toBe($expected);
     } finally {
         [$_ENV['APP_ENV'], $_SERVER['APP_ENV']] = $previous;
         $previous[2] === false ? putenv('APP_ENV') : putenv("APP_ENV={$previous[2]}");

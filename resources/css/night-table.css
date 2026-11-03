@@ -1,0 +1,309 @@
+/*
+ * Night table: the multi-game design system (plan §3, plans/kadi-v2-mockup.html).
+ *
+ * Tokens become Tailwind utilities (bg-night, bg-felt, text-gold, border-line, rounded-panel...).
+ * Component classes are prefixed `nt-` and used by the Blade components in components/ui, so
+ * existing pages keep their look until their own phase moves them over.
+ *
+ * Gold is the only accent. Shadows are neutral and dark, never coloured glows. Every motion has a
+ * reduced-motion fallback (bottom of this file).
+ */
+
+@theme {
+    --color-night: #0e0d0b;
+    --color-felt: #17150f;
+    --color-felt-2: #211e17;
+    --color-felt-3: #2b2720;
+    --color-felt-4: #36312a;
+    --color-line: rgb(248 192 56 / 0.13);
+    --color-line-2: rgb(248 192 56 / 0.26);
+    --color-gold: #f8c038;
+    --color-gold-2: #ffd766;
+    --color-gold-dim: #c9a84c;
+    --color-gold-ink: #1e1503;
+    --color-navy: #0c1028;
+    --color-ivory: #f4f1ea;
+    --color-soft: #cfc8b6;
+    --color-ash: #a8a191;
+    --color-win: #3cc56a;
+    --color-hot: #e8604f;
+
+    --font-card: 'Cinzel', Georgia, serif;
+
+    --radius-control: 12px;
+    --radius-tile: 14px;
+    --radius-panel: 20px;
+
+    --shadow-soft: 0 14px 34px rgb(0 0 0 / 0.42);
+    --shadow-lift: 0 18px 40px rgb(0 0 0 / 0.55);
+
+    --ease-table: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@layer components {
+    /* ── Surfaces ─────────────────────────────────────────── */
+    .nt-panel {
+        position: relative;
+        border-radius: var(--radius-panel);
+        background: var(--color-felt);
+        border: 1px solid var(--color-line);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03);
+    }
+
+    .nt-num { font-variant-numeric: tabular-nums; }
+
+    /* ── Buttons ──────────────────────────────────────────── */
+    .nt-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        height: 42px; padding: 0 20px; border-radius: var(--radius-control);
+        font-weight: 700; white-space: nowrap; text-decoration: none; cursor: pointer;
+        transition: transform .15s var(--ease-table), filter .15s, background-color .15s, border-color .15s;
+    }
+    .nt-btn:active { transform: translateY(1px) scale(.98); }
+    .nt-btn:focus-visible, .nt-icon-btn:focus-visible, .nt-odds:focus-visible, .nt-tab:focus-visible, .nt-chip:focus-visible {
+        outline: 2px solid var(--color-gold); outline-offset: 2px;
+    }
+    .nt-btn-sm { height: 34px; padding: 0 14px; font-size: 13px; border-radius: 10px; }
+    .nt-btn-lg { height: 50px; padding: 0 24px; font-size: 16px; }
+    .nt-btn-block { width: 100%; }
+    .nt-btn-gold {
+        background: linear-gradient(180deg, var(--color-gold-2), var(--color-gold)); color: var(--color-gold-ink);
+        box-shadow: inset 0 1px 0 rgb(255 255 255 / .5), 0 6px 16px rgb(0 0 0 / .35);
+    }
+    .nt-btn-gold:hover { filter: brightness(1.07); transform: translateY(-1px); }
+    .nt-btn-ghost { background: rgb(255 255 255 / .03); border: 1px solid var(--color-line-2); color: var(--color-ivory); }
+    .nt-btn-ghost:hover { background: rgb(255 255 255 / .07); border-color: rgb(248 192 56 / .45); }
+    .nt-btn-quiet { color: var(--color-soft); }
+    .nt-btn-quiet:hover { background: var(--color-felt-2); color: var(--color-ivory); }
+    .nt-btn:disabled, .nt-btn[aria-disabled='true'] { opacity: .5; cursor: not-allowed; filter: none; transform: none; }
+
+    .nt-icon-btn {
+        position: relative; width: 42px; height: 42px; flex: none; display: grid; place-items: center;
+        border-radius: var(--radius-control); background: var(--color-felt-2); border: 1px solid var(--color-line);
+        color: var(--color-ivory); transition: border-color .15s, transform .15s;
+    }
+    .nt-icon-btn:hover { border-color: var(--color-line-2); transform: translateY(-1px); }
+    .nt-icon-btn svg { width: 19px; height: 19px; }
+    .nt-icon-btn .nt-dot { position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-hot); border: 2px solid var(--color-felt-2); }
+
+    /* ── Badges, pills, chips ─────────────────────────────── */
+    .nt-pill {
+        display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 10px; border-radius: 999px;
+        font-size: 12px; font-weight: 700; background: var(--color-felt-3); color: var(--color-soft);
+    }
+    .nt-pill svg { width: 12px; height: 12px; }
+    .nt-pill-ok { background: rgb(60 197 106 / .14); color: #7fdc9c; }
+    .nt-pill-warn { background: rgb(248 192 56 / .14); color: var(--color-gold); }
+    .nt-pill-hot { background: rgb(232 96 79 / .14); color: #f4b0a6; }
+    .nt-pill-gold { background: linear-gradient(90deg, var(--color-gold-2), #f5a742); color: var(--color-gold-ink); }
+
+    .nt-chip {
+        flex: none; white-space: nowrap; height: 34px; padding: 0 14px; border-radius: 999px;
+        background: var(--color-felt-2); border: 1px solid var(--color-line); font-size: 13px; font-weight: 600; color: var(--color-soft);
+        transition: border-color .15s, background-color .15s, color .15s;
+    }
+    .nt-chip:hover { border-color: var(--color-line-2); color: var(--color-ivory); }
+    .nt-chip[aria-pressed='true'] { background: var(--color-ivory); color: var(--color-night); border-color: transparent; }
+    .nt-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+    .nt-chips::-webkit-scrollbar { display: none; }
+
+    /* ── Tabs ─────────────────────────────────────────────── */
+    .nt-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+    .nt-tabs::-webkit-scrollbar { display: none; }
+    .nt-tab {
+        flex: none; display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 11px;
+        color: var(--color-soft); font-weight: 600; text-decoration: none; transition: background-color .15s, color .15s;
+    }
+    .nt-tab:hover { background: var(--color-felt-2); color: var(--color-ivory); }
+    .nt-tab[aria-selected='true'], .nt-tab[aria-current='page'] { background: var(--color-felt-3); color: var(--color-gold); }
+
+    /* ── Headings ─────────────────────────────────────────── */
+    .nt-page-head { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+    .nt-page-head .nt-crumb { font-size: 13px; color: var(--color-ash); }
+    .nt-page-head h1 { margin: 2px 0 4px; font-size: clamp(26px, 2.4vw, 34px); font-weight: 800; line-height: 1.1; letter-spacing: -.01em; color: var(--color-ivory); }
+    .nt-page-head p { margin: 0; color: var(--color-soft); max-width: 62ch; }
+    .nt-page-head .nt-actions { margin-left: auto; display: flex; gap: 8px; }
+    .nt-sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; min-width: 0; }
+    .nt-sec-head h2 { margin: 0; font-size: 21px; font-weight: 800; color: var(--color-ivory); }
+    .nt-sec-head .nt-sub { color: var(--color-ash); font-size: 13px; }
+    .nt-sec-head .nt-actions { margin-left: auto; display: flex; gap: 6px; min-width: 0; }
+
+    /* ── Notice strip ─────────────────────────────────────── */
+    .nt-notice {
+        display: flex; align-items: center; gap: 12px; padding: 10px 18px; font-size: 14px; color: var(--color-soft);
+        border-bottom: 1px solid var(--color-line);
+        background: linear-gradient(90deg, rgb(248 192 56 / .12), rgb(248 192 56 / .03) 60%, transparent);
+    }
+    .nt-notice > svg { width: 18px; height: 18px; color: var(--color-gold); flex: none; }
+    .nt-notice b { color: var(--color-ivory); font-weight: 700; }
+    .nt-notice .nt-btn { margin-left: auto; }
+    @media (max-width: 640px) {
+        .nt-notice { flex-wrap: wrap; padding: 10px 14px; font-size: 13px; gap: 10px; }
+        .nt-notice > svg { display: none; }
+        .nt-notice .nt-btn { margin-left: 0; }
+    }
+
+    /* ── List rows ────────────────────────────────────────── */
+    .nt-row {
+        display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+        padding: 12px 22px; border-top: 1px solid rgb(255 255 255 / .04); color: var(--color-ivory); text-decoration: none;
+    }
+    a.nt-row:hover { background: rgb(255 255 255 / .02); }
+    .nt-row .nt-row-icon { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: var(--color-felt-2); color: var(--color-gold); }
+    .nt-row .nt-row-icon svg { width: 18px; height: 18px; }
+    .nt-row b { display: block; font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nt-row .nt-meta { display: block; font-size: 12.5px; color: var(--color-ash); }
+    .nt-row .nt-trail { text-align: right; font-weight: 700; }
+    .nt-row .nt-in { color: var(--color-win); }
+    @media (max-width: 640px) { .nt-row { padding: 12px 16px; } }
+
+    /* ── Stat ─────────────────────────────────────────────── */
+    .nt-stat span { display: block; font-size: 12.5px; color: var(--color-ash); }
+    .nt-stat b { display: block; font-size: 22px; font-weight: 800; color: var(--color-ivory); line-height: 1.2; }
+    .nt-stat.nt-stat-gold b { color: var(--color-gold); }
+
+    /* ── Odds button ──────────────────────────────────────── */
+    .nt-odds {
+        display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 46px; padding: 0 12px; min-width: 0;
+        border-radius: 11px; background: var(--color-felt-2); border: 1px solid rgb(255 255 255 / .05); color: var(--color-ivory);
+        transition: background-color .15s, border-color .15s, transform .12s;
+    }
+    .nt-odds small { font-size: 12px; color: var(--color-ash); }
+    .nt-odds b { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .nt-odds:hover:not(:disabled) { border-color: var(--color-line-2); transform: translateY(-1px); }
+    .nt-odds:active:not(:disabled) { transform: scale(.97); }
+    .nt-odds[aria-pressed='true'] { background: linear-gradient(180deg, var(--color-gold-2), var(--color-gold)); color: var(--color-gold-ink); border-color: transparent; }
+    .nt-odds[aria-pressed='true'] small { color: #5e4a10; }
+    .nt-odds .nt-move { font-size: 10px; margin-left: 3px; }
+    .nt-odds .nt-move-up { color: var(--color-win); }
+    .nt-odds .nt-move-down { color: var(--color-hot); }
+    .nt-odds[aria-pressed='true'] .nt-move { color: var(--color-gold-ink); }
+    .nt-odds:disabled { cursor: not-allowed; background: var(--color-felt); color: var(--color-ash); }
+    .nt-odds:disabled b { letter-spacing: .1em; }
+
+    /* ── Bet slip pill (phones) ───────────────────────────── */
+    .nt-slip-pill {
+        display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 8px 0 16px; border-radius: 999px;
+        background: var(--color-felt-3); border: 1px solid var(--color-line-2); box-shadow: var(--shadow-lift);
+        color: var(--color-ivory); font-weight: 700; text-decoration: none;
+    }
+    .nt-slip-pill .nt-count {
+        min-width: 30px; height: 30px; padding: 0 8px; border-radius: 999px; display: grid; place-items: center;
+        background: var(--color-gold); color: var(--color-gold-ink); font-size: 13px; font-weight: 800;
+    }
+    .nt-slip-pill .nt-payout { font-size: 13px; color: var(--color-soft); font-weight: 600; }
+    .nt-bump { animation: nt-bump .5s var(--ease-table); }
+
+    /* ── Game tile ────────────────────────────────────────── */
+    .nt-tile { position: relative; display: block; min-width: 0; text-align: left; color: var(--color-ivory); text-decoration: none; }
+    .nt-tile .nt-art { position: relative; aspect-ratio: 2 / 3; border-radius: var(--radius-tile); overflow: hidden; background: var(--color-felt-2); transition: transform .3s var(--ease-table), box-shadow .3s; }
+    .nt-tile .nt-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease-table); }
+    .nt-tile .nt-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgb(0 0 0 / .6)); pointer-events: none; }
+    .nt-tile .nt-art-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; text-align: center; font-weight: 800; color: var(--color-gold);
+        background: radial-gradient(90% 70% at 50% 30%, rgb(248 192 56 / .14), transparent 70%), var(--color-felt-2); }
+    .nt-tile:hover .nt-art, .nt-tile:focus-within .nt-art { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
+    .nt-tile:hover .nt-art img { transform: scale(1.07); }
+    .nt-tile .nt-play { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; opacity: 0; transition: opacity .25s; background: rgb(10 9 7 / .38); }
+    .nt-tile:hover .nt-play, .nt-tile:focus-within .nt-play { opacity: 1; }
+    .nt-tile .nt-play span { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(180deg, var(--color-gold-2), var(--color-gold)); color: var(--color-gold-ink); box-shadow: 0 8px 20px rgb(0 0 0 / .5); transform: scale(.8); transition: transform .3s var(--ease-table); }
+    .nt-tile:hover .nt-play span { transform: scale(1); }
+    .nt-tile .nt-play svg { width: 22px; height: 22px; margin-left: 3px; }
+    .nt-tile .nt-fav { position: absolute; z-index: 3; top: 9px; right: 9px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgb(14 13 11 / .72); color: var(--color-ivory); transition: transform .2s var(--ease-table); }
+    .nt-tile .nt-fav:hover { transform: scale(1.12); }
+    .nt-tile .nt-fav svg { width: 16px; height: 16px; }
+    .nt-tile .nt-fav[aria-pressed='true'] { color: var(--color-hot); }
+    .nt-tile .nt-badge { position: absolute; z-index: 3; top: 9px; left: 9px; }
+    .nt-tile .nt-tile-meta { padding: 9px 2px 0; }
+    .nt-tile .nt-tile-meta b { display: block; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nt-tile .nt-tile-meta span { font-size: 12.5px; color: var(--color-ash); }
+
+    .nt-tile-row { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 4 * 14px) / 5); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+    .nt-tile-row::-webkit-scrollbar { display: none; }
+    .nt-tile-row > * { scroll-snap-align: start; }
+    .nt-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 16px; }
+    @media (max-width: 1240px) { .nt-tile-row { grid-auto-columns: calc((100% - 3 * 14px) / 4); } }
+    @media (max-width: 640px) { .nt-tile-row { grid-auto-columns: 40%; } .nt-tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+
+    /* ── Promo card ───────────────────────────────────────── */
+    .nt-promo {
+        position: relative; display: block; overflow: hidden; min-height: 78px; padding: 13px 76px 13px 14px; border-radius: var(--radius-tile);
+        background: linear-gradient(120deg, #2b2416, #17150f); border: 1px solid var(--color-line); color: var(--color-ivory); text-decoration: none;
+        transition: border-color .2s, transform .2s var(--ease-table);
+    }
+    .nt-promo:hover { border-color: var(--color-line-2); transform: translateY(-1px); }
+    .nt-promo b { display: block; font-size: 14px; font-weight: 700; }
+    .nt-promo span { display: block; font-size: 12.5px; line-height: 1.35; color: var(--color-ash); }
+    .nt-promo img { position: absolute; right: -6px; bottom: -24px; width: 70px; transform: rotate(9deg); border-radius: 8px; box-shadow: var(--shadow-soft); transition: transform .35s var(--ease-table); }
+    .nt-promo:hover img { transform: rotate(4deg) translateY(-6px); }
+
+    /* ── Sheet: right drawer on desktop, bottom sheet on phones ── */
+    .nt-scrim { position: fixed; inset: 0; z-index: 60; background: rgb(0 0 0 / .62); }
+    .nt-sheet {
+        position: fixed; z-index: 70; top: 0; right: 0; height: 100dvh; width: min(440px, 100%); overflow: auto;
+        background: var(--color-felt); border-left: 1px solid var(--color-line-2); box-shadow: -30px 0 70px rgb(0 0 0 / .6);
+    }
+    .nt-sheet-center {
+        top: 50%; left: 50%; right: auto; height: auto; max-height: 88dvh; width: min(430px, calc(100% - 20px));
+        border: 1px solid var(--color-line-2); border-radius: var(--radius-panel); box-shadow: 0 30px 70px rgb(0 0 0 / .7); translate: -50% -50%;
+    }
+    .nt-sheet .nt-sheet-inner { padding: 26px 28px 32px; }
+    .nt-sheet .nt-sheet-close { position: absolute; top: 14px; right: 14px; }
+    .nt-sheet h2 { margin: 0 0 4px; font-size: 22px; font-weight: 800; color: var(--color-ivory); padding-right: 48px; }
+    .nt-sheet-anim { transition: opacity .3s var(--ease-table), transform .3s var(--ease-table); }
+    .nt-sheet-from { opacity: 0; transform: translateX(32px); }
+    .nt-sheet-center.nt-sheet-from { transform: translateY(10px) scale(.98); }
+    @media (max-width: 640px) {
+        .nt-sheet-from, .nt-sheet-center.nt-sheet-from { transform: translateY(40px); }
+        .nt-sheet, .nt-sheet-center {
+            top: auto; bottom: 0; left: 0; right: 0; width: auto; height: auto; max-height: 92dvh; translate: none;
+            border: 0; border-top: 1px solid var(--color-line-2); border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+        }
+        .nt-sheet .nt-sheet-inner { padding: 22px 18px calc(24px + env(safe-area-inset-bottom)); }
+    }
+
+    /* ── The K-A-D-I hand ─────────────────────────────────── */
+    .nt-hand { position: relative; width: 360px; max-width: 100%; height: 250px; pointer-events: none; }
+    .nt-card {
+        position: absolute; left: 50%; bottom: 0; width: 112px; height: 156px; margin-left: -56px; border-radius: 12px; transform-origin: 50% 120%;
+        background: linear-gradient(160deg, #fdfaf0, #e9e2cc); color: var(--color-navy);
+        box-shadow: 0 18px 30px rgb(0 0 0 / .55), inset 0 0 0 1px rgb(0 0 0 / .06);
+        display: flex; flex-direction: column; justify-content: space-between; padding: 9px 11px;
+        font-family: var(--font-card); font-weight: 800; transition: transform .45s var(--ease-table);
+    }
+    .nt-card-red { color: #b3261e; }
+    .nt-card .nt-rank { font-size: 58px; line-height: 1; text-align: center; }
+    .nt-card .nt-pip { display: flex; align-items: center; gap: 3px; font-size: 15px; line-height: 1; }
+    .nt-card .nt-pip svg { width: 14px; height: 14px; }
+    .nt-card .nt-pip-end { align-self: flex-end; transform: rotate(180deg); }
+    .nt-card:nth-child(1) { transform: translateX(-60px) rotate(-22deg) translateY(10px); }
+    .nt-card:nth-child(2) { transform: translateX(-20px) rotate(-7deg); }
+    .nt-card:nth-child(3) { transform: translateX(20px) rotate(7deg); }
+    .nt-card:nth-child(4) { transform: translateX(60px) rotate(22deg) translateY(10px); }
+    .nt-hand-host:hover .nt-card:nth-child(1) { transform: translateX(-78px) rotate(-28deg) translateY(16px); }
+    .nt-hand-host:hover .nt-card:nth-child(2) { transform: translateX(-26px) rotate(-10deg) translateY(-6px); }
+    .nt-hand-host:hover .nt-card:nth-child(3) { transform: translateX(26px) rotate(10deg) translateY(-6px); }
+    .nt-hand-host:hover .nt-card:nth-child(4) { transform: translateX(78px) rotate(28deg) translateY(16px); }
+    @media (prefers-reduced-motion: no-preference) {
+        .nt-card { animation: nt-deal .95s var(--ease-table) both; }
+        .nt-card:nth-child(2) { animation-delay: .1s; }
+        .nt-card:nth-child(3) { animation-delay: .2s; }
+        .nt-card:nth-child(4) { animation-delay: .3s; }
+    }
+
+    /* ── Reveal on scroll (content stays visible without JS) ── */
+    /* Only sections still below the fold are armed (by resources/js/ui/reveal.js), so nothing on screen
+       ever blinks out, and without JavaScript nothing is hidden at all. */
+    .nt-reveal.nt-armed { opacity: 0; transform: translateY(22px); transition: opacity .6s var(--ease-table), transform .6s var(--ease-table); }
+    .nt-reveal.nt-armed.nt-in-view { opacity: 1; transform: none; }
+    .nt-view-in { animation: nt-view-in .45s var(--ease-table) both; }
+}
+
+@keyframes nt-deal { from { translate: 0 160px; opacity: 0; rotate: -14deg; } }
+@keyframes nt-bump { 30% { transform: scale(1.12); } }
+@keyframes nt-view-in { from { opacity: 0; transform: translateY(10px); } }
+
+@media (prefers-reduced-motion: reduce) {
+    [class*='nt-'], [class*='nt-'] * { transition: none !important; animation: none !important; }
+    .nt-reveal.nt-armed { opacity: 1; transform: none; }
+    .nt-sheet-from { opacity: 1; transform: none; }
+}
