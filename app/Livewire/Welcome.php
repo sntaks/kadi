@@ -7,6 +7,8 @@ use App\Games\KadiTables;
 use App\Games\Lobby;
 use App\Livewire\Concerns\TogglesFavourites;
 use App\Models\User;
+use App\Sportsbook\Catalogue\SportsLobby;
+use App\Support\SportsPages;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Session;
@@ -96,13 +98,21 @@ class Welcome extends Component
         $tables = app(KadiTables::class);
         $seats = Livewire::isLivewireRequest() ? $tables->lastGood() : $tables->seats();
 
+        // Football beside and under the Kadi table once the sports pages are on (plan §2, Phase 9).
+        $sports = SportsPages::on();
+        $bigMatch = $sports ? app(SportsLobby::class)->bigMatch() : null;
+
         return view('livewire.lobby.home', [
             'seats' => $seats,
             'casino' => $casino,
             'favourites' => $favourites,
+            'sports' => $sports,
+            'bigMatch' => $bigMatch,
+            'alsoToday' => $bigMatch ? app(SportsLobby::class)->alsoToday($bigMatch) : collect(),
         ])
             ->layout('layouts.site', [
                 'shell' => 'app',
+                'rail' => $sports,
                 'noindex' => false,
                 'page' => 'home',
                 'description' => $casino

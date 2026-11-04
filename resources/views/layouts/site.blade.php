@@ -9,18 +9,26 @@
              shows but is inert, so the player sees which site they are on and cannot skip the step.
 
     Pages keep their own content until their phase restyles it.
+
+    `rail` (sports pages and the landing, while sports is on) keeps the bet slip beside the page from 1240px up;
+    everywhere else the slip is a sheet behind the bottom bar's Bet slip button or the floating pill (Phase 9).
 --}}
 @php
     $nav = \App\Support\SiteNavigation::current();
     $shell ??= 'page';
+    $sports = \App\Support\SportsPages::on();
+    $rail = $sports && ($rail ?? false);
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         {{-- A meta tag needs a literal colour: the Night table `night` token. --}}
         @include('partials.head', ['themeColor' => '#0e0d0b', 'darkOnly' => true])
+        @if ($sports)
+            <meta name="kadi-max-selections" content="{{ (int) config('sportsbook.limits.max_selections') }}">
+        @endif
     </head>
-    <body class="nt-site min-h-screen antialiased" data-shell="{{ $shell }}"
+    <body @class(['nt-site min-h-screen antialiased', 'nt-has-rail' => $rail]) data-shell="{{ $shell }}"
           x-data="{ menuOpen: false }"
           x-on:resize.window.debounce.150ms="if (innerWidth >= 1024) menuOpen = false">
         <a href="#main" class="nt-skip">Skip to content</a>
@@ -60,11 +68,14 @@
             @endunless
         @endguest
 
-        @if (config('platform.sports'))
-            {{-- Kept across wire:navigate so picks survive page changes; the sports pages fill it (Phase 9). --}}
+        @if ($sports && ! $nav->isGated())
+            {{-- Kept across wire:navigate, so a placement being checked keeps its state between pages. --}}
             @persist('bet-slip')
-                <div id="bet-slip" data-bet-slip></div>
+                <livewire:sports.bet-slip />
             @endpersist
+            @if ($rail)
+                <livewire:sports.match-panel />
+            @endif
         @endif
 
         <x-structured-data :page="$page ?? ($shell === 'page' ? 'home' : 'dashboard')" :noindex="$noindex ?? $shell !== 'page'" />

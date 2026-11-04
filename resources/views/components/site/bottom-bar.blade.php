@@ -20,8 +20,12 @@
                 @endauth
                 @break
             @case('slip')
-                {{-- Opens the persisted bet slip (layouts/site.blade.php) once the sports pages fill it (Phase 9). --}}
-                <button type="button" aria-controls="bet-slip" x-on:click="$dispatch('open-bet-slip')"><x-site.icon name="slip" />{{ $item['label'] }}</button>
+                {{-- Opens the persisted bet slip (layouts/site.blade.php) as a bottom sheet, with its count. --}}
+                <button type="button" class="nt-bottom-slip" aria-controls="bet-slip" x-on:click="$dispatch('open-bet-slip')"
+                        x-bind:aria-label="'Bet slip, ' + $store.betslip.count() + ($store.betslip.count() === 1 ? ' selection' : ' selections')">
+                    <x-site.icon name="slip" />{{ $item['label'] }}
+                    <span class="nt-bottom-count nt-num" x-cloak x-show="$store.betslip.count() > 0" x-text="$store.betslip.count()" aria-hidden="true"></span>
+                </button>
                 @break
             @default
                 <x-site.nav-item :item="$item" class="" />

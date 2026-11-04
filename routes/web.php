@@ -28,8 +28,15 @@ use App\Livewire\Lobby\GameShow;
 use App\Livewire\Profile\Show;
 use App\Livewire\Referrals\Index as ReferralsIndex;
 use App\Livewire\Rules;
+use App\Livewire\Sports\CompetitionPage as SportsCompetition;
+use App\Livewire\Sports\Home as SportsHome;
+use App\Livewire\Sports\JackpotPage as SportsJackpot;
+use App\Livewire\Sports\Live as SportsLive;
+use App\Livewire\Sports\MatchPage as SportsMatch;
+use App\Livewire\Sports\Search as SportsSearch;
 use App\Livewire\Wallet\Index;
 use App\Livewire\Welcome;
+use App\Sportsbook\Models\Competition;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
@@ -56,9 +63,22 @@ Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::cla
     Route::get('/games/{slug}', GameShow::class)->where('slug', '(?!(?:'.implode('|', GameCatalogue::RESERVED_SLUGS).')$)[a-z0-9-]+')->name('games.show');
 });
 
+// Sports (plan Phase 9): football lists, matches, the sports jackpot and in-play list, in the new shell. Betting
+// itself also needs PLATFORM_SPORTS_BETTING (App\Sportsbook\Wagers\WagerPlacement).
+Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':sports'])->prefix('sports')->group(function () {
+    Route::get('/', SportsHome::class)->name('sports');
+    Route::get('/jackpot', SportsJackpot::class)->name('sports.jackpot');
+    Route::get('/live', SportsLive::class)->name('sports.live');
+    Route::get('/search', SportsSearch::class)->name('sports.search');
+    Route::get('/match/{fixture}', SportsMatch::class)->whereNumber('fixture')->name('sports.match');
+    Route::get('/{competition:slug}', SportsCompetition::class)
+        ->where('competition', '(?!(?:'.implode('|', Competition::RESERVED_SLUGS).')$)[a-z0-9-]+')
+        ->name('sports.competition');
+});
+
 // Top bar search index (fetched on first focus). Only once games open inside the site.
-Route::get('/games/search', GameSearchController::class)
-    ->middleware([RequirePlatformFlag::class.':token_launch', 'throttle:60,1'])->name('games.search');
+// Games while they open inside the site, and football while the sports pages are on: the controller checks both.
+Route::get('/games/search', GameSearchController::class)->middleware('throttle:60,1')->name('games.search');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/consent', [ConsentController::class, 'show'])->name('consent.show');

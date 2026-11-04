@@ -64,8 +64,12 @@ class WagerPlacement
             return [self::REFUSED_WALLET, __('Sports betting is not open yet.')];
         }
 
-        if (! $user->hasVerifiedEmail() || ! $user->linked_id) {
+        if (! $user->hasVerifiedEmail()) {
             return [self::REFUSED_NOT_ALLOWED, __('Verify your e-mail address to place bets.')];
+        }
+
+        if (! $user->linked_id) {
+            return self::refusal('not_linked');
         }
 
         if ($this->responsiblePlay->onBreak($user)) {
