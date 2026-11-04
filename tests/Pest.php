@@ -1,7 +1,13 @@
 <?php
 
+use App\Sportsbook\Models\Competition;
+use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Models\Market;
+use App\Sportsbook\Models\Selection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 /*
@@ -76,4 +82,82 @@ function kadiConfigWithEnv(array $env): array
             $fromServer === null ? Arr::forget($_SERVER, $name) : $_SERVER[$name] = $fromServer;
         }
     }
+}
+
+/*
+|--------------------------------------------------------------------------
+| The merged sportsbook (ported from its own tests/Pest.php)
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * Decode a recorded Odds API response from tests/Fixtures/sportsbook/odds-api.
+ *
+ * @return list<array<string, mixed>>
+ */
+function oddsApiFixture(string $name): array
+{
+    return json_decode(file_get_contents(__DIR__."/Fixtures/sportsbook/odds-api/{$name}.json"), true, flags: JSON_THROW_ON_ERROR);
+}
+
+/**
+ * Use the live Odds API driver against a fake host. Any request without a matching Http::fake() fails the test,
+ * so no test can ever reach the real API.
+ */
+function useLiveOddsApi(): void
+{
+    config([
+        'sportsbook.odds_api.driver' => 'live',
+        'sportsbook.odds_api.region' => 'uk',
+        'services.odds_api.key' => 'test-api-key',
+        'services.odds_api.base_url' => 'https://odds-api.test/v4',
+    ]);
+
+    Http::preventStrayRequests();
+}
+
+/**
+ * An upcoming fixture in a synced competition with an open 1X2 market priced at the given prices.
+ *
+ * @param  array<string, mixed>  $fixtureAttributes
+ * @param  array<string, string>  $prices  Outcome => price.
+ */
+function pricedFixture(array $fixtureAttributes = [], array $prices = ['home' => '2.10', 'draw' => '3.40', 'away' => '3.50']): Fixture
+{
+    $fixture = Fixture::factory()
+        ->for(Competition::factory()->synced())
+        ->create($fixtureAttributes);
+    $market = Market::factory()->for($fixture)->create();
+    $names = ['home' => $fixture->home_team, 'draw' => 'Draw', 'away' => $fixture->away_team];
+
+    foreach ($prices as $outcome => $price) {
+        Selection::factory()->for($market)->create(['outcome' => $outcome, 'name' => $names[$outcome] ?? $outcome, 'feed_price' => $price]);
+    }
+
+    return $fixture->load('matchResultMarket.selections');
+}
+
+/**
+ * A bet slip pick as the browser sends it, at the price the player saw (the current price by default).
+ *
+ * @return array{fixture_id: int, selection_id: int, price: string|null}
+ */
+function slipPick(Selection $selection, ?string $price = null): array
+{
+    return ['fixture_id' => $selection->market->fixture_id, 'selection_id' => $selection->id, 'price' => $price ?? $selection->price()];
+}
+
+/** The fixture's 1X2 selection for an outcome. */
+function selectionFor(Fixture $fixture, string $outcome = 'home'): Selection
+{
+    return $fixture->matchResultMarket->selections->firstWhere('outcome', $outcome);
+}
+
+/**
+ * An open KES 99 jackpot on three upcoming matches: KES 10,000 shared by entries with all three right, KES 1,000
+ * by entries with two. One void match is allowed.
+ */
+function openJackpot(int $matches = 3): Jackpot
+{
+    return Jackpot::factory()->open()->withMatches($matches)->create()->load('jackpotFixtures.fixture');
 }

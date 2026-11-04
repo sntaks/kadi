@@ -12,8 +12,17 @@ use App\Listeners\SendSecurityNotification;
 use App\Models\User;
 use App\Services\BugsApiService;
 use App\Services\KadiApiService;
+use App\Sportsbook\Betting\NullSportsWallet;
+use App\Sportsbook\Betting\SportsWallet;
+use App\Sportsbook\OddsApi\CreditBudget;
+use App\Sportsbook\OddsApi\LiveOddsApi;
+use App\Sportsbook\OddsApi\OddsApi;
+use App\Sportsbook\OddsApi\ReplayOddsApi;
+use App\Sportsbook\Pricing\ConsensusPricer;
+use App\Sportsbook\Pricing\Derived\DerivedMarketPricer;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -41,6 +50,27 @@ class AppServiceProvider extends ServiceProvider
     {
         // One catalogue per request (and per queued job): a layout and a component share one pass.
         $this->app->scoped(GameCatalogue::class);
+
+        // The merged sportsbook (plan Phase 7). Replay serves recordings and never spends Odds API credits.
+        $this->app->bind(CreditBudget::class, fn (): CreditBudget => new CreditBudget(
+            monthlyCap: (int) config('sportsbook.odds_api.monthly_credit_cap'),
+            reserve: (int) config('sportsbook.odds_api.credit_reserve'),
+        ));
+        $this->app->bind(OddsApi::class, fn (Application $app): OddsApi => config('sportsbook.odds_api.driver') === 'live'
+            ? LiveOddsApi::fromConfig($app->make(CreditBudget::class))
+            : new ReplayOddsApi((string) config('sportsbook.odds_api.recordings_path')));
+        $this->app->bind(ConsensusPricer::class, fn (): ConsensusPricer => new ConsensusPricer(
+            margin: (float) config('sportsbook.odds.margin'),
+            minimumBookmakers: (int) config('sportsbook.odds.minimum_bookmakers'),
+        ));
+        $this->app->bind(DerivedMarketPricer::class, fn (): DerivedMarketPricer => new DerivedMarketPricer(
+            margin: (float) config('sportsbook.odds.margin'),
+            modelMargin: (float) config('sportsbook.odds.derived_market_margin'),
+            firstHalfShare: (float) config('sportsbook.odds.first_half_goal_share'),
+            maximumModelPrice: (float) config('sportsbook.odds.derived_maximum_price'),
+        ));
+        // No money moves for sports until bets are paid through the Kadi API (Phase 8).
+        $this->app->bind(SportsWallet::class, NullSportsWallet::class);
         $this->app->scoped(ResponsiblePlay::class);
 
         $this->app->singleton(KadiApiService::class, function ($app) {

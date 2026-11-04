@@ -6,12 +6,13 @@
     ],
     "cloud": false,
     "skills": [
+        "infer-conventions",
         "fortify-development",
         "laravel-best-practices",
+        "testing-best-practices",
         "socialite-development",
         "fluxui-development",
         "livewire-development",
-        "pest-testing",
         "echo-development",
         "tailwindcss-development"
     ]
