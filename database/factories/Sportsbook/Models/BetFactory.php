@@ -29,6 +29,7 @@ class BetFactory extends Factory
         return [
             'user_id' => User::factory(),
             'reference' => Str::upper(Str::random(8)),
+            'wager_reference' => (string) Str::uuid(),
             'type' => BetType::Single,
             'status' => BetStatus::Open,
             'stake' => 10_000,

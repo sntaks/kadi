@@ -17,6 +17,9 @@ class JackpotEntryRefused extends RuntimeException
 
     public const INSUFFICIENT_FUNDS = 'insufficient-funds';
 
+    /** The Kadi wallet could not be reached, or refused the entry for another reason. */
+    public const WALLET = 'wallet';
+
     public function __construct(public readonly string $reason, string $message)
     {
         parent::__construct($message);

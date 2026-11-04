@@ -6,10 +6,9 @@ use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\Jackpot;
 
 /**
- * Where settling a bet or a jackpot moves money (plan §5.3). The merged sportsbook never keeps a wallet of its
- * own: from Phase 8 this is the Kadi API (wager settle, reverse), with the sb_wager_ops outbox. Until then it is
- * NullSportsWallet, which refuses to move any money; no bets or jackpot entries can be placed yet, so recording
- * results never needs it.
+ * Where settling a bet or a jackpot moves money (plan §5.3). The merged sportsbook never keeps a wallet of its own:
+ * ApiSportsWallet decides locally and writes settle/reverse ops to the sb_wager_ops outbox in the same database
+ * transaction, and the outbox sends them to the Kadi API in order.
  */
 interface SportsWallet
 {

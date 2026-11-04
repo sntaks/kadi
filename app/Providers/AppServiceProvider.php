@@ -12,7 +12,7 @@ use App\Listeners\SendSecurityNotification;
 use App\Models\User;
 use App\Services\BugsApiService;
 use App\Services\KadiApiService;
-use App\Sportsbook\Betting\NullSportsWallet;
+use App\Sportsbook\Betting\ApiSportsWallet;
 use App\Sportsbook\Betting\SportsWallet;
 use App\Sportsbook\OddsApi\CreditBudget;
 use App\Sportsbook\OddsApi\LiveOddsApi;
@@ -69,8 +69,8 @@ class AppServiceProvider extends ServiceProvider
             firstHalfShare: (float) config('sportsbook.odds.first_half_goal_share'),
             maximumModelPrice: (float) config('sportsbook.odds.derived_maximum_price'),
         ));
-        // No money moves for sports until bets are paid through the Kadi API (Phase 8).
-        $this->app->bind(SportsWallet::class, NullSportsWallet::class);
+        // Sports settlements move money in the Kadi wallet, through the sb_wager_ops outbox (plan §5.3).
+        $this->app->bind(SportsWallet::class, ApiSportsWallet::class);
         $this->app->scoped(ResponsiblePlay::class);
 
         $this->app->singleton(KadiApiService::class, function ($app) {

@@ -10,6 +10,9 @@ use App\Livewire\Wallet\DepositSheet;
 use App\Livewire\Wallet\Index;
 use App\Livewire\WalletBalance;
 use App\Models\User;
+use App\Sportsbook\Enums\BetStatus;
+use App\Sportsbook\Models\Bet;
+use App\Sportsbook\Models\WagerOp;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
@@ -409,6 +412,43 @@ test('KadiApi refusing because of money or activity keeps the account and says w
         ->assertSee('Finish the Kadi game you are in first.');
 
     expect(User::find($user->id))->not->toBeNull();
+});
+
+test('a sports bet still to settle, or a settlement not yet sent, keeps the account open without asking KadiApi', function (BetStatus $status, ?string $opStatus) {
+    $user = accountPlayer(['password' => Hash::make('password')]);
+    $bet = Bet::factory()->for($user)->create(['status' => $status]);
+
+    if ($opStatus !== null) {
+        WagerOp::query()->create([
+            'product' => 'sportsbook', 'wager_reference' => $bet->wager_reference, 'subject_type' => 'bet', 'subject_id' => $bet->id,
+            'operation' => 'settle', 'version' => 1, 'payload' => [], 'fingerprint' => str_repeat('a', 64), 'status' => $opStatus,
+        ]);
+    }
+
+    Livewire::actingAs($user)->test(CloseAccount::class)
+        ->call('start')->set('password', 'password')->set('confirmWord', 'DELETE')->call('close')
+        ->assertSee('Wait for your sports bets and jackpot entries to settle first.');
+
+    expect(User::find($user->id))->not->toBeNull();
+    Http::assertNotSent(fn ($request) => $request->method() === 'DELETE');
+})->with([
+    'open bet' => [BetStatus::Open, null],
+    'being checked' => [BetStatus::Pending, null],
+    'settled, payout not sent' => [BetStatus::Won, 'pending'],
+    'settled, payout refused' => [BetStatus::Won, 'failed'],
+]);
+
+test('a closed account keeps its settled sports bets for the books, without the player', function () {
+    Queue::fake();
+    $user = accountPlayer(['password' => Hash::make('password')]);
+    $bet = Bet::factory()->for($user)->create(['status' => BetStatus::Lost]);
+
+    Livewire::actingAs($user)->test(CloseAccount::class)
+        ->call('start')->set('password', 'password')->set('confirmWord', 'DELETE')->call('close')
+        ->assertRedirect('/');
+
+    expect(User::find($user->id))->toBeNull()
+        ->and($bet->fresh())->not->toBeNull()->user_id->toBeNull();
 });
 
 test('a wrong password or a missing confirmation never reaches KadiApi', function (string $password, string $word, string $field) {

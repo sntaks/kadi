@@ -27,6 +27,9 @@ class BetNotPlaced extends RuntimeException
 
     public const FREE_BET_MIN_ODDS = 'free-bet-min-odds';
 
+    /** The Kadi wallet could not be reached, or refused the bet for a reason the player cannot fix on the slip. */
+    public const WALLET = 'wallet';
+
     public function __construct(public readonly string $reason, string $message)
     {
         parent::__construct($message);

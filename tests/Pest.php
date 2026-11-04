@@ -1,13 +1,19 @@
 <?php
 
+use App\Models\User;
+use App\Sportsbook\Betting\PlaceBet;
+use App\Sportsbook\Betting\Settlement\RecordResult;
+use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\FixtureResult;
 use App\Sportsbook\Models\Jackpot;
 use App\Sportsbook\Models\Market;
 use App\Sportsbook\Models\Selection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Tests\Support\FakeWagerApi;
 use Tests\TestCase;
 
 /*
@@ -160,4 +166,33 @@ function selectionFor(Fixture $fixture, string $outcome = 'home'): Selection
 function openJackpot(int $matches = 3): Jackpot
 {
     return Jackpot::factory()->open()->withMatches($matches)->create()->load('jackpotFixtures.fixture');
+}
+
+/**
+ * A stateful Kadi wager API behind Http::fake, with sports betting switched on (tests/Support/FakeWagerApi.php).
+ */
+function wagerApi(): FakeWagerApi
+{
+    return FakeWagerApi::install();
+}
+
+/**
+ * Place a bet on the given fixtures' 1X2 outcomes, e.g. [[$fixture, 'home'], [$other, 'draw']].
+ *
+ * @param  list<array{0: Fixture, 1: string}>  $picks
+ */
+function betOn(User $player, array $picks, string $stake = '100', ?int $freeBetId = null): Bet
+{
+    return app(PlaceBet::class)->handle($player, array_map(fn (array $pick): array => slipPick(selectionFor($pick[0], $pick[1])), $picks), $stake, freeBetId: $freeBetId);
+}
+
+/**
+ * Record a fixture's full-time score from the feed (or as given).
+ *
+ * @param  array<string, mixed>  $extra
+ * @return array{legs: int, bets: int}
+ */
+function recordScore(Fixture $fixture, int $home, int $away, array $extra = [], string $source = FixtureResult::SOURCE_FEED, ?User $admin = null): array
+{
+    return app(RecordResult::class)->handle($fixture, ['home_score' => $home, 'away_score' => $away, ...$extra], $source, $admin);
 }

@@ -47,6 +47,8 @@ return [
         'play_url' => env('KADI_PLAY_URL', 'https://kadi.online'),
         // Game server PHP scripts (e.g. mpesa_create_jp_wallet.php for the promo jackpot wallet).
         'game_api_url' => env('KADI_GAME_API_URL', 'https://gameapi.kadi.online/kadi'),
+        // The sportsbook's game key (game `sportsbook`): wagers, settlements and launch-token redeem. Never logged.
+        'sportsbook_game_key' => env('KADI_SPORTSBOOK_GAME_KEY'),
     ],
 
     // TextSMS (sms.textsms.co.ke): phone verification codes. The API key lives in .env only.
