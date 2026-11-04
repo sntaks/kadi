@@ -9,4 +9,20 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // Schedule::command('sitemap:generate')->daily();
-// Schedule::command('odds:sync')->everyFiveMinutes();
+
+/*
+ * The merged sportsbook (plan Phase 7), only while PLATFORM_SPORTS is on. Times are the standalone app's.
+ */
+$sports = fn (): bool => (bool) config('platform.sports');
+
+// Free: competition list and fixtures, including kick-off changes and matches in play.
+Schedule::command('sportsbook:sync-fixtures')->hourly()->when($sports)->withoutOverlapping(30)->onOneServer();
+
+// Paid: one credit per synced competition per market per region. Once a day on the free plan.
+Schedule::command('sportsbook:sync-odds')->dailyAt('09:00')->timezone('Africa/Nairobi')->when($sports)->withoutOverlapping(60)->onOneServer();
+
+// Free postponement voids every run; paid scores (2 credits) only for competitions with bets waiting on a result,
+// at most every 12 hours each.
+Schedule::command('sportsbook:settle')->hourly()->when($sports)->withoutOverlapping(30)->onOneServer();
+
+Schedule::command('sportsbook:suspend-stale')->everyFiveMinutes()->when($sports)->withoutOverlapping(10)->onOneServer();

@@ -85,4 +85,11 @@ return [
         'base_url' => env('UNSPLASH_BASE_URL', 'https://api.unsplash.com'),
         'source_url' => env('UNSPLASH_SOURCE_URL', 'https://images.unsplash.com'),
     ],
+
+    // The Odds API (the merged sportsbook, config/sportsbook.php). The key lives in .env only; with
+    // ODDS_API_DRIVER=replay (the default) no call is made and no credit is spent.
+    'odds_api' => [
+        'key' => env('ODDS_API_KEY'),
+        'base_url' => env('ODDS_API_BASE_URL', 'https://api.the-odds-api.com/v4'),
+    ],
 ];
