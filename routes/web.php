@@ -26,6 +26,7 @@ use App\Livewire\Lobby\Casino;
 use App\Livewire\Lobby\GameIndex;
 use App\Livewire\Lobby\GameShow;
 use App\Livewire\Profile\Show;
+use App\Livewire\Promotions;
 use App\Livewire\Referrals\Index as ReferralsIndex;
 use App\Livewire\Rules;
 use App\Livewire\Sports\CompetitionPage as SportsCompetition;
@@ -49,6 +50,9 @@ Route::get('/', Welcome::class)->name('home');
 Route::get('/how-to', Rules::class)->name('rules');
 Route::get('/games-guide', GameGuide::class)->name('game-guide');
 Route::get('/faq', Faq::class)->name('faq');
+
+// Every offer in one place (plan Phase 11), for guests and players.
+Route::get('/promotions', Promotions::class)->middleware(RequirePlatformFlag::class.':ui_v2')->name('promotions');
 
 // The casino (plan Phase 5): browse for everyone once games open inside the site.
 Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':token_launch'])->group(function () {

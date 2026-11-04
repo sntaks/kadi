@@ -115,6 +115,7 @@ class Welcome extends Component
                 'rail' => $sports,
                 'noindex' => false,
                 'page' => 'home',
+                'og' => 'og-lobby.jpg',
                 'description' => $casino
                     ? 'Play Kadi online, the Kenyan card game, head to head for real money, plus slots and scratch cards. One wallet, M-Pesa deposits.'
                     : 'Play Kadi online, the Kenyan card game, head to head for real money. Singles, tournaments and jackpots, with M-Pesa deposits.',

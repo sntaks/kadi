@@ -34,7 +34,7 @@ class Home extends Component
             'competitions' => $lobby->competitions(),
             'jackpot' => $lobby->openJackpot(),
         ])
-            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports'])
+            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports', 'og' => 'og-sports.jpg'])
             ->title('Football betting · Kadi');
     }
 }

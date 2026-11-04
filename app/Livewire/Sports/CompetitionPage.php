@@ -25,7 +25,7 @@ class CompetitionPage extends Component
         $competition = Competition::query()->findOrFail($this->competitionId);
 
         return view('livewire.sports.competition', ['competition' => $competition])
-            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports'])
+            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports', 'og' => 'og-sports.jpg'])
             ->title($competition->name.' betting · Kadi');
     }
 }

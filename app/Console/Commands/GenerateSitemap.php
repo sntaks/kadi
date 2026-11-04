@@ -23,6 +23,10 @@ class GenerateSitemap extends Command
             ->add(Url::create(route('legal.terms'))->setPriority(0.3)->setChangeFrequency('yearly'))
             ->add(Url::create(route('legal.privacy'))->setPriority(0.3)->setChangeFrequency('yearly'));
 
+        if (config('platform.ui_v2')) {
+            $sitemap->add(Url::create(route('promotions'))->setPriority(0.7)->setChangeFrequency('weekly'));
+        }
+
         // The crawlable game pages, while they are on: every title the catalogue offers.
         if (config('platform.ui_v2') && config('platform.deep_link')) {
             $sitemap->add(Url::create(route('games.slots'))->setPriority(0.8)->setChangeFrequency('weekly'))

@@ -3,6 +3,8 @@
     'description' => null,
     'noindex'     => false,
     'page'        => 'home',
+    // A share image in public/images for this page (plan Phase 11), e.g. og-sports.jpg; otherwise one by page.
+    'og'          => null,
 ])
 
 @php
@@ -19,7 +21,7 @@
         'terms'      => 'og-terms.png',
         'privacy'    => 'og-privacy.png',
     ];
-    $ogImage = $appUrl . '/images/' . ($ogImages[$page] ?? 'og-default.png');
+    $ogImage = $appUrl . '/images/' . ($og ?? $ogImages[$page] ?? 'og-default.png');
     $canonical = $appUrl . request()->getPathInfo();
 @endphp
 

@@ -16,7 +16,7 @@ class Search extends Component
     public function render(FixtureListing $listing): View
     {
         return view('livewire.sports.search', ['fixtures' => $listing->search($this->q)])
-            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports'])
+            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports', 'og' => 'og-sports.jpg'])
             ->title('Search matches · Kadi');
     }
 }

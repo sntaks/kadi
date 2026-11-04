@@ -23,3 +23,19 @@ test('the sitemap lists only public pages that exist', function () {
         $this->get($path)->assertOk();
     }
 });
+
+test('the promotions page is listed once the new site is on', function () {
+    config(['platform.ui_v2' => true]);
+    $realPublic = public_path();
+    $public = storage_path('framework/testing/sitemap-'.uniqid());
+    File::ensureDirectoryExists($public);
+    app()->usePublicPath($public);
+
+    $this->artisan('sitemap:generate')->assertSuccessful()->run();
+    $xml = File::get($public.'/sitemap.xml');
+
+    app()->usePublicPath($realPublic);
+    File::deleteDirectory($public);
+
+    expect($xml)->toContain(route('promotions'));
+});

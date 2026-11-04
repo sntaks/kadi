@@ -1,8 +1,9 @@
 <?php
 
+/** The manifest as browsers fetch it: built per request from the switches (App\Support\WebManifest). */
 function manifest(): array
 {
-    return json_decode(file_get_contents(public_path('manifest.webmanifest')), true, flags: JSON_THROW_ON_ERROR);
+    return test()->get('/manifest.webmanifest')->assertOk()->assertHeader('Content-Type', 'application/manifest+json')->json();
 }
 
 test('the manifest is valid JSON with the fields installability needs', function () {
@@ -84,7 +85,7 @@ test('the icons live in pwa-icons because Apache aliases /icons/ to its own dire
     expect(is_dir(public_path('pwa-icons')))->toBeTrue();
 
     $offenders = collect([
-        'public/sw.js', 'public/offline.html', 'public/manifest.webmanifest',
+        'public/sw.js', 'public/offline.html', 'app/Support/WebManifest.php',
         'resources/views/partials/head.blade.php',
         'resources/views/components/pwa/install-button.blade.php',
         'resources/views/components/pwa/install-dialog.blade.php',
@@ -142,4 +143,44 @@ test('the vapid public key meta only appears when push is configured', function 
 
     config(['webpush.vapid.public_key' => 'BExampleKey']);
     expect($this->get(route('login'))->getContent())->toContain('<meta name="vapid-public-key" content="BExampleKey">');
+});
+
+test('the manifest is served without a session or cookies and may be cached briefly', function () {
+    $response = $this->get('/manifest.webmanifest')->assertOk();
+
+    expect($response->headers->get('Cache-Control'))->toContain('public')->toContain('max-age=300')
+        ->and($response->headers->getCookies())->toBe([]);
+});
+
+test('the old site has no shortcuts and keeps its dashboard start', function () {
+    expect(manifest())->toMatchArray(['id' => '/', 'start_url' => '/dashboard?source=pwa', 'shortcuts' => []]);
+});
+
+test('the new site offers Kadi, Sports, Slots and Wallet shortcuts, each with an icon that exists', function () {
+    config(['platform.ui_v2' => true, 'platform.token_launch' => true, 'platform.deep_link' => true, 'platform.sports' => true]);
+
+    $manifest = manifest();
+
+    expect($manifest['start_url'])->toBe('/?source=pwa')
+        ->and(collect($manifest['shortcuts'])->pluck('url')->all())->toBe([
+            '/play/kadi?source=pwa-shortcut', '/sports?source=pwa-shortcut', '/slots?source=pwa-shortcut', '/wallet?source=pwa-shortcut',
+        ]);
+
+    foreach ($manifest['shortcuts'] as $shortcut) {
+        foreach ($shortcut['icons'] as $icon) {
+            $path = public_path(ltrim($icon['src'], '/'));
+            expect(file_exists($path))->toBeTrue("{$icon['src']} is missing")
+                ->and(implode('x', array_slice(getimagesize($path), 0, 2)))->toBe($icon['sizes']);
+        }
+    }
+});
+
+test('a shortcut never points at a page that is switched off', function () {
+    config(['platform.ui_v2' => true, 'platform.token_launch' => false, 'platform.deep_link' => false, 'platform.sports' => false]);
+
+    expect(collect(manifest()['shortcuts'])->pluck('url')->all())->toBe(['/?source=pwa-shortcut', '/wallet?source=pwa-shortcut']);
+
+    config(['platform.token_launch' => true]);
+
+    expect(collect(manifest()['shortcuts'])->pluck('url')->all())->toContain('/casino/slots?source=pwa-shortcut');
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WebManifestController;
 use App\Http\Middleware\AuthenticatePushApiKey;
 use App\Http\Middleware\CapturePromoCode;
 use App\Http\Middleware\CaptureReferralCode;
@@ -16,6 +17,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Support\Facades\Route;
 use Sentry\Laravel\Integration;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -28,6 +30,11 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
+        // The installed app's manifest (App\Support\WebManifest): built from the switches so its shortcuts only
+        // open pages that exist, and kept out of the `web` group (no session, cookies or gates).
+        then: function () {
+            Route::get('/manifest.webmanifest', WebManifestController::class)->name('manifest');
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(prepend: [

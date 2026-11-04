@@ -63,7 +63,7 @@ class GameIndex extends Component
             'groups' => $groups,
             'favourites' => $user instanceof User ? $this->favouriteCodes() : null,
         ])
-            ->layout('layouts.site', ['shell' => 'app', 'noindex' => false, 'page' => 'games', 'description' => $page['description']])
+            ->layout('layouts.site', ['shell' => 'app', 'noindex' => false, 'page' => 'games', 'og' => $this->game === 'slots' ? 'og-slots.jpg' : 'og-scratch.jpg', 'description' => $page['description']])
             ->title($page['meta'].' · Play online in Kenya');
     }
 }

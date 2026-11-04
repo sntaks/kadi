@@ -37,7 +37,7 @@ test('the files listed in the file map exist', function () {
     // The map groups files under a directory heading and often lists them by name, so the doc must
     // name each file (by its file name) and the file must exist at its full path.
     foreach ([
-        'public/sw.js', 'public/manifest.webmanifest', 'public/offline.html', 'public/pwa-icons/badge-72.png',
+        'public/sw.js', 'app/Support/WebManifest.php', 'public/offline.html', 'public/pwa-icons/badge-72.png',
         'resources/js/pwa/install.js', 'resources/js/pwa/push.js', 'resources/js/pwa/register-sw.js',
         'resources/views/components/pwa/install-button.blade.php',
         'resources/views/components/pwa/install-dialog.blade.php',

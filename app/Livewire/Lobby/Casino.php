@@ -42,7 +42,7 @@ class Casino extends Component
             'favourites' => $user ? $this->favouriteCodes() : null,
             'guest' => $user === null,
         ])
-            ->layout('layouts.site', ['shell' => 'app', 'noindex' => true, 'page' => 'casino'])
+            ->layout('layouts.site', ['shell' => 'app', 'noindex' => true, 'page' => 'casino', 'og' => $this->filter === 'scratch-cards' ? 'og-scratch.jpg' : 'og-slots.jpg'])
             ->title(($this->filter === 'all' ? 'Casino' : $filters[$this->filter]).' · Kadi');
     }
 }

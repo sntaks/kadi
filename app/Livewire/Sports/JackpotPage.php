@@ -71,6 +71,7 @@ class JackpotPage extends Component
         $this->entryKey = (string) Str::uuid();
         unset($this->myEntryCount, $this->enteredEntry);
         $this->dispatch('jackpot-entered');
+        $this->trackEntered($entry);
         $this->dispatch('wallet-refreshed');
     }
 
@@ -109,6 +110,15 @@ class JackpotPage extends Component
     public function refreshEntry(): void
     {
         unset($this->enteredEntry);
+        $this->trackEntered($this->enteredEntry);
+    }
+
+    /** Analytics, once the wallet has taken the entry (a pending one counts when the check confirms it). */
+    private function trackEntered(?JackpotEntry $entry): void
+    {
+        if ($entry?->status === JackpotEntryStatus::Open) {
+            $this->dispatch('kadi-track', name: 'bet_placed', params: ['product' => 'sportsbook_jackpot', 'bet_type' => 'jackpot']);
+        }
     }
 
     #[Computed]
@@ -122,7 +132,7 @@ class JackpotPage extends Component
     public function render(): View
     {
         return view('livewire.sports.jackpot')
-            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports'])
+            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports', 'og' => 'og-sports.jpg'])
             ->title('Sports jackpot · Kadi');
     }
 }

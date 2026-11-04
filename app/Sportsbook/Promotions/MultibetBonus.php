@@ -86,7 +86,7 @@ class MultibetBonus
     /**
      * @return array<int, int> Qualifying legs => percent, lowest first.
      */
-    private static function tiers(): array
+    public static function tiers(): array
     {
         $tiers = array_map('intval', (array) config('sportsbook.promotions.multibet_bonus.tiers'));
         ksort($tiers);

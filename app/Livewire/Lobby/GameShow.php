@@ -52,7 +52,7 @@ class GameShow extends Component
             'favourites' => $favourites,
             'description' => $this->describe($title),
         ])
-            ->layout('layouts.site', ['shell' => 'app', 'noindex' => false, 'page' => 'games', 'description' => $this->describe($title)])
+            ->layout('layouts.site', ['shell' => 'app', 'noindex' => false, 'page' => 'games', 'og' => $title->game === 'scratch' ? 'og-scratch.jpg' : 'og-slots.jpg', 'description' => $this->describe($title)])
             ->title($title->name.' · Play online on Kadi');
     }
 

@@ -236,10 +236,10 @@
                                 <span>Booking code</span>
                                 <b class="nt-num">{{ $bookingCode }}</b>
                                 <div class="nt-share-row">
-                                    <a target="_blank" rel="noopener" x-bind:href="'https://wa.me/?text=' + encodeURIComponent(text + ' ' + link)">WhatsApp</a>
-                                    <a target="_blank" rel="noopener" x-bind:href="'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(text)">Telegram</a>
-                                    <a x-bind:href="'sms:?&body=' + encodeURIComponent(text + ' ' + link)">SMS</a>
-                                    <button type="button" x-on:click="navigator.share ? navigator.share({ text, url: link }).catch(() => {}) : (navigator.clipboard?.writeText(link), copied = true)"><span x-text="copied ? 'Copied' : 'More'">More</span></button>
+                                    <a target="_blank" rel="noopener" x-bind:href="'https://wa.me/?text=' + encodeURIComponent(text + ' ' + link)" x-on:click="window.kadiTrack?.('slip_shared', { method: 'whatsapp' })">WhatsApp</a>
+                                    <a target="_blank" rel="noopener" x-bind:href="'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(text)" x-on:click="window.kadiTrack?.('slip_shared', { method: 'telegram' })">Telegram</a>
+                                    <a x-bind:href="'sms:?&body=' + encodeURIComponent(text + ' ' + link)" x-on:click="window.kadiTrack?.('slip_shared', { method: 'sms' })">SMS</a>
+                                    <button type="button" x-on:click="window.kadiTrack?.('slip_shared', { method: navigator.share ? 'native' : 'copy' }); navigator.share ? navigator.share({ text, url: link }).catch(() => {}) : (navigator.clipboard?.writeText(link), copied = true)"><span x-text="copied ? 'Copied' : 'More'">More</span></button>
                                 </div>
                             </div>
                         @endif
