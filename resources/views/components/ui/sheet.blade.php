@@ -1,10 +1,11 @@
 {{--
     A sheet: right-hand drawer on desktop, bottom sheet on phones (`center` for a centred dialog on desktop).
     Open with $dispatch('open-sheet', 'name'), close with $dispatch('close-sheet', 'name'), Esc or the scrim.
-    Focus moves in and is trapped while open, then returns to what opened it.
+    Focus moves in and is trapped while open, then returns to what opened it. `open` starts it open (a form
+    that came back with errors); `title` may be a slot, for a title that changes with the sheet's content.
 --}}
-@props(['name', 'title', 'center' => false])
-<div x-data="{ open: false }"
+@props(['name', 'title', 'center' => false, 'open' => false])
+<div x-data="{ open: @js((bool) $open) }"
      x-on:open-sheet.window="if ($event.detail === @js($name)) open = true"
      x-on:close-sheet.window="if ($event.detail === @js($name)) open = false"
      x-on:keydown.escape.window="open = false"

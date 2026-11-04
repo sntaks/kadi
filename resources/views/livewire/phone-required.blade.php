@@ -41,7 +41,7 @@
 
             {{-- Heading --}}
             <div class="mb-6 text-center">
-                <h2 id="phone-required-title" class="mb-1 text-2xl font-black text-white" style="font-family: 'Cinzel', serif;">
+                <h2 id="phone-required-title" class="mb-1 text-2xl font-black text-white" @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless>
                     {{ $step === 'code' ? __('Confirm your number') : __('One Last Step') }}
                 </h2>
                 <p class="text-sm text-[#6b6b6b]" style="font-family: 'Outfit', sans-serif;">
@@ -99,7 +99,7 @@
                     wire:click="save"
                     wire:loading.attr="disabled"
                     class="btn-casino-primary w-full rounded-xl py-3.5 text-sm font-bold tracking-wider transition disabled:cursor-not-allowed disabled:opacity-50"
-                    style="font-family: 'Cinzel', serif;"
+                    @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless
                 >
                     <span wire:loading.remove wire:target="save">{{ __('Send me a code') }}</span>
                     <span wire:loading wire:target="save">{{ __('Sending…') }}</span>
@@ -151,7 +151,7 @@
                             wire:click="verify"
                             wire:loading.attr="disabled"
                             class="btn-casino-primary w-full rounded-xl py-3.5 text-sm font-bold tracking-wider transition disabled:cursor-not-allowed disabled:opacity-50"
-                            style="font-family: 'Cinzel', serif;"
+                            @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless
                         >
                             <span wire:loading.remove wire:target="verify">{{ __('Confirm') }}</span>
                             <span wire:loading wire:target="verify">{{ __('Checking…') }}</span>
@@ -167,7 +167,7 @@
                             wire:loading.attr="disabled"
                             x-bind:disabled="left > 0"
                             class="btn-casino-primary w-full rounded-xl py-3.5 text-sm font-bold tracking-wider transition disabled:cursor-not-allowed disabled:opacity-50"
-                            style="font-family: 'Cinzel', serif;"
+                            @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless
                             data-test="otp-send"
                         >
                             <span wire:loading.remove wire:target="sendCode">{{ __('Send me a code') }}</span>

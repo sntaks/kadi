@@ -23,7 +23,7 @@
             <p>{{ $description }}</p>
             <div class="nt-ctas">
                 @if ($title->playUrl())
-                    <x-ui.button size="lg" :href="$title->playUrl()">{{ auth()->check() ? 'Play '.$title->name : 'Log in to play' }}</x-ui.button>
+                    <x-ui.button size="lg" :href="$title->playUrl()" :data-needs-account="auth()->guest() ? '' : null">{{ auth()->check() ? 'Play '.$title->name : 'Log in to play' }}</x-ui.button>
                 @else
                     <x-ui.pill tone="warn">Opens for play here soon</x-ui.pill>
                 @endif

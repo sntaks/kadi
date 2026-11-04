@@ -25,11 +25,15 @@ class PromoCodeField extends Component
 
     public ?string $expiresAt = null;
 
-    public function mount(?string $error = null): void
+    /**
+     * @param  string|null  $initial  the code typed before a failed submit; passed in because a lazy field
+     *                                (the sign-in sheet) mounts in a later request, after the old input is gone
+     */
+    public function mount(?string $error = null, ?string $initial = null): void
     {
         $this->error = $error;
         $this->code = request()->hasSession()
-            ? (string) (old('promo_code') ?? PromoCode::pending(request()) ?? '')
+            ? (string) ($initial ?? old('promo_code') ?? PromoCode::pending(request()) ?? '')
             : '';
 
         if ($this->code !== '') {

@@ -27,6 +27,8 @@
     --color-ash: #a8a191;
     --color-win: #3cc56a;
     --color-hot: #e8604f;
+    --color-hot-soft: #f4b0a6;
+    --color-win-soft: #7fdc9c;
 
     --font-card: 'Cinzel', Georgia, serif;
 
@@ -92,9 +94,9 @@
         font-size: 12px; font-weight: 700; background: var(--color-felt-3); color: var(--color-soft);
     }
     .nt-pill svg { width: 12px; height: 12px; }
-    .nt-pill-ok { background: rgb(60 197 106 / .14); color: #7fdc9c; }
+    .nt-pill-ok { background: rgb(60 197 106 / .14); color: var(--color-win-soft); }
     .nt-pill-warn { background: rgb(248 192 56 / .14); color: var(--color-gold); }
-    .nt-pill-hot { background: rgb(232 96 79 / .14); color: #f4b0a6; }
+    .nt-pill-hot { background: rgb(232 96 79 / .14); color: var(--color-hot-soft); }
     .nt-pill-gold { background: linear-gradient(90deg, var(--color-gold-2), #f5a742); color: var(--color-gold-ink); }
 
     .nt-chip {

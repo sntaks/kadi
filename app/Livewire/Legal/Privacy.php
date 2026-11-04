@@ -3,19 +3,21 @@
 namespace App\Livewire\Legal;
 
 use App\Support\LegalDocument;
+use App\Support\NewLook;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
+// The help pages read in the padded reading shell in the new look (layouts.guest passes `shell` on).
+#[Layout('layouts.guest', ['shell' => 'app', 'noindex' => false])]
 #[Title('Privacy Policy | Kadi')]
 class Privacy extends Component
 {
     public function render(): \Illuminate\Contracts\View\View|Factory|View
     {
-        return view('livewire.legal.document', [
+        return view(NewLook::view('livewire.help.legal', 'livewire.legal.document'), [
             'document' => LegalDocument::load('privacy'),
             'current' => 'privacy',
             'tagline' => 'What we collect, why we need it, who sees it and what you can ask us to do with it.',

@@ -14,7 +14,7 @@
         <div class="nt-empty">
             <b>Keep your favourite games in one place</b>
             Log in, then tap the heart on any slot or scratch card.
-            <div class="mt-4"><x-ui.button :href="route('login')">Log in</x-ui.button></div>
+            <div class="mt-4"><x-ui.button :href="route('login')" data-signin="login">Log in</x-ui.button></div>
         </div>
     @elseif ($titles->isEmpty())
         <div class="nt-empty">

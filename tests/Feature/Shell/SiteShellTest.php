@@ -20,11 +20,11 @@ beforeEach(function () {
 
 dataset('guest pages', [
     'landing' => ['home', 'app'],
-    'how to play' => ['rules', 'page'],
-    'games and prizes' => ['game-guide', 'page'],
-    'faq' => ['faq', 'page'],
-    'terms' => ['legal.terms', 'page'],
-    'privacy' => ['legal.privacy', 'page'],
+    'how to play' => ['rules', 'app'],
+    'games and prizes' => ['game-guide', 'app'],
+    'faq' => ['faq', 'app'],
+    'terms' => ['legal.terms', 'app'],
+    'privacy' => ['legal.privacy', 'app'],
     'log in' => ['login', 'panel'],
     'join' => ['register', 'panel'],
     'forgot password' => ['password.request', 'panel'],
