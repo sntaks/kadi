@@ -2,9 +2,10 @@
     A game tile: 2:3 art, play button on hover/focus, optional favourite heart and badge.
     Pass a GameTitle as `title` (art, name and badges come from the catalogue), or name/image directly.
     `favourite`: null hides the heart, true/false sets its state. `toggle` wires the heart to the Livewire
-    page's toggleFavourite() (App\Livewire\Concerns\TogglesFavourites).
+    page's toggleFavourite() (App\Livewire\Concerns\TogglesFavourites). `needsAccount` marks the play link
+    for the sign-in sheet (a guest's play link needs an account).
 --}}
-@props(['title' => null, 'name' => null, 'image' => null, 'href' => null, 'sub' => null, 'badge' => null, 'favourite' => null, 'toggle' => false])
+@props(['title' => null, 'name' => null, 'image' => null, 'href' => null, 'sub' => null, 'badge' => null, 'favourite' => null, 'toggle' => false, 'needsAccount' => false])
 @php
     /** @var \App\Games\GameTitle|null $title */
     $name ??= $title?->name;
@@ -21,7 +22,7 @@
             <span class="nt-art-fallback" aria-hidden="true">{{ $name }}</span>
         @endif
         @if ($href)
-            <a href="{{ $href }}" class="nt-play" aria-label="Play {{ $name }}"><span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></a>
+            <a href="{{ $href }}" class="nt-play" aria-label="Play {{ $name }}" @if ($needsAccount) data-needs-account @endif><span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></a>
         @endif
         @if ($favourite !== null)
             <button type="button" class="nt-fav" aria-pressed="{{ $favourite ? 'true' : 'false' }}" aria-label="Favourite {{ $name }}" @if ($title) data-fav="{{ $title->code }}" @endif

@@ -53,6 +53,13 @@
 
         <x-site.bottom-bar :nav="$nav" />
 
+        @guest
+            {{-- Not on the sign-in pages themselves: they show the same forms in the page. --}}
+            @unless ($shell === 'panel')
+                <x-site.signin-sheet />
+            @endunless
+        @endguest
+
         @if (config('platform.sports'))
             {{-- Kept across wire:navigate so picks survive page changes; the sports pages fill it (Phase 9). --}}
             @persist('bet-slip')

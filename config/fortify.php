@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RememberReturnPath;
 use Laravel\Fortify\Features;
 
 return [
@@ -101,7 +102,8 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    // RememberReturnPath: the sign-in sheet sends the page it opened on, so players land back there.
+    'middleware' => ['web', RememberReturnPath::class],
 
     /*
     |--------------------------------------------------------------------------

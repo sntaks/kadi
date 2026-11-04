@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Concerns\ConsentValidationRules;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\RememberReturnPath;
 use App\Jobs\ProcessVerifiedUser;
 use App\Models\User;
 use App\Promotions\PromoCode;
 use App\Referrals\ReferralCode;
+use App\Support\AuthView;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,8 +22,11 @@ class GoogleAuthController extends Controller
 {
     use ConsentValidationRules;
 
-    public function redirect()
+    public function redirect(Request $request)
     {
+        // From the sign-in sheet: come back to the page it opened on (same-site paths only).
+        RememberReturnPath::remember($request, $request->query('return_to'));
+
         return Socialite::driver('google')->redirect();
     }
 
@@ -90,7 +95,7 @@ class GoogleAuthController extends Controller
                 ->withErrors(['email' => 'Your sign-up session expired. Please try again.']);
         }
 
-        return view('pages::auth.google-complete', ['name' => $pending['name']]);
+        return view(AuthView::name('google-complete'), ['name' => $pending['name']]);
     }
 
     public function storeComplete(Request $request): RedirectResponse
@@ -148,6 +153,8 @@ class GoogleAuthController extends Controller
     public function cancel(Request $request): RedirectResponse
     {
         $request->session()->forget('google.pending');
+        // A cancelled Google sign-up must not send a later, unrelated login to the page it started on.
+        RememberReturnPath::forget($request);
 
         return redirect()->route('register');
     }

@@ -10,4 +10,5 @@
 <x-ui.game-tile :title="$title" :href="$href"
                 :favourite="$favourites === null ? null : in_array($title->code, $favourites, true)"
                 :toggle="$favourites !== null"
+                :needs-account="auth()->guest() && $href === $title->playUrl()"
                 {{ $attributes }} />

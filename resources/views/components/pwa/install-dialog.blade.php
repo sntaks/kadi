@@ -32,7 +32,7 @@
         <div class="p-6">
             <div class="mb-5 flex items-center gap-3">
                 <img src="/pwa-icons/icon-192.png" alt="" width="40" height="40" class="h-10 w-10 rounded-lg">
-                <h2 id="pwa-install-title" class="text-lg font-bold text-[#f5c542]" style="font-family: 'Cinzel', serif;">
+                <h2 id="pwa-install-title" class="text-lg font-bold text-[#f5c542]" @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless>
                     <span x-show="mode === 'ios'">Add Kadi to your Home Screen</span>
                     <span x-show="mode === 'manual'">Install Kadi</span>
                 </h2>

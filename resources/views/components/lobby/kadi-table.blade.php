@@ -20,7 +20,7 @@
         @auth
             <x-play-kadi class="nt-btn nt-btn-gold nt-btn-lg">Play Kadi</x-play-kadi>
         @else
-            <x-ui.button size="lg" :href="route('register')">Join and play</x-ui.button>
+            <x-ui.button size="lg" :href="route('register')" data-signin="join">Join and play</x-ui.button>
         @endauth
         <x-ui.button variant="ghost" size="lg" :href="route('rules')" wire:navigate>How to play</x-ui.button>
     </div>

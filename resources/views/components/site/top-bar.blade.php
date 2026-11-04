@@ -32,9 +32,9 @@
             <x-site.account-menu :nav="$nav" />
         @else
             <div class="nt-auth flex items-center gap-2">
-                <x-ui.button variant="ghost" :href="route('login')">Log in</x-ui.button>
+                <x-ui.button variant="ghost" :href="route('login')" data-signin="login">Log in</x-ui.button>
                 @if (Route::has('register'))
-                    <x-ui.button :href="route('register')">Join</x-ui.button>
+                    <x-ui.button :href="route('register')" data-signin="join">Join</x-ui.button>
                 @endif
             </div>
         @endif
