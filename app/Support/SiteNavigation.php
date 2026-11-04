@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\User;
+use App\Sportsbook\Catalogue\SportsLobby;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -58,13 +59,8 @@ final class SiteNavigation
      */
     public function groups(): array
     {
+        // Kadi · Casino · Sports, each collapsed until opened (the group of the current page starts open).
         $groups = [];
-
-        if ($this->sportsOn()) {
-            $groups[] = ['key' => 'sports', 'label' => 'Sports', 'icon' => 'ball', 'items' => [
-                $this->link('Highlights', 'sports', 'ball', active: 'sports'),
-            ]];
-        }
 
         $groups[] = ['key' => 'kadi', 'label' => 'Kadi', 'icon' => 'cards', 'items' => [
             $this->playKadi('Play Kadi'),
@@ -80,6 +76,10 @@ final class SiteNavigation
                 $this->casinoLink('Jackpot slots', 'jackpot'),
                 $this->casinoLink('Favourites', 'favourites'),
             ]];
+        }
+
+        if ($this->sportsOn()) {
+            $groups[] = ['key' => 'sports', 'label' => 'Sports', 'icon' => 'ball', 'items' => $this->sportsItems()];
         }
 
         return $groups;
@@ -218,7 +218,38 @@ final class SiteNavigation
 
     private function sportsOn(): bool
     {
-        return config('platform.sports') && Route::has('sports');
+        return SportsPages::on();
+    }
+
+    /**
+     * The side menu's Sports group (plan §2): Highlights and Today with real counts, the competitions with matches
+     * open, the sports jackpot while it takes entries, and In play (a list only, so marked Soon).
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function sportsItems(): array
+    {
+        $lobby = app(SportsLobby::class);
+        $onHome = request()->routeIs('sports');
+        $tab = request()->query('tab');
+
+        $items = [
+            $this->item('Highlights', route('sports'), 'ball', active: $onHome && ($tab === null || $tab === 'highlights')) + ['count' => $lobby->highlightsCount()],
+            $this->item('Today', route('sports', ['tab' => 'today']), 'clock', active: $onHome && $tab === 'today'),
+        ];
+
+        foreach (array_slice($lobby->competitions(), 0, 8) as $competition) {
+            $items[] = $this->item($competition['name'], route('sports.competition', $competition['slug']), 'trophy',
+                active: request()->routeIs('sports.competition') && request()->route('competition')?->slug === $competition['slug']) + ['count' => $competition['count']];
+        }
+
+        if ($lobby->openJackpot() !== null) {
+            $items[] = $this->link('Sports jackpot', 'sports.jackpot', 'gift');
+        }
+
+        $items[] = $this->link('In play', 'sports.live', 'live') + ['badge' => 'Soon'];
+
+        return $items;
     }
 
     /** @return array<string, mixed> */

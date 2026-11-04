@@ -1,9 +1,20 @@
 {{--
-    The landing for guests and players (plan §2, Phase 5): the Kadi table first, then the casino panel.
-    Today's football takes the place beside and under the Kadi table once the sports pages exist (Phase 9).
+    The landing for guests and players (plan §2): the Kadi table, with today's big match beside it and the
+    football list under them while sports is on (Phase 9), then the casino panel. The bet slip sits in the rail.
 --}}
 <div class="nt-lobby nt-view-in">
-    <x-lobby.kadi-table :seats="$seats" />
+    @if ($sports && $bigMatch)
+        <div class="nt-lead nt-lead-two">
+            <x-lobby.kadi-table :seats="$seats" />
+            <x-sports.big-match :fixture="$bigMatch" :also="$alsoToday" />
+        </div>
+    @else
+        <x-lobby.kadi-table :seats="$seats" />
+    @endif
+
+    @if ($sports)
+        <livewire:sports.fixture-list preview key="landing-football" />
+    @endif
 
     @if ($casino)
         <section class="nt-panel nt-casino nt-reveal" aria-labelledby="casino-title"

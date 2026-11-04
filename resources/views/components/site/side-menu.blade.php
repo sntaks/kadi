@@ -1,6 +1,6 @@
 {{--
     Side menu: sticky on desktop, a drawer below 1024px (opened by the top bar or the bottom bar's Menu).
-    Collapsible game groups, then flat account links, then Help, then 18+. Rules, not boxes.
+    Collapsible game groups (Kadi, Casino, Sports; collapsed until opened), then flat account links, then Help, then 18+. Rules, not boxes.
 --}}
 @props(['nav'])
 @php($user = auth()->user())
@@ -27,11 +27,13 @@
     @endif
 
     @foreach ($nav->groups() as $group)
-        <div class="nt-group" x-data="{ open: true }">
-            <button type="button" x-bind:aria-expanded="open" aria-controls="site-group-{{ $group['key'] }}" x-on:click="open = ! open">
+        {{-- Collapsed until opened; the group holding the current page starts open so its link stays in view. --}}
+        @php($open = collect($group['items'])->contains(fn (array $item) => $item['active']))
+        <div class="nt-group" x-data="{ open: @js($open) }">
+            <button type="button" aria-expanded="{{ $open ? 'true' : 'false' }}" x-bind:aria-expanded="open" aria-controls="site-group-{{ $group['key'] }}" x-on:click="open = ! open">
                 <x-site.icon :name="$group['icon']" />{{ $group['label'] }}<x-site.icon name="chev" class="nt-chev" />
             </button>
-            <ul id="site-group-{{ $group['key'] }}" x-show="open" x-collapse>
+            <ul id="site-group-{{ $group['key'] }}" x-show="open" x-collapse @unless ($open) x-cloak @endunless>
                 @foreach ($group['items'] as $item)
                     <li><x-site.nav-item :item="$item" /></li>
                 @endforeach

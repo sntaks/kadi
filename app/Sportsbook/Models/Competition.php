@@ -36,6 +36,9 @@ class Competition extends SportsbookModel
 {
     protected $table = 'sb_competitions';
 
+    /** Pages under /sports that a competition's /sports/{slug} must never shadow. */
+    public const RESERVED_SLUGS = ['match', 'jackpot', 'live', 'search'];
+
     /** @use HasFactory<CompetitionFactory> */
     use HasFactory, LogsActivity;
 
@@ -56,7 +59,8 @@ class Competition extends SportsbookModel
             }
 
             $slug = Str::slug($competition->name) ?: Str::slug($competition->odds_api_key);
-            $competition->slug = static::where('slug', $slug)->exists() ? $slug.'-'.Str::lower(Str::random(4)) : $slug;
+            $taken = in_array($slug, self::RESERVED_SLUGS, true) || static::where('slug', $slug)->exists();
+            $competition->slug = $taken ? $slug.'-'.Str::lower(Str::random(4)) : $slug;
         });
     }
 

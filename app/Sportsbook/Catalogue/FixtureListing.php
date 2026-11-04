@@ -37,15 +37,32 @@ class FixtureListing
         'highlights' => 'Highlights',
         'today' => 'Today',
         'tomorrow' => 'Tomorrow',
-        'upcoming' => 'Upcoming',
+        'upcoming' => 'This week',
     ];
 
     private const LIMIT = 60;
 
     /**
+     * @param  int|null  $limit  How many to load (the first page of a list); the list's own cap by default.
      * @return Collection<int, Fixture>
      */
-    public function forTab(string $tab, string $marketKey, ?Competition $competition = null): Collection
+    public function forTab(string $tab, string $marketKey, ?Competition $competition = null, ?int $limit = null): Collection
+    {
+        return $this->tabQuery($tab, $marketKey, $competition)->limit($limit ?? self::LIMIT)->get();
+    }
+
+    /**
+     * How many matches the tab holds, uncapped: the number players see ("All 111 matches") is the real one.
+     */
+    public function count(string $tab, ?Competition $competition = null): int
+    {
+        return $this->tabQuery($tab, 'h2h', $competition)->reorder()->toBase()->getCountForPagination();
+    }
+
+    /**
+     * @return Builder<Fixture>
+     */
+    private function tabQuery(string $tab, string $marketKey, ?Competition $competition): Builder
     {
         $localNow = CarbonImmutable::now(config('sportsbook.timezone'));
 
@@ -66,7 +83,7 @@ class FixtureListing
                 ->orderBy('kicks_off_at');
         }
 
-        return $query->limit(self::LIMIT)->get();
+        return $query;
     }
 
     /**

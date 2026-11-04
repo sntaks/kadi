@@ -3,9 +3,10 @@
     from GET /games/search, then filtered in the browser so typing never waits on the server. Shown only
     once games open inside the site, because a result has to lead somewhere.
     "/" focuses it; Down moves into the results; Esc closes them.
-    Teams and leagues join the list when the sports pages exist (Phase 9).
+    Teams, competitions and matches join the list while the sports pages are on (Phase 9).
 --}}
-@if (config('platform.token_launch'))
+@php($sportsSearch = \App\Support\SportsPages::on())
+@if (config('platform.token_launch') || $sportsSearch)
     <div class="nt-search" role="search"
          x-data="{
             q: '',
@@ -37,10 +38,10 @@
          x-on:focusout="if (! $el.contains($event.relatedTarget)) open = false">
         <label class="nt-search-box">
             <x-site.icon name="search" />
-            <span class="sr-only">Search games</span>
+            <span class="sr-only">{{ $sportsSearch ? 'Search teams, leagues or games' : 'Search games' }}</span>
             <input type="search" x-ref="input" x-model="q" x-on:focus="open = true; load()" x-on:input="open = true"
                    x-on:keydown.down.prevent="first()"
-                   placeholder="Search games" autocomplete="off" aria-controls="site-search-results"
+                   placeholder="{{ $sportsSearch ? 'Search teams, games' : 'Search games' }}" autocomplete="off" aria-controls="site-search-results"
                    x-bind:aria-expanded="open && q.trim().length >= 2">
             <kbd aria-hidden="true">/</kbd>
         </label>
@@ -54,9 +55,9 @@
                 </a>
             </template>
             <p x-show="failed">Search isn't available right now. Try again in a moment.</p>
-            <p x-show="loading">Loading games…</p>
-            <p x-show="ready && results.length === 0">No games match "<span x-text="q.trim()"></span>".</p>
+            <p x-show="loading">Loading…</p>
+            <p x-show="ready && results.length === 0">Nothing matches "<span x-text="q.trim()"></span>".</p>
         </div>
-        <p class="sr-only" aria-live="polite" x-text="ready && open && q.trim().length >= 2 ? results.length + (results.length === 1 ? ' game found' : ' games found') : ''"></p>
+        <p class="sr-only" aria-live="polite" x-text="ready && open && q.trim().length >= 2 ? results.length + (results.length === 1 ? ' result' : ' results') : ''"></p>
     </div>
 @endif

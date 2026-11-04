@@ -16,7 +16,7 @@
                 <livewire:games.history :embedded="true" :key="'kadi-history'" />
             </div>
         @elseif ($tab === 'sports')
-            <div class="nt-empty px-[22px]"><b>Your bets show here</b>Sports bets appear on this tab once you place one.</div>
+            @include('livewire.account.partials.sports-bets', ['page' => $sports])
         @else
             <div wire:init="load" wire:key="wagers-{{ $tab }}-{{ $page }}">
                 @if (! $loaded)

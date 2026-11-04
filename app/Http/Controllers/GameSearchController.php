@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Games\Game;
 use App\Games\GameCatalogue;
+use App\Sportsbook\Catalogue\SportsLobby;
+use App\Support\SportsPages;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -12,11 +14,14 @@ use Illuminate\Http\JsonResponse;
  */
 class GameSearchController extends Controller
 {
-    public function __invoke(GameCatalogue $catalogue): JsonResponse
+    public function __invoke(GameCatalogue $catalogue, SportsLobby $sports): JsonResponse
     {
+        $sportsOn = SportsPages::on();
+        abort_unless(config('platform.token_launch') || $sportsOn, 404);
+
         $entries = [];
 
-        foreach ($catalogue->games() as $game) {
+        foreach (config('platform.token_launch') ? $catalogue->games() : [] as $game) {
             if ($game->hasTitles()) {
                 foreach ($game->titles as $title) {
                     $entries[] = [
@@ -29,6 +34,10 @@ class GameSearchController extends Controller
             } elseif (Game::framed($game->code)) {
                 $entries[] = ['name' => $game->name, 'kind' => 'Game', 'url' => route('play', ['game' => $game->code]), 'thumb' => null];
             }
+        }
+
+        if ($sportsOn) {
+            array_push($entries, ...$sports->searchEntries());
         }
 
         // The same for everyone; SetCacheHeaders lets guests' browsers keep it for five minutes,

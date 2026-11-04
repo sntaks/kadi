@@ -19,6 +19,8 @@
        @if ($item['external']) target="_blank" rel="noopener noreferrer" @endif>
         @if ($icon)<x-site.icon :name="$item['icon']" />@endif
         <span>{{ $label }}</span>
+        @isset($item['count'])<span class="nt-nav-n nt-num">{{ $item['count'] }}</span>@endisset
+        @isset($item['badge'])<span class="nt-nav-badge">{{ $item['badge'] }}</span>@endisset
         @if ($item['external'])
             @if ($icon)<x-site.icon name="external" class="nt-nav-end" />@endif
             <span class="sr-only">(opens in a new tab)</span>
