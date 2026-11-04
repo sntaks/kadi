@@ -168,4 +168,25 @@
         .nt-toc a { flex: none; padding: 6px 14px; border: 1px solid var(--color-line); border-radius: 999px; font-size: 13px; }
         .nt-toc a[aria-current='true'] { border-color: var(--color-gold); }
     }
+
+    /* ── Promotions (plan Phase 11) ───────────────────────── */
+    /* Two balanced columns at most (Kadi offers, then sports), one on phones: no row gaps under a tall card. */
+    .nt-offers { columns: 2 340px; column-gap: 18px; }
+    .nt-offer { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 22px; overflow: hidden; break-inside: avoid; margin-bottom: 18px; }
+    .nt-offer-tag { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--color-gold-dim); }
+    .nt-offer h2 { margin: 0; font-size: 21px; font-weight: 800; color: var(--color-ivory); }
+    .nt-offer p { margin: 0; color: var(--color-soft); font-size: 14px; line-height: 1.5; }
+    .nt-offer .nt-offer-figure { font-size: 17px; font-weight: 700; color: var(--color-ivory); }
+    .nt-offer .nt-offer-figure .nt-num { font-size: 28px; font-weight: 800; color: var(--color-gold); }
+    .nt-offer-terms { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13px; line-height: 1.45; color: var(--color-ash); }
+    .nt-offer-cta { margin-top: 8px; }
+    .nt-offer-tiers { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .nt-offer-tiers th { padding: 6px 0; text-align: left; font-size: 12px; font-weight: 600; color: var(--color-ash); border-bottom: 1px solid var(--color-line); }
+    .nt-offer-tiers th:last-child, .nt-offer-tiers td:last-child { text-align: right; }
+    .nt-offer-tiers td { padding: 7px 0; border-bottom: 1px solid var(--color-line); color: var(--color-ivory); }
+    .nt-offer-tiers td:last-child { font-weight: 700; color: var(--color-gold); }
+    .nt-offer-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .nt-offer-list li { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px; padding: 10px 12px; border: 1px solid var(--color-line); border-radius: var(--radius-control); background: var(--color-felt-2); }
+    .nt-offer-list b { color: var(--color-gold); }
+    .nt-offer-list span { font-size: 13px; color: var(--color-ash); }
 }

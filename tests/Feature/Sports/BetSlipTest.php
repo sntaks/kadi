@@ -65,7 +65,9 @@ test('placing takes the stake from the Kadi wallet and shows the bet', function 
         ->assertHasNoErrors()
         ->assertSee('Bet placed')
         ->assertDispatched('betslip-clear')
-        ->assertDispatched('wallet-refreshed');
+        ->assertDispatched('wallet-refreshed')
+        // Analytics: the kind of bet only, never the stake, payout or reference.
+        ->assertDispatched('kadi-track', name: 'bet_placed', params: ['product' => 'sportsbook', 'bet_type' => 'single', 'legs' => 1, 'free_bet' => false]);
 
     expect(Bet::sole()->status)->toBe(BetStatus::Open)
         ->and($this->api->balanceOf($player))->toBe(90_000);
@@ -77,11 +79,13 @@ test('while the wallet has not answered the slip says it is checking, then shows
     $home = selectionFor(pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]), 'home');
     $this->api->next('place', 'lost-answer');
 
-    $slip = slipFor($player, [slipPick($home)])->call('placeBet')->assertSee('Checking your bet…')->assertSee('wire:poll.3s="refreshPlaced"', false);
+    $slip = slipFor($player, [slipPick($home)])->call('placeBet')->assertSee('Checking your bet…')->assertSee('wire:poll.3s="refreshPlaced"', false)
+        ->assertNotDispatched('kadi-track'); // a bet the wallet may still refuse is not counted yet
 
     (new ReconcileWager('bet', Bet::sole()->id))->handle(app(WagerPlacement::class));
 
-    $slip->call('refreshPlaced')->assertSee('Bet placed')->assertDontSee('Checking your bet…');
+    $slip->call('refreshPlaced')->assertSee('Bet placed')->assertDontSee('Checking your bet…')
+        ->assertDispatched('kadi-track', name: 'bet_placed', params: ['product' => 'sportsbook', 'bet_type' => 'single', 'legs' => 1, 'free_bet' => false]);
 });
 
 test('too little money says so, with a way to deposit', function () {

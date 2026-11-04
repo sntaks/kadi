@@ -23,6 +23,7 @@
     :description="$description ?? null"
     :noindex="$noindex ?? false"
     :page="$page ?? 'home'"
+    :og="$og ?? null"
 />
 
 <link rel="icon" href="/favicon.ico" sizes="any">

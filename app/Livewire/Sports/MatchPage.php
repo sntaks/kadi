@@ -57,7 +57,7 @@ class MatchPage extends Component
     public function render(): View
     {
         return view('livewire.sports.match')
-            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports'])
+            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports', 'og' => 'og-sports.jpg'])
             ->title($this->fixture->name().' · Kadi');
     }
 }

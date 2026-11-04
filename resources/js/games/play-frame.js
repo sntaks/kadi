@@ -2,14 +2,16 @@
 // Posts the launch into the frame, shows a loading state, offers "Open in its own tab" when the
 // game is slow, and listens to the game servers (and only them) for ready / balance / close.
 import { markGameReturn } from './return.js';
+import { track } from '../site/analytics.js';
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('gameFrame', ({ origins, fallbackAfter, framed, lobby }) => ({
+    Alpine.data('gameFrame', ({ origins, fallbackAfter, framed, lobby, game, product }) => ({
         loaded: false,
         started: false,
         slow: false,
         error: null,
         immersive: false,
+        tracked: false,
         seconds: 0,
         timers: [],
 
@@ -38,6 +40,12 @@ document.addEventListener('alpine:init', () => {
         launch(target) {
             const form = this.$refs.launch;
             form.target = target;
+            // Recorded before the form posts (a '_self' launch leaves this page), and once per visit: "Try again"
+            // and "Open in its own tab" are the same launch.
+            if (!this.tracked) {
+                this.tracked = true;
+                track('game_launch', { game, product: product ?? undefined, target: target === 'game-frame' ? 'frame' : (target === '_blank' ? 'tab' : 'page') });
+            }
             form.submit();
         },
 

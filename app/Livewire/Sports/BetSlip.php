@@ -147,6 +147,7 @@ class BetSlip extends Component
         unset($this->freeBets, $this->selectedFreeBet, $this->placedBet, $this->openBets);
         $this->dispatch('betslip-clear');
         $this->dispatch('wallet-refreshed');
+        $this->trackPlaced($bet);
     }
 
     /** Polled while a placement is being checked with the wallet. */
@@ -155,8 +156,22 @@ class BetSlip extends Component
         unset($this->placedBet, $this->openBets);
 
         if ($this->placedBet?->status === BetStatus::Open) {
+            $this->trackPlaced($this->placedBet);
             $this->dispatch('wallet-refreshed');
         }
+    }
+
+    /**
+     * Analytics (resources/js/site/analytics.js), once the wallet has taken the bet: a pending one is counted when
+     * the check confirms it, a rejected one never. The kind of bet only, never the stake, payout or reference.
+     */
+    private function trackPlaced(Bet $bet): void
+    {
+        if ($bet->status !== BetStatus::Open) {
+            return;
+        }
+
+        $this->dispatch('kadi-track', name: 'bet_placed', params: ['product' => 'sportsbook', 'bet_type' => $bet->type->value, 'legs' => count($this->picks) ?: $bet->legs()->count(), 'free_bet' => $bet->isFreeBet()]);
     }
 
     public function newSlip(): void

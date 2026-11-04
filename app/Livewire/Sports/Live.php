@@ -15,7 +15,7 @@ class Live extends Component
     public function render(FixtureListing $listing): View
     {
         return view('livewire.sports.live', ['fixtures' => $listing->inPlay()])
-            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports'])
+            ->layout('layouts.site', ['shell' => 'app', 'rail' => true, 'noindex' => true, 'page' => 'sports', 'og' => 'og-sports.jpg'])
             ->title('In play · Kadi');
     }
 }
