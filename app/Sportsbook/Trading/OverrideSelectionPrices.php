@@ -4,6 +4,7 @@ namespace App\Sportsbook\Trading;
 
 use App\Models\User;
 use App\Sportsbook\Models\Market;
+use App\Sportsbook\Support\StaffActor;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -20,7 +21,7 @@ class OverrideSelectionPrices
     /**
      * @param  array<int, string|null>  $prices  Selection id => override price, or null to clear that override.
      */
-    public function handle(Market $market, User $admin, array $prices, string $reason): void
+    public function handle(Market $market, User|StaffActor $admin, array $prices, string $reason): void
     {
         DB::transaction(function () use ($market, $admin, $prices, $reason): void {
             $changes = [];
@@ -41,7 +42,8 @@ class OverrideSelectionPrices
                 $selection->update([
                     'override_price' => $newOverride,
                     'override_reason' => $newOverride === null ? null : $reason,
-                    'override_by_admin_id' => $newOverride === null ? null : $admin->id,
+                    'override_by_admin_id' => $newOverride === null || ! $admin instanceof User ? null : $admin->id,
+                    'override_by_staff' => $newOverride === null ? null : StaffActor::labelOf($admin),
                 ]);
 
                 $selection->refresh()->recordOfferedPriceChange($offeredBefore);
@@ -53,10 +55,10 @@ class OverrideSelectionPrices
             }
 
             activity('odds')
-                ->causedBy($admin)
+                ->causedBy(StaffActor::causer($admin))
                 ->performedOn($market)
                 ->event('prices-overridden')
-                ->withProperties(['fixture' => $market->fixture->name(), 'market' => $market->name(), 'reason' => $reason, 'prices' => $changes])
+                ->withProperties(StaffActor::with($admin, ['fixture' => $market->fixture->name(), 'market' => $market->name(), 'reason' => $reason, 'prices' => $changes]))
                 ->log('Prices overridden');
         });
     }

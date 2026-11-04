@@ -44,5 +44,6 @@
         <env name="PLATFORM_DEEP_LINK" value="false"/>
         <env name="PLATFORM_SPORTS" value="false"/>
         <env name="PLATFORM_SPORTS_BETTING" value="false"/>
+        <env name="KADI_IN_FRAME" value="true"/>
     </php>
 </phpunit>

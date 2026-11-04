@@ -52,9 +52,10 @@ return [
             // Kadi keeps its own launch: a form POST of `ggid` (the player's account_no) to
             // services.kadi_api.play_url. Every other game uses a single-use API launch token.
             'launch' => 'ggid',
-            // Only inside the site's frame once Kadi's web build is confirmed single-threaded
-            // (plan §4a). Until then Play Kadi goes through the launcher and opens in its own page.
-            'frame' => (bool) env('KADI_IN_FRAME', false),
+            // Played inside the site's frame like slots and scratch cards (/play/kadi): the ggid form is
+            // posted into the frame, never off-site. The play page still offers "Open in its own tab" if
+            // the game doesn't load. KADI_IN_FRAME=false sends Play Kadi to Kadi's own page instead.
+            'frame' => (bool) env('KADI_IN_FRAME', true),
             'tagline' => 'Classic Kenyan Kadi: singles, tournaments and jackpots.',
             // Players seated right now per mode (App\Games\KadiTables). The only seat counts the site shows.
             'totals_url' => env('KADI_TOTALS_URL') ?: 'https://gameapi.kadi.online/kadi/get_user_totals.php',
