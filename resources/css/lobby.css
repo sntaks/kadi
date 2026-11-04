@@ -10,7 +10,7 @@
 
     /* ── The Kadi table (headliner) ───────────────────────── */
     .nt-table {
-        position: relative; overflow: hidden; min-height: 330px; padding: 30px 32px; border-radius: var(--radius-panel);
+        position: relative; overflow: hidden; padding: 30px 32px; border-radius: var(--radius-panel);
         border: 1px solid var(--color-line-2);
         background:
             radial-gradient(110% 90% at 82% 42%, rgb(248 192 56 / .17), transparent 56%),
@@ -28,7 +28,24 @@
     .nt-seats b { display: block; font-size: 26px; font-weight: 800; line-height: 1.1; color: var(--color-gold); }
     .nt-seats span { font-size: 12.5px; color: var(--color-ash); }
     .nt-ctas { display: flex; flex-wrap: wrap; gap: 10px; }
-    .nt-table .nt-hand { position: absolute; right: 6%; top: 50%; transform: translateY(-50%); }
+    /*
+     * The hand sits beside the text only while the panel itself is wide enough for both, so it follows the panel's
+     * width, not the screen's (beside "Next big match" the panel is narrow on wide screens). Narrower panels deal it
+     * under the buttons, where it can never cover the text.
+     */
+    .nt-table { container: kadi-table / inline-size; }
+    .nt-table .nt-hand { position: absolute; right: 50%; bottom: -14px; transform: translateX(50%) scale(.78); transform-origin: 50% 100%; }
+    .nt-table .nt-ctas { margin-bottom: 176px; }
+    @container kadi-table (min-width: 600px) {
+        .nt-table .nt-hand { right: -12px; top: 50%; bottom: auto; transform: translateY(-50%) scale(.72); transform-origin: 100% 50%; }
+        .nt-table .nt-ctas { margin-bottom: 0; }
+    }
+    @container kadi-table (min-width: 680px) {
+        .nt-table .nt-hand { right: 0; transform: translateY(-50%) scale(.85); }
+    }
+    @container kadi-table (min-width: 780px) {
+        .nt-table .nt-hand { right: 6%; transform: translateY(-50%); }
+    }
 
     /* ── Casino panel ─────────────────────────────────────── */
     .nt-casino { padding: 22px; }
@@ -82,12 +99,8 @@
     @media (max-width: 1240px) {
         .nt-collections { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
-    @media (max-width: 1023.98px) {
-        .nt-table .nt-hand { right: 2%; transform: translateY(-50%) scale(.85); }
-    }
     @media (max-width: 640px) {
-        .nt-table { padding: 22px 20px 190px; min-height: 0; }
-        .nt-table .nt-hand { right: 50%; top: auto; bottom: -14px; transform: translateX(50%) scale(.78); transform-origin: 50% 100%; }
+        .nt-table { padding: 22px 20px; }
         .nt-seats { gap: 18px; }
         .nt-seats b { font-size: 22px; }
         .nt-casino { padding: 16px; }

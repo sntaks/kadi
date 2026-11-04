@@ -118,6 +118,8 @@ test('the play page frames the game and posts the launch into the frame without 
         ->toContain('target="game-frame"')
         ->toContain('name="product" value="slots_berry_blast"')
         ->toContain('referrerpolicy="no-referrer"')
+        // The frame has no src, so fullscreen must name the game servers or games cannot use it.
+        ->toMatch('/allow="fullscreen [^";]*https:\/\/slots\.kadi\.online[^"]*"/')
         ->toContain('Dragon Fire Fortune') // more like this
         ->not->toContain(LAUNCH_TOKEN);
 

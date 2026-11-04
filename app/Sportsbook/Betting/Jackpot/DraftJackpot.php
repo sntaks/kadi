@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Sportsbook\Enums\JackpotStatus;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Support\StaffActor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -20,7 +21,7 @@ class DraftJackpot
      *
      * @throws ValidationException
      */
-    public function handle(array $data, ?Jackpot $jackpot = null, ?User $admin = null): Jackpot
+    public function handle(array $data, ?Jackpot $jackpot = null, User|StaffActor|null $admin = null): Jackpot
     {
         return DB::transaction(function () use ($data, $jackpot, $admin): Jackpot {
             if ($jackpot !== null) {
@@ -64,10 +65,10 @@ class DraftJackpot
             ])->all());
 
             activity('settlement')
-                ->causedBy($admin)
+                ->causedBy(StaffActor::causer($admin))
                 ->performedOn($jackpot)
                 ->event($jackpot->wasRecentlyCreated ? 'jackpot-drafted' : 'jackpot-changed')
-                ->withProperties(['jackpot' => $jackpot->name, 'matches' => $fixtures->count()])
+                ->withProperties(StaffActor::with($admin, ['jackpot' => $jackpot->name, 'matches' => $fixtures->count()]))
                 ->log($jackpot->wasRecentlyCreated ? 'Jackpot drafted' : 'Jackpot changed');
 
             return $jackpot;

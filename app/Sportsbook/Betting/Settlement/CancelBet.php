@@ -7,6 +7,7 @@ use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Enums\BetStatus;
 use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Promotions\GrantFreeBet;
+use App\Sportsbook\Support\StaffActor;
 use App\Sportsbook\Wagers\WagerOps;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -23,7 +24,7 @@ class CancelBet
     /**
      * @throws ValidationException
      */
-    public function handle(Bet $bet, User $admin, string $reason): Bet
+    public function handle(Bet $bet, User|StaffActor $admin, string $reason): Bet
     {
         $bet = DB::transaction(function () use ($bet, $reason): Bet {
             $bet = Bet::query()->whereKey($bet->id)->lockForUpdate()->firstOrFail();
@@ -45,10 +46,10 @@ class CancelBet
         });
 
         activity('settlement')
-            ->causedBy($admin)
+            ->causedBy(StaffActor::causer($admin))
             ->performedOn($bet)
             ->event('bet-cancelled')
-            ->withProperties(['reference' => $bet->reference, 'reason' => $reason])
+            ->withProperties(StaffActor::with($admin, ['reference' => $bet->reference, 'reason' => $reason]))
             ->log('Bet cancelled');
 
         return $bet;

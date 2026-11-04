@@ -8,6 +8,7 @@ use App\Sportsbook\Enums\MarketStatus;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Enums\SuspensionReason;
 use App\Sportsbook\Models\Market;
+use App\Sportsbook\Support\StaffActor;
 
 /**
  * An admin reopens a suspended market, provided it could legitimately take bets right now.
@@ -17,7 +18,7 @@ class ReopenMarket
     /**
      * @throws MarketCannotBeReopened
      */
-    public function handle(Market $market, User $admin): void
+    public function handle(Market $market, User|StaffActor $admin): void
     {
         if ($market->fixture->hasKickedOff()) {
             throw MarketCannotBeReopened::kickedOff();
@@ -38,10 +39,10 @@ class ReopenMarket
         }
 
         activity('odds')
-            ->causedBy($admin)
+            ->causedBy(StaffActor::causer($admin))
             ->performedOn($market)
             ->event('market-reopened')
-            ->withProperties(['fixture' => $market->fixture->name(), 'market' => $market->name()])
+            ->withProperties(StaffActor::with($admin, ['fixture' => $market->fixture->name(), 'market' => $market->name()]))
             ->log('Market reopened');
     }
 

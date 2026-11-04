@@ -11,6 +11,7 @@ use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\BetLeg;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\FixtureResult;
+use App\Sportsbook\Support\StaffActor;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -27,7 +28,7 @@ class RecordResult
      * @param  array{home_score?: int|null, away_score?: int|null, half_time_home_score?: int|null, half_time_away_score?: int|null, is_void?: bool, note?: string|null}  $result
      * @return array{legs: int, bets: int} How many legs were decided and bets settled.
      */
-    public function handle(Fixture $fixture, array $result, string $source, ?User $admin = null): array
+    public function handle(Fixture $fixture, array $result, string $source, User|StaffActor|null $admin = null): array
     {
         return DB::transaction(function () use ($fixture, $result, $source, $admin): array {
             $previous = $fixture->result()->first();
@@ -43,7 +44,8 @@ class RecordResult
                 'half_time_away_score' => $result['half_time_away_score'] ?? null,
                 'is_void' => $result['is_void'] ?? false,
                 'source' => $source,
-                'recorded_by_admin_id' => $admin?->id,
+                'recorded_by_admin_id' => $admin instanceof User ? $admin->id : null,
+                'recorded_by_staff' => StaffActor::labelOf($admin),
                 'note' => $result['note'] ?? null,
             ]);
 
@@ -53,16 +55,16 @@ class RecordResult
             $this->recordJackpotResult->handle($fixture, $recorded);
 
             activity('settlement')
-                ->causedBy($admin)
+                ->causedBy(StaffActor::causer($admin))
                 ->performedOn($fixture)
                 ->event($previous === null ? 'result-recorded' : 'result-corrected')
-                ->withProperties(array_filter([
+                ->withProperties(StaffActor::with($admin, array_filter([
                     'fixture' => $fixture->name(),
                     'result' => $recorded->scoreLine(),
                     'previous_result' => $previous?->scoreLine(),
                     'source' => $source,
                     'note' => $recorded->note,
-                ], fn (mixed $value): bool => $value !== null))
+                ], fn (mixed $value): bool => $value !== null)))
                 ->log($previous === null ? 'Result recorded' : 'Result corrected');
 
             return $counts;

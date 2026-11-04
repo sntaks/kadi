@@ -9,6 +9,7 @@ use App\Http\Middleware\EnsureNameIsValid;
 use App\Http\Middleware\LogoutInactiveUsers;
 use App\Http\Middleware\RedirectLegacyDomain;
 use App\Http\Middleware\SetCacheHeaders;
+use App\Http\Middleware\VerifyBackofficeSignature;
 use App\Http\Middleware\VerifyKadiWebhookSignature;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -53,6 +54,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'push.api' => AuthenticatePushApiKey::class,
             'kadi.webhook' => VerifyKadiWebhookSignature::class,
+            'backoffice' => VerifyBackofficeSignature::class,
         ]);
 
         // Laravel sorts route middleware by a priority list, and ThrottleRequests is on it, so an
@@ -60,6 +62,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // API key, which this middleware establishes, so it must run first. Otherwise the limit
         // silently falls back to the caller's IP and junk requests eat the real server's bucket.
         $middleware->prependToPriorityList(before: ThrottleRequests::class, prepend: AuthenticatePushApiKey::class);
+        // The same for GMS: unsigned requests are refused before they can use up its rate limit.
+        $middleware->prependToPriorityList(before: ThrottleRequests::class, prepend: VerifyBackofficeSignature::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         Integration::handles($exceptions);

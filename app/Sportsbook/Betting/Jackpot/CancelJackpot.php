@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Sportsbook\Enums\JackpotEntryStatus;
 use App\Sportsbook\Enums\JackpotStatus;
 use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Support\StaffActor;
 use App\Sportsbook\Wagers\WagerOps;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -22,7 +23,7 @@ class CancelJackpot
     /**
      * @throws ValidationException
      */
-    public function handle(Jackpot $jackpot, string $reason, ?User $admin = null): Jackpot
+    public function handle(Jackpot $jackpot, string $reason, User|StaffActor|null $admin = null): Jackpot
     {
         return DB::transaction(function () use ($jackpot, $reason, $admin): Jackpot {
             $jackpot = Jackpot::query()->whereKey($jackpot->id)->lockForUpdate()->firstOrFail();
@@ -47,10 +48,10 @@ class CancelJackpot
             $jackpot->update(['status' => JackpotStatus::Cancelled, 'cancel_reason' => mb_substr($reason, 0, 255), 'settled_at' => now('UTC')]);
 
             activity('settlement')
-                ->causedBy($admin)
+                ->causedBy(StaffActor::causer($admin))
                 ->performedOn($jackpot)
                 ->event('jackpot-cancelled')
-                ->withProperties(['jackpot' => $jackpot->name, 'reason' => $reason, 'entries_refunded' => $refunded])
+                ->withProperties(StaffActor::with($admin, ['jackpot' => $jackpot->name, 'reason' => $reason, 'entries_refunded' => $refunded]))
                 ->log('Jackpot cancelled');
 
             return $jackpot;

@@ -34,8 +34,11 @@
         @endif
 
         @if ($gameModel->playsInFrame())
+            {{-- The frame has no src (the launch is posted into it), so a bare "fullscreen" would allow only this
+                 site's origin. Each feature names the game servers instead, or the game cannot go full screen. --}}
+            @php($frameAllow = collect(['fullscreen', 'autoplay', 'clipboard-write', 'screen-wake-lock'])->map(fn (string $feature) => trim($feature.' '.implode(' ', $origins)))->implode('; '))
             <iframe name="game-frame" x-ref="frame" title="{{ $name }}" @load="frameLoaded()"
-                    allow="fullscreen; autoplay; clipboard-write; screen-wake-lock" referrerpolicy="no-referrer"
+                    allow="{{ $frameAllow }}" referrerpolicy="no-referrer"
                     class="absolute inset-0 h-full w-full border-0" :class="loaded ? 'opacity-100' : 'opacity-0'"></iframe>
         @endif
 

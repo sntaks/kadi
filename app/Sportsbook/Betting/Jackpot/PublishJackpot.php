@@ -7,6 +7,7 @@ use App\Sportsbook\Enums\FixtureStatus;
 use App\Sportsbook\Enums\JackpotStatus;
 use App\Sportsbook\Models\Jackpot;
 use App\Sportsbook\Support\Money;
+use App\Sportsbook\Support\StaffActor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -20,7 +21,7 @@ class PublishJackpot
     /**
      * @throws ValidationException
      */
-    public function handle(Jackpot $jackpot, ?User $admin = null): Jackpot
+    public function handle(Jackpot $jackpot, User|StaffActor|null $admin = null): Jackpot
     {
         return DB::transaction(function () use ($jackpot, $admin): Jackpot {
             $jackpot = Jackpot::query()->whereKey($jackpot->id)->lockForUpdate()->firstOrFail();
@@ -52,10 +53,10 @@ class PublishJackpot
             $jackpot->update(['status' => JackpotStatus::Open, 'published_at' => now('UTC')]);
 
             activity('settlement')
-                ->causedBy($admin)
+                ->causedBy(StaffActor::causer($admin))
                 ->performedOn($jackpot)
                 ->event('jackpot-published')
-                ->withProperties(['jackpot' => $jackpot->name, 'matches' => $matches->count(), 'entry_price' => Money::format($jackpot->entry_price), 'prizes' => Money::format($jackpot->totalPrizes())])
+                ->withProperties(StaffActor::with($admin, ['jackpot' => $jackpot->name, 'matches' => $matches->count(), 'entry_price' => Money::format($jackpot->entry_price), 'prizes' => Money::format($jackpot->totalPrizes())]))
                 ->log('Jackpot published');
 
             return $jackpot;

@@ -22,12 +22,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $override_price
  * @property string|null $override_reason
  * @property int|null $override_by_admin_id
+ * @property string|null $override_by_staff GMS staff member who set the override: "Name (GMS #id)".
  * @property string|null $previous_price
  * @property CarbonImmutable|null $price_changed_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['market_id', 'outcome', 'name', 'fair_probability', 'feed_price', 'override_price', 'override_reason', 'override_by_admin_id', 'previous_price', 'price_changed_at'])]
+#[Fillable(['market_id', 'outcome', 'name', 'fair_probability', 'feed_price', 'override_price', 'override_reason', 'override_by_admin_id', 'override_by_staff', 'previous_price', 'price_changed_at'])]
 class Selection extends SportsbookModel
 {
     protected $table = 'sb_selections';

@@ -97,3 +97,14 @@ test('with the launcher on and Kadi framed, Play Kadi links to the in-site play 
 
     expect($html)->toContain('href="'.route('play', ['game' => 'kadi']).'" data-play-kadi');
 });
+
+test('by default Kadi plays inside the site like slots and scratch cards: Play Kadi opens /play/kadi', function () {
+    config(['platform.token_launch' => true]);
+
+    expect(config('games.games.kadi.frame'))->toBeTrue();
+
+    $html = $this->actingAs(User::factory()->create())->get(route('dashboard'))->getContent();
+
+    expect($html)->toContain('href="'.route('play', ['game' => 'kadi']).'" data-play-kadi')
+        ->and($html)->not->toContain('action="'.config('services.kadi_api.play_url').'"');
+});

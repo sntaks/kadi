@@ -22,11 +22,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $is_void
  * @property string $source "feed" or "admin".
  * @property int|null $recorded_by_admin_id
+ * @property string|null $recorded_by_staff GMS staff member who recorded it: "Name (GMS #id)".
  * @property string|null $note
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['fixture_id', 'home_score', 'away_score', 'half_time_home_score', 'half_time_away_score', 'is_void', 'source', 'recorded_by_admin_id', 'note'])]
+#[Fillable(['fixture_id', 'home_score', 'away_score', 'half_time_home_score', 'half_time_away_score', 'is_void', 'source', 'recorded_by_admin_id', 'recorded_by_staff', 'note'])]
 class FixtureResult extends SportsbookModel
 {
     protected $table = 'sb_fixture_results';

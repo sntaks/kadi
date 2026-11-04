@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Sportsbook\Betting\SportsWallet;
 use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Models\BetLeg;
+use App\Sportsbook\Support\StaffActor;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -17,7 +18,7 @@ class VoidLeg
 {
     public function __construct(private SportsWallet $wallet) {}
 
-    public function handle(BetLeg $leg, string $reason, ?User $admin = null): BetLeg
+    public function handle(BetLeg $leg, string $reason, User|StaffActor|null $admin = null): BetLeg
     {
         return DB::transaction(function () use ($leg, $reason, $admin): BetLeg {
             $leg = BetLeg::query()->whereKey($leg->id)->lockForUpdate()->firstOrFail();
@@ -32,10 +33,10 @@ class VoidLeg
 
             if ($admin !== null) {
                 activity('settlement')
-                    ->causedBy($admin)
+                    ->causedBy(StaffActor::causer($admin))
                     ->performedOn($leg->bet)
                     ->event('leg-voided')
-                    ->withProperties(['leg' => "{$leg->fixture_name}: {$leg->market_name} {$leg->selection_name} @ {$leg->price}", 'reason' => $reason])
+                    ->withProperties(StaffActor::with($admin, ['leg' => "{$leg->fixture_name}: {$leg->market_name} {$leg->selection_name} @ {$leg->price}", 'reason' => $reason]))
                     ->log('Bet leg voided');
             }
 

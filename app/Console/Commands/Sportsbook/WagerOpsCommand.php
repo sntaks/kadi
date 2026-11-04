@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands\Sportsbook;
 
-use App\Sportsbook\Enums\BetStatus;
-use App\Sportsbook\Enums\JackpotEntryStatus;
 use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\JackpotEntry;
 use App\Sportsbook\Models\WagerOp;
+use App\Sportsbook\Wagers\NeedsOperator;
 use App\Sportsbook\Wagers\WagerOps;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -17,7 +16,7 @@ use Illuminate\Console\Command;
 #[Description('The operator queue: sports wager ops the Kadi API refused or that are overdue, and placements still unknown after 10 minutes')]
 class WagerOpsCommand extends Command
 {
-    public function handle(WagerOps $ops): int
+    public function handle(WagerOps $ops, NeedsOperator $needs): int
     {
         if (($retry = $this->option('retry')) !== null) {
             $op = WagerOp::query()->find((int) $retry);
@@ -34,20 +33,18 @@ class WagerOpsCommand extends Command
             return self::SUCCESS;
         }
 
-        $alert = now('UTC')->subMinutes((int) config('sportsbook.wagers.pending_alert_minutes'));
-
         $this->table(
             ['Op', 'Wager', 'Subject', 'Operation', 'Version', 'Status', 'Attempts', 'Last status', 'Last error', 'Created (UTC)'],
-            WagerOp::query()->needsOperator()->orderBy('id')->limit(200)->get()->map(fn (WagerOp $op): array => [
+            $needs->ops()->map(fn (WagerOp $op): array => [
                 $op->id, $op->product.':'.$op->wager_reference, $op->subject_type.' '.$op->subject_id, $op->operation, $op->version,
                 $op->status, $op->attempts, $op->last_status ?? 'no answer', $op->last_error, $op->created_at?->format('Y-m-d H:i'),
             ])->all(),
         );
 
-        $pending = Bet::query()->where('status', BetStatus::Pending)->where('placed_at', '<', $alert)->get(['id', 'reference', 'wager_reference', 'placed_at'])
+        $pending = $needs->pendingBets()
             ->map(fn (Bet $bet): array => ['bet', $bet->id, $bet->reference, $bet->wager_reference, $bet->placed_at->format('Y-m-d H:i')])
-            ->concat(JackpotEntry::query()->where('status', JackpotEntryStatus::Pending)->where('placed_at', '<', $alert)->get(['id', 'reference', 'wager_reference', 'placed_at'])
-                ->map(fn (JackpotEntry $entry): array => ['jackpot entry', $entry->id, $entry->reference, $entry->wager_reference, $entry->placed_at->format('Y-m-d H:i')]));
+            ->toBase()->concat($needs->pendingJackpotEntries()
+            ->map(fn (JackpotEntry $entry): array => ['jackpot entry', $entry->id, $entry->reference, $entry->wager_reference, $entry->placed_at->format('Y-m-d H:i')]));
 
         $this->table(['Pending', 'Id', 'Reference', 'Wager', 'Placed (UTC)'], $pending->all());
 

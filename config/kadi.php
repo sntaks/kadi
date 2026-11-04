@@ -144,6 +144,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Back office (GMS)
+    |--------------------------------------------------------------------------
+    |
+    | GMS, the staff back office, runs sports operations through /api/v1/backoffice (docs/backoffice-api.md):
+    | HMAC-signed requests, checked against every secret here (comma separated, for rotation). Empty means the
+    | API refuses everything. Raw secrets, as HMAC needs them; never logged.
+    |
+    */
+
+    'backoffice' => [
+        'secrets' => array_values(array_filter(array_map('trim', explode(',', (string) env('BACKOFFICE_GMS_SECRETS', ''))))),
+        'per_minute' => (int) env('BACKOFFICE_PER_MINUTE', 300),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Game history and disputes
     |--------------------------------------------------------------------------
     |

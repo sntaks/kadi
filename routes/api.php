@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Backoffice\SportsController;
 use App\Http\Controllers\Api\PushApiController;
 use App\Http\Controllers\Api\PushBroadcastController;
 use App\Http\Controllers\Api\WalletWebhookController;
@@ -32,3 +33,28 @@ Route::prefix('v1/push-broadcasts')->middleware(['push.api:broadcast', 'throttle
     Route::get('{broadcast}', [PushBroadcastController::class, 'show'])->name('show');
     Route::delete('{broadcast}', [PushBroadcastController::class, 'destroy'])->name('destroy');
 });
+
+// GMS (staff back office) -> this site: sports operations, HMAC-signed and idempotent by request id. GMS reads lists
+// straight from this database; only actions and figures that need this app's rules are here. See docs/backoffice-api.md.
+Route::prefix('v1/backoffice/sports')->middleware(['backoffice', 'throttle:backoffice'])->name('api.v1.backoffice.sports.')
+    ->controller(SportsController::class)->group(function () {
+        Route::get('exposure', 'exposure')->name('exposure');
+        Route::get('reconciliation', 'reconciliation')->name('reconciliation');
+        Route::get('odds-api/credits', 'oddsApiCredits')->name('odds-api.credits');
+        Route::get('jackpots/{jackpot}/tiers', 'jackpotTiers')->name('jackpots.tiers');
+
+        Route::post('markets/{market}/suspend', 'suspendMarket')->name('markets.suspend');
+        Route::post('markets/{market}/reopen', 'reopenMarket')->name('markets.reopen');
+        Route::post('markets/{market}/prices', 'overridePrices')->name('markets.prices');
+        Route::post('fixtures/{fixture}/result', 'recordResult')->name('fixtures.result');
+        Route::patch('competitions/{competition:id}', 'updateCompetition')->name('competitions.update');
+
+        Route::post('bet-legs/{leg}/void', 'voidLeg')->name('bet-legs.void');
+        Route::post('bets/{bet}/cancel', 'cancelBet')->name('bets.cancel');
+        Route::post('wager-ops/{op}/retry', 'retryOp')->name('wager-ops.retry');
+
+        Route::post('jackpots', 'draftJackpot')->name('jackpots.store');
+        Route::put('jackpots/{jackpot}', 'draftJackpot')->name('jackpots.update');
+        Route::post('jackpots/{jackpot}/publish', 'publishJackpot')->name('jackpots.publish');
+        Route::post('jackpots/{jackpot}/cancel', 'cancelJackpot')->name('jackpots.cancel');
+    });
