@@ -32,7 +32,8 @@ class Exposure
             ->join('sb_bets', 'sb_bets.id', '=', 'sb_bet_legs.bet_id')
             ->join('sb_fixtures', 'sb_fixtures.id', '=', 'sb_bet_legs.fixture_id')
             ->leftJoin('sb_fixture_results', 'sb_fixture_results.fixture_id', '=', 'sb_bet_legs.fixture_id')
-            ->where('sb_bets.status', BetStatus::Open)
+            // A bet still being checked may well be placed: it counts until the API says otherwise.
+            ->whereIn('sb_bets.status', [BetStatus::Open, BetStatus::Pending])
             ->where('sb_bet_legs.status', BetLegStatus::Open)
             ->where('sb_fixtures.status', FixtureStatus::Scheduled)
             ->whereNull('sb_fixture_results.id')

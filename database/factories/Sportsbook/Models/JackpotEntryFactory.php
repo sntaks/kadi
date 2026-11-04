@@ -29,6 +29,7 @@ class JackpotEntryFactory extends Factory
             'jackpot_id' => Jackpot::factory()->open(),
             'user_id' => User::factory(),
             'reference' => 'J'.Str::upper(Str::random(7)),
+            'wager_reference' => (string) Str::uuid(),
             'status' => JackpotEntryStatus::Open,
             'stake' => 9_900,
             'placed_at' => now(),

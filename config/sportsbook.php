@@ -140,8 +140,36 @@ return [
         'postponement_void_hours' => 48,
         // Settled by hand until it is known whether the feed's scores include extra time.
         'manual_competitions' => ['soccer_uefa_champs_league'],
-        // Withholding tax on net winnings, as a fraction; 0 until the current Kenyan rate is confirmed.
-        'winnings_tax_rate' => (float) env('SPORTSBOOK_WINNINGS_TAX_RATE', 0),
+        // Winnings tax is withheld by the Kadi API (each product's winnings_tax_rate), never here.
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Kadi API wagers
+    |--------------------------------------------------------------------------
+    |
+    | Bets and jackpot entries are wagers in the one Kadi wallet (plan §5.3).
+    | The game key is services.kadi_api.sportsbook_game_key (.env only). The
+    | outbox sends settlements and reversals in order per wager; a call that
+    | fails for a reason that can pass (timeout, 5xx, 429, a version that is
+    | not current yet) is tried again with backoff, then left for an operator.
+    |
+    */
+
+    'wagers' => [
+        'game' => 'sportsbook',
+        'products' => [
+            'bet' => 'sportsbook',
+            'jackpot_entry' => 'sportsbook_jackpot',
+        ],
+        'timeout_seconds' => (int) env('SPORTSBOOK_WAGER_TIMEOUT', 10),
+        // Queue for the outbox and reconcile jobs. The scheduler also sends due ops every minute without a worker.
+        'queue' => env('SPORTSBOOK_WAGER_QUEUE', 'default'),
+        // Backoff in seconds between attempts at one op; after the last, it waits for an operator.
+        'op_backoff' => [30, 60, 120, 300, 600, 1800, 3600],
+        'op_max_attempts' => (int) env('SPORTSBOOK_WAGER_OP_MAX_ATTEMPTS', 12),
+        // A placement still unknown after this long is listed for an operator.
+        'pending_alert_minutes' => 10,
     ],
 
     /*

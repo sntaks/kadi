@@ -6,6 +6,11 @@ use App\Facades\KadiApi;
 use App\Jobs\RevokeGameSessions;
 use App\Livewire\Actions\Logout;
 use App\Models\User;
+use App\Sportsbook\Enums\BetStatus;
+use App\Sportsbook\Enums\JackpotEntryStatus;
+use App\Sportsbook\Models\Bet;
+use App\Sportsbook\Models\JackpotEntry;
+use App\Sportsbook\Wagers\WagerOps;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -31,6 +36,7 @@ class CloseAccount extends Component
         'pending_referral_withdrawal' => 'Wait for your Invite & Earn withdrawal to finish first.',
         'open_game' => 'Finish the Kadi game you are in first.',
         'open_competition' => 'Finish the tournament or jackpot you joined first.',
+        'open_sports_bet' => 'Wait for your sports bets and jackpot entries to settle first.',
     ];
 
     public bool $confirming = false;
@@ -79,6 +85,13 @@ class CloseAccount extends Component
             return;
         }
 
+        // The Kadi API does not know which sports bets are still to settle here: refuse before asking it.
+        if ($this->hasUnsettledSportsBets($user)) {
+            $this->blockers = [self::REASONS['open_sports_bet']];
+
+            return;
+        }
+
         if ($user->linked_id) {
             try {
                 $result = KadiApi::deleteCustomer((int) $user->linked_id);
@@ -106,6 +119,17 @@ class CloseAccount extends Component
         tap($user, $logout(...))->delete();
 
         $this->redirect('/', navigate: false);
+    }
+
+    /**
+     * Sports bets or jackpot entries not settled yet, or whose settlement has not reached the API: the history stays
+     * (without the player) once the account is closed, but money still owed must move first.
+     */
+    private function hasUnsettledSportsBets(User $user): bool
+    {
+        return Bet::query()->where('user_id', $user->id)->whereIn('status', [BetStatus::Pending, BetStatus::Open])->exists()
+            || JackpotEntry::query()->where('user_id', $user->id)->whereIn('status', [JackpotEntryStatus::Pending, JackpotEntryStatus::Open])->exists()
+            || app(WagerOps::class)->hasUnsentFor($user);
     }
 
     /** Players who signed up with Google may never have set a password: typing the word is their confirmation. */

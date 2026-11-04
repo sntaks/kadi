@@ -1,15 +1,11 @@
 <?php
 
 use App\Models\User;
-use App\Sportsbook\Betting\NullSportsWallet;
-use App\Sportsbook\Betting\SportsBettingUnavailable;
+use App\Sportsbook\Betting\ApiSportsWallet;
 use App\Sportsbook\Betting\SportsWallet;
 use App\Sportsbook\Catalogue\FixtureListing;
-use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
-use App\Sportsbook\Models\Jackpot;
-use App\Sportsbook\Models\JackpotEntry;
 use App\Sportsbook\Sync\UpsertFixture;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Date;
@@ -55,33 +51,20 @@ test('"Today" and "Tomorrow" follow the EAT calendar day', function () {
         ->and($listing->forTab('tomorrow', 'h2h')->pluck('id')->all())->toBe([$late->id]);
 });
 
-test('no money moves for sports until bets are paid through the Kadi API', function () {
-    expect(app(SportsWallet::class))->toBeInstanceOf(NullSportsWallet::class);
-
-    $bet = Bet::factory()->create();
-
-    expect(fn () => app(SportsWallet::class)->settleBet($bet))->toThrow(SportsBettingUnavailable::class)
-        ->and(fn () => app(SportsWallet::class)->reopenBet($bet))->toThrow(SportsBettingUnavailable::class);
+test('sports money moves through the Kadi API outbox, never a local wallet', function () {
+    expect(app(SportsWallet::class))->toBeInstanceOf(ApiSportsWallet::class);
 });
 
-test('a jackpot nobody entered can wait for settlement; one with entries cannot be paid yet', function () {
-    $jackpot = Jackpot::factory()->open()->withMatches(3)->create();
-
-    app(SportsWallet::class)->settleJackpot($jackpot);
-
-    JackpotEntry::factory()->for($jackpot)->for(User::factory())->create();
-
-    expect(fn () => app(SportsWallet::class)->settleJackpot($jackpot))->toThrow(SportsBettingUnavailable::class);
-});
-
-test('the sportsbook schedule runs only while sports is on', function (bool $sports) {
+test('the sportsbook schedule runs only while sports is on; money owed is sent whatever the switch says', function (bool $sports) {
     config(['platform.sports' => $sports]);
 
     $events = collect(app(Schedule::class)->events())
         ->filter(fn ($event) => str_contains((string) $event->command, 'sportsbook:'));
+    $money = fn ($event) => str_contains((string) $event->command, 'wager-ops') || str_contains((string) $event->command, 'reconcile-wagers');
 
-    expect($events)->toHaveCount(4)
-        ->and($events->every(fn ($event) => $event->filtersPass(app())))->toBe($sports);
+    expect($events)->toHaveCount(6)
+        ->and($events->reject($money)->every(fn ($event) => $event->filtersPass(app())))->toBe($sports)
+        ->and($events->filter($money)->every(fn ($event) => $event->filtersPass(app())))->toBeTrue();
 })->with([true, false]);
 
 test('players start with "higher" as their odds change choice', function () {

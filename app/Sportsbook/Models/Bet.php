@@ -14,22 +14,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * A placed bet. Money is in cents. The stake and any payout move through the Kadi API wallet (SportsWallet, from
- * Phase 8), never a local ledger.
+ * A bet. Money is in cents. The stake and any payout move through the Kadi API wallet, never a local ledger: the bet
+ * is the API wager `wager_reference` (product sportsbook), placed by PlaceBet and settled through sb_wager_ops.
  *
  * @property int $id
- * @property int $user_id
+ * @property int|null $user_id Null once the player closed their account; the bet stays for the books.
  * @property int|null $free_bet_id Placed with this free bet: no money left the wallet for the stake.
- * @property string $reference
+ * @property string $reference Short, for support.
+ * @property string|null $wager_reference The Kadi API wager reference (a UUID).
  * @property BetType $type
  * @property BetStatus $status
+ * @property string|null $reject_reason The API's refusal code (or not_placed) for a rejected bet.
  * @property int $stake
  * @property string $total_odds
  * @property int $potential_payout Capped at the maximum payout. Includes the multibet bonus; for a free bet, only the
  *                                 winnings above the stake.
  * @property int $bonus_percent The multibet bonus the bet qualified for when placed; 0 for none.
- * @property int|null $payout Cash paid, net of tax.
+ * @property int|null $payout What the settlement credits before tax: winnings plus bonus, or the stake back for a cash void.
  * @property int|null $bonus Multibet bonus paid, before tax.
+ * @property int|null $tax Winnings tax the Kadi API withheld, from its settle response (null until it answers).
  * @property OddsChangePolicy $odds_change_policy
  * @property string|null $client_key
  * @property int $settlement_version
@@ -38,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['user_id', 'free_bet_id', 'reference', 'type', 'status', 'stake', 'total_odds', 'potential_payout', 'bonus_percent', 'payout', 'bonus', 'odds_change_policy', 'client_key', 'settlement_version', 'placed_at', 'settled_at'])]
+#[Fillable(['user_id', 'free_bet_id', 'reference', 'wager_reference', 'type', 'status', 'reject_reason', 'stake', 'total_odds', 'potential_payout', 'bonus_percent', 'payout', 'bonus', 'tax', 'odds_change_policy', 'client_key', 'settlement_version', 'placed_at', 'settled_at'])]
 class Bet extends SportsbookModel
 {
     protected $table = 'sb_bets';
@@ -62,6 +65,7 @@ class Bet extends SportsbookModel
             'bonus_percent' => 'integer',
             'payout' => 'integer',
             'bonus' => 'integer',
+            'tax' => 'integer',
             'settlement_version' => 'integer',
             'odds_change_policy' => OddsChangePolicy::class,
             'placed_at' => 'datetime',
@@ -83,6 +87,20 @@ class Bet extends SportsbookModel
     public function freeBet(): BelongsTo
     {
         return $this->belongsTo(FreeBet::class);
+    }
+
+    /**
+     * The version of the API settlement this bet is on: the first settlement is 1, each reopening adds one.
+     */
+    public function wagerVersion(): int
+    {
+        return $this->settlement_version + 1;
+    }
+
+    /** The winnings after the tax the API withheld. */
+    public function netPayout(): ?int
+    {
+        return $this->payout === null ? null : $this->payout - ($this->tax ?? 0);
     }
 
     public function isFreeBet(): bool

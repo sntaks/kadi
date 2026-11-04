@@ -26,3 +26,8 @@ Schedule::command('sportsbook:sync-odds')->dailyAt('09:00')->timezone('Africa/Na
 Schedule::command('sportsbook:settle')->hourly()->when($sports)->withoutOverlapping(30)->onOneServer();
 
 Schedule::command('sportsbook:suspend-stale')->everyFiveMinutes()->when($sports)->withoutOverlapping(10)->onOneServer();
+
+// Money owed to or by players reaches the Kadi API whatever the switches say: settlements and reversals from the
+// outbox, and lookups of bets whose placement got no answer. Both do nothing when there is nothing waiting.
+Schedule::command('sportsbook:send-wager-ops')->everyMinute()->withoutOverlapping(5)->onOneServer();
+Schedule::command('sportsbook:reconcile-wagers')->everyMinute()->withoutOverlapping(5)->onOneServer();
