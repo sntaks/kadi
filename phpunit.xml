@@ -39,11 +39,10 @@
         <env name="SENTRY_DSN" value=""/>
         <env name="SENTRY_ENABLE_LOGS" value="false"/>
         <!-- Platform switches start off whatever the local .env says; tests that need one turn it on. -->
-        <env name="PLATFORM_UI_V2" value="false"/>
-        <env name="PLATFORM_TOKEN_LAUNCH" value="false"/>
-        <env name="PLATFORM_DEEP_LINK" value="false"/>
-        <env name="PLATFORM_SPORTS" value="false"/>
-        <env name="PLATFORM_SPORTS_BETTING" value="false"/>
+        <env name="PLATFORM_TOKEN_LAUNCH" value="true"/>
+        <env name="PLATFORM_DEEP_LINK" value="true"/>
+        <env name="PLATFORM_SPORTS" value="true"/>
+        <env name="PLATFORM_SPORTS_BETTING" value="true"/>
         <env name="KADI_IN_FRAME" value="true"/>
     </php>
 </phpunit>

@@ -5,29 +5,28 @@
 | Multi-game platform switches
 |--------------------------------------------------------------------------
 |
-| Each switch turns on one part of the move from single-game Kadi to the
-| Kadi, Casino and Sports site (plans/kadi-multi-game-overhaul-plan.md).
-| All default to off, so a deploy changes nothing until a switch is set.
+| The Kadi, Casino and Sports site is the only site (plan Phase 12): the
+| old look is gone. What is left are switches for parts of it: on by
+| default, except taking real-money sports bets, which an environment must
+| turn on deliberately (PLATFORM_SPORTS_BETTING=true).
 |
 */
 
 return [
 
-    // The Night table look: new app shell, landing, casino and game pages.
-    'ui_v2' => (bool) env('PLATFORM_UI_V2', false),
-
-    // Launch every game with a one-time launch token instead of the old
-    // Kadi play form, and play it inside the site.
-    'token_launch' => (bool) env('PLATFORM_TOKEN_LAUNCH', false),
+    // Launch every game with a one-time launch token and play it inside the
+    // site. Off: the casino closes and Kadi uses its ggid form again.
+    'token_launch' => (bool) env('PLATFORM_TOKEN_LAUNCH', true),
 
     // Crawlable game pages (/slots, /scratch-cards, /games/{slug}) that link straight into
     // /play/{game}/{title}. The play links themselves follow token_launch.
-    'deep_link' => (bool) env('PLATFORM_DEEP_LINK', false),
+    'deep_link' => (bool) env('PLATFORM_DEEP_LINK', true),
 
     // Sports pages: fixtures, odds and the bet slip (browse only).
-    'sports' => (bool) env('PLATFORM_SPORTS', false),
+    'sports' => (bool) env('PLATFORM_SPORTS', true),
 
-    // Placing sports bets through the Kadi API wallet. Needs `sports` on.
+    // Placing sports bets through the Kadi API wallet (real money). Needs `sports` on. Off unless set, so a deploy
+    // never starts taking bets on an environment nobody decided to open.
     'sports_betting' => (bool) env('PLATFORM_SPORTS_BETTING', false),
 
 ];

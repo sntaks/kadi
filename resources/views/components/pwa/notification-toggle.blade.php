@@ -12,24 +12,24 @@
 <div wire:ignore data-test="pwa-notifications" class="space-y-4">
 
     {{-- Working out what this device can do --}}
-    <p x-show="$store.pwaPush.state === 'checking'" class="text-sm text-[#6b6b6b]" role="status">
+    <p x-show="$store.pwaPush.state === 'checking'" class="text-sm text-ash" role="status">
         Checking this device&hellip;
     </p>
 
     {{-- Not possible here --}}
     <div x-show="$store.pwaPush.state === 'unsupported'" x-cloak style="display: none;" data-test="pwa-notifications-unsupported"
-         class="rounded-lg border border-yellow-800/20 bg-[#f5c542]/5 p-4 text-sm text-[#f5f5f0]/80">
+         class="rounded-lg border border-line bg-gold/5 p-4 text-sm text-ivory/80">
         <span x-text="$store.pwaPush.unsupportedMessage"></span>
     </div>
 
     {{-- iPhone / iPad in Safari: push only exists once installed to the Home Screen --}}
     <div x-show="$store.pwaPush.state === 'ios-needs-install'" x-cloak style="display: none;" data-test="pwa-notifications-ios"
-         class="space-y-3 rounded-lg border border-yellow-800/20 bg-[#f5c542]/5 p-4">
-        <p class="text-sm text-[#f5f5f0]/80">
+         class="space-y-3 rounded-lg border border-line bg-gold/5 p-4">
+        <p class="text-sm text-ivory/80">
             To get notifications on iPhone or iPad, first add Kadi to your Home Screen, then open it from there.
         </p>
         <button type="button" @click="$store.pwaInstall.activate()" aria-haspopup="dialog"
-                class="btn-casino-ghost rounded-full px-5 py-2 text-sm">
+                class="nt-btn nt-btn-ghost nt-btn-sm">
             Show me how
         </button>
     </div>
@@ -38,8 +38,8 @@
     <div x-show="['default', 'granted-unsubscribed', 'granted-subscribed', 'denied'].includes($store.pwaPush.state)" x-cloak style="display: none;"
          class="flex items-center justify-between gap-4">
         <div class="min-w-0">
-            <p id="pwa-notifications-label" class="text-sm font-semibold text-[#f5f5f0]">Notifications on this device</p>
-            <p id="pwa-notifications-desc" class="mt-0.5 text-xs text-[#6b6b6b]">
+            <p id="pwa-notifications-label" class="text-sm font-semibold text-ivory">Notifications on this device</p>
+            <p id="pwa-notifications-desc" class="mt-0.5 text-xs text-ash">
                 <span x-show="$store.pwaPush.state === 'granted-subscribed'">On. Kadi can send you alerts here, even when the app is closed.</span>
                 <span x-show="$store.pwaPush.state === 'denied'">Blocked in your browser settings.</span>
                 <span x-show="$store.pwaPush.state === 'default' || $store.pwaPush.state === 'granted-unsubscribed'">Off. Turn on to get alerts from Kadi on this device.</span>
@@ -56,8 +56,8 @@
             :aria-busy="$store.pwaPush.busy ? 'true' : 'false'"
             :disabled="!$store.pwaPush.canToggle"
             @click="$store.pwaPush.toggle()"
-            :class="$store.pwaPush.isOn ? 'bg-[#f5c542]' : 'bg-zinc-700'"
-            class="relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f5c542] disabled:cursor-not-allowed disabled:opacity-50"
+            :class="$store.pwaPush.isOn ? 'bg-gold' : 'bg-felt-4'"
+            class="relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:opacity-50"
         >
             <span
                 :class="$store.pwaPush.isOn ? 'translate-x-6' : 'translate-x-1'"
@@ -70,31 +70,31 @@
     {{-- Send a real push to this account's devices. Local/staging or admins only; not rendered for anyone else. --}}
     @if (auth()->check() && app(\App\Services\PushTestSender::class)->allowedFor(auth()->user()))
         <div x-show="$store.pwaPush.state === 'granted-subscribed'" x-cloak style="display: none;" data-test="pwa-notifications-test"
-             class="space-y-2 border-t border-yellow-800/20 pt-4">
+             class="space-y-2 border-t border-line pt-4">
             <div class="flex flex-wrap items-center gap-3">
                 <button type="button" data-test="pwa-notifications-test-button"
                         @click="$store.pwaPush.sendTest()"
                         :disabled="$store.pwaPush.testing"
                         :aria-busy="$store.pwaPush.testing ? 'true' : 'false'"
-                        class="btn-casino-ghost rounded-full px-5 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50">
+                        class="nt-btn nt-btn-ghost nt-btn-sm disabled:cursor-not-allowed disabled:opacity-50">
                     <span x-show="!$store.pwaPush.testing">Send a test notification</span>
                     <span x-show="$store.pwaPush.testing">Sending&hellip;</span>
                 </button>
-                <span class="text-xs text-[#6b6b6b]">Shown in local, staging and to admins only.</span>
+                <span class="text-xs text-ash">Shown in local, staging and to admins only.</span>
             </div>
             <p role="status" aria-live="polite" data-test="pwa-notifications-test-result"
                x-show="$store.pwaPush.testResult" x-cloak style="display: none;"
-               :class="$store.pwaPush.testResult?.ok ? 'text-green-400' : 'text-red-300'"
+               :class="$store.pwaPush.testResult?.ok ? 'text-win' : 'text-red-300'"
                class="text-sm" x-text="$store.pwaPush.testResult?.message"></p>
         </div>
     @endif
 
     {{-- Blocked: how to undo it, per platform (browsers never re-prompt after a block) --}}
     <div x-show="$store.pwaPush.state === 'denied'" x-cloak style="display: none;" data-test="pwa-notifications-denied"
-         class="rounded-lg border border-red-900/40 bg-red-900/10 p-4 text-sm text-[#f5f5f0]/80">
+         class="rounded-lg border border-red-900/40 bg-red-900/10 p-4 text-sm text-ivory/80">
         <p class="font-semibold text-red-300">Notifications are blocked for Kadi.</p>
         <p class="mt-1" x-text="$store.pwaPush.deniedHelp"></p>
-        <p class="mt-1 text-xs text-[#6b6b6b]">Come back to this page afterwards and switch notifications on.</p>
+        <p class="mt-1 text-xs text-ash">Come back to this page afterwards and switch notifications on.</p>
     </div>
 
     {{-- Something went wrong (announced to screen readers) --}}

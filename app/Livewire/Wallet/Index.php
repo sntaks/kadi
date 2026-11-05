@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Wallet;
 
-use App\Account\ResponsiblePlay;
 use App\Facades\KadiApi;
 use App\Livewire\WalletBalance;
 use App\Models\User;
@@ -29,8 +28,6 @@ class Index extends Component
 
     public bool $loadingTransactions = false;
 
-    public bool $showDepositModal = false;
-
     public bool $showWithdrawModal = false;
 
     public bool $needsLoad = false;
@@ -44,8 +41,6 @@ class Index extends Component
      */
     public bool $depositWithdrawEnabled = true;
 
-    public bool $coinsWalletCardEnabled = false;
-
     public bool $withdrawalsTabEnabled = true;
 
     /*
@@ -57,61 +52,21 @@ class Index extends Component
     */
     public string $walletCurrencyLabel = 'KES';
 
-    /*
-   |--------------------------------------------------------------------
-   | Load Wallet / Purchase options
-   |--------------------------------------------------------------------
-   */
-    public array $purchaseOptions = [
-        ['type' => 'emoji', 'label' => 'Emojis', 'price' => 49],
-        ['type' => 'gift',  'label' => 'Gifts',  'price' => 99],
-        ['type' => 'coins', 'price' => 10,   'coins' => 150],
-        ['type' => 'coins', 'price' => 20,   'coins' => 320],
-        ['type' => 'coins', 'price' => 50,   'coins' => 850],
-        ['type' => 'coins', 'price' => 100,  'coins' => 1800],
-        ['type' => 'coins', 'price' => 250,  'coins' => 4750],
-        ['type' => 'coins', 'price' => 500,  'coins' => 10000],
-        // 'best' flags this as the strongest coins-per-shilling ratio in the
-        // set (21 coins/KSH vs. 15-20 for the rest) — drives the "Best Value"
-        // ribbon in the UI. Move the flag if you add/change packages later.
-        ['type' => 'coins', 'price' => 1000, 'coins' => 21000, 'best' => true],
-    ];
-
-    public ?int $selectedPurchaseIndex = null;
-
-    public bool $processingPurchase = false;
-
-    public ?string $purchaseError = null;
-
     public bool $processingWithdraw = false;
 
     public ?string $withdrawError = null;
 
-    public string $depositAmount = '';
-
     public string $withdrawAmount = '';
-
-    public bool $processingDeposit = false;
-
-    public ?string $depositError = null;
-
-    public bool $confirmingDeposit = false;
 
     public bool $confirmingWithdraw = false;
 
     /** Idempotency key for the withdrawal currently being confirmed. */
     public ?string $withdrawKey = null;
 
-    /** deposit | withdraw: the flow to reopen once the phone is confirmed. */
+    /** 'withdraw' while a withdrawal waits for the phone to be confirmed, to reopen it after. */
     public ?string $resumeAfterPhone = null;
 
-    public bool $awaitingDeposit = false;
-
-    public float $depositBaseline = 0;
-
-    public int $depositPolls = 0;
-
-    /** Poll every 5s, so this gives up after ~2 minutes. */
+    /** The deposit sheet polls every 5s, so this gives up after ~2 minutes. */
     public const MAX_DEPOSIT_POLLS = 24;
 
     public const MIN_DEPOSIT = 10;
@@ -180,14 +135,14 @@ class Index extends Component
 
     /**
      * 30s background poll for balances changed by other services through
-     * KadiApi. Skipped while a deposit/withdraw/purchase is in flight (the
-     * deposit flow has its own 5s poll and baseline). Serves the balance
+     * KadiApi. Skipped while a withdrawal is in flight (deposits run in the
+     * deposit sheet, with their own 5s poll and baseline). Serves the balance
      * cache while warm; refetches when it has expired, behind the same lock
      * the nav widget uses so open tabs share one upstream call.
      */
     public function pollBalance(): void
     {
-        if ($this->awaitingDeposit || $this->processingDeposit || $this->processingWithdraw || $this->processingPurchase) {
+        if ($this->processingWithdraw) {
             return;
         }
 
@@ -324,81 +279,6 @@ class Index extends Component
         }
     }
 
-    /*
-    |--------------------------------------------------------------------
-    | Load Wallet / Purchases (M-Pesa STK Push)
-    |--------------------------------------------------------------------
-    | initiatePurchase() is wired to each tile in the UI. It currently
-    | just marks the purchase as "processing" and calls the placeholder
-    | below. Wire requestMpesaStkPush() up to the real external M-Pesa
-    | API when it's ready.
-    */
-    public function initiatePurchase(int $index): void
-    {
-        $this->purchaseError = null;
-
-        $option = $this->purchaseOptions[$index] ?? null;
-
-        if (! $option) {
-            $this->purchaseError = 'Invalid purchase option';
-
-            return;
-        }
-
-        if ($this->onBreak()) {
-            $this->purchaseError = self::ON_BREAK_MESSAGE;
-
-            return;
-        }
-
-        if (! auth()->user()->hasVerifiedPhone()) {
-            $this->purchaseError = 'Please confirm your phone number to complete this purchase';
-            $this->dispatch('open-phone-required', purpose: 'coins');
-
-            return;
-        }
-
-        $this->selectedPurchaseIndex = $index;
-        $this->processingPurchase = true;
-        $this->requestStkPush($option);
-    }
-
-    /**
-     * Placeholder for the external M-Pesa STK push integration.
-     *
-     * Suggested implementation once the external API is available:
-     *
-     *   $reference = $option['type'] === 'coins'
-     *       ? 'coins-'.$option['coins']
-     *       : $option['type'].'-'.($option['label'] ?? '');
-     *
-     *   $response = KadiApi::stkPush([
-     *       'phone'     => $phone,
-     *       'amount'    => $option['price'],
-     *       'reference' => $reference,
-     *   ]);
-     *
-     *   // Handle response / dispatch an event so the UI can show
-     *   // a "check your phone" prompt, then rely on a webhook/callback
-     *   // to credit coins, emojis, or gifts once M-Pesa confirms payment.
-     */
-    protected function requestStkPush(array $option): void
-    {
-        $user = auth()->user();
-        if ($option['type'] === 'coins') {
-            $response = KadiApi::stkDeposit($user, $option['price']);
-        } else {
-            $response = KadiApi::stkLoad($user, $option);
-        }
-        if ($response) {
-            $this->reloadCustomerProfile($user);
-            $this->loadTransactions();
-            $this->dispatch('wallet-refreshed');
-        }
-        $this->processingPurchase = is_null($response);
-        $this->purchaseError = $response ? null : 'Error processing purchase';
-    }
-
     /**
      * Re-fetch the authoritative customer profile from KadiApi and refresh
      * every balance cache. Shared by the deposit and withdraw success paths.
@@ -428,16 +308,6 @@ class Index extends Component
     }
 
     /**
-     * Open the deposit modal in its entry state.
-     */
-    public function openDeposit(): void
-    {
-        $this->depositError = null;
-        $this->confirmingDeposit = false;
-        $this->showDepositModal = true;
-    }
-
-    /**
      * Open the withdraw modal in its entry state.
      */
     public function openWithdraw(): void
@@ -445,58 +315,6 @@ class Index extends Component
         $this->withdrawError = null;
         $this->confirmingWithdraw = false;
         $this->showWithdrawModal = true;
-    }
-
-    /**
-     * Step 1 of the deposit flow: validate the amount, then reveal the
-     * confirmation step inside the modal. Nothing hits the API yet.
-     */
-    public function requestDeposit(): void
-    {
-        $this->depositError = null;
-        $this->successMessage = null;
-
-        if (($message = $this->guardLinkedAccount()) !== null) {
-            $this->depositError = $message;
-
-            return;
-        }
-
-        if ($this->promptForPhoneIfMissing()) {
-            return;
-        }
-
-        if ($this->onBreak()) {
-            $this->depositError = self::ON_BREAK_MESSAGE;
-
-            return;
-        }
-
-        if ((float) $this->depositAmount < self::MIN_DEPOSIT) {
-            $this->depositError = 'Minimum deposit amount is KES '.self::MIN_DEPOSIT.'.';
-
-            return;
-        }
-
-        $this->confirmingDeposit = true;
-    }
-
-    /**
-     * An STK push is charged to the player's phone, so it needs a phone confirmed by SMS code. When
-     * it is missing or unconfirmed, close the deposit modal and open the phone modal instead.
-     */
-    protected function promptForPhoneIfMissing(): bool
-    {
-        if (auth()->user()?->hasVerifiedPhone()) {
-            return false;
-        }
-
-        $this->showDepositModal = false;
-        $this->confirmingDeposit = false;
-        $this->resumeAfterPhone = 'deposit';
-        $this->dispatch('open-phone-required', purpose: 'deposit');
-
-        return true;
     }
 
     /**
@@ -521,19 +339,13 @@ class Index extends Component
      * Once the phone is confirmed, put the user back in the flow they started.
      */
     #[On('phone-saved')]
-    public function resumeDeposit(): void
+    public function resumeAfterPhoneSaved(): void
     {
         $resume = $this->resumeAfterPhone;
         $this->resumeAfterPhone = null;
 
         if ($resume === 'withdraw' && $this->withdrawAmount !== '') {
             $this->openWithdraw();
-
-            return;
-        }
-
-        if ($this->depositAmount !== '') {
-            $this->openDeposit();
         }
     }
 
@@ -553,93 +365,6 @@ class Index extends Component
             'excise' => $excise,
             'credited' => round($amount - $excise, 2),
         ];
-    }
-
-    public function cancelDeposit(): void
-    {
-        $this->confirmingDeposit = false;
-    }
-
-    /**
-     * Step 2 of the deposit flow (after user confirmation): send the M-Pesa
-     * STK push for the free-form amount. A successful response means the
-     * prompt was SENT — the balance updates only after the user completes
-     * payment on their phone, so no cache refresh or event dispatch here.
-     */
-    public function confirmDeposit(): void
-    {
-        $user = auth()->user();
-
-        if (! $user?->linked_id) {
-            return;
-        }
-
-        if ($this->promptForPhoneIfMissing()) {
-            return;
-        }
-
-        // Checked again here: confirmDeposit() is a public action and can be called without step 1.
-        if ($this->onBreak()) {
-            $this->confirmingDeposit = false;
-            $this->depositError = self::ON_BREAK_MESSAGE;
-
-            return;
-        }
-
-        $this->processingDeposit = true;
-        $success = KadiApi::stkDeposit($user, (int) round((float) $this->depositAmount));
-        $this->processingDeposit = false;
-
-        if (! $success) {
-            $this->confirmingDeposit = false;
-            $this->depositError = 'Deposit could not be initiated right now. Please try again shortly.';
-
-            return;
-        }
-
-        $this->showDepositModal = false;
-        $this->confirmingDeposit = false;
-        $this->depositAmount = '';
-        $this->successMessage = 'Deposit request sent. Confirm the M-Pesa prompt on your phone.';
-
-        // The balance only changes once the user pays on their phone, so
-        // poll the API (bypassing the caches) until it moves.
-        $this->depositBaseline = (float) $this->balance;
-        $this->depositPolls = 0;
-        $this->awaitingDeposit = true;
-    }
-
-    /**
-     * Polled (wire:poll) while a deposit is pending. Each tick is a hard
-     * refresh: it re-fetches the profile from the API and overwrites every
-     * balance cache, then tells the page and the top-nav widget to resync.
-     */
-    public function checkDepositStatus(): void
-    {
-        if (! $this->awaitingDeposit) {
-            return;
-        }
-
-        $user = auth()->user();
-        $this->depositPolls++;
-
-        $this->reloadCustomerProfile($user);
-
-        if ((float) $this->balance > $this->depositBaseline) {
-            $this->awaitingDeposit = false;
-            $this->loadTransactions();
-            $this->dispatch('wallet-refreshed');
-            $this->successMessage = 'Deposit received. Your vault balance has been updated.';
-
-            return;
-        }
-
-        if ($this->depositPolls >= self::MAX_DEPOSIT_POLLS) {
-            $this->awaitingDeposit = false;
-            $this->loadTransactions();
-            $this->dispatch('wallet-refreshed');
-            $this->successMessage = 'We have not received your deposit yet. Your balance will update once M-Pesa confirms the payment.';
-        }
     }
 
     /**
@@ -820,18 +545,10 @@ class Index extends Component
         return $phone;
     }
 
-    /** No deposits during a break (KadiApi decides; checked here so no STK push is sent at all). */
-    protected function onBreak(): bool
-    {
-        $user = auth()->user();
-
-        return $user instanceof User && app(ResponsiblePlay::class)->onBreak($user);
-    }
-
     public function render(): Factory|\Illuminate\Contracts\View\View|View
     {
-        return view(config('platform.ui_v2') ? 'livewire.account.wallet' : 'livewire.wallet.index', [
+        return view('livewire.account.wallet', [
             'paybill' => config('kadi.paybill'),
-        ])->layout('layouts.app');
+        ])->layout('layouts.site', ['shell' => 'app']);
     }
 }

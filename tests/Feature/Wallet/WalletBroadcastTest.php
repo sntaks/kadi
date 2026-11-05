@@ -1,7 +1,6 @@
 <?php
 
 use App\Events\WalletBalanceUpdated;
-use App\Livewire\Dashboard;
 use App\Livewire\Wallet\Index as WalletIndex;
 use App\Livewire\WalletBalance;
 use App\Models\User;
@@ -151,30 +150,6 @@ test('Wallet\Index registers the echo-private wallet.updated listener for the si
     $listeners = SupportEvents::getComponentListeners($component->instance());
 
     expect(array_keys($listeners))->toContain("echo-private:user.{$user->id},.wallet.updated");
-});
-
-test('Dashboard registers the echo-private wallet.updated listener for the signed-in user', function () {
-    $user = User::factory()->create();
-
-    $component = Livewire::actingAs($user)->test(Dashboard::class);
-
-    $listeners = SupportEvents::getComponentListeners($component->instance());
-
-    expect(array_keys($listeners))->toContain("echo-private:user.{$user->id},.wallet.updated");
-});
-
-test('a wallet.updated broadcast replaces the dashboard skeleton with the webhook balance', function () {
-    $user = User::factory()->create(['linked_id' => 7272]);
-
-    $component = Livewire::actingAs($user)->test(Dashboard::class)
-        ->assertSet('needsLoad', true);
-
-    // What the webhook controller writes before it broadcasts.
-    Cache::put("wallet_balance_{$user->id}", 4321.0, now()->addSeconds(WalletBalance::BALANCE_TTL_SECONDS));
-
-    $component->dispatch("echo-private:user.{$user->id},.wallet.updated")
-        ->assertSet('needsLoad', false)
-        ->assertSee('4,321');
 });
 
 test('a wallet.updated broadcast clears an "unavailable" header balance', function () {

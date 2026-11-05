@@ -122,7 +122,7 @@ class Activity extends Component
             'list' => $list,
             'sports' => $this->tab === 'sports' && $user instanceof User ? $this->sportsPage($user) : null,
         ])
-            ->layout('layouts.app')
+            ->layout('layouts.site', ['shell' => 'app'])
             ->title('Activity · Kadi');
     }
 }

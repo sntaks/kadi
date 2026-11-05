@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Two-factor authentication')">
+<x-auth.page :title="__('Two-factor authentication')">
     <div class="grid gap-6"
          x-data="{
             recovery: @js($errors->has('recovery_code')),
@@ -28,4 +28,4 @@
             <span x-show="recovery" x-cloak>Use an authentication code instead</span>
         </button>
     </div>
-</x-layouts::auth>
+</x-auth.page>

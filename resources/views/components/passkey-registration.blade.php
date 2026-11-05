@@ -85,7 +85,7 @@
     </template>
 
     <template x-if="supported && showForm">
-        <div class="space-y-4 rounded-lg border border-yellow-800/30 bg-[#111111] p-4">
+        <div class="space-y-4 rounded-lg border border-line bg-felt p-4">
             <flux:input
                 label="{{ __('Passkey name') }}"
                 x-model="name"
@@ -96,7 +96,7 @@
             />
             <flux:text class="!mt-1">{{ __('Give this passkey a name to help you identify it later.') }}</flux:text>
 
-            <p x-show="error" x-text="error" x-cloak class="text-sm text-red-400"></p>
+            <p x-show="error" x-text="error" x-cloak class="text-sm text-hot"></p>
 
             <div class="flex gap-2">
                 <flux:button

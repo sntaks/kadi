@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Concerns\ProfileValidationRules;
 use App\Http\Controllers\Controller;
 use App\Services\KadiAccountSync;
-use App\Support\AuthView;
 use App\Support\PlayerName;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +23,7 @@ class NameUpdateController extends Controller
             return redirect()->route('home');
         }
 
-        return view(AuthView::name('update-name'), ['suggestion' => PlayerName::suggest($request->user()->name)]);
+        return view('auth.update-name', ['suggestion' => PlayerName::suggest($request->user()->name)]);
     }
 
     public function store(Request $request): RedirectResponse

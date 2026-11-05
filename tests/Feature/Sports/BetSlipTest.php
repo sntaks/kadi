@@ -22,7 +22,7 @@ use Livewire\Livewire;
  */
 
 beforeEach(function () {
-    config(['platform.ui_v2' => true, 'platform.sports' => true]);
+    config(['platform.sports' => true]);
     $this->api = wagerApi();
 });
 

@@ -111,11 +111,11 @@ test('withdraw button is disabled until the page has loaded, then enabled', func
     fakeWalletApi();
     $user = withdrawScenario();
 
-    Livewire::actingAs($user)->test(Index::class)
-        ->assertSeeHtml('data-test="open-withdraw" disabled')
-        ->call('loadPage')
-        ->assertSeeHtml('data-test="open-withdraw"')
-        ->assertDontSeeHtml('data-test="open-withdraw" disabled');
+    $page = Livewire::actingAs($user)->test(Index::class);
+    expect($page->html())->toMatch('#<button type="button" disabled[^>]*data-test="open-withdraw"#');
+
+    $page->call('loadPage');
+    expect($page->html())->toContain('data-test="open-withdraw"')->not->toMatch('#<button type="button" disabled[^>]*data-test="open-withdraw"#');
 });
 
 test('confirmed withdrawal closes modal refreshes caches dispatches event and reloads transactions', function () {

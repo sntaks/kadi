@@ -4,7 +4,7 @@
 --}}
 <div x-data="{ open: @js(filled($code) || filled($error)) }" class="flex flex-col gap-2" data-test="promo-code-field">
     <button type="button" x-show="! open" x-on:click="open = true; $nextTick(() => $refs.promo.focus())"
-            class="self-start text-sm text-[#f5c542] hover:underline">
+            class="self-start text-sm text-gold hover:underline">
         {{ __('Have a promo code?') }}
     </button>
 
@@ -23,9 +23,9 @@
         />
 
         @if ($error)
-            <p class="mt-1.5 text-sm font-medium text-red-400" role="alert">{{ $error }}</p>
+            <p class="mt-1.5 text-sm font-medium text-hot" role="alert">{{ $error }}</p>
         @elseif ($status === 'valid')
-            <div class="mt-2 rounded-lg border border-green-700/40 bg-green-900/20 px-3 py-2 text-sm text-green-400" role="status" data-test="promo-code-valid">
+            <div class="mt-2 rounded-lg border border-green-700/40 bg-green-900/20 px-3 py-2 text-sm text-win" role="status" data-test="promo-code-valid">
                 <p class="font-semibold">{{ __('Promo code applied') }}</p>
                 <p class="mt-0.5 text-xs text-green-300/80">
                     @if ($expiresAt)
@@ -36,7 +36,7 @@
                 </p>
             </div>
         @elseif ($status === 'invalid')
-            <p class="mt-1.5 text-xs text-zinc-400" role="status" data-test="promo-code-invalid">
+            <p class="mt-1.5 text-xs text-ash" role="status" data-test="promo-code-invalid">
                 {{ __("This promo code isn't valid. You can still sign up without it.") }}
             </p>
         @endif

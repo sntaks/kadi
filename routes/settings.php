@@ -4,12 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 /*
  * The old Flux settings pages are gone (plan Phase 6). Their addresses still work: each sends the
- * player to the matching tab of the account page (/account in the new look, /profile before it).
- * Names are kept so any old link still resolves.
+ * player to the matching tab of /account. Names are kept so any old link still resolves.
  */
-$settingsTab = fn (string $tab) => fn () => redirect()->to(
-    route(config('platform.ui_v2') ? 'account' : 'profile').'#'.(config('platform.ui_v2') ? $tab : ($tab === 'profile' ? 'info' : $tab))
-);
+$settingsTab = fn (string $tab) => fn () => redirect()->to(route('account').'#'.$tab);
 
 Route::middleware(['auth'])->group(function () use ($settingsTab) {
     Route::get('settings', $settingsTab('profile'));

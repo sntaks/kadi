@@ -179,11 +179,11 @@ test('lists are newest first, at most ten, and never keep opponents\' customer i
 // --- The page ---------------------------------------------------------------
 
 test('guests are redirected from game history', function () {
-    $this->get(route('games.history'))->assertRedirect(route('login'));
+    $this->get(route('activity'))->assertRedirect(route('login'));
 });
 
-test('players can open game history', function () {
-    $this->actingAs(reporter())->get(route('games.history'))->assertOk()->assertSee('Game History');
+test('players find their Kadi game history as the first tab of activity', function () {
+    $this->actingAs(reporter())->get(route('activity'))->assertOk()->assertSee('wire:name="games.history"', false);
 });
 
 test('all three sections render, with Report only on lost games and reportable rounds', function () {

@@ -2,71 +2,34 @@
 
 use App\Models\User;
 
-test('signed-in players get the install button, banner and instructions dialog', function () {
-    $html = $this->actingAs(User::factory()->create())
-        ->get(route('dashboard'))
-        ->assertOk()
-        ->getContent();
+test('signed-in players get the install entry in the account menu and drawer, and the instructions dialog once', function () {
+    $html = $this->actingAs(User::factory()->create())->get(route('home'))->assertOk()->getContent();
 
-    expect($html)->toContain('data-test="pwa-install-nav"')
-        ->toContain('data-test="pwa-install-banner"')
-        ->toContain('id="pwa-install-dialog"')
+    expect($html)->toContain('data-test="pwa-install-shell"')
         ->toContain('x-on:pwa-install-help.window')
-        ->toContain('aria-live="polite"');
+        ->toContain('aria-live="polite"')
+        ->and(substr_count($html, 'id="pwa-install-dialog"'))->toBe(1);
 });
 
-test('the wallet page has the install pill in its title row, away from the money controls', function () {
-    $html = $this->actingAs(User::factory()->create())
-        ->get(route('wallet'))
-        ->assertOk()
-        ->getContent();
+test('the wallet page has the install button in its title row, away from the money controls', function () {
+    $html = $this->actingAs(User::factory()->create())->get(route('wallet'))->assertOk()->getContent();
 
-    expect($html)->toContain('data-test="pwa-install-chip"')
-        ->toContain('data-test="pwa-install-nav"')
-        ->toContain('id="pwa-install-dialog"')
-        ->not->toContain('data-test="pwa-install-banner"'); // the banner is dashboard-only
-
-    // The pill shares a row with the "Vault" heading (no added height) and comes before any wallet form.
-    $title = strpos($html, '💰 Vault');
-    $chip = strpos($html, 'data-test="pwa-install-chip"');
-    expect($chip)->toBeGreaterThan($title);
-    expect($chip - $title)->toBeLessThan(400);
-});
-
-test('signed-in players get the install pill and menu entry on the home page', function () {
-    $html = $this->actingAs(User::factory()->create())
-        ->get(route('home'))
-        ->assertOk()
-        ->getContent();
-
-    expect($html)->toContain('data-test="pwa-install-chip"')   // desktop nav
-        ->toContain('data-test="pwa-install-menu"')            // phone hamburger menu
-        ->toContain('data-test="pwa-install-hero"')            // phone/tablet hero, beside Play Kadi
-        ->toContain('id="pwa-install-dialog"')
-        ->not->toContain('data-test="pwa-install-banner"')     // never over the hero
-        ->not->toContain('data-test="pwa-install-nav"');        // the sidebar only exists in the app layout
-
-    // Every variant opts out of Livewire morphing so a re-render can't hide it.
-    expect(substr_count($html, 'wire:ignore'))->toBeGreaterThanOrEqual(2);
+    expect($html)->toContain('data-test="pwa-install-chip"')->toContain('id="pwa-install-dialog"');
+    expect(strpos($html, 'data-test="pwa-install-chip"'))->toBeLessThan(strpos($html, 'wire:submit'));
 });
 
 test('every install entry point opts out of livewire morphing', function () {
-    $html = view('components.pwa.install-button', ['variant' => 'banner'])->render()
-        .view('components.pwa.install-button', ['variant' => 'chip'])->render()
-        .view('components.pwa.install-button', ['variant' => 'hero'])->render()
-        .view('components.pwa.install-button', ['variant' => 'menu'])->render();
+    $html = view('components.pwa.install-button', ['variant' => 'chip'])->render()
+        .view('components.pwa.install-button', ['variant' => 'shell'])->render();
 
-    expect(substr_count($html, 'wire:ignore'))->toBe(4);
+    expect(substr_count($html, 'wire:ignore'))->toBe(2);
 });
 
 test('guests never see any install UI', function (string $route) {
     $html = $this->get(route($route))->assertOk()->getContent();
 
-    expect($html)->not->toContain('pwa-install-nav')
-        ->not->toContain('pwa-install-banner')
+    expect($html)->not->toContain('pwa-install-shell')
         ->not->toContain('pwa-install-chip')
-        ->not->toContain('pwa-install-menu')
-        ->not->toContain('pwa-install-hero')
         ->not->toContain('pwa-install-dialog');
 })->with(['login', 'register', 'legal.terms', 'home']);
 

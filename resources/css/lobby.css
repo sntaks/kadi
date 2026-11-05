@@ -131,6 +131,11 @@
     .nt-prose { min-width: 0; color: var(--color-soft); font-size: 16px; line-height: 1.7; }
     .nt-prose > section { scroll-margin-top: calc(var(--nt-top, 64px) + 20px); padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid var(--color-line); }
     .nt-prose > section:last-child { border-bottom: 0; }
+    /* Linked clauses (/terms#clause-3-2, App\Support\LegalDocument): clear the top bar and flash the clause once. */
+    .nt-prose .legal-clause { scroll-margin-top: calc(var(--nt-top, 64px) + 20px); border-radius: 8px; }
+    .nt-prose .legal-clause:target { animation: nt-clause-target 2.4s ease-out; }
+    @keyframes nt-clause-target { 0%, 30% { background: rgb(248 192 56 / .14); } 100% { background: transparent; } }
+    @media (prefers-reduced-motion: reduce) { .nt-prose .legal-clause:target { animation: none; background: rgb(248 192 56 / .1); } }
     .nt-prose h2 { margin: 0 0 12px; font-size: 22px; font-weight: 800; line-height: 1.25; color: var(--color-ivory); }
     .nt-prose h3 { margin: 22px 0 8px; font-size: 17px; font-weight: 700; color: var(--color-ivory); }
     .nt-prose h4 { margin: 18px 0 6px; font-size: 15px; font-weight: 700; color: var(--color-ivory); }

@@ -8,18 +8,8 @@ use App\Sportsbook\Models\FreeBet;
  * config or the player's own free bets: nothing invented.
  */
 
-beforeEach(function () {
-    config(['platform.ui_v2' => true]);
-});
-
-test('the page needs the new site', function () {
-    config(['platform.ui_v2' => false]);
-
-    $this->get('/promotions')->assertNotFound();
-});
-
 test('guests see the welcome bonus and Invite & Earn, with ways to join, and no sports offers while sports are off', function () {
-    config(['kadi.promotions.signup_bonus_amount' => 20]);
+    config(['kadi.promotions.signup_bonus_amount' => 20, 'platform.sports' => false]);
 
     $this->get('/promotions')->assertOk()
         ->assertSee('data-test="offer-welcome"', false)->assertSee('KES 20')
@@ -31,7 +21,7 @@ test('guests see the welcome bonus and Invite & Earn, with ways to join, and no 
 });
 
 test('switched-off offers are not shown', function () {
-    config(['kadi.promotions.enabled' => false, 'kadi.referrals.enabled' => false]);
+    config(['kadi.promotions.enabled' => false, 'kadi.referrals.enabled' => false, 'platform.sports' => false]);
 
     $this->get('/promotions')->assertOk()
         ->assertDontSee('data-test="offer-welcome"', false)

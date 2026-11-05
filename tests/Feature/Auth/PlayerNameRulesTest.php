@@ -124,7 +124,7 @@ test('a player with a non-compliant name is sent to rename at login', function (
 
     test()->post(route('login.store'), ['email' => $user->email, 'password' => 'password']);
 
-    test()->get(route('dashboard'))->assertRedirect(route('name.edit'));
+    test()->get(route('wallet'))->assertRedirect(route('name.edit'));
     test()->get(route('name.edit'))->assertOk();
 })->with(['double space' => 'Jane  Smith', 'too short' => 'Jo', 'too long' => 'Abcdefghijklmnop', 'emoji' => 'Player😀12']);
 
@@ -134,7 +134,7 @@ test('a player whose name is now blocked is sent to rename at login', function (
 
     test()->post(route('login.store'), ['email' => $user->email, 'password' => 'password']);
 
-    test()->get(route('dashboard'))->assertRedirect(route('name.edit'));
+    test()->get(route('wallet'))->assertRedirect(route('name.edit'));
 });
 
 test('a player with a good name is not sent anywhere', function () {
@@ -142,7 +142,7 @@ test('a player with a good name is not sent anywhere', function () {
 
     test()->post(route('login.store'), ['email' => $user->email, 'password' => 'password']);
 
-    test()->get(route('dashboard'))->assertOk();
+    test()->get(route('wallet'))->assertOk();
     test()->get(route('name.edit'))->assertRedirect(route('home'));
 });
 
@@ -164,7 +164,7 @@ test('the rename page validates, saves and releases the player', function () {
     test()->post(route('name.update'), ['name' => 'Jane Smith'])->assertRedirect();
 
     expect($user->fresh()->name)->toBe('Jane Smith');
-    test()->get(route('dashboard'))->assertOk();
+    test()->get(route('wallet'))->assertOk();
 });
 
 test('a forced rename does not start the one-year wait', function () {

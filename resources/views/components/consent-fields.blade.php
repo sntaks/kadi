@@ -1,11 +1,9 @@
 @php
     $minAge = config('kadi.min_age');
-    // The new look (Night table tokens); the old pages keep their colours until Phase 12.
-    $v2 = config('platform.ui_v2');
-    $box = $v2 ? 'mt-0.5 h-4 w-4 shrink-0 accent-gold' : 'mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-600 bg-zinc-800 accent-[#f5c542]';
-    $text = $v2 ? 'flex items-start gap-3 text-sm text-soft' : 'flex items-start gap-3 text-sm text-zinc-300';
-    $link = $v2 ? 'text-gold underline' : 'text-[#f5c542] underline';
-    $error = $v2 ? 'nt-error -mt-1' : '-mt-1 text-sm font-medium text-red-500';
+    $box = 'mt-0.5 h-4 w-4 shrink-0 accent-gold';
+    $text = 'flex items-start gap-3 text-sm text-soft';
+    $link = 'text-gold underline';
+    $error = 'nt-error -mt-1';
 @endphp
 
 <div class="flex flex-col gap-3">

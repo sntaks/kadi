@@ -31,6 +31,8 @@ class GameCatalogue
 
     public const LOCK_KEY = 'games.catalogue.refresh';
 
+    public const FETCHED_AT_KEY = 'games.catalogue.fetched_at';
+
     public const OUTAGE_BACKOFF_SECONDS = 60;
 
     /** @var Collection<string, Game>|null */
@@ -92,7 +94,7 @@ class GameCatalogue
     /** The crawlable game page, or null when those pages are off or the title has none. */
     public function pageUrl(GameTitle $title): ?string
     {
-        if (! config('platform.ui_v2') || ! config('platform.deep_link')) {
+        if (! config('platform.deep_link')) {
             return null;
         }
 
@@ -208,6 +210,8 @@ class GameCatalogue
 
         Cache::put(self::FRESH_KEY, $games, (int) config('games.catalogue.fresh_seconds', 300));
         Cache::put(self::STALE_KEY, $games, (int) config('games.catalogue.stale_seconds', 86400));
+        // When the API last answered, for the staleness check (App\Support\PlatformHealth).
+        Cache::forever(self::FETCHED_AT_KEY, now()->getTimestamp());
 
         return $games;
     }

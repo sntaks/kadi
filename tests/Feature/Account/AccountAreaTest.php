@@ -7,7 +7,6 @@ use App\Livewire\Account\CloseAccount;
 use App\Livewire\Account\ResponsiblePlay;
 use App\Livewire\Profile\Show;
 use App\Livewire\Wallet\DepositSheet;
-use App\Livewire\Wallet\Index;
 use App\Livewire\WalletBalance;
 use App\Models\User;
 use App\Sportsbook\Enums\BetStatus;
@@ -31,7 +30,7 @@ function accountPlayer(array $attributes = []): User
 }
 
 beforeEach(function () {
-    config(['services.kadi_api.url' => ACCOUNT_API, 'services.kadi_api.key' => 'site-key', 'platform.ui_v2' => true]);
+    config(['services.kadi_api.url' => ACCOUNT_API, 'services.kadi_api.key' => 'site-key']);
 
     // Each test may swap one answer: Http::fake stubs stack, so one dispatcher reads these.
     $this->rg = ['status' => 1, 'can_play' => true, 'exclusion' => null, 'deposit_limits' => [], 'deposit_remaining' => null];
@@ -60,7 +59,7 @@ beforeEach(function () {
 
 // ─── Old addresses ───────────────────────────────────────────────────────────
 
-test('with the new look, the old pages lead to the account area', function (string $from, string $to) {
+test('the old pages lead to the account area', function (string $from, string $to) {
     $this->actingAs(accountPlayer());
 
     $this->get($from)->assertRedirect($to);
@@ -72,23 +71,6 @@ test('with the new look, the old pages lead to the account area', function (stri
     'settings security' => ['/settings/security', '/account#security'],
     'settings appearance' => ['/settings/appearance', '/account#profile'],
 ]);
-
-test('without the new look, the settings addresses lead to the profile tabs', function (string $from, string $to) {
-    config(['platform.ui_v2' => false]);
-    $this->actingAs(accountPlayer());
-
-    $this->get($from)->assertRedirect($to);
-})->with([
-    'settings profile' => ['/settings/profile', '/profile#info'],
-    'settings security' => ['/settings/security', '/profile#security'],
-]);
-
-test('the account area does not exist without the new look', function (string $path) {
-    config(['platform.ui_v2' => false]);
-    $this->actingAs(accountPlayer());
-
-    $this->get($path)->assertNotFound();
-})->with(['/account', '/activity', '/responsible-play']);
 
 // ─── Account ─────────────────────────────────────────────────────────────────
 
@@ -348,21 +330,17 @@ test('the top bar Deposit opens the sheet on every page', function () {
         ->assertSee('data-sheet="deposit"', false);
 });
 
-test('the old wallet page also refuses deposits during a break', function () {
-    config(['platform.ui_v2' => false]);
-    $this->rg['exclusion'] = ['type' => 'cool_off', 'ends_at' => now()->addDay()->toIso8601String()];
+test('an M-Pesa request that fails says so and leaves the sheet ready to try again', function () {
+    $this->answers['/deposits/'] = Http::response(['message' => 'down'], 503);
 
-    Livewire::actingAs(accountPlayer())->test(Index::class)
-        ->set('depositAmount', '500')->call('confirmDeposit')
-        ->assertSet('depositError', Index::ON_BREAK_MESSAGE);
-
-    Http::assertNotSent(fn ($request) => str_contains($request->url(), '/deposits/'));
+    Livewire::actingAs(accountPlayer())->test(DepositSheet::class)
+        ->set('amount', '500')->call('send')
+        ->assertSet('stage', null)
+        ->assertSee("We couldn't send the M-Pesa request.");
 });
 
-test('a Google link message survives the move from /profile to /account', function () {
-    $this->actingAs(accountPlayer())->withSession(['status' => 'google-linked'])->get('/profile')->assertRedirect('/account');
-
-    $this->get('/account')->assertOk()->assertSee('Your Google account is linked.');
+test('linking Google lands on the account page with its message', function () {
+    $this->actingAs(accountPlayer())->withSession(['status' => 'google-linked'])->get('/account')->assertOk()->assertSee('Your Google account is linked.');
 });
 
 test('the current sub-tab stays marked after a Livewire update', function () {

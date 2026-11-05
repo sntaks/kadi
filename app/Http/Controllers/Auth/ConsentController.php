@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Concerns\ConsentValidationRules;
 use App\Http\Controllers\Controller;
-use App\Support\AuthView;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,7 +18,7 @@ class ConsentController extends Controller
             return redirect()->route('home');
         }
 
-        return view(AuthView::name('consent'));
+        return view('auth.consent');
     }
 
     public function store(Request $request): RedirectResponse

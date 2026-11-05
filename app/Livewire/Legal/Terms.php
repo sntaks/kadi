@@ -3,21 +3,20 @@
 namespace App\Livewire\Legal;
 
 use App\Support\LegalDocument;
-use App\Support\NewLook;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-// The help pages read in the padded reading shell in the new look (layouts.guest passes `shell` on).
-#[Layout('layouts.guest', ['shell' => 'app', 'noindex' => false])]
+// The help pages read in the site shell's padded reading column.
+#[Layout('layouts.site', ['shell' => 'app', 'noindex' => false])]
 #[Title('Terms & Conditions | Kadi')]
 class Terms extends Component
 {
     public function render(): \Illuminate\Contracts\View\View|Factory|View
     {
-        return view(NewLook::view('livewire.help.legal', 'livewire.legal.document'), [
+        return view('livewire.help.legal', [
             'document' => LegalDocument::load('terms'),
             'current' => 'terms',
             'tagline' => 'The rules of the house, in full. Start with the short version, or jump to any section.',

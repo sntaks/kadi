@@ -1,6 +1,6 @@
 /*
  * The one site shell (plan §2 "Menu", Phase 4): top bar, side menu, notice strip, account menu,
- * footer and the phone bottom bar. Used by layouts/site.blade.php behind PLATFORM_UI_V2.
+ * footer and the phone bottom bar. Used by layouts/site.blade.php, the one layout.
  *
  * Breakpoints: below 1024px the side menu is a drawer; below 640px the bottom bar appears.
  * Every class is `nt-` prefixed, so the reduced-motion rule in night-table.css covers it.
@@ -38,6 +38,7 @@
         background: var(--color-felt); border: 1px solid var(--color-line); color: var(--color-ash); transition: border-color .15s;
     }
     .nt-search-box:focus-within { border-color: rgb(248 192 56 / .5); }
+    .nt-search-box:has(input:focus-visible) { outline: 2px solid var(--color-gold); outline-offset: 2px; }
     .nt-search-box input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: var(--color-ivory); }
     .nt-search-box input::placeholder { color: var(--color-ash); }
     .nt-search-box svg { width: 17px; height: 17px; flex: none; }

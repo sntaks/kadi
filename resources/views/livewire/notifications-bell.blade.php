@@ -19,14 +19,14 @@
         type="button"
         wire:click="show"
         x-on:click="open = true"
-        class="relative flex h-10 w-10 items-center justify-center rounded-full border border-yellow-800/30 text-[#f5f5f0]/70 transition hover:border-[#f5c542]/50 hover:text-[#f5c542]"
+        class="relative flex h-10 w-10 items-center justify-center rounded-full border border-line text-ivory/70 transition hover:border-gold/50 hover:text-gold"
         aria-label="{{ __('Notifications') }}"
         :aria-expanded="open"
     >
         <flux:icon.bell variant="outline" class="size-5" />
         @if ($unreadCount > 0)
             <span
-                class="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#f5c542] px-1 text-[10px] font-bold text-black"
+                class="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-gold px-1 text-[10px] font-bold text-black"
             >{{ $unreadLabel }}</span>
         @endif
     </button>
@@ -63,19 +63,18 @@
                 @class([
                     'absolute inset-y-0 right-0 flex w-full max-w-sm flex-col shadow-2xl',
                     'nt-bell-panel' => $variant === 'shell',
-                    'border-l border-yellow-800/40 bg-[#111111]' => $variant !== 'shell',
+                    'border-l border-line bg-felt' => $variant !== 'shell',
                 ])
             >
                 {{-- Panel header --}}
-                <div class="flex h-16 flex-shrink-0 items-center justify-between border-b border-yellow-800/20 px-5">
-                    <h2 @class(['nt-bell-title' => $variant === 'shell', 'text-lg font-bold text-[#f5f5f0]' => $variant !== 'shell'])
-                        @if ($variant !== 'shell') style="font-family: 'Cinzel', serif;" @endif>
+                <div class="flex h-16 flex-shrink-0 items-center justify-between border-b border-line px-5">
+                    <h2 @class(['nt-bell-title' => $variant === 'shell', 'text-lg font-bold text-ivory' => $variant !== 'shell'])>
                         {{ __('Notifications') }}
                     </h2>
                     <button
                         type="button"
                         x-on:click="open = false; $wire.hide()"
-                        class="flex h-8 w-8 items-center justify-center rounded-lg text-[#6b6b6b] transition hover:bg-[#1a1a1a] hover:text-[#f5c542]"
+                        class="flex h-8 w-8 items-center justify-center rounded-lg text-ash transition hover:bg-felt-2 hover:text-gold"
                         aria-label="{{ __('Close notifications') }}"
                     >
                         <flux:icon.x-mark variant="outline" class="size-5" />
@@ -83,11 +82,11 @@
                 </div>
 
                 {{-- Notification list --}}
-                <div class="flex-1 divide-y divide-yellow-800/10 overflow-y-auto">
+                <div class="flex-1 divide-y divide-line overflow-y-auto">
                     @if ($notifications->isEmpty())
                         <div class="flex h-full flex-col items-center justify-center gap-3 px-6 py-12 text-center">
-                            <flux:icon.check-badge variant="outline" class="size-10 text-[#6b6b6b]" />
-                            <p class="text-sm text-[#6b6b6b]">{{ __('You are all caught up.') }}</p>
+                            <flux:icon.check-badge variant="outline" class="size-10 text-ash" />
+                            <p class="text-sm text-ash">{{ __('You are all caught up.') }}</p>
                         </div>
                     @else
                         @foreach ($notifications as $notification)
@@ -95,23 +94,23 @@
                                 wire:key="notification-{{ $notification->id }}"
                                 @class([
                                     'relative flex items-start gap-3 px-5 py-4 transition',
-                                    'bg-[#161616]/60' => $notification->read_at === null,
+                                    'bg-felt-2/60' => $notification->read_at === null,
                                 ])
                             >
                                 {{-- Unread dot --}}
                                 <span
                                     class="mt-2 size-2 flex-shrink-0 rounded-full {{
-                                        $notification->read_at === null ? 'bg-[#f5c542]' : 'bg-transparent'
+                                        $notification->read_at === null ? 'bg-gold' : 'bg-transparent'
                                     }}"
                                     aria-hidden="true"
                                 ></span>
 
                                 {{-- Content --}}
                                 <div class="min-w-0 flex-1">
-                                    <span class="block truncate text-sm font-medium {{ $notification->read_at === null ? 'text-[#f5f5f0]' : 'text-[#f5f5f0]/60' }}">
+                                    <span class="block truncate text-sm font-medium {{ $notification->read_at === null ? 'text-ivory' : 'text-ivory/60' }}">
                                         {{ $notification->data['change'] ?? __('Notification') }}
                                     </span>
-                                    <span class="mt-1 block text-xs text-[#6b6b6b]">
+                                    <span class="mt-1 block text-xs text-ash">
                                         {{ $notification->created_at->diffForHumans() }}
                                     </span>
                                 </div>
@@ -123,7 +122,7 @@
                                             type="button"
                                             wire:click="markAsRead('{{ $notification->id }}')"
                                             x-on:click="$wire.markAsRead('{{ $notification->id }}')"
-                                            class="flex h-7 w-7 items-center justify-center rounded-md text-[#6b6b6b] transition hover:bg-[#1a1a1a] hover:text-[#f5c542]"
+                                            class="flex h-7 w-7 items-center justify-center rounded-md text-ash transition hover:bg-felt-2 hover:text-gold"
                                             title="{{ __('Mark as read') }}"
                                         >
                                             <flux:icon.check variant="outline" class="size-4" />
@@ -133,7 +132,7 @@
                                         type="button"
                                         wire:click="clear('{{ $notification->id }}')"
                                         x-on:click="$wire.clear('{{ $notification->id }}')"
-                                        class="flex h-7 w-7 items-center justify-center rounded-md text-[#6b6b6b] transition hover:bg-[#1a1a1a] hover:text-red-400"
+                                        class="flex h-7 w-7 items-center justify-center rounded-md text-ash transition hover:bg-felt-2 hover:text-hot"
                                         title="{{ __('Clear') }}"
                                     >
                                         <flux:icon.x-mark variant="outline" class="size-4" />
@@ -146,24 +145,24 @@
 
                 {{-- Panel footer --}}
                 @if (! $notifications->isEmpty())
-                <div class="flex-shrink-0 border-t border-yellow-800/20 px-5 py-3">
+                <div class="flex-shrink-0 border-t border-line px-5 py-3">
                     <div class="flex items-center gap-4">
                         <button
                             type="button"
                             wire:click="markAllAsRead"
                             wire:loading.attr="disabled"
                             wire:target="markAllAsRead"
-                            class="text-sm font-semibold text-[#f5c542] transition hover:text-[#ffde74] disabled:opacity-50"
+                            class="text-sm font-semibold text-gold transition hover:text-gold-2 disabled:opacity-50"
                         >
                             {{ __('Mark all as read') }}
                         </button>
-                        <span class="text-[#6b6b6b]">|</span>
+                        <span class="text-ash">|</span>
                         <button
                             type="button"
                             wire:click="clearAll"
                             wire:loading.attr="disabled"
                             wire:target="clearAll"
-                            class="text-sm font-semibold text-[#6b6b6b] transition hover:text-red-400 disabled:opacity-50"
+                            class="text-sm font-semibold text-ash transition hover:text-hot disabled:opacity-50"
                         >
                             {{ __('Clear all') }}
                         </button>

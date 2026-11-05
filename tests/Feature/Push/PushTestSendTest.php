@@ -127,7 +127,7 @@ test('it only ever pushes to the caller, with a clearly labelled test message', 
             && $notification instanceof PushMessageNotification
             && $notification->title === 'Kadi test notification'
             && $notification->tag === 'push-test'
-            && $notification->url === '/profile#notifications')
+            && $notification->url === '/account#notifications')
         ->andReturn([sentReport(201, true)]));
 
     $this->actingAs($caller)->postJson(route('push.test'))->assertOk();
@@ -169,16 +169,16 @@ test('test sends are throttled to five a minute per user', function () {
 test('the send button is only rendered for people allowed to use it', function () {
     onLocalOrStaging(false);
 
-    $player = $this->actingAs(User::factory()->create())->get(route('profile'))->getContent();
+    $player = $this->actingAs(User::factory()->create())->get(route('account'))->getContent();
     expect($player)->not->toContain('data-test="pwa-notifications-test-button"');
 
-    $admin = $this->actingAs(adminUser())->get(route('profile'))->getContent();
+    $admin = $this->actingAs(adminUser())->get(route('account'))->getContent();
     expect($admin)->toContain('data-test="pwa-notifications-test-button"')
         ->toContain('data-test="pwa-notifications-test-result"')
         ->toContain('role="status"');
 
     onLocalOrStaging();
-    expect($this->actingAs(User::factory()->create())->get(route('profile'))->getContent())
+    expect($this->actingAs(User::factory()->create())->get(route('account'))->getContent())
         ->toContain('data-test="pwa-notifications-test-button"');
 });
 

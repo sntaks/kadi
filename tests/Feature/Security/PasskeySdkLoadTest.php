@@ -12,7 +12,7 @@ test('profile page always loads the passkey sdk, even behind the confirmation ga
 
     $html = $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
-        ->get(route('profile'))
+        ->get(route('account'))
         ->getContent();
 
     $devModeLoaded = str_contains($html, 'resources/js/passkeys.js');

@@ -103,7 +103,7 @@ test('one failing block does not blank the rest of the page', function () {
     Livewire::actingAs(referrer())->test(Index::class)
         ->call('load')
         ->assertSet('statsFailed', true)
-        ->assertSee('We could not load your stats right now.')
+        ->assertSee("We couldn't load your stats right now.", false)
         ->assertSee('New Player')
         ->assertSeeHtml('data-test="referral-balance">KES 120</p>');
 });

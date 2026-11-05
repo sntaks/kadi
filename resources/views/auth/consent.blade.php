@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Confirm to continue')">
+<x-auth.page :title="__('Confirm to continue')">
     <div class="grid gap-6">
         <x-auth.head title="Before you continue" description="Confirm your age and accept our terms to keep playing on Kadi." />
         <form method="POST" action="{{ route('consent.store') }}" class="grid gap-5">
@@ -11,4 +11,4 @@
             <button type="submit" class="text-sm text-soft hover:text-gold">Log out</button>
         </form>
     </div>
-</x-layouts::auth>
+</x-auth.page>

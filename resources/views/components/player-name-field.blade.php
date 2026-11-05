@@ -50,11 +50,11 @@
     />
 
     @if ($locked)
-        <p class="mt-1 text-xs text-zinc-500">{{ $lockedMessage }}</p>
+        <p class="mt-1 text-xs text-ash">{{ $lockedMessage }}</p>
     @else
-        <p x-show="error === ''" class="mt-1 text-xs text-zinc-500">
+        <p x-show="error === ''" class="mt-1 text-xs text-ash">
             {{ __(':min to :max characters. Letters, numbers, spaces and _ ! - only; no emojis.', ['min' => $min, 'max' => $max]) }}
         </p>
-        <p x-show="error !== ''" x-text="error" x-cloak role="alert" class="mt-1 text-xs text-red-400"></p>
+        <p x-show="error !== ''" x-text="error" x-cloak role="alert" class="mt-1 text-xs text-hot"></p>
     @endif
 </div>

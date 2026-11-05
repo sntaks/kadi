@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\PhoneRequired;
+use App\Livewire\Wallet\DepositSheet;
 use App\Livewire\Wallet\Index;
 use App\Models\User;
 use App\Support\PhoneOtp;
@@ -193,11 +194,11 @@ test('deposits wait for a confirmed phone', function () {
     Http::fake();
     $user = unverifiedPlayer(['linked_id' => 5151]);
 
-    Livewire::actingAs($user)->test(Index::class)
-        ->call('openDeposit')
-        ->set('depositAmount', '500')
-        ->call('requestDeposit')
-        ->assertSet('confirmingDeposit', false)
+    Livewire::actingAs($user)->test(DepositSheet::class)
+        ->dispatch('open-deposit')
+        ->set('amount', '500')
+        ->call('send')
+        ->assertSet('stage', null)
         ->assertDispatched('open-phone-required', purpose: 'deposit');
 
     Http::assertNotSent(fn (Request $request) => str_contains($request->url(), '/deposits'));
@@ -222,11 +223,11 @@ test('withdrawals wait for a confirmed phone and resume afterwards', function ()
     $wallet->dispatch('phone-saved')->assertSet('showWithdrawModal', true);
 });
 
-test('the dashboard asks unverified players to confirm their number', function () {
+test('the site notice asks unverified players to confirm their number', function () {
     Http::fake(['*' => Http::response(['data' => []])]);
 
-    $this->actingAs(unverifiedPlayer())->get(route('dashboard'))->assertSee('data-test="verify-phone-banner"', false);
-    $this->actingAs(User::factory()->create(['phone' => '254799000111']))->get(route('dashboard'))->assertDontSee('data-test="verify-phone-banner"', false);
+    $this->actingAs(unverifiedPlayer())->get(route('wallet'))->assertSee('data-test="notice-phone"', false);
+    $this->actingAs(User::factory()->create(['phone' => '254799000111', 'phone_verified_at' => now()]))->get(route('wallet'))->assertDontSee('data-test="notice-phone"', false);
 });
 
 test('before a code is sent the modal offers a clear send button', function () {

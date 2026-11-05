@@ -13,7 +13,7 @@ test('every share image exists at the size link previews expect', function (stri
 })->with(['og-lobby.jpg', 'og-sports.jpg', 'og-slots.jpg', 'og-scratch.jpg', 'og-promotions.jpg']);
 
 test('the sports pages share the sports image', function () {
-    config(['platform.ui_v2' => true, 'platform.sports' => true]);
+    config(['platform.sports' => true]);
 
     $this->get('/sports')->assertOk()
         ->assertSee('<meta property="og:image"        content="'.url('/images/og-sports.jpg').'">', false);

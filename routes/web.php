@@ -15,10 +15,8 @@ use App\Http\Controllers\PushTestController;
 use App\Http\Middleware\RequirePlatformFlag;
 use App\Livewire\Account\Activity;
 use App\Livewire\Account\ResponsiblePlay as ResponsiblePlayPage;
-use App\Livewire\Dashboard;
 use App\Livewire\Faq;
 use App\Livewire\GameGuide;
-use App\Livewire\Games\History as GameHistory;
 use App\Livewire\Games\Play;
 use App\Livewire\Legal\Privacy;
 use App\Livewire\Legal\Terms;
@@ -38,6 +36,7 @@ use App\Livewire\Sports\Search as SportsSearch;
 use App\Livewire\Wallet\Index;
 use App\Livewire\Welcome;
 use App\Sportsbook\Models\Competition;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
@@ -52,15 +51,15 @@ Route::get('/games-guide', GameGuide::class)->name('game-guide');
 Route::get('/faq', Faq::class)->name('faq');
 
 // Every offer in one place (plan Phase 11), for guests and players.
-Route::get('/promotions', Promotions::class)->middleware(RequirePlatformFlag::class.':ui_v2')->name('promotions');
+Route::get('/promotions', Promotions::class)->name('promotions');
 
 // The casino (plan Phase 5): browse for everyone once games open inside the site.
-Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':token_launch'])->group(function () {
+Route::middleware(RequirePlatformFlag::class.':token_launch')->group(function () {
     Route::get('/casino/{filter?}', Casino::class)->where('filter', '[a-z-]+')->name('casino');
 });
 
 // Crawlable game pages (PLATFORM_DEEP_LINK), built on the new look. Their Play buttons follow token_launch.
-Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':deep_link'])->group(function () {
+Route::middleware(RequirePlatformFlag::class.':deep_link')->group(function () {
     Route::get('/slots', GameIndex::class)->defaults('game', 'slots')->name('games.slots');
     Route::get('/scratch-cards', GameIndex::class)->defaults('game', 'scratch')->name('games.scratch');
     // Never /games/history or /games/search, which are their own pages.
@@ -69,7 +68,7 @@ Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::cla
 
 // Sports (plan Phase 9): football lists, matches, the sports jackpot and in-play list, in the new shell. Betting
 // itself also needs PLATFORM_SPORTS_BETTING (App\Sportsbook\Wagers\WagerPlacement).
-Route::middleware([RequirePlatformFlag::class.':ui_v2', RequirePlatformFlag::class.':sports'])->prefix('sports')->group(function () {
+Route::middleware(RequirePlatformFlag::class.':sports')->prefix('sports')->group(function () {
     Route::get('/', SportsHome::class)->name('sports');
     Route::get('/jackpot', SportsJackpot::class)->name('sports.jackpot');
     Route::get('/live', SportsLive::class)->name('sports.live');
@@ -93,20 +92,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auth/google/link/callback', [GoogleLinkController::class, 'callback'])->name('auth.google.link.callback');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/profile', Show::class)->name('profile');
+// Pages the old site had (plan Phase 12). Their names and addresses keep working for bookmarks, e-mails and push
+// links, carrying the query string on: the dashboard is the landing, the profile is /account, Kadi's game history
+// is the Kadi tab of /activity.
+$moved = fn (string $route) => fn (Request $request) => redirect()->to(route($route).($request->getQueryString() ? '?'.$request->getQueryString() : ''));
+Route::get('/dashboard', $moved('home'))->name('dashboard');
+Route::get('/profile', $moved('account'))->name('profile');
+Route::get('/games/history', $moved('activity'))->name('games.history');
 
-    // The account area in the new look (plan Phase 6): one header and sub-tabs for the account page,
-    // wallet, activity, Invite & Earn and responsible play.
-    Route::middleware(RequirePlatformFlag::class.':ui_v2')->group(function () {
-        Route::get('/account', Show::class)->name('account');
-        Route::get('/activity', Activity::class)->name('activity');
-        Route::get('/responsible-play', ResponsiblePlayPage::class)->name('responsible-play');
-    });
+Route::middleware(['auth', 'verified'])->group(function () {
+    // The account area (plan Phase 6): one header and sub-tabs for the account page, wallet, activity,
+    // Invite & Earn and responsible play.
+    Route::get('/account', Show::class)->name('account');
+    Route::get('/activity', Activity::class)->name('activity');
+    Route::get('/responsible-play', ResponsiblePlayPage::class)->name('responsible-play');
     Route::post('/profile/picture', [ProfilePictureController::class, 'upload'])->name('profile.picture');
     Route::get('/wallet', Index::class)->name('wallet');
-    Route::get('/games/history', GameHistory::class)->name('games.history');
     Route::get('/referrals', ReferralsIndex::class)->name('referrals');
 
     // Games inside the site (plan §4a). The page never holds a launch token: its form posts

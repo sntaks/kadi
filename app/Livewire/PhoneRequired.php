@@ -28,8 +28,8 @@ class PhoneRequired extends Component
 
     public bool $show = false;
 
-    /** What the phone is needed for: coins | deposit | withdraw | referral | verify. Drives the copy. */
-    public string $purpose = 'coins';
+    /** What the phone is needed for: deposit | withdraw | referral | verify. Drives the copy. */
+    public string $purpose = 'verify';
 
     /** phone: enter a number; code: enter the SMS code. */
     public string $step = 'phone';
@@ -42,7 +42,7 @@ class PhoneRequired extends Component
 
     public int $resendIn = 0;
 
-    public const PURPOSES = ['coins', 'deposit', 'withdraw', 'referral', 'verify'];
+    public const PURPOSES = ['deposit', 'withdraw', 'referral', 'verify'];
 
     public function mount(): void
     {
@@ -55,7 +55,7 @@ class PhoneRequired extends Component
      * verified phone is required (deposit, Buy Coins, withdraw, referral payouts, the dashboard banner).
      */
     #[On('open-phone-required')]
-    public function open(string $purpose = 'coins'): void
+    public function open(string $purpose = 'verify'): void
     {
         $user = auth()->user();
 

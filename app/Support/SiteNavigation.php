@@ -169,7 +169,7 @@ final class SiteNavigation
     /** Footer columns. @return array<string, list<array<string, mixed>>> */
     public function footer(): array
     {
-        $deepLinks = config('platform.ui_v2') && config('platform.deep_link');
+        $deepLinks = (bool) config('platform.deep_link');
 
         return [
             'Play' => array_values(array_filter([
@@ -182,29 +182,27 @@ final class SiteNavigation
         ];
     }
 
-    /** The account page: /account in the new look (Phase 6), /profile before it. */
+    /** The account page (Phase 6). */
     public function accountRoute(): string
     {
-        return config('platform.ui_v2') && Route::has('account') ? 'account' : 'profile';
+        return 'account';
     }
 
-    /** Activity (/activity, every game) in the new look; Kadi's game history before it. @return array<string, mixed> */
+    /** Activity: every game, Kadi's history as its own tab. @return array<string, mixed> */
     private function activityLink(bool $needsAccount = false): array
     {
-        return config('platform.ui_v2') && Route::has('activity')
-            ? $this->link('Activity', 'activity', 'list', needsAccount: $needsAccount)
-            : $this->link('Game history', 'games.history', 'list', needsAccount: $needsAccount);
+        return $this->link('Activity', 'activity', 'list', needsAccount: $needsAccount);
     }
 
     private function responsiblePlayOn(): bool
     {
-        return config('platform.ui_v2') && Route::has('responsible-play');
+        return Route::has('responsible-play');
     }
 
-    /** The casino browse page exists once the new look is on and games open inside the site. */
+    /** The casino browse page exists while games open inside the site. */
     private function casinoOn(): bool
     {
-        return config('platform.ui_v2') && config('platform.token_launch') && Route::has('casino');
+        return config('platform.token_launch') && Route::has('casino');
     }
 
     /** @return array<string, mixed> */

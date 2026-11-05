@@ -49,12 +49,6 @@ parameters:
 			path: app/Listeners/HandleEmailVerified.php
 
 		-
-			message: '#^Method App\\Livewire\\Dashboard\:\:progressiveJackpot\(\) should return int but returns float\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Livewire/Dashboard.php
-
-		-
 			message: '#^Method App\\Livewire\\PhoneRequired\:\:nameRules\(\) should return array\<int, array\<mixed\>\|Illuminate\\Contracts\\Validation\\Rule\|string\> but returns array\<int, App\\Rules\\AllowedName\|App\\Rules\\NameChangeCooldown\|App\\Rules\\PlayerNameFormat\|string\>\.$#'
 			identifier: return.type
 			count: 1
@@ -67,12 +61,6 @@ parameters:
 			path: app/Livewire/Profile/Show.php
 
 		-
-			message: '#^Call to function is_null\(\) with bool will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: app/Livewire/Wallet/Index.php
-
-		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 1
@@ -83,12 +71,6 @@ parameters:
 			identifier: nullCoalesce.offset
 			count: 1
 			path: app/Livewire/Wallet/Index.php
-
-		-
-			message: '#^Instanceof between App\\Models\\User and Illuminate\\Contracts\\Auth\\MustVerifyEmail will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: app/Livewire/Welcome.php
 
 		-
 			message: '#^Parameter \#1 \$message of static method Symfony\\Component\\Mime\\MessageConverter\:\:toEmail\(\) expects Symfony\\Component\\Mime\\Message, Symfony\\Component\\Mime\\RawMessage given\.$#'

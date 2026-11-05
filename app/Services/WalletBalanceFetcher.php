@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Reads and refreshes a player's KadiApi wallet balance through the shared cache keys
  * (`wallet_balance_{id}`, `kadi.customer.{id}`, `wallet_last_checked_{id}`), so the header,
- * dashboard and profile never disagree and never call KadiApi twice for the same player at once.
+ * wallet and account pages never disagree and never call KadiApi twice for the same player at once.
  */
 class WalletBalanceFetcher
 {
