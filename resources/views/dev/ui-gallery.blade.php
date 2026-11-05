@@ -120,6 +120,12 @@
         </x-ui.notice>
     </div>
 
+    {{-- The landing hero (components/lobby/hero, resources/js/site/hero-slider.js), from 768px wide --}}
+    <section aria-labelledby="t-hero" class="space-y-3">
+        <x-ui.section-head id="t-hero" title="Landing hero" sub="Lead slide, an object layer (iris) and a background (parallax); 768px and wider" />
+        <x-lobby.hero :slides="$heroSlides" />
+    </section>
+
     {{-- The Kadi hand and sheets --}}
     <x-ui.panel padded class="nt-hand-host nt-reveal overflow-hidden" aria-labelledby="t-hand">
         <x-ui.section-head id="t-hand" title="The Kadi hand" sub="Dealt in on load, fans out on hover" />
