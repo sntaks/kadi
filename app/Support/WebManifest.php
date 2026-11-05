@@ -16,22 +16,18 @@ class WebManifest
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        $v2 = (bool) config('platform.ui_v2');
-
         return [
             'id' => self::ID,
             'name' => 'Kadi',
             'short_name' => 'Kadi',
-            'description' => $v2
-                ? 'Play Kadi, slots, scratch cards and football in Kenya, with one wallet.'
-                : "Kenya's online competitive Kadi game anytime, anywhere",
-            // The new site has no dashboard: the lobby is home for everyone.
-            'start_url' => $v2 ? '/?source=pwa' : '/dashboard?source=pwa',
+            'description' => 'Play Kadi, slots, scratch cards and football in Kenya, with one wallet.',
+            // There is no dashboard: the lobby is home for everyone.
+            'start_url' => '/?source=pwa',
             'scope' => '/',
             'display' => 'standalone',
             'orientation' => 'any',
             'background_color' => '#0a0a0a',
-            'theme_color' => $v2 ? '#0e0d0b' : '#f5c542',
+            'theme_color' => '#0e0d0b',
             'lang' => 'en',
             'categories' => ['games', 'entertainment'],
             'icons' => [
@@ -39,7 +35,7 @@ class WebManifest
                 ['src' => '/pwa-icons/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
                 ['src' => '/pwa-icons/icon-maskable-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
             ],
-            'shortcuts' => $v2 ? $this->shortcuts() : [],
+            'shortcuts' => $this->shortcuts(),
         ];
     }
 

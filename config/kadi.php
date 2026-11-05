@@ -296,4 +296,24 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Platform health (php artisan platform:health, every 5 minutes)
+    |--------------------------------------------------------------------------
+    |
+    | Each problem is reported to Sentry as its own issue (fingerprint
+    | platform-health/<check>, tag `health_check`), so one alert rule per check
+    | pages someone. See docs/platform-health.md.
+    |
+    */
+
+    'health' => [
+        // Game launches: system failures (the API down or refusing, a bad launch URL), never a player's own state.
+        'launch_window_minutes' => (int) env('HEALTH_LAUNCH_WINDOW_MINUTES', 15),
+        'launch_min_failures' => (int) env('HEALTH_LAUNCH_MIN_FAILURES', 5),
+        'launch_max_failure_rate' => (float) env('HEALTH_LAUNCH_MAX_FAILURE_RATE', 0.2),
+        // The game catalogue: the API has not answered for this long (the check itself asks it, at most every 5 minutes).
+        'catalogue_stale_minutes' => (int) env('HEALTH_CATALOGUE_STALE_MINUTES', 30),
+    ],
+
 ];

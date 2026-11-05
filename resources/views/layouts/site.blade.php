@@ -1,14 +1,12 @@
 {{--
     The one site shell (plan §2, Phase 4), for guests and players alike: top bar, notice strip, side menu
-    (a drawer below 1024px), the page, footer and the phone bottom bar. Behind PLATFORM_UI_V2, every page
-    reaches it through the old layout names (layouts.app, layouts.guest, layouts::auth), which pass `$shell`:
+    (a drawer below 1024px), the page, footer and the phone bottom bar. Every page uses it, passing `$shell`
+    (sign-in and gate pages through <x-auth.page>):
 
       app    signed-in pages: padded content column.
       page   public pages that bring their own full-width sections.
       panel  sign-in and gate forms in a centred panel. On a gate (consent, choose a name) the menu
              shows but is inert, so the player sees which site they are on and cannot skip the step.
-
-    Pages keep their own content until their phase restyles it.
 
     `rail` (sports pages and the landing, while sports is on) keeps the bet slip beside the page from 1240px up;
     everywhere else the slip is a sheet behind the bottom bar's Bet slip button or the floating pill (Phase 9).

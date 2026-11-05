@@ -34,7 +34,7 @@
         <a
             href="{{ route('wallet') }}"
             wire:navigate
-            class="relative flex h-10 items-center gap-2 rounded-full border border-yellow-800/30 px-4 transition hover:border-[#f5c542]/50"
+            class="relative flex h-10 items-center gap-2 rounded-full border border-line px-4 transition hover:border-gold/50"
             title="{{ __('Wallet balance') }}"
         >
             {{-- Placeholder while a fetch is running: hidden by default --}}
@@ -55,16 +55,16 @@
             >
                 <span class="text-sm leading-none select-none" aria-hidden="true">💰</span>
 
-                <span class="text-sm font-semibold text-[#f5c542]" style="font-family: 'Cinzel', serif;">
+                <span class="text-sm font-semibold text-gold">
                     @if ($hasError)
-                        <span class="text-xs font-normal tracking-normal text-[#f5f5f0]/40">{{ __('unavailable') }}</span>
+                        <span class="text-xs font-normal tracking-normal text-ivory/40">{{ __('unavailable') }}</span>
                     @elseif ($balance !== null)
                         {{ \App\Support\WalletAmount::format($balance) }}
                     @elseif ($needsLoad)
                         <span class="sr-only">{{ __('Loading balance…') }}</span>
                         <x-skeleton inline class="h-4 w-14 rounded" data-test="balance-skeleton" />
                     @else
-                        <span class="font-normal text-[#f5f5f0]/30">—</span>
+                        <span class="font-normal text-ivory/30">—</span>
                     @endif
                 </span>
             </span>
@@ -82,11 +82,11 @@
             :disabled="cooldown"
             :title="cooldown ? '{{ __('Please wait…') }}' : '{{ __('Refresh balance') }}'"
             aria-label="{{ __('Refresh wallet balance') }}"
-            class="relative flex h-10 w-10 items-center justify-center rounded-full border border-yellow-800/30 text-[#f5f5f0]/70 transition hover:border-[#f5c542]/50 hover:text-[#f5c542] disabled:cursor-not-allowed disabled:opacity-40"
+            class="relative flex h-10 w-10 items-center justify-center rounded-full border border-line text-ivory/70 transition hover:border-gold/50 hover:text-gold disabled:cursor-not-allowed disabled:opacity-40"
             :class="cooldown && 'opacity-40 cursor-not-allowed'"
         >
             <svg
-                wire:loading.class="animate-spin text-[#f5c542]"
+                wire:loading.class="animate-spin text-gold"
                 wire:target="refreshWallet"
                 class="size-5"
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"

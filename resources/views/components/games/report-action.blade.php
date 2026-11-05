@@ -29,21 +29,21 @@
         data-seconds-left="{{ $secondsLeft }}"
     >
         <span x-show="left > 0" class="flex items-center gap-2">
-            <span class="text-xs tabular-nums text-[#6b6b6b]" title="You can report until {{ $deadline->format('j M Y, H:i:s') }}" x-text="label">
+            <span class="text-xs tabular-nums text-ash" title="You can report until {{ $deadline->format('j M Y, H:i:s') }}" x-text="label">
                 {{ $deadline->diffForHumans(['syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE, 'parts' => 1]) }} left
             </span>
             <button
                 type="button"
                 wire:click="openReport('{{ $reportKey }}')"
-                class="rounded-full border border-yellow-800/40 px-3 py-1 text-xs font-semibold text-[#f5f5f0]/80 transition hover:border-[#f5c542]/60 hover:text-[#f5c542]"
+                class="rounded-full border border-line px-3 py-1 text-xs font-semibold text-ivory/80 transition hover:border-gold/60 hover:text-gold"
             >
                 Report
             </button>
         </span>
-        <span x-show="left <= 0" x-cloak class="text-xs text-[#6b6b6b]">Reporting closed</span>
+        <span x-show="left <= 0" x-cloak class="text-xs text-ash">Reporting closed</span>
     </span>
 @elseif ($reportKey)
-    <span class="text-xs text-[#6b6b6b]" @if ($deadline) title="Reporting closed {{ $deadline->format('j M Y, H:i') }}" @endif>
+    <span class="text-xs text-ash" @if ($deadline) title="Reporting closed {{ $deadline->format('j M Y, H:i') }}" @endif>
         Reporting closed
     </span>
 @endif

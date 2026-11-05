@@ -171,17 +171,14 @@ test('the gallery builds its tiles exactly like the lobby, fallback tile include
         ->and($titles->firstWhere('code', 'slots_brand_new')->isPresented())->toBeFalse();
 });
 
-test('Night table tokens never reuse a class name existing pages already use', function () {
-    $css = file_get_contents(resource_path('css/night-table.css'));
-    preg_match_all('/--color-([a-z0-9-]+):/', $css, $m);
+test('no view brings back the old look: no old button or card classes, Cinzel headings or hard-coded colour classes', function () {
+    $offenders = collect(File::allFiles(resource_path('views')))
+        // Mail templates and the dev gallery are not site pages.
+        ->reject(fn ($f) => Str::contains($f->getPathname(), ['views/mail', 'views/emails', 'vendor/', 'dev/ui-gallery']))
+        ->filter(fn ($f) => preg_match('/\bbtn-casino-|\bglass-card\b|\bfont-cinzel\b|font-family:\s*\'Cinzel|\b(?:bg|text|border|ring|from|to|via|outline|divide|placeholder)-\[#[0-9a-fA-F]{3,8}\]/', $f->getContents()))
+        ->map(fn ($f) => Str::after($f->getPathname(), resource_path('views').'/'))
+        ->values()
+        ->all();
 
-    $views = collect(File::allFiles(resource_path('views')))
-        // Night table's own views (components, the site shell, the gallery) are meant to use the tokens.
-        ->reject(fn ($f) => Str::contains($f->getPathname(), ['components/ui/', 'components/site/', 'components/lobby/', 'livewire/lobby/', 'components/account/', 'livewire/account/', 'components/auth/', 'views/auth/', 'components/consent-fields', 'components/referral-code-field', 'livewire/wallet/deposit-sheet', 'layouts/site.blade.php', 'dev/ui-gallery']))
-        ->map(fn ($f) => $f->getContents())->implode("\n");
-
-    foreach ($m[1] as $token) {
-        expect(preg_match('/\b(bg|text|border|ring|fill|stroke|from|to|via|outline|divide)-'.preg_quote($token, '/').'\b/', $views))
-            ->toBe(0, "The token `{$token}` already means something on an existing page.");
-    }
+    expect($offenders)->toBe([]);
 });

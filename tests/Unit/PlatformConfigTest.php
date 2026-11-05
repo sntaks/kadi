@@ -32,13 +32,12 @@ function configDefaults(string $file, array $keys): array
     }
 }
 
-test('every multi-game platform switch exists and is off by default', function () {
+test('the old look is gone; every switch is on by default except taking real-money bets', function () {
     $flags = configDefaults('platform.php', [
-        'PLATFORM_UI_V2', 'PLATFORM_TOKEN_LAUNCH', 'PLATFORM_DEEP_LINK', 'PLATFORM_SPORTS', 'PLATFORM_SPORTS_BETTING',
+        'PLATFORM_TOKEN_LAUNCH', 'PLATFORM_DEEP_LINK', 'PLATFORM_SPORTS', 'PLATFORM_SPORTS_BETTING',
     ]);
 
-    expect(array_keys($flags))->toBe(['ui_v2', 'token_launch', 'deep_link', 'sports', 'sports_betting'])
-        ->and(array_filter($flags))->toBe([]);
+    expect($flags)->toBe(['token_launch' => true, 'deep_link' => true, 'sports' => true, 'sports_betting' => false]);
 });
 
 test('mail previews and the UI gallery default to on only in the local environment', function (string $env, bool $expected) {

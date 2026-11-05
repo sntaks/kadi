@@ -1,7 +1,7 @@
 {{--
     The one notice strip under the top bar, on every page until the player acts: an unverified e-mail
     first (nothing else works until it is), then an unconfirmed phone (needed for deposits, withdrawals
-    and referral payouts). Replaces the dashboard and landing banners when the new shell is on.
+    and referral payouts). The only place these reminders appear: no page adds its own banner for them.
 --}}
 @php($user = auth()->user())
 @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())

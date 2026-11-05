@@ -112,9 +112,11 @@ test('wallet page poll refetches when the balance cache is cold', function () {
     $user = pollUser();
     Cache::put("kadi.customer.{$user->id}", ['balance' => 10.0], now()->addHour());
 
-    Livewire::actingAs($user)->test(Index::class)
-        ->call('pollBalance')
-        ->assertSet('balance', 640.0);
+    $page = Livewire::actingAs($user)->test(Index::class);
+    // The account frame's balance seeds the cache while the page renders; the next poll finds it expired.
+    Cache::forget("wallet_balance_{$user->id}");
+
+    $page->call('pollBalance')->assertSet('balance', 640.0);
 
     expect(Cache::get("wallet_balance_{$user->id}"))->toEqual(640.0);
 });
@@ -132,16 +134,15 @@ test('wallet page poll serves the warm cache without an api call', function () {
     Http::assertNotSent(fn ($request) => str_contains($request->url(), '/customers/') && ! str_contains($request->url(), 'transactions') && ! str_ends_with($request->url(), '/promotions'));
 });
 
-test('wallet page poll is skipped while a deposit is awaiting confirmation', function () {
+test('wallet page poll is skipped while a withdrawal is being sent', function () {
     fakePollApi(640.0);
     $user = pollUser();
     Cache::put("kadi.customer.{$user->id}", ['balance' => 10.0], now()->addHour());
 
-    Livewire::actingAs($user)->test(Index::class)
-        ->set('awaitingDeposit', true)
-        ->set('depositBaseline', 10.0)
-        ->call('pollBalance')
-        ->assertSet('balance', 10.0);
+    $page = Livewire::actingAs($user)->test(Index::class)->set('processingWithdraw', true);
+    Cache::forget("wallet_balance_{$user->id}");
+
+    $page->call('pollBalance')->assertSet('balance', 10.0);
 
     Http::assertNotSent(fn ($request) => str_contains($request->url(), '/customers/') && ! str_contains($request->url(), 'transactions') && ! str_ends_with($request->url(), '/promotions'));
 });

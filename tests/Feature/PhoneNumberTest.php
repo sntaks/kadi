@@ -2,11 +2,10 @@
 
 use App\Livewire\PhoneRequired;
 use App\Livewire\Profile\Show;
-use App\Livewire\Wallet\Index;
+use App\Livewire\Wallet\DepositSheet;
 use App\Models\User;
 use App\Rules\KenyanPhone;
 use App\Support\PhoneNumber;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
@@ -109,40 +108,16 @@ it('does not send phone_no from the profile page once a phone is set', function 
     Http::assertSent(fn ($request) => $request->method() === 'PUT' && ! isset($request['phone_no']));
 });
 
-it('opens the phone modal instead of depositing when the phone is missing', function () {
+it('opens the phone sheet instead of depositing when the phone is missing', function () {
     Http::fake();
     $user = User::factory()->create(['linked_id' => 5151, 'phone' => null]);
 
-    Livewire::actingAs($user)->test(Index::class)
-        ->call('openDeposit')
-        ->set('depositAmount', '500')
-        ->call('requestDeposit')
-        ->assertSet('showDepositModal', false)
-        ->assertSet('confirmingDeposit', false)
+    Livewire::actingAs($user)->test(DepositSheet::class)
+        ->dispatch('open-deposit')
+        ->set('amount', '500')
+        ->call('send')
+        ->assertSet('open', false)
         ->assertDispatched('open-phone-required', purpose: 'deposit');
 
     Http::assertNotSent(fn ($request) => str_contains($request->url(), '/deposits'));
-});
-
-it('hard-refreshes both balance caches while a deposit is pending', function () {
-    $user = User::factory()->create(['linked_id' => 5151, 'phone' => '254712345678']);
-    Cache::put("wallet_balance_{$user->id}", 100.0, now()->addMinutes(5));
-    Cache::put("kadi.customer.{$user->id}", ['balance' => 100], now()->addHour());
-
-    Http::fake([
-        PHONE_API_BASE.'deposits/*' => Http::response(['status' => 'success']),
-        PHONE_API_BASE.'customers/transactions/*' => Http::response(['transactions' => []]),
-        PHONE_API_BASE.'customers/*' => Http::response(['data' => ['balance' => 600]]),
-    ]);
-
-    Livewire::actingAs($user)->test(Index::class)
-        ->set('depositAmount', '500')
-        ->call('confirmDeposit')
-        ->assertSet('awaitingDeposit', true)
-        ->call('checkDepositStatus')
-        ->assertSet('awaitingDeposit', false)
-        ->assertSet('balance', 600.0)
-        ->assertDispatched('wallet-refreshed');
-
-    expect(Cache::get("wallet_balance_{$user->id}"))->toBe(600.0);
 });

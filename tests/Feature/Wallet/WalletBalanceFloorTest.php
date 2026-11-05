@@ -32,12 +32,12 @@ test('the wallet page balance is floored, never rounded up', function () {
         ->assertDontSee('1,500');
 });
 
-test('the dashboard balance card is floored, never rounded up', function () {
+test('the top bar wallet pill is floored, never rounded up', function () {
     $user = User::factory()->create();
     Cache::put("wallet_balance_{$user->id}", 777.9, now()->addMinutes(5));
 
     $this->actingAs($user)
-        ->get(route('dashboard'))
+        ->get(route('faq'))
         ->assertOk()
         ->assertSee('KES 777', false)
         ->assertDontSee('KES 778', false);

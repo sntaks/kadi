@@ -15,7 +15,7 @@
         @if ($successMessage)<p class="nt-ok" role="status" data-test="referral-success">{{ $successMessage }}</p>@endif
         @if ($noticeMessage)<p class="nt-hint" role="status" data-test="referral-notice">{{ $noticeMessage }}</p>@endif
 
-        <x-ui.page-head title="Invite & Earn"
+        <x-ui.page-head :level="2" title="Invite & Earn"
             :description="'Earn KES 10 when a friend you invite confirms their e-mail and phone, and another KES 10 on their first deposit. Withdraw to M-Pesa from KES '.$this->minimumWithdrawal().'.'">
             <x-slot:actions>
                 <x-ui.button variant="ghost" size="sm" wire:click="refresh" wire:loading.attr="disabled" wire:target="refresh, load">

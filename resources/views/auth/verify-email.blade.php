@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Verify your e-mail')">
+<x-auth.page :title="__('Verify your e-mail')">
     <div class="grid gap-6">
         <x-auth.head title="Check your e-mail" description="We sent you a link. Open it to verify your e-mail, then you can play, deposit and withdraw." />
 
@@ -21,4 +21,4 @@
             <button type="submit" class="text-sm text-soft hover:text-gold">Log out</button>
         </form>
     </div>
-</x-layouts::auth>
+</x-auth.page>

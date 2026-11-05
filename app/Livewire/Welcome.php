@@ -9,11 +9,7 @@ use App\Livewire\Concerns\TogglesFavourites;
 use App\Models\User;
 use App\Sportsbook\Catalogue\SportsLobby;
 use App\Support\SportsPages;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\Session;
-use Illuminate\View\View;
-use Livewire\Attributes\Computed;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Livewire;
@@ -23,55 +19,11 @@ class Welcome extends Component
 {
     use TogglesFavourites;
 
-    /** Players at the Kadi tables now (App\Games\KadiTables); 0 when the counts are unknown. */
-    public function livePlayers(): int
-    {
-        return app(KadiTables::class)->total() ?? 0;
-    }
-
-    #[Computed]
-    public function hasUnverifiedEmail(): bool
-    {
-        $user = auth()->user();
-
-        return $user && $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail();
-    }
-
-    public function resendVerificationNotification(): void
-    {
-        $user = auth()->user();
-
-        if (! $user || $user->hasVerifiedEmail()) {
-            return;
-        }
-
-        $user->sendEmailVerificationNotification();
-
-        Session::flash('status', 'verification-link-sent');
-    }
-
-    public function render(): Factory|\Illuminate\Contracts\View\View|View
-    {
-        if (config('platform.ui_v2')) {
-            return $this->landing();
-        }
-
-        return view('livewire.welcome', [
-            'livePlayers' => $this->livePlayers(),
-            'users' => User::count(),
-        ])
-            ->layout('layouts.guest')
-            ->layoutData([
-                'description' => 'Play Kadi online, the Kenyan Kadi card game. Free to join, real opponents, tournaments with prize pools and M-Pesa deposits. Sign up and play Kadi today.',
-                'page' => 'home',
-            ]);
-    }
-
     /**
-     * The new landing (plan §2, Phase 5): the Kadi table with real seat counts, then the casino panel
-     * once games open inside the site. One page for guests and players; the dashboard redirects here.
+     * The landing (plan §2, Phase 5): the Kadi table with real seat counts, then the casino panel
+     * once games open inside the site. One page for guests and players; /dashboard redirects here.
      */
-    private function landing(): \Illuminate\Contracts\View\View
+    public function render(): View
     {
         $user = auth()->user();
         $user = $user instanceof User ? $user : null;

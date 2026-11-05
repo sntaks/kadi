@@ -5,11 +5,11 @@
 <div class="space-y-4">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h3 class="flex items-center gap-2 text-lg font-bold text-[#f5f5f0]" @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless>
-                <flux:icon.finger-print variant="outline" class="size-5 text-[#f5c542]" />
+            <h3 class="flex items-center gap-2 text-lg font-bold text-ivory">
+                <flux:icon.finger-print variant="outline" class="size-5 text-gold" />
                 {{ __('Passkeys') }}
             </h3>
-            <p class="mt-1 text-sm text-[#6b6b6b]">
+            <p class="mt-1 text-sm text-ash">
                 {{ __('Sign in with your face, fingerprint, or device PIN instead of a password.') }}
             </p>
         </div>
@@ -24,7 +24,7 @@
     @else
     @if (filled($statusMessage))
         <p
-            class="rounded-lg border border-green-700/50 bg-green-900/30 px-4 py-2 text-sm text-green-400"
+            class="rounded-lg border border-green-700/50 bg-green-900/30 px-4 py-2 text-sm text-win"
             role="status"
         >
             {{ $statusMessage }}
@@ -32,21 +32,21 @@
     @endif
 
     @if (empty($passkeys))
-        <div class="rounded-lg border border-yellow-800/20 bg-[#111111] p-6 text-center">
-            <flux:icon.key variant="outline" class="mx-auto size-8 text-[#6b6b6b]" />
-            <p class="mt-3 text-sm font-semibold text-[#f5f5f0]">
+        <div class="rounded-lg border border-line bg-felt p-6 text-center">
+            <flux:icon.key variant="outline" class="mx-auto size-8 text-ash" />
+            <p class="mt-3 text-sm font-semibold text-ivory">
                 {{ __('No passkeys yet') }}
             </p>
-            <p class="mt-1 text-xs text-[#6b6b6b]">
+            <p class="mt-1 text-xs text-ash">
                 {{ __('Add a passkey for a faster, more secure way to sign in.') }}
             </p>
         </div>
     @else
-        <ul class="divide-y divide-yellow-800/20 rounded-lg border border-yellow-800/20 bg-[#111111]" aria-label="{{ __('Your passkeys') }}">
+        <ul class="divide-y divide-line rounded-lg border border-line bg-felt" aria-label="{{ __('Your passkeys') }}">
             @foreach ($passkeys as $passkey)
                 <li class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between" wire:key="passkey-{{ $passkey['id'] }}">
                     <div class="flex min-w-0 items-start gap-3">
-                        <flux:icon.device-phone-mobile variant="outline" class="mt-0.5 size-5 shrink-0 text-[#f5c542]/70" />
+                        <flux:icon.device-phone-mobile variant="outline" class="mt-0.5 size-5 shrink-0 text-gold/70" />
 
                         <div class="min-w-0">
                             @if ($editingId === $passkey['id'])
@@ -71,11 +71,11 @@
                                     </flux:button>
                                 </form>
                                 @error('name')
-                                    <p class="mt-1 text-xs text-red-400">{{ $message }}</p>
+                                    <p class="mt-1 text-xs text-hot">{{ $message }}</p>
                                 @enderror
                             @else
-                                <p class="truncate text-sm font-semibold text-[#f5f5f0]">{{ $passkey['name'] }}</p>
-                                <p class="mt-0.5 text-xs text-[#6b6b6b]">
+                                <p class="truncate text-sm font-semibold text-ivory">{{ $passkey['name'] }}</p>
+                                <p class="mt-0.5 text-xs text-ash">
                                     @if ($passkey['authenticator'])
                                         {{ $passkey['authenticator'] }} ·
                                     @endif

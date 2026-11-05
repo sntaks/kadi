@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
 
 /*
- * Phase 5: the Kadi-first landing, the casino pages and the retired dashboard.
+ * Phase 5: the Kadi-first landing and the casino pages; the dashboard is gone (Phase 12).
  */
 
 const LOBBY_API = 'https://kadi-api.test/api/v1/';
@@ -49,7 +49,6 @@ beforeEach(function () {
     config([
         'services.kadi_api.url' => LOBBY_API,
         'services.kadi_api.key' => 'site-key',
-        'platform.ui_v2' => true,
         'platform.token_launch' => true,
         'platform.deep_link' => true,
     ]);
@@ -97,12 +96,6 @@ test('the last good seat counts are kept when the game server fails', function (
     $this->totals = fn () => throw new ConnectionException('down');
 
     expect(app(KadiTables::class)->seats())->toBe(['single' => 5, 'tournaments' => 1, 'jackpots' => 0, 'total' => 6]);
-});
-
-test('with the new UI off, home is the old welcome page', function () {
-    config(['platform.ui_v2' => false]);
-
-    $this->get(route('home'))->assertOk()->assertDontSee('Kadi tables are open')->assertDontSee('data-shell=', false);
 });
 
 test('the casino panel shows themed slot shelves, scratch cards and collections', function () {
@@ -227,11 +220,11 @@ test('unknown shelves and /casino/all are not pages', function (string $filter) 
     $this->get('/casino/'.$filter)->assertNotFound();
 })->with(['all', 'nope']);
 
-test('the casino page does not exist until the new look and in-site games are both on', function (string $flag) {
-    config(["platform.{$flag}" => false]);
+test('the casino page does not exist while games do not open inside the site', function () {
+    config(['platform.token_launch' => false]);
 
     $this->get('/casino')->assertNotFound();
-})->with(['ui_v2', 'token_launch']);
+});
 
 test('the favourites shelf asks guests to log in and players to heart something', function () {
     $this->get(route('casino', ['filter' => 'favourites']))->assertOk()->assertSee('Keep your favourite games in one place');
@@ -303,16 +296,8 @@ test('a player can heart a title from its game page', function () {
 
 // ─── Dashboard, menu and sitemap ─────────────────────────────────────────────
 
-test('with the new UI on, the dashboard sends players home', function () {
+test('the dashboard sends players home', function () {
     $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertRedirect(route('home'));
-});
-
-test('the old dashboard makes no claims about players or dealers', function () {
-    config(['platform.ui_v2' => false]);
-
-    $html = $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertOk()->getContent();
-
-    expect($html)->not->toContain(' Playing<')->and($html)->not->toContain('playing now')->and($html)->not->toContain('Live Dealer');
 });
 
 test('a 200 without all three totals keeps the last good seat counts', function (mixed $body) {

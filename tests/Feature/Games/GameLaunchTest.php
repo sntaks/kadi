@@ -380,8 +380,8 @@ test('logging out ends the player\'s game sessions', function () {
     Queue::assertPushed(RevokeGameSessions::class, fn (RevokeGameSessions $job) => $job->customerId === 5150 && $job->game === null);
 });
 
-test('logging out does nothing for games while the launcher is off or the player is not linked', function (bool $launcher, ?int $linked) {
-    config(['platform.token_launch' => $launcher]);
+test('logging out does nothing for games while the launcher and betting are off or the player is not linked', function (bool $launcher, ?int $linked) {
+    config(['platform.token_launch' => $launcher, 'platform.sports_betting' => $launcher]);
     Queue::fake();
 
     $this->actingAs(player(['linked_id' => $linked]))->post(route('logout'));

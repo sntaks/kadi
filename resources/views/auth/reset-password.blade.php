@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Reset password')">
+<x-auth.page :title="__('Reset password')">
     <div class="grid gap-6">
         <x-auth.head title="Choose a new password" />
         @if (session('status'))<p class="nt-ok" role="status">{{ session('status') }}</p>@endif
@@ -11,4 +11,4 @@
             <x-ui.button type="submit" size="lg" block data-test="reset-password-button">Save my new password</x-ui.button>
         </form>
     </div>
-</x-layouts::auth>
+</x-auth.page>

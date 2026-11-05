@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Confirm password')">
+<x-auth.page :title="__('Confirm password')">
     <div class="grid gap-6">
         <x-auth.head title="Confirm your password" description="This part of your account needs your password before you continue." />
         @if (session('status'))<p class="nt-ok" role="status">{{ session('status') }}</p>@endif
@@ -8,4 +8,4 @@
             <x-ui.button type="submit" size="lg" block data-test="confirm-password-button">Continue</x-ui.button>
         </form>
     </div>
-</x-layouts::auth>
+</x-auth.page>

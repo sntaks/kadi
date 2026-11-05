@@ -5,8 +5,8 @@ use App\Support\SiteNavigation;
 use Illuminate\Support\Facades\Http;
 
 /*
- * Phase 4: every page opens in one shell (layouts/site.blade.php) behind PLATFORM_UI_V2, and in the old
- * layouts with the flag off. The new shell marks <body data-shell="…">; the old layouts never do.
+ * Phase 4: every page opens in one shell (layouts/site.blade.php), which marks <body data-shell="…">. The old
+ * layouts were deleted in Phase 12.
  */
 
 beforeEach(function () {
@@ -38,15 +38,7 @@ dataset('player pages', [
     'confirm password' => ['password.confirm', 'panel'],
 ]);
 
-dataset('old player pages', [
-    'profile' => ['profile'],
-    'wallet' => ['wallet'],
-    'game history' => ['games.history'],
-    'confirm password' => ['password.confirm'],
-]);
-
-test('with the new UI on, a public page opens in the site shell', function (string $route, string $shell) {
-    config(['platform.ui_v2' => true]);
+test('a public page opens in the site shell', function (string $route, string $shell) {
 
     $this->get(route($route))->assertOk()
         ->assertSee('data-shell="'.$shell.'"', false)
@@ -54,14 +46,7 @@ test('with the new UI on, a public page opens in the site shell', function (stri
         ->assertSee('class="nt-footer"', false);
 })->with('guest pages');
 
-test('with the new UI off, a public page keeps its old layout', function (string $route) {
-    config(['platform.ui_v2' => false]);
-
-    $this->get(route($route))->assertOk()->assertDontSee('data-shell=', false);
-})->with('guest pages');
-
-test('with the new UI on, a player page opens in the site shell', function (string $route, string $shell) {
-    config(['platform.ui_v2' => true]);
+test('a player page opens in the site shell', function (string $route, string $shell) {
 
     $this->actingAs(User::factory()->create())
         ->get(route($route))->assertOk()
@@ -69,22 +54,14 @@ test('with the new UI on, a player page opens in the site shell', function (stri
         ->assertSee('id="site-menu"', false);
 })->with('player pages');
 
-test('with the new UI off, a player page keeps its old layout', function (string $route) {
-    config(['platform.ui_v2' => false]);
-
-    $this->actingAs(User::factory()->create())
-        ->get(route($route))->assertOk()->assertDontSee('data-shell=', false);
-})->with('old player pages');
-
 test('the referrals page opens in the shell when referrals are on', function () {
-    config(['platform.ui_v2' => true, 'kadi.referrals.enabled' => true]);
+    config(['kadi.referrals.enabled' => true]);
 
     $this->actingAs(User::factory()->create())
         ->get(route('referrals'))->assertOk()->assertSee('data-shell="app"', false);
 });
 
 test('gate pages open in the shell with the menu shown but inert', function () {
-    config(['platform.ui_v2' => true]);
     $user = User::factory()->withoutConsent()->create();
 
     $html = $this->actingAs($user)->get(route('consent.show'))->assertOk()->getContent();
@@ -96,7 +73,6 @@ test('gate pages open in the shell with the menu shown but inert', function () {
 });
 
 test('a guest sees Log in and Join, and account links send them to sign in', function () {
-    config(['platform.ui_v2' => true]);
 
     $html = $this->get(route('faq'))->assertOk()->getContent();
 
@@ -108,7 +84,6 @@ test('a guest sees Log in and Join, and account links send them to sign in', fun
 });
 
 test('a player sees the wallet pill and the account menu, not Log in and Join', function () {
-    config(['platform.ui_v2' => true]);
 
     $html = $this->actingAs(User::factory()->create(['name' => 'Jane Wanjiru']))
         ->get(route('faq'))->assertOk()->getContent();
@@ -123,7 +98,6 @@ test('a player sees the wallet pill and the account menu, not Log in and Join', 
 });
 
 test('the side menu marks the current page', function () {
-    config(['platform.ui_v2' => true]);
 
     $html = $this->get(route('faq'))->assertOk()->getContent();
 
@@ -132,7 +106,6 @@ test('the side menu marks the current page', function () {
 });
 
 test('an unverified e-mail shows the e-mail notice before anything else', function () {
-    config(['platform.ui_v2' => true]);
     $user = User::factory()->unverified()->phoneUnverified()->create();
 
     $this->actingAs($user)->get(route('faq'))->assertOk()
@@ -142,7 +115,6 @@ test('an unverified e-mail shows the e-mail notice before anything else', functi
 });
 
 test('an unconfirmed phone shows the phone notice on every page', function (string $route) {
-    config(['platform.ui_v2' => true]);
     $user = User::factory()->phoneUnverified()->create();
 
     $this->actingAs($user)->get(route($route))->assertOk()
@@ -151,7 +123,6 @@ test('an unconfirmed phone shows the phone notice on every page', function (stri
 })->with(['faq', 'wallet', 'account']);
 
 test('a verified player sees no notice', function () {
-    config(['platform.ui_v2' => true]);
 
     $this->actingAs(User::factory()->create(['phone' => '254712345678']))->get(route('faq'))->assertOk()
         ->assertDontSee('data-test="notice-email"', false)
@@ -159,7 +130,6 @@ test('a verified player sees no notice', function () {
 });
 
 test('the shell renders the phone sheet, install dialog and bell once', function () {
-    config(['platform.ui_v2' => true]);
 
     $html = $this->actingAs(User::factory()->create())->get(route('wallet'))->assertOk()->getContent();
 
@@ -169,7 +139,7 @@ test('the shell renders the phone sheet, install dialog and bell once', function
 });
 
 test('until sports and the casino page exist, the bottom bar offers Wallet, Kadi, Home and Account', function () {
-    config(['platform.ui_v2' => true, 'platform.sports' => false]);
+    config(['platform.sports' => false, 'platform.token_launch' => false]);
 
     $labels = collect((new SiteNavigation(null))->bottomBar())->pluck('label')->all();
 
@@ -177,11 +147,13 @@ test('until sports and the casino page exist, the bottom bar offers Wallet, Kadi
 });
 
 test('the game tabs list only games that have a page', function () {
-    config(['platform.sports' => true]);
+    config(['platform.sports' => false, 'platform.token_launch' => false]);
 
-    $labels = collect((new SiteNavigation(null))->products())->pluck('label')->all();
+    expect(collect((new SiteNavigation(null))->products())->pluck('label')->all())->toBe(['Kadi']);
 
-    expect($labels)->toBe(['Kadi']);
+    config(['platform.sports' => true, 'platform.token_launch' => true]);
+
+    expect(collect((new SiteNavigation(null))->products())->pluck('label')->all())->toBe(['Sports', 'Kadi', 'Casino']);
 });
 
 test('a guest gets a sign-in link for Play Kadi; a player gets the real control', function () {
@@ -201,7 +173,7 @@ test('Invite & Earn appears only while referrals are on', function (bool $enable
 })->with([true, false]);
 
 test('the search box shows only once games open inside the site, and pages never read the catalogue for it', function (bool $launcher) {
-    config(['platform.ui_v2' => true, 'platform.token_launch' => $launcher]);
+    config(['platform.token_launch' => $launcher, 'platform.sports' => false]);
 
     $html = $this->get(route('faq'))->assertOk()->getContent();
 
@@ -224,14 +196,13 @@ test('the search index lists playable titles with their play pages', function ()
     expect($response->headers->get('Cache-Control'))->toContain('public')->toContain('max-age=300');
 });
 
-test('the search index does not exist until games open inside the site', function () {
-    config(['platform.token_launch' => false]);
+test('the search index does not exist while neither games nor sports are on', function () {
+    config(['platform.token_launch' => false, 'platform.sports' => false]);
 
     $this->getJson('/games/search')->assertNotFound();
 });
 
 test('on a gate the footer is inert too, and no notice or phone sheet is offered', function () {
-    config(['platform.ui_v2' => true]);
     $user = User::factory()->withoutConsent()->unverified()->phoneUnverified()->create();
 
     $html = $this->actingAs($user)->get(route('consent.show'))->assertOk()->getContent();
@@ -243,7 +214,7 @@ test('on a gate the footer is inert too, and no notice or phone sheet is offered
 });
 
 test('every Play Kadi control is disabled while the e-mail is unverified', function () {
-    config(['platform.ui_v2' => true, 'platform.token_launch' => false]);
+    config(['platform.token_launch' => false]);
     $user = User::factory()->unverified()->create(['account_no' => 'KK-UNVERIFIED-1']);
 
     $html = $this->actingAs($user)->get(route('faq'))->assertOk()->getContent();

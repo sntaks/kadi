@@ -1,8 +1,8 @@
 /**
  * "Install app" experience.
  *
- * Exposes one Alpine store, `pwaInstall`, that the install button, the banner and
- * the instructions dialog all read from. Listeners are registered once at module
+ * Exposes one Alpine store, `pwaInstall`, that the install buttons and the
+ * instructions dialog read from. Listeners are registered once at module
  * load (the store is created on `alpine:init`), so wire:navigate page swaps never
  * register them again and a `beforeinstallprompt` that fires before Alpine boots
  * is not lost.
@@ -15,8 +15,6 @@
  *   - Firefox desktop, macOS Safari and every other desktop case: no button.
  *   - Already installed / running standalone: no button.
  */
-const DISMISS_KEY = 'pwa.install.dismissedAt';
-const DISMISS_MS = 14 * 24 * 60 * 60 * 1000;
 const SETTLE_MS = 3000;
 
 const userAgent = () => navigator.userAgent || '';
@@ -32,24 +30,6 @@ export const isAndroid = () => /android/i.test(userAgent());
 
 export const isFirefoxDesktop = () => /firefox/i.test(userAgent()) && !isAndroid() && !isIOS();
 
-function dismissedRecently() {
-    try {
-        const at = Number(window.localStorage.getItem(DISMISS_KEY));
-
-        return at > 0 && Date.now() - at < DISMISS_MS;
-    } catch (e) {
-        return false;
-    }
-}
-
-function rememberDismissal() {
-    try {
-        window.localStorage.setItem(DISMISS_KEY, String(Date.now()));
-    } catch (e) {
-        // Private mode or blocked storage: the banner simply returns next visit.
-    }
-}
-
 let deferredPrompt = null;
 let started = false;
 
@@ -59,7 +39,6 @@ const pending = {
     installed: false,
     canPrompt: false,
     settled: false,
-    dismissed: false,
     announcement: '',
 };
 
@@ -85,10 +64,6 @@ function createStore() {
 
         get visible() {
             return this.mode !== null;
-        },
-
-        get showBanner() {
-            return this.visible && !this.dismissed;
         },
 
         activate() {
@@ -124,11 +99,6 @@ function createStore() {
                 console.debug('[pwa] install prompt failed', e);
             }
         },
-
-        dismissBanner() {
-            rememberDismissal();
-            this.dismissed = true;
-        },
     };
 }
 
@@ -137,7 +107,6 @@ export function initInstall() {
     started = true;
 
     pending.standalone = isStandalone();
-    pending.dismissed = dismissedRecently();
 
     document.addEventListener('alpine:init', () => {
         window.Alpine.store('pwaInstall', createStore());

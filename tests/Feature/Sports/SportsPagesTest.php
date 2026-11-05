@@ -16,17 +16,14 @@ use Illuminate\Support\Facades\Date;
  */
 
 beforeEach(function () {
-    config(['platform.ui_v2' => true, 'platform.sports' => true]);
+    config(['platform.sports' => true]);
 });
 
-test('the sports pages exist only with the new look and sports switched on', function (array $flags) {
-    config($flags);
+test('the sports pages do not exist while sports are switched off', function () {
+    config(['platform.sports' => false]);
 
     $this->get('/sports')->assertNotFound();
-})->with([
-    'sports off' => [['platform.sports' => false]],
-    'new look off' => [['platform.ui_v2' => false]],
-]);
+});
 
 test('/sports lists matches with tappable prices, grouped by day and competition, with the real count', function () {
     $fixture = pricedFixture(['home_team' => 'Arsenal', 'away_team' => 'Chelsea', 'kicks_off_at' => now('UTC')->addHours(3)]);
@@ -193,7 +190,7 @@ test('activity tabs keep working in the browser: no property shadows the show() 
 });
 
 test('the side menu and the slip never show sports while the sports pages are off', function () {
-    config(['platform.ui_v2' => false]);
+    config(['platform.sports' => false]);
     pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]);
 
     $this->get('/faq')->assertOk()->assertDontSee('data-bet-slip', false)->assertDontSee('Highlights');

@@ -19,7 +19,7 @@ class GoogleLinkController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Throwable $e) {
-            return redirect()->route('profile')
+            return redirect()->route('account')
                 ->withErrors(['google' => 'Google authentication failed. Please try again.']);
         }
 
@@ -29,7 +29,7 @@ class GoogleLinkController extends Controller
             ->exists();
 
         if ($conflict) {
-            return redirect()->route('profile')
+            return redirect()->route('account')
                 ->withErrors(['google' => 'This Google account is already linked to another user.']);
         }
 
@@ -44,7 +44,7 @@ class GoogleLinkController extends Controller
 
         Auth::user()->update($updateData);
 
-        return redirect()->route('profile')
+        return redirect()->route('account')
             ->with('status', 'google-linked');
     }
 }

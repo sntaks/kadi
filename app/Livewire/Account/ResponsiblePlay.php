@@ -190,7 +190,7 @@ class ResponsiblePlay extends Component
             'chosen' => $option ? config("kadi.responsible_play.breaks.{$option[0]}.{$option[1]}") : null,
             'chosenIsSelfExclusion' => ($option[0] ?? null) === 'self_exclusion',
         ])
-            ->layout('layouts.app')
+            ->layout('layouts.site', ['shell' => 'app'])
             ->title('Responsible play · Kadi');
     }
 

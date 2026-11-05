@@ -1,7 +1,7 @@
 <div>
     @if (auth()->user()->google_id)
         <div class="flex items-center gap-3">
-            <span class="inline-flex items-center gap-1.5 text-sm text-green-500">
+            <span class="inline-flex items-center gap-1.5 text-sm text-win">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
@@ -18,7 +18,7 @@
         </div>
     @else
         <a href="{{ route('auth.google.link') }}"
-           class="inline-flex items-center gap-3 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800">
+           class="inline-flex items-center gap-3 rounded-lg border border-line bg-felt px-4 py-2 text-sm font-medium text-white transition hover:bg-felt-2">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="size-5 shrink-0" aria-hidden="true">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                 <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>

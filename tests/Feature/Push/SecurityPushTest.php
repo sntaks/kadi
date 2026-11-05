@@ -34,7 +34,7 @@ test('a security change also pushes to users who turned notifications on', funct
     Notification::assertSentTo($user, PushMessageNotification::class, function (PushMessageNotification $push) {
         return $push->title === 'Security alert'
             && $push->body === 'Your account password was changed'
-            && $push->url === '/profile#security'
+            && $push->url === '/account#security'
             && $push->urgency === 'high'
             && $push->tag === null;
     });
@@ -69,7 +69,7 @@ test('a push is only sent to the account that changed, never another user', func
 
 test('the push text never contains secrets, only the description of the change', function () {
     $user = User::factory()->create();
-    $push = new PushMessageNotification('Security alert', 'A new passkey was added to your account', '/profile#security', null, 21600, 'high');
+    $push = new PushMessageNotification('Security alert', 'A new passkey was added to your account', '/account#security', null, 21600, 'high');
     $payload = $push->toWebPush($user, $push)->toArray();
 
     expect(json_encode($payload))->not->toContain($user->email)->not->toContain($user->name)->not->toContain('password');

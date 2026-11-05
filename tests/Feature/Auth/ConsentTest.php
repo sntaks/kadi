@@ -97,14 +97,14 @@ test('an existing user without consent is sent to the consent page at login', fu
     loginWithPassword($this, $user);
 
     $this->assertAuthenticatedAs($user);
-    $this->get(route('dashboard'))->assertRedirect(route('consent.show'));
+    $this->get(route('wallet'))->assertRedirect(route('consent.show'));
     $this->get(route('consent.show'))->assertOk();
 });
 
 test('a legacy user already signed in is not interrupted mid-session', function () {
     $user = User::factory()->withoutConsent()->create();
 
-    $this->actingAs($user)->get(route('dashboard'))->assertOk();
+    $this->actingAs($user)->get(route('wallet'))->assertOk();
 });
 
 test('an existing google user without consent is prompted after google login', function () {
@@ -115,20 +115,20 @@ test('an existing google user without consent is prompted after google login', f
 
     $this->get(route('auth.google.callback'))->assertRedirect(route('home'));
 
-    $this->get(route('dashboard'))->assertRedirect(route('consent.show'));
+    $this->get(route('wallet'))->assertRedirect(route('consent.show'));
 });
 
 test('consenting clears the gate and returns the user to where they were going', function () {
     $user = User::factory()->withoutConsent()->create();
     loginWithPassword($this, $user);
 
-    $this->get(route('dashboard'))->assertRedirect(route('consent.show'));
+    $this->get(route('wallet'))->assertRedirect(route('consent.show'));
 
     $this->post(route('consent.store'), ['age_confirmed' => '1', 'terms' => '1'])
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('wallet'));
 
     expect($user->fresh()->hasCurrentConsent())->toBeTrue();
-    $this->get(route('dashboard'))->assertOk();
+    $this->get(route('wallet'))->assertOk();
 });
 
 test('the consent page rejects a submission missing either checkbox', function () {
@@ -166,7 +166,7 @@ test('bumping the terms version re-prompts users at their next login', function 
 
     loginWithPassword($this, $user);
 
-    $this->get(route('dashboard'))->assertRedirect(route('consent.show'));
+    $this->get(route('wallet'))->assertRedirect(route('consent.show'));
 });
 
 test('a user with current consent is never prompted', function () {
@@ -174,6 +174,6 @@ test('a user with current consent is never prompted', function () {
 
     loginWithPassword($this, $user);
 
-    $this->get(route('dashboard'))->assertOk();
+    $this->get(route('wallet'))->assertOk();
     $this->get(route('consent.show'))->assertRedirect(route('home'));
 });

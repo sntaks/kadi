@@ -13,7 +13,7 @@
         @if ($tab === 'kadi')
             {{-- Kadi's own history: latest games, tournaments and jackpots, with the tools to report one. --}}
             <div class="px-[22px] pb-6 max-[640px]:px-4">
-                <livewire:games.history :embedded="true" :key="'kadi-history'" />
+                <livewire:games.history :key="'kadi-history'" />
             </div>
         @elseif ($tab === 'sports')
             @include('livewire.account.partials.sports-bets', ['page' => $sports])

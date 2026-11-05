@@ -15,7 +15,6 @@ use Laravel\Socialite\Facades\Socialite;
  */
 
 beforeEach(function () {
-    config(['platform.ui_v2' => true]);
     Http::fake();
 });
 
@@ -86,19 +85,14 @@ test('guests get the sign-in sheet on site pages, with all three forms posting t
         ->and($html)->toContain('data-signin="join"');
 });
 
-test('the sheet is not shown to players, on the sign-in pages themselves, or without the new look', function (string $who) {
-    if ($who === 'flag off') {
-        config(['platform.ui_v2' => false]);
-    }
-
+test('the sheet is not shown to players or on the sign-in pages themselves', function (string $who) {
     $response = match ($who) {
         'player' => $this->actingAs(User::factory()->create())->get(route('faq')),
-        'login page' => $this->get(route('login')),
-        default => $this->get(route('faq')),
+        default => $this->get(route('login')),
     };
 
     $response->assertOk()->assertDontSee('data-sheet="signin"', false);
-})->with(['player', 'login page', 'flag off']);
+})->with(['player', 'login page']);
 
 test('a failed log in reopens the sheet on the login form, with the error there only', function () {
     $user = User::factory()->create();
@@ -177,13 +171,9 @@ test('a guest\'s account-only links and play buttons are marked for the sheet', 
 
 // ─── Sign-in and gate pages ──────────────────────────────────────────────────
 
-test('the sign-in pages are in-site panels in the new look and the old pages without it', function (string $route) {
+test('the sign-in pages are in-site panels', function (string $route) {
     $this->get(route($route))->assertOk()->assertSee('data-shell="panel"', false)->assertSee('class="nt-field"', false)
         ->assertDontSee("font-family: 'Cinzel'", false);
-
-    config(['platform.ui_v2' => false]);
-
-    $this->get(route($route))->assertOk()->assertDontSee('data-shell=', false);
 })->with(['login', 'register', 'password.request']);
 
 test('the reset password page is an in-site panel', function () {

@@ -46,7 +46,7 @@ class PushTestSender
             title: 'Kadi test notification',
             // 199 characters plus a one-character ellipsis keeps the whole body within 200.
             body: Str::limit(trim((string) $body) !== '' ? trim((string) $body) : 'Push is working on this device.', 199, '…'),
-            url: '/profile#notifications',
+            url: '/account#notifications',
             tag: 'push-test',
             ttl: 300,
         );

@@ -9,7 +9,6 @@ use App\Jobs\ProcessVerifiedUser;
 use App\Models\User;
 use App\Promotions\PromoCode;
 use App\Referrals\ReferralCode;
-use App\Support\AuthView;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -95,7 +94,7 @@ class GoogleAuthController extends Controller
                 ->withErrors(['email' => 'Your sign-up session expired. Please try again.']);
         }
 
-        return view(AuthView::name('google-complete'), ['name' => $pending['name']]);
+        return view('auth.google-complete', ['name' => $pending['name']]);
     }
 
     public function storeComplete(Request $request): RedirectResponse

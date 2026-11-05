@@ -152,12 +152,8 @@ test('the manifest is served without a session or cookies and may be cached brie
         ->and($response->headers->getCookies())->toBe([]);
 });
 
-test('the old site has no shortcuts and keeps its dashboard start', function () {
-    expect(manifest())->toMatchArray(['id' => '/', 'start_url' => '/dashboard?source=pwa', 'shortcuts' => []]);
-});
-
-test('the new site offers Kadi, Sports, Slots and Wallet shortcuts, each with an icon that exists', function () {
-    config(['platform.ui_v2' => true, 'platform.token_launch' => true, 'platform.deep_link' => true, 'platform.sports' => true]);
+test('the app starts on the lobby and offers Kadi, Sports, Slots and Wallet shortcuts, each with an icon that exists', function () {
+    config(['platform.token_launch' => true, 'platform.deep_link' => true, 'platform.sports' => true]);
 
     $manifest = manifest();
 
@@ -176,7 +172,7 @@ test('the new site offers Kadi, Sports, Slots and Wallet shortcuts, each with an
 });
 
 test('a shortcut never points at a page that is switched off', function () {
-    config(['platform.ui_v2' => true, 'platform.token_launch' => false, 'platform.deep_link' => false, 'platform.sports' => false]);
+    config(['platform.token_launch' => false, 'platform.deep_link' => false, 'platform.sports' => false]);
 
     expect(collect(manifest()['shortcuts'])->pluck('url')->all())->toBe(['/?source=pwa-shortcut', '/wallet?source=pwa-shortcut']);
 

@@ -52,7 +52,7 @@ class Play extends Component
             'crumb' => $this->crumb($game, $title),
             'more' => $this->moreLikeThis($game, $title, $catalogue),
             'origins' => $this->allowedOrigins($catalogue),
-        ])->layout('layouts.app')->title($name.' · Kadi');
+        ])->layout('layouts.site', ['shell' => 'app'])->title($name.' · Kadi');
     }
 
     private function crumb(Game $game, ?GameTitle $title): string

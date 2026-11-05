@@ -148,7 +148,7 @@ class WalletBalance extends Component
         $this->checkKadiDbLinkage($user);
 
         // Step 3 — fetch balance from KadiApi (one in-flight call per user, shared with the
-        // dashboard and profile pages)
+        // wallet and account pages)
         $this->needsLoad = false;
 
         ['balance' => $balance, 'fresh' => $fresh] = app(WalletBalanceFetcher::class)->fetch($user);

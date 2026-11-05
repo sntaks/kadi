@@ -1,7 +1,5 @@
 import './sentry.js';
 import './echo.js';
-import './alpine/bottom-nav.js';
-import './alpine/legal-doc.js';
 import './games/play-frame.js';
 import './ui/reveal.js';
 import './site/analytics.js';

@@ -8,7 +8,7 @@
             @foreach (array_filter([session('wallet_success'), $successMessage]) as $message)
                 <p class="nt-ok" role="status">{{ $message }}</p>
             @endforeach
-            @foreach (array_filter([$purchaseError, $withdrawError && ! $showWithdrawModal ? $withdrawError : null]) as $message)
+            @foreach (array_filter([$withdrawError && ! $showWithdrawModal ? $withdrawError : null]) as $message)
                 <p class="nt-error" role="alert">{{ $message }}</p>
             @endforeach
 
@@ -141,7 +141,4 @@
         </div>
     </div>
 
-    @if ($awaitingDeposit)
-        <div wire:poll.5s="checkDepositStatus" class="hidden" aria-hidden="true"></div>
-    @endif
 </x-account.frame>

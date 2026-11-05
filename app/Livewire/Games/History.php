@@ -10,17 +10,14 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
 /**
- * The player's latest games, tournaments and jackpots. A lost game, or a lost tournament/jackpot round
+ * The Kadi tab of /activity: the player's latest games, tournaments and jackpots. A lost game, or a lost tournament/jackpot round
  * against a known opponent, can be reported once, within 3 minutes of playing (kadi.game_disputes.report_window_minutes). Games load after the first paint (wire:init) so a
  * slow KadiApi never blocks the page.
  */
-#[Title('Game History | Kadi')]
 class History extends Component
 {
     /** Shown for an item KadiApi says is already under an open complaint (409) this session. */
@@ -28,10 +25,6 @@ class History extends Component
 
     #[Url(except: PlayedGame::GAME)]
     public string $tab = PlayedGame::GAME;
-
-    /** Shown as the Kadi tab of /activity, whose header names the page. */
-    #[Locked]
-    public bool $embedded = false;
 
     /** @var array<string, list<array<string, mixed>>> */
     public array $games = [];
@@ -61,13 +54,6 @@ class History extends Component
 
     public function mount(): void
     {
-        // The new look shows this history as the Kadi tab of /activity (plan Phase 6).
-        if (config('platform.ui_v2') && request()->routeIs('games.history')) {
-            $this->redirectRoute('activity');
-
-            return;
-        }
-
         if (! array_key_exists($this->tab, PlayedGame::LABELS)) {
             $this->tab = PlayedGame::GAME;
         }
@@ -227,6 +213,6 @@ class History extends Component
         return view('livewire.games.history', [
             'tabs' => PlayedGame::LABELS,
             'reportWindow' => PlayedGame::reportWindowLabel(),
-        ])->layout('layouts.app');
+        ]);
     }
 }

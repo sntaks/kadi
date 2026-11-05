@@ -51,10 +51,6 @@ return Application::configure(basePath: dirname(__DIR__))
             CapturePromoCode::class,
         ]);
 
-        // Set by the preloader's JavaScript (value "1", nothing sensitive). Encrypted cookies it
-        // cannot decrypt are dropped, which made the preloader show on every page load.
-        $middleware->encryptCookies(except: ['kadi_preloaded']);
-
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,

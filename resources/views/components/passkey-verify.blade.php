@@ -33,7 +33,7 @@
                         submit: '{{ route($submitRoute) }}',
                     },
                 });
-                Livewire.navigate(response.redirect || '/dashboard');
+                Livewire.navigate(response.redirect || '/');
             } catch (e) {
                 if (e.constructor?.name !== 'UserCancelledError') {
                     this.error = e.message;
@@ -58,15 +58,15 @@
                     <span x-show="loading" x-cloak>{{ $loadingLabel }}</span>
                 </flux:button>
                 <p x-show="error" x-text="error" x-cloak
-                   class="text-sm text-center text-red-400"></p>
+                   class="text-sm text-center text-hot"></p>
             </div>
 
             <div class="relative my-6">
                 <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-yellow-800/30"></div>
+                    <div class="w-full border-t border-line"></div>
                 </div>
                 <div class="relative flex justify-center text-xs uppercase">
-                    <span class="px-2 text-[#6b6b6b] bg-[#1a1a1a]">
+                    <span class="px-2 text-ash bg-felt-2">
                         {{ $separator }}
                     </span>
                 </div>

@@ -1,12 +1,12 @@
-<div class="rounded-lg border border-yellow-800/20 bg-[#111111] p-6">
+<div class="rounded-lg border border-line bg-felt p-6">
     <div class="flex items-start gap-3">
-        <flux:icon.lock-closed variant="outline" class="mt-0.5 size-5 shrink-0 text-[#f5c542]" />
+        <flux:icon.lock-closed variant="outline" class="mt-0.5 size-5 shrink-0 text-gold" />
 
         <div class="w-full">
-            <h4 class="text-sm font-bold text-[#f5f5f0]" @unless (config('platform.ui_v2')) style="font-family: 'Cinzel', serif;" @endunless>
+            <h4 class="text-sm font-bold text-ivory">
                 {{ __('Confirm your password') }}
             </h4>
-            <p class="mt-1 text-xs text-[#6b6b6b]">
+            <p class="mt-1 text-xs text-ash">
                 {{ __('This is a sensitive area. Please confirm your password to continue.') }}
             </p>
 
@@ -30,7 +30,7 @@
                 </flux:button>
             </form>
             @error('confirmPassword')
-                <p class="mt-2 text-xs text-red-400">{{ $message }}</p>
+                <p class="mt-2 text-xs text-hot">{{ $message }}</p>
             @enderror
         </div>
     </div>

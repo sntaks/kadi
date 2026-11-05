@@ -50,8 +50,7 @@ test('the wallet shows what is still locked and caps the withdraw amount', funct
         ->call('loadPage')
         ->assertSet('lockedBonus', 15.0)
         ->assertSee('Signup bonus: KES 15 left to play before you can withdraw it.')
-        ->assertSee('max="55"', false)
-        ->assertSee('KES 55');
+        ->assertSeeHtml('data-test="withdrawable">KES 55</b>');
 });
 
 test('nothing locked: no note, full balance withdrawable', function () {
@@ -62,7 +61,7 @@ test('nothing locked: no note, full balance withdrawable', function () {
         ->call('loadPage')
         ->assertSet('lockedBonus', 0.0)
         ->assertDontSee('data-test="locked-bonus-note"', false)
-        ->assertSee('max="70"', false);
+        ->assertSeeHtml('data-test="withdrawable">KES 70</b>');
 });
 
 test('a promotions error shows nothing locked and never breaks the wallet', function () {

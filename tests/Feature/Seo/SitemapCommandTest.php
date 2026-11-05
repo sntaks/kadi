@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\File;
 
 test('the sitemap lists only public pages that exist', function () {
+    config(['platform.deep_link' => false]); // the game pages come from the catalogue: covered in LobbyTest
     $realPublic = public_path();
     $public = storage_path('framework/testing/sitemap-'.uniqid());
     File::ensureDirectoryExists($public);
@@ -17,15 +18,14 @@ test('the sitemap lists only public pages that exist', function () {
     preg_match_all('#<loc>([^<]+)</loc>#', $xml, $matches);
     $paths = array_map(fn (string $url) => parse_url($url, PHP_URL_PATH) ?? '/', $matches[1]);
 
-    expect($paths)->toBe(['/', '/how-to', '/games-guide', '/faq', '/terms', '/privacy']);
+    expect($paths)->toBe(['/', '/how-to', '/games-guide', '/faq', '/terms', '/privacy', '/promotions']);
 
     foreach ($paths as $path) {
         $this->get($path)->assertOk();
     }
 });
 
-test('the promotions page is listed once the new site is on', function () {
-    config(['platform.ui_v2' => true]);
+test('the promotions page is listed', function () {
     $realPublic = public_path();
     $public = storage_path('framework/testing/sitemap-'.uniqid());
     File::ensureDirectoryExists($public);

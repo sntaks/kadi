@@ -29,5 +29,7 @@ Schedule::command('sportsbook:suspend-stale')->everyFiveMinutes()->when($sports)
 
 // Money owed to or by players reaches the Kadi API whatever the switches say: settlements and reversals from the
 // outbox, and lookups of bets whose placement got no answer. Both do nothing when there is nothing waiting.
+// Problems that need a person (stuck settlements, failing launches, a stale catalogue) reach Sentry: docs/platform-health.md.
+Schedule::command('platform:health')->everyFiveMinutes()->withoutOverlapping(10)->onOneServer();
 Schedule::command('sportsbook:send-wager-ops')->everyMinute()->withoutOverlapping(5)->onOneServer();
 Schedule::command('sportsbook:reconcile-wagers')->everyMinute()->withoutOverlapping(5)->onOneServer();

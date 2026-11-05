@@ -7,13 +7,13 @@ function pwaUserMeta(string $html): ?string
     return preg_match('/<meta name="pwa-user" content="([^"]*)">/', $html, $m) ? $m[1] : null;
 }
 
-test('the profile page has a notifications tab with the push switch', function () {
+test('the account page has a notifications tab with the push switch', function () {
     $html = $this->actingAs(User::factory()->create())
-        ->get(route('profile'))
+        ->get(route('account'))
         ->assertOk()
         ->getContent();
 
-    expect($html)->toContain('data-test="profile-tab-notifications"')
+    expect($html)->toContain('data-test="account-tab-notifications"')
         ->toContain("tab === 'notifications'")
         ->toContain('data-test="pwa-notifications"')
         ->toContain('data-test="pwa-notifications-switch"')
@@ -39,18 +39,19 @@ test('the toggle never dereferences the nullable error without a guard', functio
     expect(preg_match('/\$store\.pwaPush\.error\.[a-z]/i', $html))->toBe(0);
 });
 
-test('the profile page can open straight on the notifications tab', function () {
-    $html = $this->actingAs(User::factory()->create())->get(route('profile'))->getContent();
+test('the account page can open straight on the notifications tab', function () {
+    $html = $this->actingAs(User::factory()->create())->get(route('account'))->getContent();
 
-    expect($html)->toContain("['info', 'security', 'connected', 'notifications'].includes(location.hash.slice(1))");
+    expect($html)->toContain("tabs: ['profile', 'security', 'notifications', 'connected']")
+        ->toContain('tab = tabs.includes(h) ? h');
 });
 
 test('signed-in pages carry an opaque per-account marker and guests do not', function () {
     $user = User::factory()->create();
     $other = User::factory()->create();
 
-    $marker = pwaUserMeta($this->actingAs($user)->get(route('profile'))->getContent());
-    $otherMarker = pwaUserMeta($this->actingAs($other)->get(route('profile'))->getContent());
+    $marker = pwaUserMeta($this->actingAs($user)->get(route('account'))->getContent());
+    $otherMarker = pwaUserMeta($this->actingAs($other)->get(route('account'))->getContent());
 
     expect($marker)->toMatch('/^[0-9a-f]{16}$/')
         ->and($marker)->not->toBe((string) $user->id) // never the database id

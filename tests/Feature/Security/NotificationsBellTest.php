@@ -87,7 +87,7 @@ test('the layouts render the bell for authenticated users', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->get(route('dashboard'))
+        ->get(route('wallet'))
         ->assertOk()
         ->assertSee(__('Notifications'), false);
 });

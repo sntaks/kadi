@@ -1,4 +1,4 @@
-<x-layouts::auth :title="__('Finish signing up')">
+<x-auth.page :title="__('Finish signing up')">
     <div class="grid gap-6">
         <x-auth.head title="One last step" :description="__('Welcome, :name. Confirm the details below to create your account.', ['name' => $name])" />
         <form method="POST" action="{{ route('auth.google.complete.store') }}" class="grid gap-5">
@@ -12,4 +12,4 @@
         </form>
         <p class="m-0 text-center"><a href="{{ route('auth.google.complete.cancel') }}" class="text-sm text-soft hover:text-gold">Cancel</a></p>
     </div>
-</x-layouts::auth>
+</x-auth.page>
