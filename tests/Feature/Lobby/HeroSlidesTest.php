@@ -201,9 +201,9 @@ test('every slide but the first is hidden and inert, and survives a Livewire re-
             expect($tag)->toContain('data-state="active"')->not->toContain(' hidden');
         } else {
             expect($tag)->toContain('data-state="idle"');
-            // Slides shown on phones (stacked under Kadi, as before the slider) must stay visible and usable there:
-            // hero.css hides them from 768px instead of the hidden attribute.
-            str_contains($tag, 'data-phone')
+            // The big match shows under the carousel on phones, so it must stay visible and usable there: hero.css
+            // hides it from 768px instead of the hidden attribute.
+            str_contains($tag, 'data-below')
                 ? expect($tag)->not->toContain(' hidden')->not->toContain(' inert')
                 : expect($tag)->toContain(' hidden')->toContain(' inert');
         }
@@ -238,17 +238,17 @@ test('slide figures come from the server: the jackpot prize, never player counts
     expect($html)->toContain(e(Money::format($jackpot->totalPrizes())));
 });
 
-test('hero images never download on phones', function () {
+test('hero images wait for their slide: nothing is requested until the slider asks', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
-    preg_match_all('/<picture>.*?<\/picture>/s', $html, $pictures);
+    preg_match_all('/<img[^>]*data-srcset[^>]*>/s', $html, $images);
 
-    expect($pictures[0])->not->toBeEmpty();
+    expect($images[0])->not->toBeEmpty()->and($html)->not->toContain('<source');
 
-    foreach ($pictures[0] as $picture) {
-        expect($picture)->toContain('<source media="(min-width: 768px)"')
-            ->and($picture)->toMatch('/<img src="data:image\/gif;base64,[^"]+"/')
-            ->and($picture)->toContain('loading="lazy"');
+    foreach ($images[0] as $img) {
+        expect($img)->toMatch('/ src="data:image\/gif;base64,[^"]+"/')
+            ->and($img)->toContain('data-src="')
+            ->and($img)->not->toMatch('/ srcset="/');
     }
 });
 
@@ -274,11 +274,11 @@ test('the football slide follows the big match', function () {
     expect(app(HeroSlides::class)->forLanding(bigMatch: true)->pluck('key'))->not->toContain('football');
 });
 
-test('on phones only the Kadi and football slides show, stacked as before', function () {
+test('on phones the big match stays below the carousel, outside the rotation', function () {
     $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
     pricedFixture(['kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
 
-    preg_match_all('/<article[^>]*data-slide="([^"]+)"[^>]*data-phone/', $this->get('/')->assertOk()->getContent(), $phone);
+    preg_match_all('/<article[^>]*data-slide="([^"]+)"[^>]*data-below/', $this->get('/')->assertOk()->getContent(), $below);
 
-    expect($phone[1])->toBe(['kadi', 'football']);
+    expect($below[1])->toBe(['football']);
 });
