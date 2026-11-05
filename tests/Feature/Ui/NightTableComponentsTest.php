@@ -27,6 +27,8 @@ test('the UI gallery shows every component without the Kadi API', function () {
         ->assertSee('nt-tile', false)
         ->assertSee('role="dialog"', false)
         ->assertSee('nt-hand', false)
+        ->assertSee('data-hero', false)
+        ->assertSee('data-slide="sample-promo"', false)
         ->assertSee('noindex', false);
 });
 
