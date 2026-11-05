@@ -29,6 +29,20 @@
         .nt-hero-lead.nt-lead-two .nt-table .nt-ctas { margin-bottom: 118px; }
         .nt-hero-lead.nt-lead-two .nt-table .nt-hand { transform: translateX(50%) scale(.56); }
     }
+    /* Docked bet slip and side menu leave the hero ~600px: keep both cards, drop the blurb, tighten the rest. */
+    @container hero (max-width: 759px) {
+        .nt-hero-lead.nt-lead-two .nt-table { padding: 20px 18px; }
+        .nt-hero-lead.nt-lead-two .nt-table h1 { font-size: 28px; }
+        .nt-hero-lead.nt-lead-two .nt-table > p { display: none; }
+        .nt-hero-lead.nt-lead-two .nt-seats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 0 16px; }
+        .nt-hero-lead.nt-lead-two .nt-seats b { font-size: 20px; }
+        .nt-hero-lead.nt-lead-two .nt-seats span { font-size: 11.5px; line-height: 1.25; }
+        .nt-hero-lead.nt-lead-two .nt-ctas { gap: 8px; margin-bottom: 92px; }
+        .nt-hero-lead.nt-lead-two .nt-ctas .nt-btn-lg { height: 42px; padding: 0 14px; font-size: 14px; }
+        .nt-hero-lead.nt-lead-two .nt-table .nt-hand { transform: translateX(50%) scale(.44); }
+        .nt-hero-lead.nt-lead-two .nt-bigmatch { padding: 20px 18px; }
+        .nt-hero-lead.nt-lead-two .nt-versus b { font-size: 17px; }
+    }
 
     /* ── Config slides ─────────────────────────────────────── */
     .nt-hero-card {
