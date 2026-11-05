@@ -52,7 +52,11 @@ class Welcome extends Component
 
         // Football beside and under the Kadi table once the sports pages are on (plan §2, Phase 9).
         $sports = SportsPages::on();
-        $bigMatch = $sports ? app(SportsLobby::class)->bigMatch() : null;
+        $sportsLobby = $sports ? app(SportsLobby::class) : null;
+        $bigMatch = $sportsLobby?->bigMatch();
+
+        // Beside the big match: the other kick-offs today, or the next ones when nothing else plays today.
+        $beside = $bigMatch ? $sportsLobby->beside($bigMatch) : ['today' => true, 'fixtures' => collect()];
 
         return view('livewire.lobby.home', [
             'seats' => $seats,
@@ -60,7 +64,8 @@ class Welcome extends Component
             'favourites' => $favourites,
             'sports' => $sports,
             'bigMatch' => $bigMatch,
-            'alsoToday' => $bigMatch ? app(SportsLobby::class)->alsoToday($bigMatch) : collect(),
+            'also' => $beside['fixtures'],
+            'alsoIsToday' => $beside['today'],
         ])
             ->layout('layouts.site', [
                 'shell' => 'app',

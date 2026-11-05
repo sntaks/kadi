@@ -21,7 +21,7 @@
         overflow: hidden; padding: 22px 24px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 30px; align-items: start;
         background: radial-gradient(90% 120% at 100% 0%, rgb(248 192 56 / .10), transparent 60%), var(--color-felt);
     }
-    .nt-lead-two .nt-bigmatch { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .nt-lead-two .nt-bigmatch { grid-template-columns: minmax(0, 1fr); gap: 18px; align-content: start; }
     .nt-bigmatch h2 { margin: 0; font-size: 17px; font-weight: 700; color: var(--color-ivory); }
     .nt-bigmatch .nt-meta { margin: 2px 0 18px; }
     .nt-versus { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 0 0 18px; text-align: center; }
@@ -32,12 +32,14 @@
     .nt-bigmatch .nt-more a { color: var(--color-gold); font-weight: 600; }
     .nt-also h3 { margin: 0 0 8px; font-size: 15px; font-weight: 600; color: var(--color-ivory); }
     .nt-also a {
-        display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 40px; padding: 0 8px; margin: 0 -8px;
+        display: grid; grid-template-columns: minmax(44px, auto) minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 40px; padding: 0 8px; margin: 0 -8px;
         border-radius: 9px; font-size: 14px; color: var(--color-ivory); transition: background-color .15s;
     }
     .nt-also a:hover { background: var(--color-felt-2); }
     .nt-also a span:nth-child(2) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .nt-also a span:first-child, .nt-also a span:last-child { color: var(--color-ash); font-size: 12.5px; }
+    .nt-also a span:first-child { white-space: nowrap; }
+    .nt-kickoff { margin: -8px 0 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--color-gold); }
 
     /* ── Football list ─────────────────────────────────────── */
     .nt-football { overflow: hidden; }

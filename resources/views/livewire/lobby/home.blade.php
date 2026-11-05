@@ -6,7 +6,7 @@
     @if ($sports && $bigMatch)
         <div class="nt-lead nt-lead-two">
             <x-lobby.kadi-table :seats="$seats" />
-            <x-sports.big-match :fixture="$bigMatch" :also="$alsoToday" />
+            <x-sports.big-match :fixture="$bigMatch" :$also :also-today="$alsoIsToday" />
         </div>
     @else
         <x-lobby.kadi-table :seats="$seats" />

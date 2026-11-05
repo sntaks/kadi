@@ -5,9 +5,12 @@ use App\Livewire\Sports\BetSlip;
 use App\Livewire\Sports\FixtureList;
 use App\Models\User;
 use App\Sportsbook\Enums\MarketStatus;
+use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Models\Market;
+use App\Sportsbook\Support\KickoffCountdown;
 use Illuminate\Support\Facades\Date;
 
 /*
@@ -144,6 +147,60 @@ test('the landing shows today\'s big match and the football list beside the Kadi
 
     expect($big->id)->toBeInt();
 });
+
+test('the big match card counts down to kick-off and leaves the other markets to All markets', function () {
+    $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC')); // 09:00 EAT
+    $big = pricedFixture(['kicks_off_at' => Date::parse('2026-11-07 08:14:00', 'UTC')]);
+    Market::factory()->for($big)->create(['type' => MarketType::BothTeamsToScore, 'line' => null, 'key' => Market::keyFor(MarketType::BothTeamsToScore)]);
+
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('data-test="kickoff-countdown"')
+        ->toContain('Starts in 2 h 14 min')
+        ->toContain('All markets')
+        ->not->toContain('data-market="Both Teams To Score"');
+});
+
+test('with nothing else on today the card lists the next kick-offs instead of ending empty', function () {
+    $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
+    pricedFixture(['home_team' => 'Liverpool', 'kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
+    pricedFixture(['home_team' => 'Leeds', 'kicks_off_at' => Date::parse('2026-11-08 12:00:00', 'UTC')]);
+
+    $this->get('/')->assertOk()
+        ->assertDontSee('Also kicking off today')
+        ->assertSee('data-test="coming-up"', false)
+        ->assertSee('Coming up')
+        ->assertSee('Leeds');
+});
+
+test('the landing card shows no jackpot; /sports keeps its banner', function () {
+    openJackpot();
+    pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]);
+
+    expect($this->get('/sports')->getContent())->toContain('class="nt-panel nt-jp-banner"')
+        ->and($this->get('/')->getContent())->not->toContain('nt-jp-banner');
+});
+
+test('a coming-up match further away than tomorrow names its date, not just a weekday', function () {
+    $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
+    pricedFixture(['kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
+    pricedFixture(['home_team' => 'Later United', 'kicks_off_at' => Date::parse('2026-11-17 16:00:00', 'UTC')]);
+
+    $this->get('/')->assertOk()->assertSee('Tue 17 Nov 19:00');
+});
+
+test('the countdown wording matches the browser\'s', function (int $seconds, string $label) {
+    $now = Date::parse('2026-11-07 06:00:00', 'UTC');
+
+    expect(KickoffCountdown::label($now->addSeconds($seconds), $now))->toBe($label);
+})->with([
+    'past' => [-30, 'Kicked off'],
+    'seconds away' => [40, 'Kicking off now'],
+    'minutes' => [14 * 60 + 5, 'Starts in 14 min'],
+    'hours' => [2 * 3600 + 14 * 60, 'Starts in 2 h 14 min'],
+    'a day' => [86400 + 60, 'Starts in 1 day'],
+    'days' => [3 * 86400, 'Starts in 3 days'],
+]);
 
 test('without sports the landing keeps the Kadi table and no slip', function () {
     config(['platform.sports' => false]);

@@ -124,19 +124,27 @@ class SportsLobby
     }
 
     /**
-     * Other matches kicking off today, soonest first.
+     * What the big match card lists beside the match, in one query: the next kick-offs, soonest first. While any of
+     * them is today, only today's are shown ("Also kicking off today"); otherwise the next ones ("Coming up"), so
+     * the card never ends empty.
      *
-     * @return Collection<int, Fixture>
+     * @return array{today: bool, fixtures: Collection<int, Fixture>}
      */
-    public function alsoToday(?Fixture $except, int $limit = 3): Collection
+    public function beside(Fixture $bigMatch, int $limit = 3): array
     {
-        return $this->withOpenMatchResult(Fixture::query())
-            ->where('kicks_off_at', '<=', $this->endOfToday())
-            ->when($except !== null, fn (Builder $query) => $query->whereKeyNot($except?->id))
+        $next = $this->withOpenMatchResult(Fixture::query())
+            ->whereKeyNot($bigMatch->id)
             ->with(['matchResultMarket.selections'])
             ->orderBy('kicks_off_at')
             ->limit($limit)
             ->get();
+
+        $endOfToday = $this->endOfToday();
+        $today = $next->filter(fn (Fixture $fixture) => $fixture->kicks_off_at->lessThanOrEqualTo($endOfToday))->values();
+
+        return $today->isNotEmpty()
+            ? ['today' => true, 'fixtures' => $today]
+            : ['today' => false, 'fixtures' => $next];
     }
 
     /**
