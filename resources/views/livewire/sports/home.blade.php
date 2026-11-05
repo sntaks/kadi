@@ -2,13 +2,7 @@
     <x-ui.page-head title="Football" description="Prices on today's matches and the week ahead. Tap a price to add it to your bet slip." />
 
     @if ($jackpot)
-        <a class="nt-panel nt-jp-banner" href="{{ route('sports.jackpot') }}" wire:navigate>
-            <span>
-                <b>{{ $jackpot['name'] }}</b>
-                <span class="nt-num">Predict {{ $jackpot['matches'] }} matches for {{ \App\Sportsbook\Support\Money::format($jackpot['entry_price']) }} · top prize {{ \App\Sportsbook\Support\Money::format($jackpot['top_prize']) }}</span>
-            </span>
-            <span class="nt-btn nt-btn-gold nt-btn-sm">Play the jackpot</span>
-        </a>
+        <x-sports.jackpot-banner :$jackpot />
     @endif
 
     @if ($competitions !== [])
