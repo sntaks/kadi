@@ -154,3 +154,19 @@ test('slides take their durations from config', function () {
     expect($slides->first()->duration)->toBe(config('hero.durations.lead'))
         ->and($slides->firstWhere('key', 'welcome')->duration)->toBe(config('hero.durations.default'));
 });
+
+test('every hero image the config uses has been built', function () {
+    $missing = [];
+
+    foreach (HeroSlides::sources() as $source => $role) {
+        foreach (HeroSlides::widths($role) as $width) {
+            $built = public_path(HeroSlides::builtPath($source, $width));
+
+            if (! is_file($built) || filesize($built) > 90 * 1024) {
+                $missing[] = HeroSlides::builtPath($source, $width);
+            }
+        }
+    }
+
+    expect($missing)->toBe([]);
+});

@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\Route;
  */
 class HeroSlides
 {
-    /** Widths `hero:artwork` builds for every image (px). */
-    public const WIDTHS = [480, 960];
+    /** Widths `hero:artwork` builds per layer role (px, 1x and 2x of how wide the layer shows). */
+    public const WIDTHS = ['bg' => [480, 960], 'object' => [400, 800], 'card' => [200, 400]];
+
+    /** @return list<int> */
+    public static function widths(string $role): array
+    {
+        return self::WIDTHS[$role] ?? self::WIDTHS['bg'];
+    }
 
     public function __construct(private GameCatalogue $catalogue) {}
 
@@ -182,14 +188,15 @@ class HeroSlides
     /** @return array{src: string, srcset: string, w: int, h: int, role: string} */
     private function image(string $from, string $role): array
     {
-        $largest = self::builtPath($from, max(self::WIDTHS));
+        $widths = self::widths($role);
+        $largest = self::builtPath($from, max($widths));
         $size = is_file(public_path($largest)) ? @getimagesize(public_path($largest)) : false;
 
         return [
             'src' => asset($largest),
-            'srcset' => collect(self::WIDTHS)->map(fn (int $w) => asset(self::builtPath($from, $w))." {$w}w")->implode(', '),
-            'w' => $size ? $size[0] : max(self::WIDTHS),
-            'h' => $size ? $size[1] : max(self::WIDTHS),
+            'srcset' => collect($widths)->map(fn (int $w) => asset(self::builtPath($from, $w))." {$w}w")->implode(', '),
+            'w' => $size ? $size[0] : max($widths),
+            'h' => $size ? $size[1] : max($widths),
             'role' => $role,
         ];
     }
