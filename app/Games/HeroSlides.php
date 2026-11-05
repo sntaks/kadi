@@ -132,9 +132,12 @@ class HeroSlides
         }
 
         $art = $titles
-            ->map(fn (GameTitle $title) => GameArtwork::source($title->game, $title->code))
-            ->filter()
-            ->map(fn (string $path) => $this->image($path, 'card'))
+            ->filter(fn (GameTitle $title) => GameArtwork::source($title->game, $title->code) !== null)
+            ->map(fn (GameTitle $title) => [
+                ...$this->image((string) GameArtwork::source($title->game, $title->code), 'card'),
+                'alt' => $title->name,
+                'href' => $title->pageUrl(),
+            ])
             ->values()
             ->all();
 
@@ -161,7 +164,7 @@ class HeroSlides
     /**
      * @param  array<string, mixed>  $slide
      * @param  array<string, string>  $replace
-     * @param  list<array{src: string, srcset: string, w: int, h: int, role: string}>|null  $art
+     * @param  list<array<string, mixed>>|null  $art
      * @param  array<string, mixed>  $extra
      */
     private function make(array $slide, array $replace = [], ?array $art = null, array $extra = []): HeroSlide
@@ -181,7 +184,7 @@ class HeroSlides
             art: $art ?? array_map(fn (array $a) => $this->image($a['from'], $a['role']), $slide['art'] ?? []),
             transition: (string) ($slide['transition'] ?? 'fade-zoom'),
             duration: (int) ($slide['duration'] ?? config('hero.durations.'.($kind === 'lead' ? 'lead' : 'default'), 7000)),
-            extra: $extra,
+            extra: [...$extra, 'needsAccount' => (bool) ($slide['cta']['account'] ?? false)],
         );
     }
 

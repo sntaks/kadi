@@ -3,6 +3,7 @@
 use App\Games\HeroSlides;
 use App\Sportsbook\Enums\JackpotStatus;
 use App\Sportsbook\Support\Money;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 
 /*
@@ -169,4 +170,82 @@ test('every hero image the config uses has been built', function () {
     }
 
     expect($missing)->toBe([]);
+});
+
+// ─── On the landing ──────────────────────────────────────────────────────────
+
+test('the landing opens on the Kadi table and the big match as one slide', function () {
+    $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
+    pricedFixture(['home_team' => 'Liverpool', 'away_team' => 'Everton', 'kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
+
+    $this->get('/')->assertOk()->assertSeeInOrder(['data-hero', 'data-slide="lead"', 'kadi-table-title', 'bigmatch-title', 'data-slide="welcome"'], false);
+});
+
+test('without a big match the lead slide is the Kadi table alone', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('data-slide="lead"')->and($html)->toContain('kadi-table-title')->and($html)->not->toContain('bigmatch-title');
+});
+
+test('every slide but the first is hidden and inert, and survives a Livewire re-render', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    preg_match_all('/<article[^>]*data-slide="([^"]+)"[^>]*>/', $html, $tags);
+
+    expect($tags[1])->toHaveCount(app(HeroSlides::class)->forLanding()->count())->and(count($tags[1]))->toBeGreaterThan(1);
+
+    foreach ($tags[0] as $i => $tag) {
+        expect($tag)->toContain('wire:ignore.self');
+        $i === 0
+            ? expect($tag)->toContain('data-state="active"')->not->toContain(' hidden')
+            : expect($tag)->toContain(' hidden')->toContain(' inert')->toContain('data-state="idle"');
+    }
+});
+
+test('one slide shows no carousel controls', function () {
+    config([
+        'platform.token_launch' => false, 'platform.sports' => false, 'kadi.promotions.enabled' => false, 'kadi.referrals.enabled' => false,
+        'hero.slides' => array_values(array_filter(config('hero.slides'), fn ($s) => $s['kind'] !== 'install')),
+    ]);
+
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('data-count="1"')->and($html)->not->toContain('data-hero-next')->and($html)->not->toContain('data-hero-tabs');
+});
+
+test('the controls start hidden so the page works without JavaScript', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toMatch('/<div[^>]*data-hero-chrome[^>]*hidden/')
+        ->and($html)->toContain('data-hero-next')
+        ->and($html)->toContain('01')
+        ->and($html)->toContain('Kadi &amp; football');
+});
+
+test('slide figures come from the server: the jackpot prize, never player counts', function () {
+    $jackpot = openJackpot();
+
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain(e(Money::format($jackpot->totalPrizes())));
+});
+
+test('hero images never download on phones', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    preg_match_all('/<picture>.*?<\/picture>/s', $html, $pictures);
+
+    expect($pictures[0])->not->toBeEmpty();
+
+    foreach ($pictures[0] as $picture) {
+        expect($picture)->toContain('<source media="(min-width: 768px)"')
+            ->and($picture)->toMatch('/<img src="data:image\/gif;base64,[^"]+"/')
+            ->and($picture)->toContain('loading="lazy"');
+    }
+});
+
+test('a games slide links each card to its game page', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('href="'.url('/games/dragon-fire-fortune').'"');
 });

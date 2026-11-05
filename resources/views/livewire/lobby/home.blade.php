@@ -1,16 +1,10 @@
 {{--
-    The landing for guests and players (plan §2): the Kadi table, with today's big match beside it and the
-    football list under them while sports is on (Phase 9), then the casino panel. The bet slip sits in the rail.
+    The landing for guests and players (plan §2): the hero carousel, whose first slide is the Kadi table with today's
+    big match beside it, then the football list while sports is on (Phase 9), then the casino panel. The bet slip
+    sits in the rail.
 --}}
 <div class="nt-lobby nt-view-in">
-    @if ($sports && $bigMatch)
-        <div class="nt-lead nt-lead-two">
-            <x-lobby.kadi-table :seats="$seats" />
-            <x-sports.big-match :fixture="$bigMatch" :$also :also-today="$alsoIsToday" />
-        </div>
-    @else
-        <x-lobby.kadi-table :seats="$seats" />
-    @endif
+    <x-lobby.hero :slides="$heroSlides" :$seats :big-match="$sports ? $bigMatch : null" :$also :also-today="$alsoIsToday" />
 
     @if ($sports)
         <livewire:sports.fixture-list preview key="landing-football" />
