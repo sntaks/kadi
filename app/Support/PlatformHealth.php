@@ -118,11 +118,19 @@ class PlatformHealth
         // is never mistaken for an outage. A failed answer leaves the timestamp where it was.
         $this->catalogue->games();
         $fetchedAt = Cache::get(GameCatalogue::FETCHED_AT_KEY);
+
+        // No answer on record yet (the first run after the timestamp was introduced, or after a cache clear) while a
+        // cached copy is still fresh: ask the API now instead of reporting a copy nobody has checked.
+        if (! is_int($fetchedAt)) {
+            $this->catalogue->refresh();
+            $this->catalogue->games();
+            $fetchedAt = Cache::get(GameCatalogue::FETCHED_AT_KEY);
+        }
         $limit = (int) config('kadi.health.catalogue_stale_minutes');
 
         if (! is_int($fetchedAt)) {
             return [
-                'message' => 'The game catalogue could not be fetched from the Kadi API, and no earlier answer is on record.',
+                'message' => 'The game catalogue could not be fetched from the Kadi API just now, and no earlier answer is on record.',
                 'context' => ['minutes' => -1],
             ];
         }
