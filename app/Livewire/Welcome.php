@@ -67,7 +67,7 @@ class Welcome extends Component
             'bigMatch' => $bigMatch,
             'also' => $beside['fixtures'],
             'alsoIsToday' => $beside['today'],
-            'heroSlides' => app(HeroSlides::class)->forLanding(),
+            'heroSlides' => app(HeroSlides::class)->forLanding(bigMatch: $bigMatch !== null),
         ])
             ->layout('layouts.site', [
                 'shell' => 'app',

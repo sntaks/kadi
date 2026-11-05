@@ -5,8 +5,8 @@
 // focus is on the slides or the tab is hidden, and stops for good once the player uses a control, swipes or taps
 // anything in a slide (the pause/play button starts it again). With reduced motion it never autoplays.
 //
-// The server renders slide 1 active and the rest hidden + inert; from then on this script owns data-state, hidden,
-// inert and data-enter. The root and slides are wire:ignore.self and the controls wire:ignore, so a Livewire
+// The server renders slide 1 active and the rest hidden + inert. Armed, this script drops `hidden` (idle slides stay in
+// the layout, invisible, so the stage keeps the tallest slide's height) and owns data-state, inert and data-enter. The root and slides are wire:ignore.self and the controls wire:ignore, so a Livewire
 // re-render of the landing keeps the slide the player is on.
 const FOCUSABLE = 'a, button, input, select, textarea, [tabindex]';
 
@@ -77,6 +77,9 @@ document.addEventListener('alpine:init', () => {
 
             this.armed = true;
             this.stopped = this.stopped || this.reduced.matches;
+            // Every slide keeps its space from now on (idle ones are invisible and inert, hero.css), so the stage is
+            // always as tall as the tallest slide.
+            this.slides().forEach((slide, i) => this.rest(slide, i === this.index));
             this.$root.classList.add('is-armed');
             this.$root.querySelector('[data-hero-chrome]')?.removeAttribute('hidden');
             this.sync();
@@ -92,7 +95,11 @@ document.addEventListener('alpine:init', () => {
             clearTimeout(this.done);
             this.moving = false;
             this.index = 0;
-            this.slides().forEach((slide, i) => this.rest(slide, i === 0));
+            // Phones show the Kadi and football slides stacked (hero.css): they stay usable there.
+            this.slides().forEach((slide, i) => {
+                this.rest(slide, i === 0);
+                if (slide.hasAttribute('data-phone')) slide.inert = false;
+            });
             this.$root.classList.remove('is-armed', 'is-moving', 'is-timing', 'is-paused');
             this.$root.querySelector('[data-hero-chrome]')?.setAttribute('hidden', '');
             this.sync();
@@ -100,7 +107,7 @@ document.addEventListener('alpine:init', () => {
 
         rest(slide, active) {
             slide.dataset.state = active ? 'active' : 'idle';
-            slide.hidden = !active;
+            slide.hidden = !active && !this.armed && !slide.hasAttribute('data-phone');
             slide.inert = !active;
             slide.removeAttribute('data-enter');
         },

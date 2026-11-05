@@ -5,7 +5,7 @@ namespace App\Games;
 /**
  * One slide of the landing hero, resolved by HeroSlides from config/hero.php.
  *
- * `kind` is lead, promo, games, jackpot or install. `art` lists the built images
+ * `kind` is kadi, match, promo, games, jackpot or install. `art` lists the built images
  * (`src` the largest, `srcset` every width, `w`/`h` of the largest, `role` bg, card or object; game cards add `alt`
  * and `href`, their game page or null).
  * `extra` holds per-kind data: `titles` (list<GameTitle>) for games, `prize` (cents) and `closesAt` for jackpot, and

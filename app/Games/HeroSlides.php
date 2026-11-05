@@ -9,8 +9,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 
 /**
- * The landing hero's slides (config/hero.php). The lead slide (the Kadi table and the big match) is always first;
- * every other slide is kept only while what it advertises is live: its switches are on, its CTA route exists, the
+ * The landing hero's slides (config/hero.php). The Kadi slide (the Kadi table) is always first and the football
+ * slide (today's big match) follows while there is one; every other slide is kept only while what it advertises is live: its switches are on, its CTA route exists, the
  * catalogue offers its games, or a jackpot is taking entries. Figures come only from config copy or real records.
  */
 class HeroSlides
@@ -29,18 +29,18 @@ class HeroSlides
     /**
      * @return Collection<int, HeroSlide>
      */
-    public function forLanding(): Collection
+    public function forLanding(bool $bigMatch = false): Collection
     {
         /** @var list<array<string, mixed>> $config */
         $config = config('hero.slides', []);
-        $lead = collect($config)->firstWhere('kind', 'lead') ?? ['key' => 'lead', 'kind' => 'lead', 'label' => 'Kadi', 'title' => 'Kadi'];
+        $kadi = collect($config)->firstWhere('kind', 'kadi') ?? ['key' => 'kadi', 'kind' => 'kadi', 'label' => 'Kadi', 'title' => 'Kadi'];
 
         $others = collect($config)
-            ->reject(fn (array $slide) => ($slide['kind'] ?? null) === 'lead')
-            ->map(fn (array $slide) => $this->resolve($slide))
+            ->reject(fn (array $slide) => ($slide['kind'] ?? null) === 'kadi')
+            ->map(fn (array $slide) => $this->resolve($slide, $bigMatch))
             ->filter();
 
-        return collect([$this->make($lead)])
+        return collect([$this->make($kadi)])
             ->concat($others)
             ->take(max(1, (int) config('hero.max_slides', 6)))
             ->values();
@@ -79,7 +79,7 @@ class HeroSlides
     }
 
     /** @param  array<string, mixed>  $slide */
-    private function resolve(array $slide): ?HeroSlide
+    private function resolve(array $slide, bool $bigMatch): ?HeroSlide
     {
         if (! $this->passes($slide['requires'] ?? [])) {
             return null;
@@ -90,6 +90,7 @@ class HeroSlides
         }
 
         return match ($slide['kind'] ?? null) {
+            'match' => $bigMatch ? $this->make($slide) : null,
             'games' => $this->games($slide),
             'jackpot' => $this->jackpot($slide),
             'promo', 'install' => str_contains((string) $slide['title'], ':amount') && config('kadi.promotions.signup_bonus_amount') === null
@@ -183,7 +184,7 @@ class HeroSlides
             ctaUrl: isset($slide['cta']['route']) ? route($slide['cta']['route']) : null,
             art: $art ?? array_map(fn (array $a) => $this->image($a['from'], $a['role']), $slide['art'] ?? []),
             transition: (string) ($slide['transition'] ?? 'fade-zoom'),
-            duration: (int) ($slide['duration'] ?? config('hero.durations.'.($kind === 'lead' ? 'lead' : 'default'), 7000)),
+            duration: (int) ($slide['duration'] ?? config('hero.durations.default', 7000)),
             extra: [...$extra, 'needsAccount' => (bool) ($slide['cta']['account'] ?? false)],
         );
     }
