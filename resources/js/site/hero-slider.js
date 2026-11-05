@@ -1,4 +1,5 @@
-// Landing hero carousel (components/lobby/hero.blade.php, styles in resources/css/hero.css). From 768px wide only.
+// Landing hero carousel (components/lobby/hero.blade.php, styles in resources/css/hero.css), at every width. Below
+// 768px the big match slide ([data-below]) leaves the rotation and shows under the carousel instead.
 //
 // The timer is the active tab's progress bar: a CSS animation of --hero-dur whose animationend moves to the next
 // slide, so pausing is animation-play-state and there is no interval to drift. Autoplay pauses while the pointer or
@@ -6,8 +7,10 @@
 // anything in a slide (the pause/play button starts it again). With reduced motion it never autoplays.
 //
 // The server renders slide 1 active and the rest hidden + inert. Armed, this script drops `hidden` (idle slides stay in
-// the layout, invisible, so the stage keeps the tallest slide's height) and owns data-state, inert and data-enter. The root and slides are wire:ignore.self and the controls wire:ignore, so a Livewire
-// re-render of the landing keeps the slide the player is on.
+// the layout, invisible, so the stage keeps the tallest slide's height) and owns data-state, inert and data-enter. The
+// root and slides are wire:ignore.self and the controls wire:ignore, so a Livewire re-render keeps the current slide.
+// Slide images carry data-src/data-srcset and load only when their slide is about to show (warm()). Autoplay also
+// pauses while the carousel is scrolled out of view.
 const FOCUSABLE = 'a, button, input, select, textarea, [tabindex]';
 
 document.addEventListener('alpine:init', () => {
@@ -24,7 +27,7 @@ document.addEventListener('alpine:init', () => {
             this.wide = window.matchMedia('(min-width: 768px)');
             this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
             this.finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-            this.onWide = () => (this.wide.matches ? this.arm() : this.disarm());
+            this.onWide = () => this.layout();
             this.onVisibility = () => this.hold('hidden', document.hidden);
             this.wide.addEventListener('change', this.onWide);
             document.addEventListener('visibilitychange', this.onVisibility);
@@ -42,14 +45,21 @@ document.addEventListener('alpine:init', () => {
             stage?.addEventListener('focusout', (e) => this.hold('focus', stage.contains(e.relatedTarget)));
             stage?.addEventListener('pointerdown', (e) => this.onPointerDown(e));
             stage?.addEventListener('pointerup', (e) => this.onPointerUp(e));
+            stage?.addEventListener('pointercancel', () => { this.swipe = null; });
             stage?.addEventListener('pointermove', (e) => this.parallax(e));
 
-            if (this.wide.matches) this.arm();
+            if ('IntersectionObserver' in window) {
+                this.seen = new IntersectionObserver(([entry]) => this.hold('offscreen', !entry.isIntersecting), { threshold: 0.25 });
+                this.seen.observe(root);
+            }
+
+            this.arm();
         },
 
         destroy() {
             this.wide.removeEventListener('change', this.onWide);
             document.removeEventListener('visibilitychange', this.onVisibility);
+            this.seen?.disconnect();
             clearTimeout(this.settle);
             clearTimeout(this.done);
             cancelAnimationFrame(this.frame);
@@ -58,10 +68,15 @@ document.addEventListener('alpine:init', () => {
         slides() { return [...this.$root.querySelectorAll('[data-slide]')]; },
         tabs() { return [...this.$root.querySelectorAll('[data-hero-go]')]; },
 
-        // The install slide only counts on a device that can install the app.
+        // The install slide only counts on a device that can install the app; the big match slide only from 768px.
         available(slide) {
-            return !!slide && (!slide.hasAttribute('data-requires-install') || !!window.Alpine.store('pwaInstall')?.visible);
+            return !!slide
+                && (!slide.hasAttribute('data-requires-install') || !!window.Alpine.store('pwaInstall')?.visible)
+                && !(slide.hasAttribute('data-below') && this.below());
         },
+
+        // Phones: the big match sits under the carousel, visible and usable, outside the rotation.
+        below() { return !this.wide.matches; },
 
         order() { return this.slides().flatMap((s, i) => (this.available(s) ? [i] : [])); },
 
@@ -81,34 +96,36 @@ document.addEventListener('alpine:init', () => {
             // always as tall as the tallest slide.
             this.slides().forEach((slide, i) => this.rest(slide, i === this.index));
             this.$root.classList.add('is-armed');
-            this.$root.querySelector('[data-hero-chrome]')?.removeAttribute('hidden');
             this.sync();
+            this.warm(this.slides()[this.step(1)]);
             this.startTimer();
             // The install store settles a few seconds after load (pwa/install.js): look again then.
             this.settle = setTimeout(() => this.sync(), 3500);
         },
 
-        disarm() {
+        // Crossing 768px: the big match joins or leaves the rotation. Leaving it while on it goes to the first slide.
+        layout() {
             if (!this.armed) return;
 
-            this.armed = false;
-            clearTimeout(this.done);
-            this.moving = false;
-            this.index = 0;
-            // Phones show the Kadi and football slides stacked (hero.css): they stay usable there.
-            this.slides().forEach((slide, i) => {
-                this.rest(slide, i === 0);
-                if (slide.hasAttribute('data-phone')) slide.inert = false;
-            });
-            this.$root.classList.remove('is-armed', 'is-moving', 'is-timing', 'is-paused');
-            this.$root.querySelector('[data-hero-chrome]')?.setAttribute('hidden', '');
+            const slides = this.slides();
+            if (!this.available(slides[this.index])) {
+                clearTimeout(this.done);
+                this.moving = false;
+                this.$root.classList.remove('is-moving');
+                this.index = this.order()[0] ?? 0;
+            }
+
+            slides.forEach((slide, i) => this.rest(slide, i === this.index));
             this.sync();
+            this.startTimer();
         },
 
         rest(slide, active) {
-            slide.dataset.state = active ? 'active' : 'idle';
-            slide.hidden = !active && !this.armed && !slide.hasAttribute('data-phone');
-            slide.inert = !active;
+            const below = slide.hasAttribute('data-below') && this.below();
+
+            slide.dataset.state = below ? 'below' : active ? 'active' : 'idle';
+            slide.hidden = !active && !below && !this.armed;
+            slide.inert = !active && !below;
             slide.removeAttribute('data-enter');
         },
 
@@ -127,10 +144,11 @@ document.addEventListener('alpine:init', () => {
             toggle?.setAttribute('aria-pressed', String(this.stopped));
             toggle?.setAttribute('aria-label', this.stopped ? 'Play slides' : 'Pause slides');
 
-            if (this.armed && order.length < 2) {
-                this.$root.querySelector('[data-hero-chrome]')?.setAttribute('hidden', '');
-                this.stop();
-            }
+            // Fewer than two slides in the rotation (a phone with no promotions on): no controls, no timer.
+            const few = order.length < 2;
+            this.$root.querySelector('[data-hero-chrome]')?.toggleAttribute('hidden', few || !this.armed);
+            this.few = few;
+            if (few) this.$root.classList.remove('is-timing');
 
             if (!this.available(slides[this.index])) this.go(order[0] ?? 0, 'next');
         },
@@ -140,7 +158,7 @@ document.addEventListener('alpine:init', () => {
             const slide = this.slides()[this.index];
 
             root.classList.remove('is-timing');
-            if (this.stopped || !this.armed) return;
+            if (this.stopped || !this.armed || this.few) return;
 
             root.style.setProperty('--hero-dur', `${Number(slide?.dataset.duration) || 7000}ms`);
             void root.offsetWidth; // restart the bar animation
@@ -214,9 +232,15 @@ document.addEventListener('alpine:init', () => {
             }, reduced ? 170 : 950);
         },
 
-        // Lazy images in a hidden slide wait for it to show: ask for them before it does.
+        // Slide images are not requested until their slide is next or showing (idle slides sit in the viewport, so
+        // native lazy loading would fetch them all at once).
         warm(slide) {
-            slide?.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; });
+            slide?.querySelectorAll('img[data-srcset]').forEach((img) => {
+                img.sizes = img.dataset.sizes || '';
+                img.srcset = img.dataset.srcset;
+                img.src = img.dataset.src;
+                img.removeAttribute('data-srcset');
+            });
         },
 
         // Titles rise word by word: each word in a clipping mask. The full text stays the accessible name.
@@ -273,8 +297,10 @@ document.addEventListener('alpine:init', () => {
         onPointerDown(e) {
             if (!this.armed) return;
 
-            // A tap on a price, a link or Play Kadi: the player is busy with this slide.
-            if (e.target.closest(FOCUSABLE)) {
+            // A tap on a price, a link or Play Kadi: the player is busy with this slide. Only controls inside the
+            // slides count: an ancestor such as <main tabindex="-1"> must not turn every touch into a tap.
+            const hit = e.target.closest(FOCUSABLE);
+            if (hit && e.currentTarget.contains(hit)) {
                 this.stop();
                 this.swipe = null;
 

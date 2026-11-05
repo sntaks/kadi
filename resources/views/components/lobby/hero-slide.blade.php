@@ -1,7 +1,7 @@
 {{--
     One config slide of the landing hero (App\Games\HeroSlide): background, art layers, then the copy. Every layer
-    carries data-layer and a stagger index (--i) for its entrance (resources/css/hero.css). Images use a <source> for
-    768px and wider only, so phones, which never see these slides, never download them.
+    carries data-layer and a stagger index (--i) for its entrance (resources/css/hero.css). Images start as a 1x1
+    placeholder with data-src/data-srcset: the slider script loads them only when their slide is next or showing.
 --}}
 @props(['slide'])
 @php
@@ -10,16 +10,14 @@
     $cards = $art->where('role', 'card')->values();
     $objects = $art->where('role', 'object')->values();
     $pixel = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-    $sizes = ['bg' => '(min-width: 1500px) 60vw, 100vw', 'object' => '(min-width: 1500px) 400px, 34vw', 'card' => '200px'];
+    $sizes = ['bg' => '(min-width: 1500px) 60vw, 100vw', 'object' => '(min-width: 768px) 34vw, 200px', 'card' => '(min-width: 768px) 200px, 90px'];
     $needsAccount = ($slide->extra['needsAccount'] ?? false) && ! auth()->check();
 @endphp
 <div class="nt-hero-card" data-kind="{{ $slide->kind }}">
     @if ($bg)
         <div class="nt-hero-bg" data-layer="bg" aria-hidden="true">
-            <picture>
-                <source media="(min-width: 768px)" srcset="{{ $bg['srcset'] }}" sizes="{{ $sizes['bg'] }}">
-                <img src="{{ $pixel }}" alt="" width="{{ $bg['w'] }}" height="{{ $bg['h'] }}" loading="lazy" decoding="async">
-            </picture>
+            <img src="{{ $pixel }}" data-src="{{ $bg['src'] }}" data-srcset="{{ $bg['srcset'] }}" data-sizes="{{ $sizes['bg'] }}"
+                     alt="" width="{{ $bg['w'] }}" height="{{ $bg['h'] }}" decoding="async">
         </div>
     @endif
 
@@ -57,10 +55,8 @@
                 @php $tag = $card['href'] ? 'a' : 'span'; @endphp
                 <{{ $tag }} class="nt-hero-fan-card" data-layer="card" style="--i: {{ $loop->index }}"
                     @if ($card['href']) href="{{ $card['href'] }}" wire:navigate aria-label="{{ $card['alt'] }}" @endif>
-                    <picture>
-                        <source media="(min-width: 768px)" srcset="{{ $card['srcset'] }}" sizes="{{ $sizes['card'] }}">
-                        <img src="{{ $pixel }}" alt="" width="{{ $card['w'] }}" height="{{ $card['h'] }}" loading="lazy" decoding="async">
-                    </picture>
+                    <img src="{{ $pixel }}" data-src="{{ $card['src'] }}" data-srcset="{{ $card['srcset'] }}" data-sizes="{{ $sizes['card'] }}"
+                     alt="" width="{{ $card['w'] }}" height="{{ $card['h'] }}" decoding="async">
                 </{{ $tag }}>
             @endforeach
         </div>
@@ -68,10 +64,8 @@
 
     @foreach ($objects as $object)
         <div class="nt-hero-object" data-layer="object" style="--i: {{ $loop->index }}" aria-hidden="true">
-            <picture>
-                <source media="(min-width: 768px)" srcset="{{ $object['srcset'] }}" sizes="{{ $sizes['object'] }}">
-                <img src="{{ $pixel }}" alt="" width="{{ $object['w'] }}" height="{{ $object['h'] }}" loading="lazy" decoding="async">
-            </picture>
+            <img src="{{ $pixel }}" data-src="{{ $object['src'] }}" data-srcset="{{ $object['srcset'] }}" data-sizes="{{ $sizes['object'] }}"
+                     alt="" width="{{ $object['w'] }}" height="{{ $object['h'] }}" decoding="async">
         </div>
     @endforeach
 </div>

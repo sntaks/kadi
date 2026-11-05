@@ -1,13 +1,14 @@
 /*
- * Landing hero carousel (768px and wider; plans/landing-hero-slider-implementation-plan.md). Markup:
+ * Landing hero carousel, at every width (plans/landing-hero-slider-implementation-plan.md). Markup:
  * components/lobby/hero(-slide).blade.php; states set by resources/js/site/hero-slider.js:
  *   .nt-hero.is-armed     the script runs (controls shown)
  *   .nt-hero.is-moving    a transition runs (stage clips)
  *   .nt-hero.is-paused    the timer bar (and Ken Burns) hold
  *   .nt-hero.is-timing    the active tab's bar runs (its animationend moves on)
- *   slide[data-state]     active | in | out | idle;  slide[data-enter]  its layers play their entrance
+ *   slide[data-state]     active | in | out | idle | below;  slide[data-enter]  its layers play their entrance
  *   .nt-hero[data-dir]    next | prev;  --hero-dur (ms) on the root; --px/--py (-1…1) pointer parallax per slide
- * Below 768px only the Kadi and football slides show, stacked as before. Every motion has a reduced-motion fallback.
+ * Below 768px the big match ([data-below], state `below`) shows under the carousel instead of in it: dots replace the
+ * tabs and swipe replaces the arrows. Every motion has a reduced-motion fallback.
  */
 @layer components {
     .nt-hero { --hero-dur: 7000ms; --hero-t: 900ms; position: relative; container: hero / inline-size; }
@@ -124,11 +125,51 @@
         .nt-hero-tab[aria-current="true"] .nt-hero-tab-label { display: inline; }
     }
 
-    /* ── Phones: Kadi and football stacked, as before the slider ── */
+    /* ── Phones: the carousel, its dots, then the big match below ── */
     @media (max-width: 767.98px) {
-        .nt-hero-stage { gap: 18px; }
-        .nt-hero-slide { grid-area: auto; }
-        .nt-hero-chrome, .nt-hero-slide:not([data-phone]) { display: none !important; }
+        .nt-hero { display: grid; grid-template-areas: "stage" "chrome" "below"; overflow-x: clip; }
+        .nt-hero-stage { display: contents; }
+        .nt-hero-slide { grid-area: stage; touch-action: pan-y; }
+        .nt-hero-slide[data-below] { grid-area: below; margin-top: 18px; }
+
+        .nt-hero-chrome { grid-area: chrome; justify-content: center; gap: 6px; margin-top: 10px; }
+        .nt-hero-arrow { display: none; }
+        .nt-hero-nav { flex: none; gap: 4px; }
+        .nt-hero-tabs { flex: none; gap: 0; }
+        .nt-hero-toggle { width: 34px; height: 34px; }
+        /* A 28px tap target around an 8px dot; the current one stretches into a pill that carries the timer bar. */
+        .nt-hero-tab, .nt-hero-tab[aria-current="true"] {
+            flex: none; width: 24px; height: 34px; padding: 0; justify-content: center; border: 0; background: none; overflow: visible;
+            transition: width .3s var(--ease-table);
+        }
+        .nt-hero-tab::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--color-felt-4); transition: width .3s var(--ease-table), background-color .2s; }
+        .nt-hero-tab[aria-current="true"] { width: 44px; }
+        .nt-hero-tab[aria-current="true"]::before { width: 34px; background: var(--color-felt-3); }
+        .nt-hero-tab .nt-num, .nt-hero-tab .nt-hero-tab-label, .nt-hero-tab[aria-current="true"] .nt-hero-tab-label { display: none; }
+        .nt-hero-bar { left: 5px; right: 5px; top: 50%; bottom: auto; height: 8px; margin-top: -4px; border-radius: 999px; }
+
+        /* Config slides: the art above the copy. */
+        .nt-hero-card { grid-template-columns: minmax(0, 1fr); align-content: end; min-height: 0; padding: 18px 18px 20px; }
+        .nt-hero-copy { max-width: none; }
+        .nt-hero-title { font-size: 24px; }
+        .nt-hero-text { margin-top: 8px; font-size: 14px; }
+        .nt-hero-copy .nt-btn { margin-top: 16px; }
+        .nt-hero-object, .nt-hero-fan { position: relative; inset: auto; grid-row: 1; justify-self: center; margin-bottom: 10px; transform: none; }
+        .nt-hero-object { width: auto; height: 100px; }
+        .nt-hero-object img { width: auto; height: 100%; }
+        .nt-hero-fan { width: 100%; height: 112px; }
+        .nt-hero-fan-card { width: 68px; }
+
+        /* The Kadi card: counts in a row, the hand tucked top right, content centred in the shared height. */
+        .nt-hero-feature .nt-table { padding: 20px 18px; display: grid; align-content: center; }
+        .nt-hero-feature .nt-table > p { margin: 0; font-size: 14px; }
+        .nt-hero-feature .nt-table h1 { max-width: 62%; font-size: 28px; }
+        .nt-hero-feature .nt-seats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 16px; }
+        .nt-hero-feature .nt-seats b { font-size: 20px; }
+        .nt-hero-feature .nt-seats span { font-size: 11.5px; line-height: 1.25; }
+        .nt-hero-feature .nt-table .nt-ctas { margin-bottom: 0; }
+        .nt-hero-feature .nt-table .nt-ctas > * { flex: 1; }
+        .nt-hero-feature .nt-table .nt-hand { right: -40px; top: 6px; bottom: auto; transform: scale(.42); transform-origin: 100% 0; }
     }
 }
 
@@ -160,6 +201,9 @@
     .nt-hero[data-dir="prev"] .nt-hero-slide[data-state="in"][data-transition="parallax"] { animation-name: nt-hero-push-back; }
     .nt-hero-slide[data-state="in"][data-transition="parallax"] .nt-hero-bg { animation: nt-hero-lag var(--hero-t) var(--ease-table) both; }
     .nt-hero-slide[data-state="in"][data-transition="parallax"] .nt-hero-object { animation: nt-hero-lead var(--hero-t) var(--ease-table) both; }
+    @media (max-width: 767.98px) {
+        .nt-hero-slide[data-state="in"][data-transition="parallax"] .nt-hero-object { animation-name: nt-hero-lead-flat; }
+    }
 
     /* Layer entrances, staggered by --i. */
     .nt-hero-slide[data-enter] [data-layer="eyebrow"] { animation: nt-hero-track .8s var(--ease-table) calc(260ms + var(--i) * 90ms) both; }
@@ -198,6 +242,7 @@
 @keyframes nt-hero-push-back { from { transform: translateX(-100%); } to { transform: none; } }
 @keyframes nt-hero-lag { from { transform: translateX(-40%); } to { transform: none; } }
 @keyframes nt-hero-lead { from { transform: translate(30%, -50%); } to { transform: translateY(-50%); } }
+@keyframes nt-hero-lead-flat { from { transform: translateX(30%); } to { transform: none; } }
 @keyframes nt-hero-track { from { opacity: 0; letter-spacing: .42em; } to { opacity: 1; letter-spacing: .12em; } }
 @keyframes nt-hero-rise { from { transform: translateY(108%); } to { transform: none; } }
 @keyframes nt-hero-unblur { from { opacity: 0; filter: blur(8px); transform: translateY(8px); } to { opacity: 1; filter: none; transform: none; } }
