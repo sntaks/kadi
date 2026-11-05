@@ -55,7 +55,7 @@ function heroKeys(): array
     return app(HeroSlides::class)->forLanding()->pluck('key')->all();
 }
 
-test('the lead slide is always first, even with every other gate off', function () {
+test('the Kadi slide is always first, even with every other gate off', function () {
     config([
         'platform.token_launch' => false,
         'platform.sports' => false,
@@ -64,7 +64,7 @@ test('the lead slide is always first, even with every other gate off', function 
         'hero.slides' => array_values(array_filter(config('hero.slides'), fn ($s) => $s['kind'] !== 'install')),
     ]);
 
-    expect(heroKeys())->toBe(['lead']);
+    expect(heroKeys())->toBe(['kadi']);
 });
 
 test('slides follow their switches', function (string $switch, string $slide) {
@@ -72,7 +72,7 @@ test('slides follow their switches', function (string $switch, string $slide) {
 
     config([$switch => false]);
 
-    expect(heroKeys())->not->toContain($slide)->and(heroKeys()[0])->toBe('lead');
+    expect(heroKeys())->not->toContain($slide)->and(heroKeys()[0])->toBe('kadi');
 })->with([
     'welcome bonus' => ['kadi.promotions.enabled', 'welcome'],
     'invite & earn' => ['kadi.referrals.enabled', 'invite'],
@@ -134,13 +134,13 @@ test('an unknown gate fails closed', function () {
     expect(heroKeys())->not->toContain('odd');
 });
 
-test('never more than max_slides, the lead first', function () {
+test('never more than max_slides, Kadi first', function () {
     $extra = array_map(fn (int $i) => ['key' => "extra-{$i}", 'kind' => 'promo', 'label' => "Extra {$i}", 'title' => "Extra {$i}"], range(1, 5));
     config(['hero.slides' => [...config('hero.slides'), ...$extra], 'hero.max_slides' => 6]);
 
     $keys = heroKeys();
 
-    expect($keys)->toHaveCount(6)->and($keys[0])->toBe('lead');
+    expect($keys)->toHaveCount(6)->and($keys[0])->toBe('kadi');
 });
 
 test('the welcome title carries the configured amount', function () {
@@ -152,7 +152,7 @@ test('the welcome title carries the configured amount', function () {
 test('slides take their durations from config', function () {
     $slides = app(HeroSlides::class)->forLanding();
 
-    expect($slides->first()->duration)->toBe(config('hero.durations.lead'))
+    expect($slides->first()->duration)->toBe(config('hero.slides.0.duration'))
         ->and($slides->firstWhere('key', 'welcome')->duration)->toBe(config('hero.durations.default'));
 });
 
@@ -174,17 +174,18 @@ test('every hero image the config uses has been built', function () {
 
 // ─── On the landing ──────────────────────────────────────────────────────────
 
-test('the landing opens on the Kadi table and the big match as one slide', function () {
+test('the landing opens on the Kadi table, then the big match, each its own slide', function () {
     $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
     pricedFixture(['home_team' => 'Liverpool', 'away_team' => 'Everton', 'kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
 
-    $this->get('/')->assertOk()->assertSeeInOrder(['data-hero', 'data-slide="lead"', 'kadi-table-title', 'bigmatch-title', 'data-slide="welcome"'], false);
+    $this->get('/')->assertOk()->assertSeeInOrder(['data-hero', 'data-slide="kadi"', 'kadi-table-title', 'data-slide="football"', 'bigmatch-title', 'data-slide="welcome"'], false);
 });
 
-test('without a big match the lead slide is the Kadi table alone', function () {
+test('without a big match there is no football slide', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
-    expect($html)->toContain('data-slide="lead"')->and($html)->toContain('kadi-table-title')->and($html)->not->toContain('bigmatch-title');
+    expect($html)->toContain('data-slide="kadi"')->and($html)->toContain('kadi-table-title')
+        ->and($html)->not->toContain('data-slide="football"')->and($html)->not->toContain('bigmatch-title');
 });
 
 test('every slide but the first is hidden and inert, and survives a Livewire re-render', function () {
@@ -196,9 +197,16 @@ test('every slide but the first is hidden and inert, and survives a Livewire re-
 
     foreach ($tags[0] as $i => $tag) {
         expect($tag)->toContain('wire:ignore.self');
-        $i === 0
-            ? expect($tag)->toContain('data-state="active"')->not->toContain(' hidden')
-            : expect($tag)->toContain(' hidden')->toContain(' inert')->toContain('data-state="idle"');
+        if ($i === 0) {
+            expect($tag)->toContain('data-state="active"')->not->toContain(' hidden');
+        } else {
+            expect($tag)->toContain('data-state="idle"');
+            // Slides shown on phones (stacked under Kadi, as before the slider) must stay visible and usable there:
+            // hero.css hides them from 768px instead of the hidden attribute.
+            str_contains($tag, 'data-phone')
+                ? expect($tag)->not->toContain(' hidden')->not->toContain(' inert')
+                : expect($tag)->toContain(' hidden')->toContain(' inert');
+        }
     }
 });
 
@@ -219,7 +227,7 @@ test('the controls start hidden so the page works without JavaScript', function 
     expect($html)->toMatch('/<div[^>]*data-hero-chrome[^>]*hidden/')
         ->and($html)->toContain('data-hero-next')
         ->and($html)->toContain('01')
-        ->and($html)->toContain('Kadi &amp; football');
+        ->and($html)->toMatch('#<span class="nt-hero-tab-label">Kadi</span>#');
 });
 
 test('slide figures come from the server: the jackpot prize, never player counts', function () {
@@ -255,4 +263,22 @@ test('the slider script and the controls survive a Livewire re-render', function
 
     expect($html)->toMatch('/<section[^>]*data-hero[^>]*x-data="heroSlider"[^>]*wire:ignore\.self/s')
         ->and($html)->toMatch('/<div[^>]*data-hero-chrome[^>]*wire:ignore[ >]/');
+});
+
+test('the football slide follows the big match', function () {
+    expect(app(HeroSlides::class)->forLanding(bigMatch: true)->pluck('key')->take(2)->all())->toBe(['kadi', 'football'])
+        ->and(heroKeys())->not->toContain('football');
+
+    config(['platform.sports' => false]);
+
+    expect(app(HeroSlides::class)->forLanding(bigMatch: true)->pluck('key'))->not->toContain('football');
+});
+
+test('on phones only the Kadi and football slides show, stacked as before', function () {
+    $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
+    pricedFixture(['kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
+
+    preg_match_all('/<article[^>]*data-slide="([^"]+)"[^>]*data-phone/', $this->get('/')->assertOk()->getContent(), $phone);
+
+    expect($phone[1])->toBe(['kadi', 'football']);
 });

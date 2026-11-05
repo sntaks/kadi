@@ -48,7 +48,7 @@ class UiGalleryController extends Controller
         ];
 
         return collect([
-            new HeroSlide('lead', 'lead', 'Kadi table', null, 'Kadi tables are open', null, null, null, [], 'curtain', 9000),
+            new HeroSlide('kadi', 'kadi', 'Kadi table', null, 'Kadi tables are open', null, null, null, [], 'curtain', 9000),
             new HeroSlide('sample-promo', 'promo', 'Promo slide', 'Sample eyebrow', 'A promotion headline', 'Sample copy for a promotion slide.',
                 'Call to action', '#', [$art('images/casino/crown.png', 'object')], 'iris', 7000),
             new HeroSlide('sample-bg', 'jackpot', 'Background slide', 'Sample eyebrow', 'A slide over a background image', 'Sample copy.',

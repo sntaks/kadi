@@ -8,8 +8,9 @@
 | The slides of the landing's hero carousel (768px and wider), in order. Only
 | App\Games\HeroSlides reads this: it drops any slide whose `requires` gates are
 | off, whose CTA route does not exist, whose games the catalogue does not offer
-| or (jackpot) while no jackpot takes entries. The `lead` slide (the Kadi table
-| and the big match) is always first.
+| or (jackpot) while no jackpot takes entries. The `kadi` slide (the Kadi table)
+| is always first; the `match` slide (today's big match) follows while sports is
+| on and there is a big match. On phones only those two show, stacked as before.
 |
 | Copy only: never put a figure here that the site cannot back. `:amount` is the
 | signup bonus (kadi.promotions.signup_bonus_amount), `:prize` the open jackpot's
@@ -27,12 +28,16 @@
 return [
     'max_slides' => 6,
 
-    'durations' => ['lead' => 9000, 'default' => 7000], // ms
+    'durations' => ['default' => 7000], // ms; a slide's own `duration` wins
 
     'slides' => [
         [
-            'key' => 'lead', 'kind' => 'lead', 'label' => 'Kadi & football', 'title' => 'Kadi tables are open',
-            'transition' => 'curtain',
+            'key' => 'kadi', 'kind' => 'kadi', 'label' => 'Kadi', 'title' => 'Kadi tables are open',
+            'transition' => 'curtain', 'duration' => 8000,
+        ],
+        [
+            'key' => 'football', 'kind' => 'match', 'label' => 'Football', 'title' => "Today's big match", 'requires' => ['sports'],
+            'transition' => 'parallax', 'duration' => 8000,
         ],
         [
             'key' => 'welcome', 'kind' => 'promo', 'label' => 'Welcome bonus', 'requires' => ['promotions'],

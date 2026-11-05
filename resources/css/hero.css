@@ -7,7 +7,7 @@
  *   .nt-hero.is-timing    the active tab's bar runs (its animationend moves on)
  *   slide[data-state]     active | in | out | idle;  slide[data-enter]  its layers play their entrance
  *   .nt-hero[data-dir]    next | prev;  --hero-dur (ms) on the root; --px/--py (-1…1) pointer parallax per slide
- * Below 768px only the lead slide shows, laid out as before. Every motion has a reduced-motion fallback.
+ * Below 768px only the Kadi and football slides show, stacked as before. Every motion has a reduced-motion fallback.
  */
 @layer components {
     .nt-hero { --hero-dur: 7000ms; --hero-t: 900ms; position: relative; container: hero / inline-size; }
@@ -15,38 +15,34 @@
     .nt-hero.is-moving .nt-hero-stage { overflow: hidden; border-radius: var(--radius-panel); }
     .nt-hero-slide { grid-area: 1 / 1; min-width: 0; position: relative; }
     .nt-hero-slide[hidden] { display: none; }
+    @media (min-width: 768px) { .nt-hero:not(.is-armed) .nt-hero-slide[data-state="idle"] { display: none; } }
+    /* Armed: inactive slides keep their space (invisible, inert), so the stage is always the tallest slide's height
+       and changing slides never makes the page jump. */
+    .nt-hero.is-armed .nt-hero-slide[data-state="idle"] { visibility: hidden; pointer-events: none; }
 
-    /* ── Lead slide: Kadi table and the big match, side by side from 768px ── */
+    /* ── Kadi and football slides: the landing's own cards, full width ── */
+    .nt-hero-feature { display: grid; height: 100%; min-width: 0; }
+    .nt-hero-feature > * { height: 100%; }
     @media (min-width: 768px) {
-        .nt-hero-lead.nt-lead-two { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-        .nt-hero-lead { height: 100%; }
-        .nt-hero-lead-card { display: grid; min-width: 0; }
-        .nt-hero-lead-card > * { height: 100%; }
-    }
-    @container hero (max-width: 1099px) {
-        .nt-hero-lead .nt-also { display: none; }
-        .nt-hero-lead.nt-lead-two .nt-table { padding: 24px 22px; }
-        .nt-hero-lead.nt-lead-two .nt-table .nt-ctas { margin-bottom: 118px; }
-        .nt-hero-lead.nt-lead-two .nt-table .nt-hand { transform: translateX(50%) scale(.56); }
-    }
-    /* Docked bet slip and side menu leave the hero ~600px: keep both cards, drop the blurb, tighten the rest. */
-    @container hero (max-width: 759px) {
-        .nt-hero-lead.nt-lead-two .nt-table { padding: 20px 18px; }
-        .nt-hero-lead.nt-lead-two .nt-table h1 { font-size: 28px; }
-        .nt-hero-lead.nt-lead-two .nt-table > p { display: none; }
-        .nt-hero-lead.nt-lead-two .nt-seats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 0 16px; }
-        .nt-hero-lead.nt-lead-two .nt-seats b { font-size: 20px; }
-        .nt-hero-lead.nt-lead-two .nt-seats span { font-size: 11.5px; line-height: 1.25; }
-        .nt-hero-lead.nt-lead-two .nt-ctas { gap: 8px; margin-bottom: 92px; }
-        .nt-hero-lead.nt-lead-two .nt-ctas .nt-btn-lg { height: 42px; padding: 0 14px; font-size: 14px; }
-        .nt-hero-lead.nt-lead-two .nt-table .nt-hand { transform: translateX(50%) scale(.44); }
-        .nt-hero-lead.nt-lead-two .nt-bigmatch { padding: 20px 18px; }
-        .nt-hero-lead.nt-lead-two .nt-versus b { font-size: 17px; }
+        .nt-hero-feature .nt-table h1 { max-width: none; }
+        .nt-hero-feature .nt-table > p { max-width: 52ch; }
+        .nt-hero-feature .nt-table, .nt-hero-feature .nt-bigmatch { align-content: center; }
+        .nt-hero-feature .nt-bigmatch { align-items: center; }
+        /* Docked bet slip and side menu leave the hero ~600px: one column, hand beside the copy, no extra list. */
+        @container hero (max-width: 759px) {
+            .nt-hero-feature .nt-bigmatch { grid-template-columns: minmax(0, 1fr); }
+            .nt-hero-feature .nt-also { display: none; }
+            .nt-hero-feature .nt-table .nt-ctas { margin-bottom: 0; }
+            .nt-hero-feature .nt-table .nt-hand { right: -34px; top: 50%; bottom: auto; transform: translateY(-50%) scale(.6); transform-origin: 100% 50%; }
+            .nt-hero-feature .nt-table > :not(.nt-hand) { max-width: 64%; }
+            .nt-hero-feature .nt-table h1 { max-width: none; font-size: 32px; }
+            .nt-hero-feature .nt-table > p { display: none; }
+        }
     }
 
     /* ── Config slides ─────────────────────────────────────── */
     .nt-hero-card {
-        position: relative; height: 100%; min-height: 360px; overflow: hidden; isolation: isolate;
+        position: relative; height: 100%; min-height: 280px; overflow: hidden; isolation: isolate;
         display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center;
         padding: 40px 44px; border-radius: var(--radius-panel); border: 1px solid var(--color-line-2);
         background:
@@ -128,10 +124,11 @@
         .nt-hero-tab[aria-current="true"] .nt-hero-tab-label { display: inline; }
     }
 
-    /* ── Phones: the lead slide only, as before ────────────── */
+    /* ── Phones: Kadi and football stacked, as before the slider ── */
     @media (max-width: 767.98px) {
-        .nt-hero-chrome, .nt-hero-slide:not([data-slide="lead"]) { display: none !important; }
-        .nt-hero-slide[data-slide="lead"] { display: block !important; }
+        .nt-hero-stage { gap: 18px; }
+        .nt-hero-slide { grid-area: auto; }
+        .nt-hero-chrome, .nt-hero-slide:not([data-phone]) { display: none !important; }
     }
 }
 

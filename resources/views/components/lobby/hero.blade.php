@@ -1,6 +1,8 @@
 {{--
     The landing hero carousel (768px and wider; plans/landing-hero-slider-implementation-plan.md). Slides come from
-    App\Games\HeroSlides; the first is always the Kadi table, with today's big match beside it while sports is on.
+    App\Games\HeroSlides; the first is always the Kadi table, then today's big match while sports is on. Below 768px
+    only those two show, stacked (data-phone). Phone slides never get `hidden` (Tailwind's base [hidden] rule is
+    !important, so nothing could show them again): hero.css hides an idle one from 768px until the script arms.
 
     Server state only: slide 1 active, the others hidden and inert, the controls hidden. The heroSlider script
     (resources/js/site/hero-slider.js) owns data-state, hidden and inert from then on: the root and each slide are
@@ -17,18 +19,12 @@
                      data-transition="{{ $slide->transition }}" data-duration="{{ $slide->duration }}" data-label="{{ $slide->label }}"
                      data-state="{{ $loop->first ? 'active' : 'idle' }}" @if ($slide->kind === 'install') data-requires-install @endif
                      role="group" aria-roledescription="slide" aria-label="{{ $loop->iteration }} of {{ $count }}: {{ $slide->label }}"
-                     wire:key="hero-{{ $slide->key }}" wire:ignore.self @unless ($loop->first) hidden inert @endunless>
-                @if ($slide->kind === 'lead')
-                    @if ($bigMatch)
-                        <div class="nt-lead nt-lead-two nt-hero-lead">
-                            <div class="nt-hero-lead-card" data-layer="card" style="--i: 0"><x-lobby.kadi-table :seats="$seats" /></div>
-                            <div class="nt-hero-lead-card" data-layer="card" style="--i: 1"><x-sports.big-match :fixture="$bigMatch" :$also :also-today="$alsoToday" /></div>
-                        </div>
-                    @else
-                        <div class="nt-hero-lead nt-hero-lead-solo">
-                            <div class="nt-hero-lead-card" data-layer="card" style="--i: 0"><x-lobby.kadi-table :seats="$seats" /></div>
-                        </div>
-                    @endif
+                     @if ($phone = in_array($slide->kind, ['kadi', 'match'], true)) data-phone @endif
+                     wire:key="hero-{{ $slide->key }}" wire:ignore.self @unless ($loop->first || $phone) hidden inert @endunless>
+                @if ($slide->kind === 'kadi')
+                    <div class="nt-hero-feature" data-layer="card" style="--i: 0"><x-lobby.kadi-table :seats="$seats" /></div>
+                @elseif ($slide->kind === 'match')
+                    <div class="nt-hero-feature" data-layer="card" style="--i: 0"><x-sports.big-match :fixture="$bigMatch" :$also :also-today="$alsoToday" /></div>
                 @else
                     <x-lobby.hero-slide :$slide />
                 @endif
