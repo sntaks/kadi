@@ -1,0 +1,198 @@
+/*
+ * Landing hero carousel (768px and wider; plans/landing-hero-slider-implementation-plan.md). Markup:
+ * components/lobby/hero(-slide).blade.php; states set by resources/js/site/hero-slider.js:
+ *   .nt-hero.is-armed     the script runs (controls shown)
+ *   .nt-hero.is-moving    a transition runs (stage clips)
+ *   .nt-hero.is-paused    the timer bar (and Ken Burns) hold
+ *   .nt-hero.is-timing    the active tab's bar runs (its animationend moves on)
+ *   slide[data-state]     active | in | out | idle;  slide[data-enter]  its layers play their entrance
+ *   .nt-hero[data-dir]    next | prev;  --hero-dur (ms) on the root; --px/--py (-1…1) pointer parallax per slide
+ * Below 768px only the lead slide shows, laid out as before. Every motion has a reduced-motion fallback.
+ */
+@layer components {
+    .nt-hero { --hero-dur: 7000ms; --hero-t: 900ms; position: relative; container: hero / inline-size; }
+    .nt-hero-stage { display: grid; position: relative; touch-action: pan-y; }
+    .nt-hero.is-moving .nt-hero-stage { overflow: hidden; border-radius: var(--radius-panel); }
+    .nt-hero-slide { grid-area: 1 / 1; min-width: 0; position: relative; }
+    .nt-hero-slide[hidden] { display: none; }
+
+    /* ── Lead slide: Kadi table and the big match, side by side from 768px ── */
+    @media (min-width: 768px) {
+        .nt-hero-lead.nt-lead-two { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+        .nt-hero-lead { height: 100%; }
+        .nt-hero-lead-card { display: grid; min-width: 0; }
+        .nt-hero-lead-card > * { height: 100%; }
+    }
+    @container hero (max-width: 1099px) {
+        .nt-hero-lead .nt-also { display: none; }
+        .nt-hero-lead.nt-lead-two .nt-table { padding: 24px 22px; }
+        .nt-hero-lead.nt-lead-two .nt-table .nt-ctas { margin-bottom: 118px; }
+        .nt-hero-lead.nt-lead-two .nt-table .nt-hand { transform: translateX(50%) scale(.56); }
+    }
+
+    /* ── Config slides ─────────────────────────────────────── */
+    .nt-hero-card {
+        position: relative; height: 100%; min-height: 360px; overflow: hidden; isolation: isolate;
+        display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center;
+        padding: 40px 44px; border-radius: var(--radius-panel); border: 1px solid var(--color-line-2);
+        background:
+            radial-gradient(70% 90% at 82% 50%, color-mix(in srgb, var(--color-gold) 16%, transparent), transparent 62%),
+            radial-gradient(60% 110% at 0% 100%, color-mix(in srgb, var(--color-win) 14%, transparent), transparent 60%),
+            linear-gradient(160deg, var(--color-felt-2), var(--color-night) 74%);
+    }
+    .nt-hero-copy { position: relative; z-index: 3; grid-column: 1; max-width: 34rem; }
+    .nt-hero-eyebrow { margin: 0 0 12px; font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--color-gold); }
+    .nt-hero-title { margin: 0; font-size: clamp(28px, 3.4cqi, 46px); line-height: 1.06; font-weight: 800; letter-spacing: -.02em; color: var(--color-ivory); text-wrap: balance; }
+    .nt-hero-text { margin: 14px 0 0; max-width: 30rem; font-size: 15.5px; line-height: 1.55; color: var(--color-soft); }
+    .nt-hero-copy .nt-btn { margin-top: 24px; }
+
+    .nt-hero-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+    .nt-hero-bg img { width: 100%; height: 100%; object-fit: cover; transform-origin: 70% 40%; }
+    .nt-hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-night) 8%, transparent 78%); }
+
+    .nt-hero-object { position: absolute; z-index: 2; right: 3%; top: 56%; width: min(44%, 400px); transform: translateY(-50%); pointer-events: none; }
+    .nt-hero-object img { width: 100%; height: auto; filter: drop-shadow(0 24px 34px rgb(0 0 0 / .55)); }
+
+    .nt-hero-fan { position: absolute; z-index: 2; right: 6%; top: 50%; width: 46%; height: 82%; transform: translateY(-50%); }
+    .nt-hero-fan-card {
+        --off: calc(var(--i) - (var(--n) - 1) / 2);
+        position: absolute; left: 50%; top: 50%; width: min(36%, 180px); aspect-ratio: 2 / 3;
+        border-radius: var(--radius-tile); overflow: hidden; border: 1px solid var(--color-line-2); box-shadow: var(--shadow-lift);
+        transform: translate(calc(-50% + var(--off) * 72%), calc(-50% + var(--off) * var(--off) * 7%)) rotate(calc(var(--off) * 9deg));
+        transition: transform .35s var(--ease-table), box-shadow .35s;
+    }
+    .nt-hero-fan-card img { width: 100%; height: 100%; object-fit: cover; }
+    a.nt-hero-fan-card:hover, a.nt-hero-fan-card:focus-visible {
+        transform: translate(calc(-50% + var(--off) * 72%), calc(-58% + var(--off) * var(--off) * 7%)) rotate(calc(var(--off) * 6deg)) scale(1.04);
+        box-shadow: 0 26px 50px rgb(0 0 0 / .65), 0 0 0 2px var(--color-gold); z-index: 1;
+    }
+
+    .nt-hero-slices { position: absolute; inset: 0; z-index: 6; display: none; pointer-events: none; }
+    .nt-hero-slices i { flex: 1; background: var(--color-felt-2); border-right: 1px solid var(--color-line-2); transform: translateY(-101%); }
+
+    @container hero (max-width: 999px) {
+        .nt-hero-card { padding: 30px 28px; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
+        .nt-hero-object { width: min(40%, 300px); right: 1%; }
+        .nt-hero-fan { width: 44%; right: 1%; }
+    }
+
+    /* ── Controls: a row under the stage ───────────────────── */
+    .nt-hero-chrome { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+    .nt-hero-chrome[hidden] { display: none; }
+    .nt-hero-nav { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; order: -1; }
+    .nt-hero-tabs { display: flex; gap: 6px; flex: 1; min-width: 0; }
+    .nt-hero-tab {
+        position: relative; flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px 2px;
+        border-radius: var(--radius-control); font-size: 13px; color: var(--color-ash); background: var(--color-felt); border: 1px solid var(--color-line);
+        overflow: hidden; transition: color .2s, border-color .2s, background-color .2s;
+    }
+    .nt-hero-tab:hover { color: var(--color-ivory); border-color: var(--color-line-2); }
+    .nt-hero-tab[aria-current="true"] { color: var(--color-ivory); background: var(--color-felt-2); border-color: var(--color-line-2); }
+    .nt-hero-tab .nt-num { font-weight: 700; color: var(--color-gold-dim); }
+    .nt-hero-tab[aria-current="true"] .nt-num { color: var(--color-gold); }
+    .nt-hero-tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nt-hero-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--color-gold); transform: scaleX(0); transform-origin: 0 50%; }
+    .nt-hero.is-timing .nt-hero-tab[aria-current="true"] .nt-hero-bar { animation: nt-hero-timer var(--hero-dur) linear forwards; }
+    .nt-hero.is-paused .nt-hero-bar { animation-play-state: paused !important; }
+    .nt-hero-tab:focus-visible, .nt-hero-toggle:focus-visible, .nt-hero-arrow:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+
+    .nt-hero-toggle, .nt-hero-arrow {
+        flex: none; width: 40px; height: 40px; border-radius: var(--radius-control); display: grid; place-items: center;
+        background: var(--color-felt); border: 1px solid var(--color-line); color: var(--color-ivory); transition: border-color .15s, transform .15s var(--ease-table);
+    }
+    .nt-hero-toggle:hover, .nt-hero-arrow:hover { border-color: var(--color-line-2); }
+    .nt-hero-arrow:active { transform: scale(.94); }
+    .nt-hero-arrow svg { width: 15px; height: 15px; }
+    /* Pause: two bars; play (aria-pressed=true): a triangle. */
+    .nt-hero-toggle span { width: 10px; height: 12px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+    .nt-hero-toggle[aria-pressed="true"] span { width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent currentColor; margin-left: 3px; }
+
+    @container hero (max-width: 899px) {
+        .nt-hero-tab { flex: none; padding: 0 12px; }
+        .nt-hero-tab-label { display: none; }
+        .nt-hero-tab[aria-current="true"] { flex: 1; }
+        .nt-hero-tab[aria-current="true"] .nt-hero-tab-label { display: inline; }
+    }
+
+    /* ── Phones: the lead slide only, as before ────────────── */
+    @media (max-width: 767.98px) {
+        .nt-hero-chrome, .nt-hero-slide:not([data-slide="lead"]) { display: none !important; }
+        .nt-hero-slide[data-slide="lead"] { display: block !important; }
+    }
+}
+
+/* ── Motion ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+    /* Pointer parallax (fine pointers only; the script writes --px/--py). */
+    @media (hover: hover) and (pointer: fine) {
+        .nt-hero-slide .nt-hero-object { translate: calc(var(--px, 0) * 16px) calc(var(--py, 0) * 12px); transition: translate .5s var(--ease-table); }
+        .nt-hero-slide .nt-hero-fan { translate: calc(var(--px, 0) * 9px) calc(var(--py, 0) * 7px); transition: translate .5s var(--ease-table); }
+        .nt-hero-slide .nt-hero-bg { translate: calc(var(--px, 0) * -5px) calc(var(--py, 0) * -4px); scale: 1.03; transition: translate .6s var(--ease-table); }
+    }
+
+    /* Slide transitions: the incoming slide plays its own, the outgoing one sinks back. */
+    .nt-hero-slide[data-state="in"] { z-index: 2; animation: nt-hero-fade-zoom var(--hero-t) var(--ease-table) both; }
+    .nt-hero-slide[data-state="out"] { z-index: 1; animation: nt-hero-out var(--hero-t) var(--ease-table) both; }
+    .nt-hero-slide[data-state="in"][data-transition="curtain"] { animation-name: nt-hero-curtain; }
+    .nt-hero[data-dir="prev"] .nt-hero-slide[data-state="in"][data-transition="curtain"] { animation-name: nt-hero-curtain-back; }
+    .nt-hero-slide[data-state="in"][data-transition="curtain"]::after {
+        content: ''; position: absolute; top: 0; bottom: 0; left: 0; z-index: 9; width: 2px; pointer-events: none;
+        background: var(--color-gold); box-shadow: 0 0 18px 2px color-mix(in srgb, var(--color-gold) 60%, transparent);
+        animation: nt-hero-edge var(--hero-t) var(--ease-table) both;
+    }
+    .nt-hero[data-dir="prev"] .nt-hero-slide[data-state="in"][data-transition="curtain"]::after { animation-name: nt-hero-edge-back; }
+    .nt-hero-slide[data-state="in"][data-transition="iris"] { animation-name: nt-hero-iris; }
+    .nt-hero-slide[data-state="in"][data-transition="slices"] { animation-name: nt-hero-fade; animation-duration: 200ms; }
+    .nt-hero-slide[data-enter][data-transition="slices"] .nt-hero-slices { display: flex; }
+    .nt-hero-slide[data-enter] .nt-hero-slices i { animation: nt-hero-slice 700ms cubic-bezier(.7, 0, .2, 1) calc(120ms + var(--s) * 70ms) both; }
+    .nt-hero-slide[data-state="in"][data-transition="parallax"] { animation-name: nt-hero-push; }
+    .nt-hero[data-dir="prev"] .nt-hero-slide[data-state="in"][data-transition="parallax"] { animation-name: nt-hero-push-back; }
+    .nt-hero-slide[data-state="in"][data-transition="parallax"] .nt-hero-bg { animation: nt-hero-lag var(--hero-t) var(--ease-table) both; }
+    .nt-hero-slide[data-state="in"][data-transition="parallax"] .nt-hero-object { animation: nt-hero-lead var(--hero-t) var(--ease-table) both; }
+
+    /* Layer entrances, staggered by --i. */
+    .nt-hero-slide[data-enter] [data-layer="eyebrow"] { animation: nt-hero-track .8s var(--ease-table) calc(260ms + var(--i) * 90ms) both; }
+    .nt-hero-slide[data-enter] [data-split] .nt-w > span { animation: nt-hero-rise .75s var(--ease-table) calc(340ms + var(--w) * 45ms) both; }
+    .nt-hero-slide[data-enter] [data-layer="copy"] { animation: nt-hero-unblur .8s var(--ease-table) calc(420ms + var(--i) * 90ms) both; }
+    .nt-hero-slide[data-enter] [data-layer="cta"] { animation: nt-hero-pop .7s cubic-bezier(.34, 1.56, .64, 1) calc(520ms + var(--i) * 90ms) both; }
+    .nt-hero-slide[data-enter] [data-layer="card"] { animation: nt-hero-rise-card .8s var(--ease-table) calc(220ms + var(--i) * 120ms) both; }
+    .nt-hero-slide[data-enter] .nt-hero-fan-card { animation: nt-hero-deal .9s var(--ease-table) calc(380ms + var(--i) * 110ms) both; }
+    .nt-hero-slide[data-enter] [data-layer="object"] img { animation: nt-hero-drop .9s cubic-bezier(.34, 1.4, .64, 1) 300ms both, nt-hero-float 6s ease-in-out 1.2s infinite; }
+    .nt-hero-slide[data-enter] .nt-hero-bg img { animation: nt-hero-kenburns calc(var(--hero-dur) + var(--hero-t)) linear both; }
+    .nt-hero.is-paused .nt-hero-bg img, .nt-hero.is-paused [data-layer="object"] img { animation-play-state: paused; }
+
+    [data-split] .nt-w { display: inline-block; overflow: clip; overflow-clip-margin: .12em; vertical-align: top; padding-bottom: .06em; }
+    [data-split] .nt-w > span { display: inline-block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nt-hero { --hero-t: 150ms; }
+    .nt-hero-slide[data-state="in"] { z-index: 2; animation: nt-hero-fade 150ms linear both; }
+    .nt-hero-slide[data-state="out"] { z-index: 1; animation: nt-hero-fade 150ms linear reverse both; }
+    .nt-hero-bar { display: none; }
+    .nt-hero-fan-card { transition: none; }
+}
+
+@keyframes nt-hero-timer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes nt-hero-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nt-hero-fade-zoom { from { opacity: 0; transform: scale(1.06); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes nt-hero-out { to { opacity: .3; transform: scale(.96); filter: blur(2px); } }
+@keyframes nt-hero-curtain { from { clip-path: inset(0 100% 0 0 round var(--radius-panel)); } to { clip-path: inset(0 0 0 0 round var(--radius-panel)); } }
+@keyframes nt-hero-curtain-back { from { clip-path: inset(0 0 0 100% round var(--radius-panel)); } to { clip-path: inset(0 0 0 0 round var(--radius-panel)); } }
+@keyframes nt-hero-edge { from { left: 0; opacity: 1; } 85% { opacity: 1; } to { left: calc(100% - 2px); opacity: 0; } }
+@keyframes nt-hero-edge-back { from { left: calc(100% - 2px); opacity: 1; } 85% { opacity: 1; } to { left: 0; opacity: 0; } }
+@keyframes nt-hero-iris { from { clip-path: circle(0% at var(--ox, 85%) 50%); } to { clip-path: circle(150% at var(--ox, 85%) 50%); } }
+@keyframes nt-hero-slice { from { transform: translateY(0); } to { transform: translateY(-101%); } }
+@keyframes nt-hero-push { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes nt-hero-push-back { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes nt-hero-lag { from { transform: translateX(-40%); } to { transform: none; } }
+@keyframes nt-hero-lead { from { transform: translate(30%, -50%); } to { transform: translateY(-50%); } }
+@keyframes nt-hero-track { from { opacity: 0; letter-spacing: .42em; } to { opacity: 1; letter-spacing: .12em; } }
+@keyframes nt-hero-rise { from { transform: translateY(108%); } to { transform: none; } }
+@keyframes nt-hero-unblur { from { opacity: 0; filter: blur(8px); transform: translateY(8px); } to { opacity: 1; filter: none; transform: none; } }
+@keyframes nt-hero-pop { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: none; } }
+@keyframes nt-hero-rise-card { from { opacity: 0; transform: translateY(26px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes nt-hero-deal { from { opacity: 0; translate: 40% 30%; rotate: -14deg; } to { opacity: 1; translate: 0 0; rotate: 0deg; } }
+@keyframes nt-hero-drop { from { opacity: 0; transform: translateY(-40px) scale(.9) rotate(-6deg); } to { opacity: 1; transform: none; } }
+@keyframes nt-hero-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@keyframes nt-hero-kenburns { from { transform: scale(1); } to { transform: scale(1.09); } }
