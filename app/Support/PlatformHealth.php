@@ -117,18 +117,18 @@ class PlatformHealth
         // The catalogue only asks the API when something reads it: read it here, so a quiet night or a cleared cache
         // is never mistaken for an outage. A failed answer leaves the timestamp where it was.
         $this->catalogue->games();
-        $fetchedAt = Cache::get(GameCatalogue::FETCHED_AT_KEY);
+        $fetchedAt = $this->fetchedAt();
 
         // No answer on record yet (the first run after the timestamp was introduced, or after a cache clear) while a
         // cached copy is still fresh: ask the API now instead of reporting a copy nobody has checked.
-        if (! is_int($fetchedAt)) {
+        if ($fetchedAt === null) {
             $this->catalogue->refresh();
             $this->catalogue->games();
-            $fetchedAt = Cache::get(GameCatalogue::FETCHED_AT_KEY);
+            $fetchedAt = $this->fetchedAt();
         }
         $limit = (int) config('kadi.health.catalogue_stale_minutes');
 
-        if (! is_int($fetchedAt)) {
+        if ($fetchedAt === null) {
             return [
                 'message' => 'The game catalogue could not be fetched from the Kadi API just now, and no earlier answer is on record.',
                 'context' => ['minutes' => -1],
@@ -141,5 +141,16 @@ class PlatformHealth
             'message' => "The game catalogue is stale: the Kadi API last answered {$minutes} minutes ago.",
             'context' => ['minutes' => $minutes],
         ];
+    }
+
+    /**
+     * When the Kadi API last answered for the catalogue. Redis keeps numbers unserialized, so the stored timestamp
+     * comes back as a numeric string there and as an int elsewhere: accept both.
+     */
+    private function fetchedAt(): ?int
+    {
+        $value = Cache::get(GameCatalogue::FETCHED_AT_KEY);
+
+        return is_numeric($value) ? (int) $value : null;
     }
 }

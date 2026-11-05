@@ -140,3 +140,11 @@ test('with no answer on record and the API down, the problem is reported', funct
 
     expect(app(PlatformHealth::class)->check()['game_catalogue']['message'])->toContain('could not be fetched');
 });
+
+test('a timestamp read back as a numeric string, as Redis returns it, counts as an answer', function () {
+    Cache::forever(GameCatalogue::FETCHED_AT_KEY, (string) now()->subMinutes(10)->getTimestamp());
+    Cache::put(GameCatalogue::FRESH_KEY, [['code' => 'slots', 'name' => 'Slots', 'status' => 'active', 'launch_url' => 'https://slots.kadi.online/play', 'products' => []]], 300);
+    $this->catalogueUp = false;
+
+    expect(app(PlatformHealth::class)->check()['game_catalogue'])->toBeNull();
+});
