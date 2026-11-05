@@ -324,7 +324,7 @@ jobs:
           echo ""
           echo "Restarting Laravel queue workers..."
 
-          sudo supervisorctl restart 'kadionline-worker:*' kadionline-reverb
+          sudo supervisorctl restart 'kadionline-worker:*' 'kadionline-sportsbook-worker:*' kadionline-reverb
 
           # -------------------------------------------------------------------
           # Verify workers

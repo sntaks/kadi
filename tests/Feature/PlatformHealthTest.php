@@ -121,3 +121,22 @@ test('stuck settlements are counted in full, not capped at a page of rows', func
 
     expect(app(PlatformHealth::class)->check()['wager_ops']['context'])->toMatchArray(['ops' => 1, 'failed' => 1, 'oldest_minutes' => 40]);
 });
+
+test('the first run after a deploy checks the API even while an older cached copy is still fresh', function () {
+    // A copy cached before the timestamp existed: reading it alone would never record an answer.
+    Cache::put(GameCatalogue::FRESH_KEY, [['code' => 'slots', 'name' => 'Slots', 'status' => 'active', 'launch_url' => 'https://slots.kadi.online/play', 'products' => []]], 300);
+    Cache::forget(GameCatalogue::FETCHED_AT_KEY);
+
+    expect(app(PlatformHealth::class)->check()['game_catalogue'])->toBeNull()
+        ->and(Cache::get(GameCatalogue::FETCHED_AT_KEY))->toBe(now()->getTimestamp());
+
+    Http::assertSent(fn ($request) => str_contains($request->url(), '/games'));
+});
+
+test('with no answer on record and the API down, the problem is reported', function () {
+    $this->catalogueUp = false;
+    Cache::put(GameCatalogue::FRESH_KEY, [['code' => 'slots', 'name' => 'Slots', 'status' => 'active', 'launch_url' => 'https://slots.kadi.online/play', 'products' => []]], 300);
+    Cache::forget(GameCatalogue::FETCHED_AT_KEY);
+
+    expect(app(PlatformHealth::class)->check()['game_catalogue']['message'])->toContain('could not be fetched');
+});
