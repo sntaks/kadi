@@ -1,0 +1,309 @@
+// Landing hero carousel (components/lobby/hero.blade.php, styles in resources/css/hero.css). From 768px wide only.
+//
+// The timer is the active tab's progress bar: a CSS animation of --hero-dur whose animationend moves to the next
+// slide, so pausing is animation-play-state and there is no interval to drift. Autoplay pauses while the pointer or
+// focus is on the slides or the tab is hidden, and stops for good once the player uses a control, swipes or taps
+// anything in a slide (the pause/play button starts it again). With reduced motion it never autoplays.
+//
+// The server renders slide 1 active and the rest hidden + inert; from then on this script owns data-state, hidden,
+// inert and data-enter. The root and slides are wire:ignore.self and the controls wire:ignore, so a Livewire
+// re-render of the landing keeps the slide the player is on.
+const FOCUSABLE = 'a, button, input, select, textarea, [tabindex]';
+
+document.addEventListener('alpine:init', () => {
+    Alpine.data('heroSlider', () => ({
+        index: 0,
+        stopped: false,
+        armed: false,
+        moving: false,
+        holds: new Set(),
+        swipe: null,
+        frame: 0,
+
+        init() {
+            this.wide = window.matchMedia('(min-width: 768px)');
+            this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+            this.finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+            this.onWide = () => (this.wide.matches ? this.arm() : this.disarm());
+            this.onVisibility = () => this.hold('hidden', document.hidden);
+            this.wide.addEventListener('change', this.onWide);
+            document.addEventListener('visibilitychange', this.onVisibility);
+
+            const root = this.$root;
+            const stage = root.querySelector('[data-hero-stage]');
+            root.addEventListener('click', (e) => this.onClick(e));
+            root.addEventListener('keydown', (e) => this.onKey(e));
+            root.addEventListener('animationend', (e) => {
+                if (e.animationName === 'nt-hero-timer' && !this.stopped) this.next();
+            });
+            stage?.addEventListener('mouseenter', () => this.hold('hover', true));
+            stage?.addEventListener('mouseleave', () => { this.hold('hover', false); this.parallax(null); });
+            stage?.addEventListener('focusin', () => this.hold('focus', true));
+            stage?.addEventListener('focusout', (e) => this.hold('focus', stage.contains(e.relatedTarget)));
+            stage?.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+            stage?.addEventListener('pointerup', (e) => this.onPointerUp(e));
+            stage?.addEventListener('pointermove', (e) => this.parallax(e));
+
+            if (this.wide.matches) this.arm();
+        },
+
+        destroy() {
+            this.wide.removeEventListener('change', this.onWide);
+            document.removeEventListener('visibilitychange', this.onVisibility);
+            clearTimeout(this.settle);
+            clearTimeout(this.done);
+            cancelAnimationFrame(this.frame);
+        },
+
+        slides() { return [...this.$root.querySelectorAll('[data-slide]')]; },
+        tabs() { return [...this.$root.querySelectorAll('[data-hero-go]')]; },
+
+        // The install slide only counts on a device that can install the app.
+        available(slide) {
+            return !!slide && (!slide.hasAttribute('data-requires-install') || !!window.Alpine.store('pwaInstall')?.visible);
+        },
+
+        order() { return this.slides().flatMap((s, i) => (this.available(s) ? [i] : [])); },
+
+        step(by) {
+            const order = this.order();
+            const at = Math.max(order.indexOf(this.index), 0);
+
+            return order[(at + by + order.length) % order.length];
+        },
+
+        arm() {
+            if (this.armed || this.slides().length < 2) return;
+
+            this.armed = true;
+            this.stopped = this.stopped || this.reduced.matches;
+            this.$root.classList.add('is-armed');
+            this.$root.querySelector('[data-hero-chrome]')?.removeAttribute('hidden');
+            this.sync();
+            this.startTimer();
+            // The install store settles a few seconds after load (pwa/install.js): look again then.
+            this.settle = setTimeout(() => this.sync(), 3500);
+        },
+
+        disarm() {
+            if (!this.armed) return;
+
+            this.armed = false;
+            clearTimeout(this.done);
+            this.moving = false;
+            this.index = 0;
+            this.slides().forEach((slide, i) => this.rest(slide, i === 0));
+            this.$root.classList.remove('is-armed', 'is-moving', 'is-timing', 'is-paused');
+            this.$root.querySelector('[data-hero-chrome]')?.setAttribute('hidden', '');
+            this.sync();
+        },
+
+        rest(slide, active) {
+            slide.dataset.state = active ? 'active' : 'idle';
+            slide.hidden = !active;
+            slide.inert = !active;
+            slide.removeAttribute('data-enter');
+        },
+
+        // Tabs follow availability and the current slide; with fewer than two slides left the controls go.
+        sync() {
+            const slides = this.slides();
+            const order = this.order();
+
+            this.tabs().forEach((tab, i) => {
+                tab.hidden = !order.includes(i);
+                i === this.index ? tab.setAttribute('aria-current', 'true') : tab.removeAttribute('aria-current');
+            });
+            order.forEach((i, at) => slides[i].setAttribute('aria-label', `${at + 1} of ${order.length}: ${slides[i].dataset.label}`));
+
+            const toggle = this.$root.querySelector('[data-hero-toggle]');
+            toggle?.setAttribute('aria-pressed', String(this.stopped));
+            toggle?.setAttribute('aria-label', this.stopped ? 'Play slides' : 'Pause slides');
+
+            if (this.armed && order.length < 2) {
+                this.$root.querySelector('[data-hero-chrome]')?.setAttribute('hidden', '');
+                this.stop();
+            }
+
+            if (!this.available(slides[this.index])) this.go(order[0] ?? 0, 'next');
+        },
+
+        startTimer() {
+            const root = this.$root;
+            const slide = this.slides()[this.index];
+
+            root.classList.remove('is-timing');
+            if (this.stopped || !this.armed) return;
+
+            root.style.setProperty('--hero-dur', `${Number(slide?.dataset.duration) || 7000}ms`);
+            void root.offsetWidth; // restart the bar animation
+            root.classList.add('is-timing');
+        },
+
+        hold(reason, on) {
+            on ? this.holds.add(reason) : this.holds.delete(reason);
+            this.$root.classList.toggle('is-paused', this.holds.size > 0);
+        },
+
+        stop() {
+            this.stopped = true;
+            this.$root.classList.remove('is-timing');
+            const toggle = this.$root.querySelector('[data-hero-toggle]');
+            toggle?.setAttribute('aria-pressed', 'true');
+            toggle?.setAttribute('aria-label', 'Play slides');
+        },
+
+        toggle() {
+            if (!this.stopped) return this.stop();
+
+            this.stopped = false;
+            this.sync();
+            this.next();
+        },
+
+        next() { this.go(this.step(1), 'next'); },
+        prev() { this.go(this.step(-1), 'prev'); },
+
+        go(i, dir) {
+            const slides = this.slides();
+            const from = slides[this.index];
+            const to = slides[i];
+
+            if (!this.armed || this.moving || i === this.index || !this.available(to)) return;
+
+            const root = this.$root;
+            const reduced = this.reduced.matches;
+
+            this.moving = true;
+            root.classList.add('is-moving');
+            root.dataset.dir = dir;
+            this.warm(to);
+            this.split(to);
+
+            to.style.setProperty('--ox', dir === 'prev' ? '15%' : '85%');
+            to.hidden = false;
+            to.inert = false;
+            to.removeAttribute('data-enter');
+            void to.offsetWidth; // replay the entrances on a slide seen before
+            to.setAttribute('data-enter', '');
+            to.dataset.state = 'in';
+
+            if (from) {
+                from.dataset.state = 'out';
+                from.inert = true;
+            }
+
+            this.index = i;
+            this.sync();
+            this.announce(to);
+            this.startTimer();
+            this.warm(slides[this.step(1)]);
+
+            this.done = setTimeout(() => {
+                if (from && from !== to) this.rest(from, false);
+                to.dataset.state = 'active';
+                this.moving = false;
+                root.classList.remove('is-moving');
+            }, reduced ? 170 : 950);
+        },
+
+        // Lazy images in a hidden slide wait for it to show: ask for them before it does.
+        warm(slide) {
+            slide?.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; });
+        },
+
+        // Titles rise word by word: each word in a clipping mask. The full text stays the accessible name.
+        split(slide) {
+            slide.querySelectorAll('[data-split]').forEach((title) => {
+                if (title.querySelector('.nt-w')) return;
+
+                const words = title.textContent.trim().split(/\s+/);
+                title.setAttribute('aria-label', words.join(' '));
+                title.replaceChildren(...words.flatMap((word, n) => {
+                    const mask = document.createElement('span');
+                    const inner = document.createElement('span');
+                    mask.className = 'nt-w';
+                    mask.setAttribute('aria-hidden', 'true');
+                    inner.style.setProperty('--w', n);
+                    inner.textContent = word;
+                    mask.append(inner);
+
+                    return n ? [document.createTextNode(' '), mask] : [mask];
+                }));
+            });
+        },
+
+        // While autoplaying nothing is announced; after the player takes over, the new slide is.
+        announce(slide) {
+            const live = this.$root.querySelector('[data-hero-live]');
+            if (live) live.textContent = this.stopped ? slide.getAttribute('aria-label') : '';
+        },
+
+        onClick(e) {
+            const target = e.target.closest('[data-hero-prev], [data-hero-next], [data-hero-go], [data-hero-toggle], [data-hero-install]');
+            if (!target) return;
+
+            if (target.matches('[data-hero-install]')) return window.Alpine.store('pwaInstall')?.activate();
+            if (target.matches('[data-hero-toggle]')) return this.toggle();
+
+            this.stop();
+
+            if (target.matches('[data-hero-prev]')) return this.prev();
+            if (target.matches('[data-hero-next]')) return this.next();
+
+            const i = Number(target.dataset.heroGo);
+            this.go(i, i < this.index ? 'prev' : 'next');
+        },
+
+        onKey(e) {
+            if (!this.armed || !['ArrowLeft', 'ArrowRight'].includes(e.key) || e.target.closest('input, select, textarea')) return;
+
+            e.preventDefault();
+            this.stop();
+            e.key === 'ArrowLeft' ? this.prev() : this.next();
+        },
+
+        onPointerDown(e) {
+            if (!this.armed) return;
+
+            // A tap on a price, a link or Play Kadi: the player is busy with this slide.
+            if (e.target.closest(FOCUSABLE)) {
+                this.stop();
+                this.swipe = null;
+
+                return;
+            }
+
+            this.swipe = { x: e.clientX, y: e.clientY };
+        },
+
+        onPointerUp(e) {
+            if (!this.swipe) return;
+
+            const dx = e.clientX - this.swipe.x;
+            const dy = e.clientY - this.swipe.y;
+            this.swipe = null;
+
+            if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+
+            this.stop();
+            dx < 0 ? this.next() : this.prev();
+        },
+
+        parallax(e) {
+            if (!this.armed || !this.finePointer.matches || this.reduced.matches) return;
+
+            cancelAnimationFrame(this.frame);
+            this.frame = requestAnimationFrame(() => {
+                const slide = this.slides()[this.index];
+                if (!slide) return;
+
+                const box = this.$root.querySelector('[data-hero-stage]').getBoundingClientRect();
+                const px = e ? ((e.clientX - box.left) / box.width) * 2 - 1 : 0;
+                const py = e ? ((e.clientY - box.top) / box.height) * 2 - 1 : 0;
+                slide.style.setProperty('--px', px.toFixed(3));
+                slide.style.setProperty('--py', py.toFixed(3));
+            });
+        },
+    }));
+});

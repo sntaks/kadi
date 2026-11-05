@@ -249,3 +249,10 @@ test('a games slide links each card to its game page', function () {
 
     expect($html)->toContain('href="'.url('/games/dragon-fire-fortune').'"');
 });
+
+test('the slider script and the controls survive a Livewire re-render', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toMatch('/<section[^>]*data-hero[^>]*x-data="heroSlider"[^>]*wire:ignore\.self/s')
+        ->and($html)->toMatch('/<div[^>]*data-hero-chrome[^>]*wire:ignore[ >]/');
+});
