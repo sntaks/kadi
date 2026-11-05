@@ -18,7 +18,8 @@
 | `art[].from` is an image under public/; `php artisan hero:artwork` builds the
 | sizes the page uses into public/images/hero/. Commit them.
 |
-| `requires`: promotions, referrals, sports, token_launch.
+| `requires`: promotions, referrals, sports, token_launch. `cta.account`: the CTA is
+| an account-only page (guests get the sign-in sheet, like every such link).
 | `transition`: curtain, iris, slices, parallax, fade-zoom.
 |
 */
@@ -61,7 +62,7 @@ return [
             'key' => 'invite', 'kind' => 'promo', 'label' => 'Invite & Earn', 'requires' => ['referrals'],
             'eyebrow' => 'Invite & Earn', 'title' => 'Bring a friend to the table',
             'copy' => 'Share your link and earn when the friends you invite join and play.',
-            'cta' => ['label' => 'Get your link', 'route' => 'referrals'],
+            'cta' => ['label' => 'Get your link', 'route' => 'referrals', 'account' => true],
             'art' => [['from' => 'images/casino/king.png', 'role' => 'object']],
             'transition' => 'iris',
         ],

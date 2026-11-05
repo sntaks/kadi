@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Games\Favourites;
+use App\Games\HeroSlides;
 use App\Games\KadiTables;
 use App\Games\Lobby;
 use App\Livewire\Concerns\TogglesFavourites;
@@ -66,6 +67,7 @@ class Welcome extends Component
             'bigMatch' => $bigMatch,
             'also' => $beside['fixtures'],
             'alsoIsToday' => $beside['today'],
+            'heroSlides' => app(HeroSlides::class)->forLanding(),
         ])
             ->layout('layouts.site', [
                 'shell' => 'app',
