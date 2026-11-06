@@ -205,14 +205,27 @@ test('slot and scratch launches also post the encrypted customer id as account_i
 
     $html = $this->get(launchFor($this, $game, ['product' => $product]))->assertOk()->getContent();
 
-    // Encrypted with a random IV (like the API path), so it is decrypted rather than compared.
+    // encrypt_account_id(): random IV and a signature, so it is verified and decrypted rather than compared.
     expect(preg_match('/name="account_id" value="([^"]+)"/', $html, $m))->toBe(1)
-        ->and($m[1])->not->toBe('4242')
-        ->and(decryptOpenSSL($m[1]))->toBe('4242');
+        ->and($m[1])->toStartWith('v1.')
+        ->and($m[1])->not->toContain('4242')
+        ->and(decryptAccountId($m[1]))->toBe('4242');
 })->with([
     'slot' => ['slots', 'berry_blast'],
     'scratch card' => ['scratch', 'safari'],
 ]);
+
+test('without the account_id keys a slot never launches and no launch token is spent', function () {
+    config(['games.launch.account_id_key' => null]);
+    fakeLaunchApi();
+    $this->actingAs(player());
+
+    $this->get(launchFor($this, 'slots', ['product' => 'berry_blast']))->assertStatus(422)
+        ->assertSee("This game can't be opened right now")->assertDontSee('name="account_id"', false);
+
+    Http::assertNotSent(fn (Request $request) => str_contains($request->url(), '/launch-tokens'));
+    expect(GameLaunch::query()->sole()->error)->toBe('not_configured');
+});
 
 test('Kadi keeps its ggid form without an account_id', function () {
     fakeLaunchApi();

@@ -221,6 +221,11 @@ return [
         'per_minute' => (int) env('GAMES_LAUNCHES_PER_MINUTE', 6),
         // Seconds the play page waits for the game before offering "Open in its own tab".
         'fallback_after_seconds' => 8,
+        // Keys for the `account_id` posted to slot and scratch launches (encrypt_account_id() in
+        // app/Helpers/helper.php): AES-256-CBC key and HMAC-SHA256 key, 64 hex characters each. The game
+        // servers hold the same pair. Secrets: .env only, never committed.
+        'account_id_key' => env('GAMES_ACCOUNT_ID_KEY'),
+        'account_id_mac_key' => env('GAMES_ACCOUNT_ID_MAC_KEY'),
     ],
 
     // Most titles a player can heart.

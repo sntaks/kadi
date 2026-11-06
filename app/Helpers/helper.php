@@ -24,6 +24,46 @@ if (! function_exists('encryptOpenSSL')) {
     }
 }
 
+if (! function_exists('encrypt_account_id')) {
+    /**
+     * Encrypts a KadiApi customer id for the `account_id` field posted to slot and scratch-card launches:
+     * AES-256-CBC with a random IV, then HMAC-SHA256 over `account-id:v1:` + IV + ciphertext, sent as
+     * `v1.` + URL-safe base64 (no padding) of IV + ciphertext + tag. The game servers verify and decrypt it
+     * with the same key pair, read from config (`games.launch.account_id_key` / `account_id_mac_key`).
+     *
+     * @param  mixed  $accountId  an int or digit string, 1 to 9007199254740991 (JavaScript's largest safe integer); anything else throws
+     *
+     * @throws InvalidArgumentException|RuntimeException
+     */
+    function encrypt_account_id($accountId): string
+    {
+        if (! is_string($accountId) && ! is_int($accountId)) {
+            throw new InvalidArgumentException('accountId must be an integer or digit string');
+        }
+        $value = (string) $accountId;
+        if (! preg_match('/^[1-9][0-9]{0,15}$/D', $value) ||
+            (strlen($value) === 16 && strcmp($value, '9007199254740991') > 0)) {
+            throw new InvalidArgumentException('accountId must be between 1 and 9007199254740991');
+        }
+
+        $key = (string) config('games.launch.account_id_key');
+        $macKey = (string) config('games.launch.account_id_mac_key');
+        if (! preg_match('/^[0-9a-f]{64}$/Di', $key) || ! preg_match('/^[0-9a-f]{64}$/Di', $macKey)) {
+            throw new RuntimeException('Account ID keys are not configured (GAMES_ACCOUNT_ID_KEY, GAMES_ACCOUNT_ID_MAC_KEY)');
+        }
+
+        $iv = random_bytes(16);
+        $ciphertext = openssl_encrypt($value, 'aes-256-cbc', hex2bin($key), OPENSSL_RAW_DATA, $iv);
+        if ($ciphertext === false) {
+            throw new RuntimeException('Account ID encryption failed');
+        }
+        $body = $iv.$ciphertext;
+        $tag = hash_hmac('sha256', 'account-id:v1:'.$body, hex2bin($macKey), true);
+
+        return 'v1.'.rtrim(strtr(base64_encode($body.$tag), '+/', '-_'), '=');
+    }
+}
+
 if (! function_exists('decryptOpenSSL')) {
     /**
      * Decrypts a given value using OpenSSL, with an initialization vector (IV).

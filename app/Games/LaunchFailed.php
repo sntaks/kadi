@@ -18,6 +18,7 @@ class LaunchFailed extends RuntimeException
         'rate_limited' => 'Too many games opened at once. Wait a minute and try again.',
         'unreachable' => "We couldn't reach the game. Try again.",
         'bad_launch_url' => "This game can't be opened safely right now. Try another one.",
+        'not_configured' => "This game can't be opened right now. Try another one.",
     ];
 
     public function __construct(public readonly string $reason)

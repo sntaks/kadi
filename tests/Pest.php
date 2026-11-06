@@ -196,3 +196,29 @@ function recordScore(Fixture $fixture, int $home, int $away, array $extra = [], 
 {
     return app(RecordResult::class)->handle($fixture, ['home_score' => $home, 'away_score' => $away, ...$extra], $source, $admin);
 }
+
+/**
+ * Reads an `account_id` the way a game server does (encrypt_account_id()): checks the HMAC with the configured MAC key,
+ * then decrypts. Returns null when the format or the tag is wrong.
+ */
+function decryptAccountId(string $token): ?string
+{
+    if (! str_starts_with($token, 'v1.')) {
+        return null;
+    }
+
+    $raw = base64_decode(strtr(substr($token, 3), '-_', '+/'), true);
+    if ($raw === false || strlen($raw) < 16 + 16 + 32) {
+        return null;
+    }
+
+    [$body, $tag] = [substr($raw, 0, -32), substr($raw, -32)];
+    $expected = hash_hmac('sha256', 'account-id:v1:'.$body, hex2bin(config('games.launch.account_id_mac_key')), true);
+    if (! hash_equals($expected, $tag)) {
+        return null;
+    }
+
+    $plain = openssl_decrypt(substr($body, 16), 'aes-256-cbc', hex2bin(config('games.launch.account_id_key')), OPENSSL_RAW_DATA, substr($body, 0, 16));
+
+    return $plain === false ? null : $plain;
+}

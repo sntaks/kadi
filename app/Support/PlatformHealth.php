@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Date;
 class PlatformHealth
 {
     /** Launch failures that are the platform's fault. A player's own state (on a break, not linked) is not. */
-    public const SYSTEM_LAUNCH_ERRORS = ['unreachable', 'rate_limited', 'game_unavailable', 'bad_launch_url'];
+    public const SYSTEM_LAUNCH_ERRORS = ['unreachable', 'rate_limited', 'game_unavailable', 'bad_launch_url', 'not_configured'];
 
     /** @var array{ops: int, failed_ops: int, oldest_op_at: ?string, pending_bets: int, pending_jackpot_entries: int}|null */
     private ?array $counts = null;

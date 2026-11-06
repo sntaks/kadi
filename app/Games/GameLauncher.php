@@ -9,6 +9,8 @@ use App\Services\KadiApiService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
+use RuntimeException;
 use UnexpectedValueException;
 
 /**
@@ -90,6 +92,16 @@ class GameLauncher
             throw new LaunchFailed('not_linked');
         }
 
+        // Before the token is issued: a launch token is single-use and never retried, so don't spend one on a
+        // launch that can't carry the account id (keys missing or malformed, or an id out of range).
+        try {
+            $accountId = encrypt_account_id((string) $user->linked_id);
+        } catch (InvalidArgumentException|RuntimeException $e) {
+            Log::error('Game launch refused: the account id cannot be encrypted', ['game' => $game->code, 'error' => class_basename($e)]);
+
+            throw new LaunchFailed('not_configured');
+        }
+
         try {
             $issued = $this->api->issueLaunchToken((int) $user->linked_id, $game->code, $ip);
         } catch (RequestException $e) {
@@ -121,8 +133,8 @@ class GameLauncher
         return new LaunchForm($issued['launch_url'], array_filter([
             'token' => $issued['token'],
             'product' => $title?->code,
-            // The player's KadiApi customer id, encrypted exactly like the API path (random IV, so it changes per launch).
-            'account_id' => encryptOpenSSL((string) $user->linked_id),
+            // The player's KadiApi customer id, encrypted and signed for the game server (random IV: changes per launch).
+            'account_id' => $accountId,
         ]));
     }
 
