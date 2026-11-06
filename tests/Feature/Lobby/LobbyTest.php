@@ -33,14 +33,14 @@ function lobbyCatalogue(): array
             lobbyProduct('kadi', 'Kadi'),
         ]],
         ['code' => 'slots', 'name' => 'Slots', 'launch_url' => 'https://slots.kadi.online', 'status' => 'active', 'sort_order' => 2, 'products' => [
-            lobbyProduct('slots_dragon_fire_fortune', 'Dragon Fire Fortune'),
-            lobbyProduct('slots_crown_of_embers', 'Crown of Embers'),
-            lobbyProduct('slots_berry_blast', 'Berry Blast'),
-            lobbyProduct('slots_cherry_bomb_deluxe', 'Cherry Bomb Deluxe'),
-            lobbyProduct('slots_canyon_quest_jackpot', 'Canyon Quest Jackpot'),
+            lobbyProduct('dragon_fire_fortune', 'Dragon Fire Fortune'),
+            lobbyProduct('crown_of_embers', 'Crown of Embers'),
+            lobbyProduct('berry_blast', 'Berry Blast'),
+            lobbyProduct('cherry_bomb_deluxe', 'Cherry Bomb Deluxe'),
+            lobbyProduct('canyon_quest_jackpot', 'Canyon Quest Jackpot'),
         ]],
         ['code' => 'scratch', 'name' => 'Scratch Cards', 'launch_url' => 'https://scratch.kadi.online', 'status' => 'active', 'sort_order' => 3, 'products' => [
-            lobbyProduct('scratch_safari_lotto', 'Safari Lotto'),
+            lobbyProduct('safari', 'Safari Lotto'),
         ]],
     ]];
 }
@@ -72,7 +72,7 @@ beforeEach(function () {
 test('the landing puts the Kadi table first with the real seat counts per mode', function () {
     $html = $this->get(route('home'))->assertOk()->getContent();
 
-    expect($html)->toContain('Kadi tables are open')
+    expect($html)->toContain('Fortune Favors the Bold')
         ->and($html)->toContain('128 players at the Kadi tables now')
         ->and($html)->toMatch('#<b class="nt-num">96</b><span>in single games</span>#')
         ->and($html)->toMatch('#<b class="nt-num">21</b><span>in tournaments</span>#')
@@ -86,7 +86,7 @@ test('with no counts from the game server the landing shows no numbers at all', 
 
     $html = $this->get(route('home'))->assertOk()->getContent();
 
-    expect($html)->toContain('Kadi tables are open')
+    expect($html)->toContain('Fortune Favors the Bold')
         ->and($html)->not->toContain('at the Kadi tables now')
         ->and($html)->not->toContain('nt-seats');
 });
@@ -114,14 +114,14 @@ test('the casino panel shows themed slot shelves, scratch cards and collections'
 test('the casino panel waits until games open inside the site', function () {
     config(['platform.token_launch' => false]);
 
-    $this->get(route('home'))->assertOk()->assertSee('Kadi tables are open')->assertDontSee('id="casino-title"', false);
+    $this->get(route('home'))->assertOk()->assertSee('Fortune Favors the Bold')->assertDontSee('id="casino-title"', false);
 });
 
 test('"Most played" appears only from the launch log, once enough players have played', function () {
     $this->get(route('home'))->assertOk()->assertDontSee('>Most played</button>', false);
 
     $players = User::factory()->count(3)->create();
-    foreach (['slots_berry_blast', 'slots_crown_of_embers', 'slots_cherry_bomb_deluxe', 'scratch_safari_lotto'] as $product) {
+    foreach (['berry_blast', 'crown_of_embers', 'cherry_bomb_deluxe', 'safari'] as $product) {
         foreach ($players as $player) {
             GameLaunch::query()->create(['user_id' => $player->id, 'game' => 'slots', 'product' => $product, 'status' => 'launched']);
         }
@@ -133,7 +133,7 @@ test('"Most played" appears only from the launch log, once enough players have p
 
 test('failed launches and too few players never count as most played', function () {
     $players = User::factory()->count(3)->create();
-    foreach (['slots_berry_blast', 'slots_crown_of_embers', 'slots_cherry_bomb_deluxe', 'scratch_safari_lotto'] as $product) {
+    foreach (['berry_blast', 'crown_of_embers', 'cherry_bomb_deluxe', 'safari'] as $product) {
         GameLaunch::query()->create(['user_id' => $players[0]->id, 'game' => 'slots', 'product' => $product, 'status' => 'launched']);
         GameLaunch::query()->create(['user_id' => $players[1]->id, 'game' => 'slots', 'product' => $product, 'status' => 'launched']);
         GameLaunch::query()->create(['user_id' => $players[2]->id, 'game' => 'slots', 'product' => $product, 'status' => 'failed']);
@@ -146,7 +146,7 @@ test('guests see no hearts; players see their favourites first', function () {
     $this->get(route('home'))->assertOk()->assertDontSee('aria-label="Favourite', false);
 
     $player = User::factory()->create();
-    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'slots_berry_blast']);
+    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'berry_blast']);
 
     $html = $this->actingAs($player)->get(route('home'))->assertOk()->getContent();
 
@@ -159,23 +159,23 @@ test('guests see no hearts; players see their favourites first', function () {
 test('a player hearts and un-hearts a title', function () {
     $player = User::factory()->create();
 
-    Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'slots_berry_blast');
-    expect(GameFavourite::where('user_id', $player->id)->pluck('product')->all())->toBe(['slots_berry_blast']);
+    Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'berry_blast');
+    expect(GameFavourite::where('user_id', $player->id)->pluck('product')->all())->toBe(['berry_blast']);
 
-    Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'slots_berry_blast');
+    Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'berry_blast');
     expect(GameFavourite::where('user_id', $player->id)->count())->toBe(0);
 });
 
 test('only catalogue titles can be hearted', function () {
     $player = User::factory()->create();
 
-    Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'slots_not_a_game');
+    Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'not_a_game');
 
     expect(GameFavourite::count())->toBe(0);
 });
 
 test('a guest tapping a heart is sent to log in', function () {
-    Livewire::test(Welcome::class)->call('toggleFavourite', 'slots_berry_blast')->assertRedirect(route('login'));
+    Livewire::test(Welcome::class)->call('toggleFavourite', 'berry_blast')->assertRedirect(route('login'));
 
     expect(GameFavourite::count())->toBe(0);
 });
@@ -183,18 +183,18 @@ test('a guest tapping a heart is sent to log in', function () {
 test('favourites stop at the limit, counting only titles still offered', function () {
     config(['games.favourites_limit' => 2]);
     $player = User::factory()->create();
-    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'slots_crown_of_embers']);
-    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'slots_dropped_by_the_api']);
+    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'crown_of_embers']);
+    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'dropped_by_the_api']);
 
-    expect(app(Favourites::class)->toggle($player, 'slots_berry_blast'))->toBeTrue()
-        ->and(app(Favourites::class)->toggle($player, 'slots_cherry_bomb_deluxe'))->toBeNull();
+    expect(app(Favourites::class)->toggle($player, 'berry_blast'))->toBeTrue()
+        ->and(app(Favourites::class)->toggle($player, 'cherry_bomb_deluxe'))->toBeNull();
 });
 
 test('a title the catalogue has dropped can still be removed from favourites', function () {
     $player = User::factory()->create();
-    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'slots_dropped_by_the_api']);
+    GameFavourite::query()->create(['user_id' => $player->id, 'product' => 'dropped_by_the_api']);
 
-    expect(app(Favourites::class)->toggle($player, 'slots_dropped_by_the_api'))->toBeFalse()
+    expect(app(Favourites::class)->toggle($player, 'dropped_by_the_api'))->toBeFalse()
         ->and(GameFavourite::count())->toBe(0);
 });
 
@@ -290,7 +290,7 @@ test('a player can heart a title from its game page', function () {
     $player = User::factory()->create();
 
     Livewire::actingAs($player)->test(GameShow::class, ['slug' => 'berry-blast'])
-        ->call('toggleFavourite', 'slots_berry_blast')
+        ->call('toggleFavourite', 'berry_blast')
         ->assertSee('In your favourites');
 });
 
@@ -314,7 +314,7 @@ test('a 200 without all three totals keeps the last good seat counts', function 
 test('a broken totals URL hides the counts instead of breaking the page', function () {
     $this->totals = fn () => throw new InvalidArgumentException('bad url');
 
-    $this->get(route('home'))->assertOk()->assertSee('Kadi tables are open')->assertDontSee('at the Kadi tables now');
+    $this->get(route('home'))->assertOk()->assertSee('Fortune Favors the Bold')->assertDontSee('at the Kadi tables now');
 });
 
 test('the last good seat counts can be read without calling the game server', function () {
@@ -327,12 +327,12 @@ test('the last good seat counts can be read without calling the game server', fu
 test('game pages only exist for clean, unreserved, first-come slugs', function () {
     $this->catalogueBody = ['data' => [
         ['code' => 'slots', 'name' => 'Slots', 'launch_url' => 'https://slots.kadi.online', 'status' => 'active', 'sort_order' => 2, 'products' => [
-            lobbyProduct('slots_lucky_sevens', 'Lucky Sevens'),
-            lobbyProduct('slots_history', 'History'),
+            lobbyProduct('lucky_sevens', 'Lucky Sevens'),
+            lobbyProduct('history', 'History'),
             lobbyProduct('slots_Mega.Win', 'Mega Win'),
         ]],
         ['code' => 'scratch', 'name' => 'Scratch Cards', 'launch_url' => 'https://scratch.kadi.online', 'status' => 'active', 'sort_order' => 3, 'products' => [
-            lobbyProduct('scratch_lucky_sevens', 'Lucky Sevens Scratch'),
+            lobbyProduct('lucky-sevens', 'Lucky Sevens Scratch'),
         ]],
     ]];
     $catalogue = app(GameCatalogue::class);
@@ -340,15 +340,15 @@ test('game pages only exist for clean, unreserved, first-come slugs', function (
     $urls = $catalogue->titles()->mapWithKeys(fn ($title) => [$title->code => $catalogue->pageUrl($title)]);
 
     expect($urls->all())->toBe([
-        'slots_lucky_sevens' => route('games.show', ['slug' => 'lucky-sevens']),
-        'slots_history' => null,
+        'lucky_sevens' => route('games.show', ['slug' => 'lucky-sevens']),
+        'history' => null,
         'slots_Mega.Win' => null,
-        'scratch_lucky_sevens' => null,
+        'lucky-sevens' => null,
     ]);
 });
 
 test('a collection named like a built-in shelf is never a shelf', function () {
-    config(['games.collections.jackpot' => ['label' => 'Clash', 'products' => ['slots_berry_blast']]]);
+    config(['games.collections.jackpot' => ['label' => 'Clash', 'products' => ['berry_blast']]]);
 
     $lobby = app(Lobby::class);
 
@@ -382,5 +382,5 @@ test('the sitemap lists the game pages while they are on', function () {
     expect($xml)->toContain(route('games.slots'))
         ->and($xml)->toContain(route('games.scratch'))
         ->and($xml)->toContain(route('games.show', ['slug' => 'berry-blast']))
-        ->and($xml)->toContain(route('games.show', ['slug' => 'safari-lotto']));
+        ->and($xml)->toContain(route('games.show', ['slug' => 'safari']));
 });

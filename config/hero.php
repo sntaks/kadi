@@ -32,7 +32,7 @@ return [
 
     'slides' => [
         [
-            'key' => 'kadi', 'kind' => 'kadi', 'label' => 'Kadi', 'title' => 'Kadi tables are open',
+            'key' => 'kadi', 'kind' => 'kadi', 'label' => 'Kadi', 'title' => 'Fortune Favors the Bold',
             'transition' => 'curtain', 'duration' => 8000,
         ],
         [
@@ -51,7 +51,7 @@ return [
             'key' => 'slots', 'kind' => 'games', 'label' => 'Slots', 'requires' => ['token_launch'],
             'eyebrow' => 'Casino', 'title' => 'Spin a slot between rounds',
             'copy' => 'Slots and scratch cards, played right here with the same wallet.',
-            'titles' => ['slots_dragon_fire_fortune', 'slots_crown_of_embers', 'slots_berry_blast'],
+            'titles' => ['dragon_fire_fortune', 'crown_of_embers', 'berry_blast'],
             'cta' => ['label' => 'All slots', 'route' => 'games.slots'],
             'transition' => 'slices',
         ],

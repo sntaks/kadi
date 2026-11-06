@@ -24,9 +24,18 @@
     /* ── Kadi and football slides: the landing's own cards, full width ── */
     .nt-hero-feature { display: grid; height: 100%; min-width: 0; }
     .nt-hero-feature > * { height: 100%; }
+    /* The big match gets the same glow as the other slides (gold on the right, green low left, felt underneath);
+       only in the hero, so the sports pages keep their plain card. */
+    .nt-hero-feature .nt-bigmatch {
+        border-color: var(--color-line-2);
+        background:
+            radial-gradient(70% 90% at 82% 50%, color-mix(in srgb, var(--color-gold) 16%, transparent), transparent 62%),
+            radial-gradient(60% 110% at 0% 100%, color-mix(in srgb, var(--color-win) 14%, transparent), transparent 60%),
+            linear-gradient(160deg, var(--color-felt-2), var(--color-night) 74%);
+    }
     @media (min-width: 768px) {
         .nt-hero-feature .nt-table h1 { max-width: none; }
-        .nt-hero-feature .nt-table > p { max-width: 52ch; }
+        .nt-hero-feature .nt-table-copy > p { max-width: 52ch; }
         .nt-hero-feature .nt-table, .nt-hero-feature .nt-bigmatch { align-content: center; }
         .nt-hero-feature .nt-bigmatch { align-items: center; }
         /* Docked bet slip and side menu leave the hero ~600px: one column, hand beside the copy, no extra list. */
@@ -35,9 +44,9 @@
             .nt-hero-feature .nt-also { display: none; }
             .nt-hero-feature .nt-table .nt-ctas { margin-bottom: 0; }
             .nt-hero-feature .nt-table .nt-hand { right: -34px; top: 50%; bottom: auto; transform: translateY(-50%) scale(.6); transform-origin: 100% 50%; }
-            .nt-hero-feature .nt-table > :not(.nt-hand) { max-width: 64%; }
+            .nt-hero-feature .nt-hand-host .nt-table-body > :not(.nt-hand) { max-width: 64%; }
             .nt-hero-feature .nt-table h1 { max-width: none; font-size: 32px; }
-            .nt-hero-feature .nt-table > p { display: none; }
+            .nt-hero-feature .nt-table-copy > p { display: none; }
         }
     }
 
@@ -162,14 +171,22 @@
 
         /* The Kadi card: counts in a row, the hand tucked top right, content centred in the shared height. */
         .nt-hero-feature .nt-table { padding: 20px 18px; display: grid; align-content: center; }
-        .nt-hero-feature .nt-table > p { margin: 0; font-size: 14px; }
-        .nt-hero-feature .nt-table h1 { max-width: 62%; font-size: 28px; }
+        .nt-hero-feature .nt-table-copy > p { margin: 0; font-size: 14px; }
+        .nt-hero-feature .nt-table h1 { font-size: 28px; }
+        .nt-hero-feature .nt-hand-host h1 { max-width: 62%; }
         .nt-hero-feature .nt-seats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 16px; }
         .nt-hero-feature .nt-seats b { font-size: 20px; }
         .nt-hero-feature .nt-seats span { font-size: 11.5px; line-height: 1.25; }
         .nt-hero-feature .nt-table .nt-ctas { margin-bottom: 0; }
         .nt-hero-feature .nt-table .nt-ctas > * { flex: 1; }
         .nt-hero-feature .nt-table .nt-hand { right: -40px; top: 6px; bottom: auto; transform: scale(.42); transform-origin: 100% 0; }
+        /* The prize pool shrinks to its top prize (the link lists every place), so this slide doesn't set a tall
+           height for all of them. */
+        .nt-hero-feature .nt-prize { padding: 12px 14px 10px; }
+        .nt-hero-feature .nt-prize-head { padding-bottom: 8px; }
+        .nt-hero-feature .nt-prize-row:not(.is-top) { display: none; }
+        .nt-hero-feature .nt-table .nt-table-body .nt-prize-stage > .nt-hand { transform: translate(-50%, -56%) scale(.5); }
+        .nt-hero-feature .nt-table-body { gap: 16px; }
     }
 }
 

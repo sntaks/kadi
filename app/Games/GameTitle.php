@@ -28,13 +28,10 @@ final readonly class GameTitle
         return $this->presented;
     }
 
-    /** URL slug: the product code without its game prefix, in kebab case (`slots_berry_blast` → `berry-blast`). */
+    /** URL slug: the product code in kebab case (`berry_blast` → `berry-blast`). */
     public function slug(): string
     {
-        $prefix = (string) config("games.games.{$this->game}.prefix", '');
-        $name = $prefix !== '' && str_starts_with($this->code, $prefix) ? substr($this->code, strlen($prefix)) : $this->code;
-
-        return str_replace('_', '-', $name);
+        return str_replace('_', '-', $this->code);
     }
 
     /** The in-site play page, or null while games do not open inside the site (PLATFORM_TOKEN_LAUNCH off). */

@@ -39,7 +39,7 @@ beforeEach(function () {
         'kadi.referrals.enabled' => true,
     ]);
 
-    $this->slots = ['slots_dragon_fire_fortune', 'slots_crown_of_embers', 'slots_berry_blast'];
+    $this->slots = ['dragon_fire_fortune', 'crown_of_embers', 'berry_blast'];
 
     Http::preventStrayRequests();
     Http::fake(function ($request) {
@@ -80,16 +80,16 @@ test('slides follow their switches', function (string $switch, string $slide) {
 ]);
 
 test('a games slide lists only titles the catalogue offers', function () {
-    $this->slots = ['slots_dragon_fire_fortune', 'slots_berry_blast'];
+    $this->slots = ['dragon_fire_fortune', 'berry_blast'];
 
     $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'slots');
 
-    expect(collect($slide->extra['titles'])->pluck('code')->all())->toBe(['slots_dragon_fire_fortune', 'slots_berry_blast'])
+    expect(collect($slide->extra['titles'])->pluck('code')->all())->toBe(['dragon_fire_fortune', 'berry_blast'])
         ->and(collect($slide->art)->pluck('role')->unique()->all())->toBe(['card']);
 });
 
 test('a games slide with none of its titles in the catalogue is dropped', function () {
-    $this->slots = ['slots_candy_kingdom'];
+    $this->slots = ['candy_kingdom'];
 
     expect(heroKeys())->not->toContain('slots');
 });
@@ -228,6 +228,31 @@ test('the controls start hidden so the page works without JavaScript', function 
         ->and($html)->toContain('data-hero-next')
         ->and($html)->toContain('01')
         ->and($html)->toMatch('#<span class="nt-hero-tab-label">Kadi</span>#');
+});
+
+test('the Kadi slide shows the published jackpot prizes, the same figures as the games guide', function () {
+    $gold = config('games.games.kadi.jackpots.gold');
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('Fortune Favors the Bold')
+        ->and($html)->toContain('data-prize-pool')
+        ->and($html)->toContain('Gold jackpot');
+
+    foreach ($gold['prizes'] as [, $amount]) {
+        expect($html)->toContain('KSh '.number_format($amount));
+    }
+
+    $guide = $this->get(route('game-guide'))->assertOk()->getContent();
+
+    foreach ($gold['prizes'] as [, $amount]) {
+        expect($guide)->toContain('KSh '.number_format($amount));
+    }
+});
+
+test('without a configured jackpot the Kadi slide shows no prize pool', function () {
+    config(['games.games.kadi.hero_jackpot' => null]);
+
+    expect($this->get('/')->assertOk()->getContent())->not->toContain('data-prize-pool');
 });
 
 test('slide figures come from the server: the jackpot prize, never player counts', function () {

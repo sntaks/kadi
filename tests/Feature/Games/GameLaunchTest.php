@@ -27,10 +27,10 @@ function launchCatalogue(string $slotsUrl = 'https://slots.kadi.online'): array
     return ['data' => [
         ['code' => 'kadi', 'name' => 'Kadi', 'launch_url' => 'https://play.kadi.online', 'status' => 'active', 'sort_order' => 1, 'products' => [$p('kadi', 'kadi', 'Kadi')]],
         ['code' => 'slots', 'name' => 'Slots', 'launch_url' => $slotsUrl, 'status' => 'active', 'sort_order' => 2, 'products' => [
-            $p('slots_berry_blast', 'slots', 'Berry Blast'), $p('slots_dragon_fire_fortune', 'slots', 'Dragon Fire Fortune'),
+            $p('berry_blast', 'slots', 'Berry Blast'), $p('dragon_fire_fortune', 'slots', 'Dragon Fire Fortune'),
         ]],
         ['code' => 'scratch', 'name' => 'Scratch Cards', 'launch_url' => 'https://scratch.kadi.online', 'status' => 'active', 'sort_order' => 3, 'products' => [
-            $p('scratch_safari_lotto', 'scratch', 'Safari Lotto'),
+            $p('safari', 'scratch', 'Safari Lotto'),
         ]],
     ]];
 }
@@ -102,7 +102,7 @@ test('unknown games, unknown or foreign titles and stray title segments are not 
     'unknown game' => ['/play/poker'],
     'slots without a title' => ['/play/slots'],
     'unknown slot' => ['/play/slots/not-a-slot'],
-    'scratch card under slots' => ['/play/slots/safari-lotto'],
+    'scratch card under slots' => ['/play/slots/safari'],
     'kadi with a title' => ['/play/kadi/berry-blast'],
 ]);
 
@@ -116,7 +116,7 @@ test('the play page frames the game and posts the launch into the frame without 
     expect($html)->toContain('<iframe name="game-frame"')
         ->toContain('action="'.route('play.launch', ['game' => 'slots']).'"')
         ->toContain('target="game-frame"')
-        ->toContain('name="product" value="slots_berry_blast"')
+        ->toContain('name="product" value="berry_blast"')
         ->toContain('referrerpolicy="no-referrer"')
         // The frame has no src, so fullscreen must name the game servers or games cannot use it.
         ->toMatch('/allow="fullscreen [^";]*https:\/\/slots\.kadi\.online[^"]*"/')
@@ -129,7 +129,7 @@ test('the play page frames the game and posts the launch into the frame without 
 test('only the game servers may message the play page', function () {
     fakeLaunchApi(catalogue: launchCatalogue('https://slots.kadi.online'));
 
-    $origins = Livewire::actingAs(player())->test(Play::class, ['game' => 'scratch', 'title' => 'safari-lotto'])->viewData('origins');
+    $origins = Livewire::actingAs(player())->test(Play::class, ['game' => 'scratch', 'title' => 'safari'])->viewData('origins');
 
     expect($origins)
         ->toEqualCanonicalizing(['https://play.kadi.online', 'https://slots.kadi.online', 'https://scratch.kadi.online']);
@@ -184,7 +184,7 @@ test('a slot launches with a single-use token posted to the game with the title'
     $user = player();
 
     $this->actingAs($user)->withServerVariables(['REMOTE_ADDR' => '197.248.10.20']);
-    $open = launchFor($this, 'slots', ['product' => 'slots_berry_blast']);
+    $open = launchFor($this, 'slots', ['product' => 'berry_blast']);
 
     // The customer id is encrypted with a random IV, so only its presence is checked.
     Http::assertSent(fn (Request $request) => preg_match('#/customers/[^/]+/launch-tokens$#', $request->url()) === 1
@@ -194,16 +194,16 @@ test('a slot launches with a single-use token posted to the game with the title'
     $this->get($open)->assertOk()
         ->assertSee('action="https://slots.kadi.online/launch"', false)
         ->assertSee('name="token" value="'.LAUNCH_TOKEN.'"', false)
-        ->assertSee('name="product" value="slots_berry_blast"', false);
+        ->assertSee('name="product" value="berry_blast"', false);
 
-    expect(GameLaunch::query()->sole())->toMatchArray(['game' => 'slots', 'product' => 'slots_berry_blast', 'status' => 'launched', 'error' => null]);
+    expect(GameLaunch::query()->sole())->toMatchArray(['game' => 'slots', 'product' => 'berry_blast', 'status' => 'launched', 'error' => null]);
 });
 
 test('the hand-off works once: Back or refresh never re-posts a launch', function () {
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $open = launchFor($this, 'slots', ['product' => 'slots_berry_blast']);
+    $open = launchFor($this, 'slots', ['product' => 'berry_blast']);
     $this->get($open)->assertSee(LAUNCH_TOKEN, false);
 
     $this->get($open)->assertStatus(410)->assertSee('This game was closed')->assertSee('kadi-launch-used', false)->assertDontSee(LAUNCH_TOKEN, false);
@@ -213,7 +213,7 @@ test('a hand-off older than a launch token is never posted', function () {
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $open = launchFor($this, 'slots', ['product' => 'slots_berry_blast']);
+    $open = launchFor($this, 'slots', ['product' => 'berry_blast']);
     $this->travel(121)->seconds();
 
     $this->get($open)->assertStatus(410)->assertDontSee(LAUNCH_TOKEN, false);
@@ -223,10 +223,10 @@ test('a hand-off opens only for its own game and its own player', function () {
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $wrongGame = str_replace('/play/slots/', '/play/scratch/', launchFor($this, 'slots', ['product' => 'slots_berry_blast']));
+    $wrongGame = str_replace('/play/slots/', '/play/scratch/', launchFor($this, 'slots', ['product' => 'berry_blast']));
     $this->get($wrongGame)->assertStatus(410)->assertDontSee(LAUNCH_TOKEN, false);
 
-    $open = launchFor($this, 'slots', ['product' => 'slots_berry_blast']);
+    $open = launchFor($this, 'slots', ['product' => 'berry_blast']);
     $this->actingAs(player())->get($open)->assertStatus(410)->assertDontSee(LAUNCH_TOKEN, false);
 });
 
@@ -234,11 +234,11 @@ test('overlapping launches each keep their own hand-off', function () {
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $slot = launchFor($this, 'slots', ['product' => 'slots_berry_blast']);
-    $card = launchFor($this, 'scratch', ['product' => 'scratch_safari_lotto']);
+    $slot = launchFor($this, 'slots', ['product' => 'berry_blast']);
+    $card = launchFor($this, 'scratch', ['product' => 'safari']);
 
-    $this->get($card)->assertOk()->assertSee('name="product" value="scratch_safari_lotto"', false);
-    $this->get($slot)->assertOk()->assertSee('name="product" value="slots_berry_blast"', false);
+    $this->get($card)->assertOk()->assertSee('name="product" value="safari"', false);
+    $this->get($slot)->assertOk()->assertSee('name="product" value="berry_blast"', false);
 });
 
 test('a hand-off is not a page: anything else in the frame is reported as an error by the play page', function () {
@@ -257,16 +257,16 @@ test('forged titles are refused before any token is issued', function (array $bo
     expect(GameLaunch::query()->count())->toBe(0);
 })->with([
     'no title' => [[]],
-    'unknown title' => [['product' => 'slots_free_money']],
-    'another game\'s title' => [['product' => 'scratch_safari_lotto']],
-    'not a string' => [['product' => ['slots_berry_blast']]],
+    'unknown title' => [['product' => 'free_money']],
+    'another game\'s title' => [['product' => 'safari']],
+    'not a string' => [['product' => ['berry_blast']]],
 ]);
 
 test('API refusals become plain messages and are recorded', function (mixed $response, string $reason, string $message) {
     fakeLaunchApi($response);
 
     $this->actingAs(player());
-    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']))->assertStatus(422)->assertSee($message)->assertSee('kadi-launch-error', false);
+    $this->get(launchFor($this, 'slots', ['product' => 'berry_blast']))->assertStatus(422)->assertSee($message)->assertSee('kadi-launch-error', false);
 
     expect(GameLaunch::query()->sole())->toMatchArray(['status' => 'failed', 'error' => $reason]);
 })->with([
@@ -285,7 +285,7 @@ test('a player not linked to KadiApi is refused without an API call', function (
     fakeLaunchApi();
 
     $this->actingAs(player(['linked_id' => null]));
-    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']))->assertSee('still being set up');
+    $this->get(launchFor($this, 'slots', ['product' => 'berry_blast']))->assertSee('still being set up');
 
     Http::assertNotSent(fn (Request $request) => str_contains($request->url(), 'launch-tokens'));
 });
@@ -298,7 +298,7 @@ test('launch tokens never reach the logs, the database, the session, a URL or th
     fakeLaunchApi();
 
     $this->actingAs(player());
-    $open = launchFor($this, 'slots', ['product' => 'slots_berry_blast']);
+    $open = launchFor($this, 'slots', ['product' => 'berry_blast']);
 
     expect($open)->not->toContain(LAUNCH_TOKEN)
         ->and(json_encode(session()->all()))->not->toContain(LAUNCH_TOKEN)
@@ -308,7 +308,7 @@ test('launch tokens never reach the logs, the database, the session, a URL or th
 
     // Also a refused launch with the token in the reply.
     fakeLaunchApi(Http::response(['data' => ['token' => LAUNCH_TOKEN, 'launch_url' => 'https://evil.example']], 201));
-    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']));
+    $this->get(launchFor($this, 'slots', ['product' => 'berry_blast']));
 
     expect(implode("\n", $logged))->not->toContain(LAUNCH_TOKEN)
         ->and(GameLaunch::query()->get()->toJson())->not->toContain(LAUNCH_TOKEN);
@@ -319,9 +319,9 @@ test('players are limited to a few launches a minute', function () {
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $this->post('/play/slots', ['product' => 'slots_berry_blast'])->assertStatus(303);
-    $this->post('/play/slots', ['product' => 'slots_berry_blast'])->assertStatus(303);
-    $this->post('/play/slots', ['product' => 'slots_berry_blast'])->assertStatus(429)->assertSee('Wait a minute');
+    $this->post('/play/slots', ['product' => 'berry_blast'])->assertStatus(303);
+    $this->post('/play/slots', ['product' => 'berry_blast'])->assertStatus(303);
+    $this->post('/play/slots', ['product' => 'berry_blast'])->assertStatus(429)->assertSee('Wait a minute');
 
     Http::assertSentCount(3); // the catalogue and two launch tokens
 });
@@ -341,7 +341,7 @@ test('token games leave the break check to KadiApi, with no extra lookup', funct
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']))->assertOk();
+    $this->get(launchFor($this, 'slots', ['product' => 'berry_blast']))->assertOk();
 
     Http::assertNotSent(fn ($request) => str_contains($request->url(), 'responsible-gambling'));
 });
@@ -357,7 +357,7 @@ test('the API refusing a launch for a break shows the break message', function (
     fakeLaunchApi(Http::response(['success' => false, 'code' => 'player_excluded', 'message' => 'This player is taking a break from play'], 403));
     $this->actingAs(player());
 
-    $this->get(launchFor($this, 'slots', ['product' => 'slots_berry_blast']))->assertStatus(422)->assertSee('taking a break from play', false);
+    $this->get(launchFor($this, 'slots', ['product' => 'berry_blast']))->assertStatus(422)->assertSee('taking a break from play', false);
 });
 
 test('Play Kadi is disabled during a break', function () {
@@ -405,11 +405,11 @@ test('the revoke job calls the API, and a vanished customer is not an error', fu
 
 // ─── Slugs ──────────────────────────────────────────────────────────────────
 
-test('titles have readable slugs without their game prefix', function () {
+test('titles have readable slugs made from their product codes', function () {
     fakeLaunchApi();
     $catalogue = app(GameCatalogue::class);
 
-    expect($catalogue->title('slots_dragon_fire_fortune')->slug())->toBe('dragon-fire-fortune')
-        ->and($catalogue->title('scratch_safari_lotto')->slug())->toBe('safari-lotto')
-        ->and($catalogue->game('slots')->titleBySlug('berry-blast')->code)->toBe('slots_berry_blast');
+    expect($catalogue->title('dragon_fire_fortune')->slug())->toBe('dragon-fire-fortune')
+        ->and($catalogue->title('safari')->slug())->toBe('safari')
+        ->and($catalogue->game('slots')->titleBySlug('berry-blast')->code)->toBe('berry_blast');
 });

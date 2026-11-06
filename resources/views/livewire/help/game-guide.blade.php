@@ -14,11 +14,9 @@
         ['Ruby', '4 rounds', '×14.4', [[20, 288], [50, 720], [100, 1440], [250, 3600], [500, 7200], [1000, 14400]]],
         ['Diamond', '5 rounds', '×28.8', [[20, 576], [50, 1440], [100, 2880], [250, 7200], [500, 14400], [1000, 28800]]],
     ];
-    $jackpots = [
-        ['Bronze jackpot', 'KSh 20', '13 games', [['1st place', '86,291'], ['Runner-up', '19,544'], ['Semis (2)', '7,795'], ['Quarters (4)', '2,441']], '131,189'],
-        ['Silver jackpot', 'KSh 50', '17 games', [['1st place', '3,451,655'], ['Runner-up', '781,760'], ['Semis (2)', '311,830'], ['Quarters (4)', '96,449']], '5,242,871'],
-        ['Gold jackpot', 'KSh 100', '21 games', [['1st place', '110,452,969'], ['Runner-up', '25,016,339'], ['Semis (2)', '9,978,584'], ['Quarters (4)', '3,086,378']], '167,772,160'],
-    ];
+    // config/games.php holds the payouts (the landing hero shows them too).
+    $jackpots = collect(config('games.games.kadi.jackpots', []))
+        ->map(fn (array $j) => [$j['name'], $kes($j['entry']), $j['games'].' games', $j['prizes'], $j['total']])->values()->all();
     $toc = [['how-it-works', 'How it works'], ['single', 'Single games'], ['tournaments', 'Tournaments'], ['jackpots', 'Jackpots']];
 @endphp
 <x-help.page title="Kadi game modes & prizes" crumb="Help · Game modes & prizes"

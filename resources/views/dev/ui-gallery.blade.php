@@ -111,7 +111,7 @@
             <x-ui.panel padded class="grid grid-cols-3 gap-4">
                 <x-ui.stat label="joined" value="7" /><x-ui.stat label="confirmed" value="4" /><x-ui.stat label="earned" value="KES 200" gold />
             </x-ui.panel>
-            <x-ui.promo-card title="KES 20 welcome bonus" text="Unlocks when your phone is confirmed" :image="\App\Games\GameArtwork::thumbnailUrl('slots_royal_gems')" />
+            <x-ui.promo-card title="KES 20 welcome bonus" text="Unlocks when your phone is confirmed" :image="\App\Games\GameArtwork::thumbnailUrl('royal_gems')" />
         </div>
     </div>
     <div class="overflow-hidden rounded-panel border border-line">

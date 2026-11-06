@@ -138,7 +138,7 @@ test('the landing shows today\'s big match and the football list beside the Kadi
 
     $this->get('/')
         ->assertOk()
-        ->assertSee('Kadi tables are open')
+        ->assertSee('Fortune Favors the Bold')
         ->assertSee("Today's big match")
         ->assertSee('Also kicking off today')
         ->assertSee('Football')
@@ -206,7 +206,7 @@ test('without sports the landing keeps the Kadi table and no slip', function () 
     config(['platform.sports' => false]);
     pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]);
 
-    $this->get('/')->assertOk()->assertSee('Kadi tables are open')->assertDontSee("Today's big match")->assertDontSee('data-bet-slip', false);
+    $this->get('/')->assertOk()->assertSee('Fortune Favors the Bold')->assertDontSee("Today's big match")->assertDontSee('data-bet-slip', false);
 });
 
 test('the top bar search index lists competitions and matches while sports is on', function () {

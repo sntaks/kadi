@@ -17,16 +17,16 @@ class GameArtwork
             return $config['artwork_map'][$product];
         }
 
-        if (isset($config['artwork'], $config['prefix']) && str_starts_with($product, $config['prefix'])) {
-            return str_replace('{name}', substr($product, strlen($config['prefix'])), $config['artwork']);
+        if (isset($config['artwork'])) {
+            return str_replace('{code}', $product, $config['artwork']);
         }
 
         return null;
     }
 
     /**
-     * Every product config/games.php presents, mapped to its game: the slots in
-     * collections and the explicitly mapped titles.
+     * Every product config/games.php presents, mapped to its game: the explicitly
+     * mapped titles and the slots in collections (collections hold slots only).
      *
      * @return array<string, string> product code => game code
      */
@@ -42,7 +42,7 @@ class GameArtwork
 
         foreach (config('games.collections', []) as $collection) {
             foreach ($collection['products'] ?? [] as $code) {
-                $products[$code] ??= self::gameByPrefix($code) ?? 'slots';
+                $products[$code] ??= 'slots';
             }
         }
 
@@ -51,16 +51,10 @@ class GameArtwork
         return $products;
     }
 
-    /** The game whose `prefix` the product code starts with. */
-    public static function gameByPrefix(string $product): ?string
+    /** The game config/games.php files a product under, or null when config does not know it. */
+    public static function gameOf(string $product): ?string
     {
-        foreach (config('games.games', []) as $game => $config) {
-            if (isset($config['prefix']) && str_starts_with($product, $config['prefix'])) {
-                return $game;
-            }
-        }
-
-        return null;
+        return self::configuredProducts()[$product] ?? null;
     }
 
     /** Thumbnail path relative to public/. */

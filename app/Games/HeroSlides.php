@@ -67,7 +67,7 @@ class HeroSlides
             }
 
             foreach ($slide['titles'] ?? [] as $code) {
-                $game = GameArtwork::gameByPrefix($code) ?? 'slots';
+                $game = GameArtwork::gameOf($code) ?? 'slots';
 
                 if ($path = GameArtwork::source($game, $code)) {
                     $sources[$path] = 'card';

@@ -70,16 +70,16 @@ test('a suspended price is disabled, never pressed, and shows no number', functi
 // ─── Tiles ──────────────────────────────────────────────────────────────────
 
 test('a game tile takes its name, art, collection and badge from a catalogue title', function () {
-    $title = new GameTitle('slots_triple_jackpot_fruits', 'slots', 'Triple Jackpot Fruits', '/games/thumbs/slots_triple_jackpot_fruits.webp', 'fruit', ['jackpot'], false, true);
+    $title = new GameTitle('triple_jackpot_fruits', 'slots', 'Triple Jackpot Fruits', '/games/thumbs/triple_jackpot_fruits.webp', 'fruit', ['jackpot'], false, true);
 
     $html = ui('<x-ui.game-tile :title="$t" href="/play/slots/triple-jackpot-fruits" :favourite="true" />', ['t' => $title]);
 
     expect($html)->toContain('Triple Jackpot Fruits')
-        ->toContain('src="/games/thumbs/slots_triple_jackpot_fruits.webp"')
+        ->toContain('src="/games/thumbs/triple_jackpot_fruits.webp"')
         ->toContain('Fruit stand')
         ->toContain('Jackpot')
         ->toContain('aria-label="Play Triple Jackpot Fruits"')
-        ->toContain('aria-pressed="true" aria-label="Favourite Triple Jackpot Fruits" data-fav="slots_triple_jackpot_fruits"');
+        ->toContain('aria-pressed="true" aria-label="Favourite Triple Jackpot Fruits" data-fav="triple_jackpot_fruits"');
 });
 
 test('a tile without artwork still shows its name, and no heart unless asked', function () {
@@ -168,9 +168,9 @@ test('the gallery builds its tiles exactly like the lobby, fallback tile include
 
     $titles = $this->get('/_ui')->assertOk()->viewData('titles');
 
-    expect($titles->firstWhere('code', 'slots_triple_jackpot_fruits')->badges)->toBe(['jackpot'])
-        ->and($titles->firstWhere('code', 'slots_dragon_fire_fortune')->featured)->toBeTrue()
-        ->and($titles->firstWhere('code', 'slots_brand_new')->isPresented())->toBeFalse();
+    expect($titles->firstWhere('code', 'triple_jackpot_fruits')->badges)->toBe(['jackpot'])
+        ->and($titles->firstWhere('code', 'dragon_fire_fortune')->featured)->toBeTrue()
+        ->and($titles->firstWhere('code', 'brand_new')->isPresented())->toBeFalse();
 });
 
 test('no view brings back the old look: no old button or card classes, Cinzel headings or hard-coded colour classes', function () {
