@@ -199,6 +199,28 @@ test('a slot launches with a single-use token posted to the game with the title'
     expect(GameLaunch::query()->sole())->toMatchArray(['game' => 'slots', 'product' => 'berry_blast', 'status' => 'launched', 'error' => null]);
 });
 
+test('slot and scratch launches also post the encrypted customer id as account_id', function (string $game, string $product) {
+    fakeLaunchApi();
+    $this->actingAs(player(['linked_id' => 4242]));
+
+    $html = $this->get(launchFor($this, $game, ['product' => $product]))->assertOk()->getContent();
+
+    // Encrypted with a random IV (like the API path), so it is decrypted rather than compared.
+    expect(preg_match('/name="account_id" value="([^"]+)"/', $html, $m))->toBe(1)
+        ->and($m[1])->not->toBe('4242')
+        ->and(decryptOpenSSL($m[1]))->toBe('4242');
+})->with([
+    'slot' => ['slots', 'berry_blast'],
+    'scratch card' => ['scratch', 'safari'],
+]);
+
+test('Kadi keeps its ggid form without an account_id', function () {
+    fakeLaunchApi();
+    $this->actingAs(player());
+
+    $this->get(launchFor($this, 'kadi'))->assertOk()->assertSee('name="ggid"', false)->assertDontSee('name="account_id"', false);
+});
+
 test('the hand-off works once: Back or refresh never re-posts a launch', function () {
     fakeLaunchApi();
     $this->actingAs(player());

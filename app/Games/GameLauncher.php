@@ -121,6 +121,8 @@ class GameLauncher
         return new LaunchForm($issued['launch_url'], array_filter([
             'token' => $issued['token'],
             'product' => $title?->code,
+            // The player's KadiApi customer id, encrypted exactly like the API path (random IV, so it changes per launch).
+            'account_id' => encryptOpenSSL((string) $user->linked_id),
         ]));
     }
 
