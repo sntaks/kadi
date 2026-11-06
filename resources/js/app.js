@@ -3,6 +3,7 @@ import './echo.js';
 import './games/play-frame.js';
 import './ui/reveal.js';
 import './site/hero-slider.js';
+import './site/prize-count.js';
 import './site/analytics.js';
 import './site/signin.js';
 import './sports/betslip.js';

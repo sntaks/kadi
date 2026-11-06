@@ -1,14 +1,14 @@
 // Landing hero carousel (components/lobby/hero.blade.php, styles in resources/css/hero.css), at every width. Below
 // 768px the big match slide ([data-below]) leaves the rotation and shows under the carousel instead.
 //
-// The timer is the active tab's progress bar: a CSS animation of --hero-dur whose animationend moves to the next
-// slide, so pausing is animation-play-state and there is no interval to drift. Autoplay pauses while the pointer or
-// focus is on the slides or the tab is hidden, and stops for good once the player uses a control, swipes or taps
-// anything in a slide (the pause/play button starts it again). With reduced motion it never autoplays.
+// There are no visible controls at any width. The timer is an invisible element ([data-hero-clock]): a CSS animation
+// of --hero-dur whose animationend moves to the next slide, so pausing is animation-play-state and there is no interval
+// to drift. Autoplay pauses while the pointer or focus is on the slides or the tab is hidden, and stops for good once
+// the player swipes, uses the arrow keys or taps anything in a slide. With reduced motion it never autoplays.
 //
 // The server renders slide 1 active and the rest hidden + inert. Armed, this script drops `hidden` (idle slides stay in
 // the layout, invisible, so the stage keeps the tallest slide's height) and owns data-state, inert and data-enter. The
-// root and slides are wire:ignore.self and the controls wire:ignore, so a Livewire re-render keeps the current slide.
+// root and slides are wire:ignore.self, so a Livewire re-render keeps the current slide.
 // Slide images carry data-src/data-srcset and load only when their slide is about to show (warm()). Autoplay also
 // pauses while the carousel is scrolled out of view.
 const FOCUSABLE = 'a, button, input, select, textarea, [tabindex]';
@@ -66,7 +66,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         slides() { return [...this.$root.querySelectorAll('[data-slide]')]; },
-        tabs() { return [...this.$root.querySelectorAll('[data-hero-go]')]; },
 
         // The install slide only counts on a device that can install the app; the big match slide only from 768px.
         available(slide) {
@@ -129,24 +128,15 @@ document.addEventListener('alpine:init', () => {
             slide.removeAttribute('data-enter');
         },
 
-        // Tabs follow availability and the current slide; with fewer than two slides left the controls go.
+        // Slide labels follow availability; with fewer than two slides left there is no timer.
         sync() {
             const slides = this.slides();
             const order = this.order();
 
-            this.tabs().forEach((tab, i) => {
-                tab.hidden = !order.includes(i);
-                i === this.index ? tab.setAttribute('aria-current', 'true') : tab.removeAttribute('aria-current');
-            });
             order.forEach((i, at) => slides[i].setAttribute('aria-label', `${at + 1} of ${order.length}: ${slides[i].dataset.label}`));
 
-            const toggle = this.$root.querySelector('[data-hero-toggle]');
-            toggle?.setAttribute('aria-pressed', String(this.stopped));
-            toggle?.setAttribute('aria-label', this.stopped ? 'Play slides' : 'Pause slides');
-
-            // Fewer than two slides in the rotation (a phone with no promotions on): no controls, no timer.
+            // Fewer than two slides in the rotation (a phone with no promotions on): no timer.
             const few = order.length < 2;
-            this.$root.querySelector('[data-hero-chrome]')?.toggleAttribute('hidden', few || !this.armed);
             this.few = few;
             if (few) this.$root.classList.remove('is-timing');
 
@@ -173,17 +163,6 @@ document.addEventListener('alpine:init', () => {
         stop() {
             this.stopped = true;
             this.$root.classList.remove('is-timing');
-            const toggle = this.$root.querySelector('[data-hero-toggle]');
-            toggle?.setAttribute('aria-pressed', 'true');
-            toggle?.setAttribute('aria-label', 'Play slides');
-        },
-
-        toggle() {
-            if (!this.stopped) return this.stop();
-
-            this.stopped = false;
-            this.sync();
-            this.next();
         },
 
         next() { this.go(this.step(1), 'next'); },
@@ -271,19 +250,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         onClick(e) {
-            const target = e.target.closest('[data-hero-prev], [data-hero-next], [data-hero-go], [data-hero-toggle], [data-hero-install]');
-            if (!target) return;
-
-            if (target.matches('[data-hero-install]')) return window.Alpine.store('pwaInstall')?.activate();
-            if (target.matches('[data-hero-toggle]')) return this.toggle();
-
-            this.stop();
-
-            if (target.matches('[data-hero-prev]')) return this.prev();
-            if (target.matches('[data-hero-next]')) return this.next();
-
-            const i = Number(target.dataset.heroGo);
-            this.go(i, i < this.index ? 'prev' : 'next');
+            if (e.target.closest('[data-hero-install]')) window.Alpine.store('pwaInstall')?.activate();
         },
 
         onKey(e) {

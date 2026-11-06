@@ -218,16 +218,18 @@ test('one slide shows no carousel controls', function () {
 
     $html = $this->get('/')->assertOk()->getContent();
 
-    expect($html)->toContain('data-count="1"')->and($html)->not->toContain('data-hero-next')->and($html)->not->toContain('data-hero-tabs');
+    expect($html)->toContain('data-count="1"')->and($html)->not->toContain('data-hero-clock');
 });
 
-test('the controls start hidden so the page works without JavaScript', function () {
+test('the hero has no visible controls at any width, only the hidden autoplay clock', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
-    expect($html)->toMatch('/<div[^>]*data-hero-chrome[^>]*hidden/')
-        ->and($html)->toContain('data-hero-next')
-        ->and($html)->toContain('01')
-        ->and($html)->toMatch('#<span class="nt-hero-tab-label">Kadi</span>#');
+    expect($html)->toMatch('/<i[^>]*data-hero-clock[^>]*aria-hidden="true"/')
+        ->and($html)->not->toContain('data-hero-chrome')
+        ->and($html)->not->toContain('data-hero-next')
+        ->and($html)->not->toContain('data-hero-prev')
+        ->and($html)->not->toContain('data-hero-toggle')
+        ->and($html)->not->toContain('data-hero-go');
 });
 
 test('the Kadi slide shows the published jackpot prizes, the same figures as the games guide', function () {
@@ -236,7 +238,11 @@ test('the Kadi slide shows the published jackpot prizes, the same figures as the
 
     expect($html)->toContain('Fortune Favors the Bold')
         ->and($html)->toContain('data-prize-pool')
-        ->and($html)->toContain('Gold jackpot');
+        ->and($html)->toContain('Gold jackpot')
+        ->and(substr_count($html, 'class="nt-prize-medal"'))->toBe(4)
+        ->and($html)->toContain('data-tone="gold"')->and($html)->toContain('data-tone="silver"')
+        ->and($html)->toContain('data-tone="bronze"')->and($html)->toContain('data-tone="blue"')
+        ->and($html)->not->toContain('class="nt-hand');
 
     foreach ($gold['prizes'] as [, $amount]) {
         expect($html)->toContain('KSh '.number_format($amount));
@@ -283,11 +289,10 @@ test('a games slide links each card to its game page', function () {
     expect($html)->toContain('href="'.url('/games/dragon-fire-fortune').'"');
 });
 
-test('the slider script and the controls survive a Livewire re-render', function () {
+test('the slider script survives a Livewire re-render', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
-    expect($html)->toMatch('/<section[^>]*data-hero[^>]*x-data="heroSlider"[^>]*wire:ignore\.self/s')
-        ->and($html)->toMatch('/<div[^>]*data-hero-chrome[^>]*wire:ignore[ >]/');
+    expect($html)->toMatch('/<section[^>]*data-hero[^>]*x-data="heroSlider"[^>]*wire:ignore\.self/s');
 });
 
 test('the football slide follows the big match', function () {

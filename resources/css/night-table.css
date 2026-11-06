@@ -29,6 +29,10 @@
     --color-hot: #e8604f;
     --color-hot-soft: #f4b0a6;
     --color-win-soft: #7fdc9c;
+    /* Prize places only (the Kadi prize pool, as on the old site): 1st uses gold-2. */
+    --color-medal-silver: #c0c0c0;
+    --color-medal-bronze: #cd7f32;
+    --color-medal-blue: #60a5fa;
 
     --font-card: 'Cinzel', Georgia, serif;
 

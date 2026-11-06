@@ -4,10 +4,11 @@
     shows under the carousel. It never gets `hidden` (Tailwind's base [hidden] rule is !important, so nothing could
     show it again): hero.css hides it from 768px until the script arms.
 
-    Server state only: slide 1 active, the others hidden and inert, the controls hidden. The heroSlider script
-    (resources/js/site/hero-slider.js) owns data-state, hidden and inert from then on: the root and each slide are
-    wire:ignore.self and the controls wire:ignore, so a Livewire re-render of the landing keeps the slide the player is
-    on while still updating what is inside it. Without JavaScript only slide 1 shows.
+    No arrows, tabs, dots or pause button at any width: the slides move on by themselves, pause while the pointer or
+    focus is on them, and players can swipe (or use the arrow keys inside a slide). Server state only: slide 1 active,
+    the others hidden and inert. The heroSlider script (resources/js/site/hero-slider.js) owns data-state, hidden and
+    inert from then on: the root and each slide are wire:ignore.self, so a Livewire re-render of the landing keeps the
+    slide the player is on while still updating what is inside it. Without JavaScript only slide 1 shows.
 --}}
 @props(['slides', 'seats' => null, 'bigMatch' => null, 'also' => null, 'alsoToday' => true])
 @php $count = $slides->count(); @endphp
@@ -33,30 +34,8 @@
     </div>
 
     @if ($count > 1)
-        <div class="nt-hero-chrome" data-hero-chrome hidden wire:ignore>
-            <button type="button" class="nt-hero-arrow" data-hero-prev aria-controls="nt-hero-stage" aria-label="Previous slide">
-                <x-site.icon name="chev" class="rotate-90" />
-            </button>
-            <button type="button" class="nt-hero-arrow" data-hero-next aria-controls="nt-hero-stage" aria-label="Next slide">
-                <x-site.icon name="chev" class="-rotate-90" />
-            </button>
-
-            <div class="nt-hero-nav">
-                <button type="button" class="nt-hero-toggle" data-hero-toggle aria-pressed="false" aria-label="Pause slides">
-                    <span aria-hidden="true"></span>
-                </button>
-                <div class="nt-hero-tabs" data-hero-tabs>
-                    @foreach ($slides as $slide)
-                        <button type="button" class="nt-hero-tab" data-hero-go="{{ $loop->index }}" aria-controls="nt-hero-{{ $slide->key }}"
-                                @if ($loop->first) aria-current="true" @endif>
-                            <span class="nt-num">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                            <span class="nt-hero-tab-label">{{ $slide->label }}</span>
-                            <i class="nt-hero-bar" data-hero-bar aria-hidden="true"></i>
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+        {{-- No visible controls: this invisible element carries the autoplay timer (its animationend moves on). --}}
+        <i class="nt-hero-clock" data-hero-clock aria-hidden="true"></i>
         <p class="sr-only" aria-live="polite" data-hero-live></p>
     @endif
 </section>

@@ -2,16 +2,19 @@
     The Kadi headliner (the landing hero's first slide): the headline, the real seat counts per mode
     (App\Games\KadiTables) and the published prize pool of one jackpot (config games.games.kadi.jackpots,
     the same figures as the games guide; `hero_jackpot` picks which). With no counts from the game server,
-    no seat numbers are shown at all: never zeros, never estimates. The K-A-D-I hand is dealt behind the
-    prize pool, which is frosted glass over it; without a configured jackpot the hand stands alone.
+    no seat numbers are shown at all: never zeros, never estimates. The prize pool follows the old site's
+    design (a medal per place in its own colour, glowing amounts that count up once on view) in this theme's
+    tokens; the real figures are in the HTML, the count-up only replays them.
 --}}
 @props(['seats' => null])
 @php
     $jackpots = config('games.games.kadi.jackpots', []);
     $jackpot = $jackpots[config('games.games.kadi.hero_jackpot')] ?? null;
     $kes = fn (int $amount) => 'KSh '.number_format($amount);
+    // Medal and colour per place, as on the old site: gold, silver, bronze, then blue for the quarter-finals.
+    $places = [['medal-first-place', 'gold'], ['medal-second-place', 'silver'], ['medal-third-place', 'bronze'], ['target-02', 'blue']];
 @endphp
-<section @class(['nt-table', 'nt-hand-host' => ! $jackpot]) aria-labelledby="kadi-table-title">
+<section class="nt-table" aria-labelledby="kadi-table-title">
     <div class="nt-table-body">
         <div class="nt-table-copy">
             @if ($seats && $seats['total'] > 0)
@@ -37,26 +40,25 @@
         </div>
 
         @if ($jackpot)
-            <div class="nt-prize-stage nt-hand-host">
-            <x-ui.kadi-hand />
             <aside class="nt-prize" aria-labelledby="kadi-prize-title" data-prize-pool>
                 <header class="nt-prize-head">
                     <div>
                         <p class="nt-prize-eyebrow">{{ $jackpot['name'] }} · <span class="nt-num">{{ $kes($jackpot['entry']) }}</span> entry</p>
-                        <h2 id="kadi-prize-title">Kadi prize pool</h2>
+                        <h2 id="kadi-prize-title">Kadi Prize Pool</h2>
                     </div>
                     <x-site.icon name="trophy" class="nt-prize-icon" />
                 </header>
-                <dl class="nt-prize-rows">
+                <dl class="nt-prize-rows" x-data="prizeCount">
                     @foreach ($jackpot['prizes'] as [$place, $amount])
-                        <div @class(['nt-prize-row', 'is-top' => $loop->first])><dt>{{ $place }}</dt><dd class="nt-num">{{ $kes($amount) }}</dd></div>
+                        @php [$medal, $tone] = $places[$loop->index] ?? end($places); @endphp
+                        <div @class(['nt-prize-row', 'is-top' => $loop->first]) data-tone="{{ $tone }}">
+                            <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.$medal)</span>{{ $place }}</dt>
+                            <dd class="nt-num" data-count-to="{{ $amount }}">{{ $kes($amount) }}</dd>
+                        </div>
                     @endforeach
                 </dl>
-                <a class="nt-prize-terms" href="{{ route('game-guide') }}#jackpots" wire:navigate>Every jackpot's prizes · terms apply</a>
+                <a class="nt-prize-terms" href="{{ route('game-guide') }}#jackpots" wire:navigate>Tournament terms apply</a>
             </aside>
-            </div>
-        @else
-            <x-ui.kadi-hand />
         @endif
     </div>
 </section>

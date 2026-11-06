@@ -50,43 +50,49 @@
     .nt-table h1.nt-table-head { color: var(--color-gold); text-wrap: balance; }
 
     /*
-     * The prize pool: under the buttons in a narrow panel, beside the copy once the panel is wide enough
-     * for both (it follows the panel's width, like the hand). Gold only for the top prize and the heading.
+     * The prize pool, after the old site's: a warm gold-tinted panel, a medal per place in its own colour with a soft
+     * glow, gradient hairlines between places. Under the buttons in a narrow panel, beside the copy once the panel is
+     * wide enough for both (it follows the panel's width). Colours are tokens (night-table.css), fonts the site's.
      */
     .nt-table-body { display: grid; gap: 22px; }
-    /*
-     * The K-A-D-I hand is dealt in the background, behind the prize pool (same deal-in and hover fan as everywhere).
-     * The panel is frosted glass over it: the cards show through blurred, the figures stay on a dark enough ground.
-     */
-    .nt-prize-stage { position: relative; align-self: center; isolation: isolate; overflow: clip; border-radius: var(--radius-panel); }
-    .nt-table .nt-table-body .nt-prize-stage > .nt-hand {
-        position: absolute; z-index: 0; left: 50%; right: auto; top: 50%; bottom: auto; transform: translate(-50%, -58%) scale(.82); transform-origin: 50% 50%;
-    }
     .nt-prize {
-        position: relative; z-index: 1; padding: 18px 18px 14px; border-radius: var(--radius-panel);
-        border: 1px solid color-mix(in srgb, var(--color-ivory) 14%, transparent);
-        background: linear-gradient(180deg, color-mix(in srgb, var(--color-felt-2) 66%, transparent), color-mix(in srgb, var(--color-night) 80%, transparent));
-        -webkit-backdrop-filter: blur(10px) saturate(1.3); backdrop-filter: blur(10px) saturate(1.3);
-        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-ivory) 10%, transparent), 0 18px 40px rgb(0 0 0 / .35);
+        --tone: var(--color-gold-2);
+        position: relative; align-self: center; padding: 20px 20px 14px; border-radius: var(--radius-panel);
+        border: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--color-gold-ink) 82%, transparent), color-mix(in srgb, var(--color-night) 62%, transparent));
+        box-shadow: 0 0 40px color-mix(in srgb, var(--color-gold) 7%, transparent), inset 0 1px 0 color-mix(in srgb, var(--color-gold) 11%, transparent);
+        -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
     }
-    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-        .nt-prize { background: linear-gradient(180deg, var(--color-felt-2), var(--color-night)); }
+    .nt-prize-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 8px; position: relative; }
+    .nt-prize-head::after, .nt-prize-row + .nt-prize-row::before {
+        content: ''; position: absolute; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-gold) 22%, transparent), transparent);
     }
-    .nt-prize-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding-bottom: 12px; margin-bottom: 4px; border-bottom: 1px solid var(--color-line); }
-    .nt-prize p.nt-prize-eyebrow { margin: 0 0 2px; max-width: none; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--color-ash); }
-    .nt-prize-eyebrow .nt-num { text-transform: none; letter-spacing: .04em; }
-    .nt-prize h2 { margin: 0; font-size: 17px; font-weight: 800; color: var(--color-gold); }
-    .nt-prize-icon { flex: none; width: 26px; height: 26px; color: var(--color-gold-dim); }
+    .nt-prize-head::after { bottom: 0; }
+    .nt-prize p.nt-prize-eyebrow { margin: 0 0 3px; max-width: none; font-size: 10px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: color-mix(in srgb, var(--color-gold) 55%, transparent); }
+    .nt-prize-eyebrow .nt-num { text-transform: none; letter-spacing: .08em; }
+    .nt-prize h2 { margin: 0; font-size: 15px; font-weight: 800; letter-spacing: .06em; color: var(--color-gold); }
+    .nt-prize-icon { flex: none; width: 30px; height: 30px; color: color-mix(in srgb, var(--color-gold) 26%, transparent); }
     .nt-prize-rows { margin: 0; }
-    .nt-prize-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--color-line); }
-    .nt-prize-row:last-child { border-bottom: 0; }
-    .nt-prize-row dt { font-size: 12.5px; color: var(--color-soft); }
-    .nt-prize-row dd { margin: 0; font-size: 15px; font-weight: 700; color: var(--color-ivory); white-space: nowrap; }
-    .nt-prize-row.is-top dt { color: var(--color-soft); }
-    .nt-prize-row.is-top dd { font-size: 19px; font-weight: 800; color: var(--color-gold); }
-    .nt-prize-terms { display: block; margin-top: 6px; font-size: 11.5px; color: var(--color-ash); text-align: center; }
-    .nt-prize-terms:hover { color: var(--color-ivory); text-decoration: underline; }
-    .nt-prize-terms:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; border-radius: 4px; }
+    .nt-prize-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; }
+    .nt-prize-row + .nt-prize-row::before { top: 0; background: linear-gradient(90deg, transparent, rgb(255 255 255 / .07), transparent); }
+    .nt-prize-row[data-tone="silver"] { --tone: var(--color-medal-silver); }
+    .nt-prize-row[data-tone="bronze"] { --tone: var(--color-medal-bronze); }
+    .nt-prize-row[data-tone="blue"] { --tone: var(--color-medal-blue); }
+    .nt-prize-row dt {
+        display: flex; align-items: center; gap: 10px; min-width: 0;
+        font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: color-mix(in srgb, var(--tone) 72%, transparent);
+    }
+    .nt-prize-medal { flex: none; display: grid; color: var(--tone); filter: drop-shadow(0 0 8px color-mix(in srgb, var(--tone) 42%, transparent)); }
+    .nt-prize-medal svg { width: 24px; height: 24px; }
+    .nt-prize-row dd {
+        margin: 0; font-size: 15px; font-weight: 800; white-space: nowrap; color: var(--tone);
+        text-shadow: 0 0 12px color-mix(in srgb, var(--tone) 38%, transparent);
+    }
+    .nt-prize-row.is-top dd { font-size: 18px; }
+    .nt-prize-terms { display: block; margin-top: 10px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--color-ash); text-align: center; opacity: .75; }
+    .nt-prize-terms:hover { opacity: 1; color: var(--color-ivory); }
+    .nt-prize-terms:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; border-radius: 4px; opacity: 1; }
     @container kadi-table (min-width: 640px) {
         .nt-table-body:has(.nt-prize) { grid-template-columns: minmax(0, 1fr) minmax(250px, 330px); gap: 28px; align-items: center; }
         /* Beside the prize pool the copy column is narrow: the three counts stay on one row, labels may wrap. */

@@ -1,14 +1,14 @@
 /*
  * Landing hero carousel, at every width (plans/landing-hero-slider-implementation-plan.md). Markup:
  * components/lobby/hero(-slide).blade.php; states set by resources/js/site/hero-slider.js:
- *   .nt-hero.is-armed     the script runs (controls shown)
+ *   .nt-hero.is-armed     the script runs
  *   .nt-hero.is-moving    a transition runs (stage clips)
- *   .nt-hero.is-paused    the timer bar (and Ken Burns) hold
- *   .nt-hero.is-timing    the active tab's bar runs (its animationend moves on)
+ *   .nt-hero.is-paused    the timer (and Ken Burns) hold
+ *   .nt-hero.is-timing    the hidden clock runs (its animationend moves on)
  *   slide[data-state]     active | in | out | idle | below;  slide[data-enter]  its layers play their entrance
  *   .nt-hero[data-dir]    next | prev;  --hero-dur (ms) on the root; --px/--py (-1…1) pointer parallax per slide
- * Below 768px the big match ([data-below], state `below`) shows under the carousel instead of in it: dots replace the
- * tabs and swipe replaces the arrows. Every motion has a reduced-motion fallback.
+ * There are no visible controls at any width (players swipe, or use the arrow keys inside a slide). Below 768px the big
+ * match ([data-below], state `below`) shows under the carousel instead of in it. Every motion has a reduced-motion fallback.
  */
 @layer components {
     .nt-hero { --hero-dur: 7000ms; --hero-t: 900ms; position: relative; container: hero / inline-size; }
@@ -96,66 +96,17 @@
         .nt-hero-fan { width: 44%; right: 1%; }
     }
 
-    /* ── Controls: a row under the stage ───────────────────── */
-    .nt-hero-chrome { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
-    .nt-hero-chrome[hidden] { display: none; }
-    .nt-hero-nav { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; order: -1; }
-    .nt-hero-tabs { display: flex; gap: 6px; flex: 1; min-width: 0; }
-    .nt-hero-tab {
-        position: relative; flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px 2px;
-        border-radius: var(--radius-control); font-size: 13px; color: var(--color-ash); background: var(--color-felt); border: 1px solid var(--color-line);
-        overflow: hidden; transition: color .2s, border-color .2s, background-color .2s;
-    }
-    .nt-hero-tab:hover { color: var(--color-ivory); border-color: var(--color-line-2); }
-    .nt-hero-tab[aria-current="true"] { color: var(--color-ivory); background: var(--color-felt-2); border-color: var(--color-line-2); }
-    .nt-hero-tab .nt-num { font-weight: 700; color: var(--color-gold-dim); }
-    .nt-hero-tab[aria-current="true"] .nt-num { color: var(--color-gold); }
-    .nt-hero-tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .nt-hero-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--color-gold); transform: scaleX(0); transform-origin: 0 50%; }
-    .nt-hero.is-timing .nt-hero-tab[aria-current="true"] .nt-hero-bar { animation: nt-hero-timer var(--hero-dur) linear forwards; }
-    .nt-hero.is-paused .nt-hero-bar { animation-play-state: paused !important; }
-    .nt-hero-tab:focus-visible, .nt-hero-toggle:focus-visible, .nt-hero-arrow:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+    /* ── Timer: no visible controls; this invisible element's animation is the autoplay clock ── */
+    .nt-hero-clock { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; transform: scaleX(0); }
+    .nt-hero.is-timing .nt-hero-clock { animation: nt-hero-timer var(--hero-dur) linear forwards; }
+    .nt-hero.is-paused .nt-hero-clock { animation-play-state: paused !important; }
 
-    .nt-hero-toggle, .nt-hero-arrow {
-        flex: none; width: 40px; height: 40px; border-radius: var(--radius-control); display: grid; place-items: center;
-        background: var(--color-felt); border: 1px solid var(--color-line); color: var(--color-ivory); transition: border-color .15s, transform .15s var(--ease-table);
-    }
-    .nt-hero-toggle:hover, .nt-hero-arrow:hover { border-color: var(--color-line-2); }
-    .nt-hero-arrow:active { transform: scale(.94); }
-    .nt-hero-arrow svg { width: 15px; height: 15px; }
-    /* Pause: two bars; play (aria-pressed=true): a triangle. */
-    .nt-hero-toggle span { width: 10px; height: 12px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
-    .nt-hero-toggle[aria-pressed="true"] span { width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent currentColor; margin-left: 3px; }
-
-    @container hero (max-width: 899px) {
-        .nt-hero-tab { flex: none; padding: 0 12px; }
-        .nt-hero-tab-label { display: none; }
-        .nt-hero-tab[aria-current="true"] { flex: 1; }
-        .nt-hero-tab[aria-current="true"] .nt-hero-tab-label { display: inline; }
-    }
-
-    /* ── Phones: the carousel, its dots, then the big match below ── */
+    /* ── Phones: the carousel, then the big match below ── */
     @media (max-width: 767.98px) {
-        .nt-hero { display: grid; grid-template-areas: "stage" "chrome" "below"; overflow-x: clip; }
+        .nt-hero { display: grid; grid-template-areas: "stage" "below"; overflow-x: clip; }
         .nt-hero-stage { display: contents; }
         .nt-hero-slide { grid-area: stage; touch-action: pan-y; }
         .nt-hero-slide[data-below] { grid-area: below; margin-top: 18px; }
-
-        .nt-hero-chrome { grid-area: chrome; justify-content: center; gap: 6px; margin-top: 10px; }
-        .nt-hero-arrow { display: none; }
-        .nt-hero-nav { flex: none; gap: 4px; }
-        .nt-hero-tabs { flex: none; gap: 0; }
-        .nt-hero-toggle { width: 34px; height: 34px; }
-        /* A 28px tap target around an 8px dot; the current one stretches into a pill that carries the timer bar. */
-        .nt-hero-tab, .nt-hero-tab[aria-current="true"] {
-            flex: none; width: 24px; height: 34px; padding: 0; justify-content: center; border: 0; background: none; overflow: visible;
-            transition: width .3s var(--ease-table);
-        }
-        .nt-hero-tab::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--color-felt-4); transition: width .3s var(--ease-table), background-color .2s; }
-        .nt-hero-tab[aria-current="true"] { width: 44px; }
-        .nt-hero-tab[aria-current="true"]::before { width: 34px; background: var(--color-felt-3); }
-        .nt-hero-tab .nt-num, .nt-hero-tab .nt-hero-tab-label, .nt-hero-tab[aria-current="true"] .nt-hero-tab-label { display: none; }
-        .nt-hero-bar { left: 5px; right: 5px; top: 50%; bottom: auto; height: 8px; margin-top: -4px; border-radius: 999px; }
 
         /* Config slides: the art above the copy. */
         .nt-hero-card { grid-template-columns: minmax(0, 1fr); align-content: end; min-height: 0; padding: 18px 18px 20px; }
@@ -185,7 +136,6 @@
         .nt-hero-feature .nt-prize { padding: 12px 14px 10px; }
         .nt-hero-feature .nt-prize-head { padding-bottom: 8px; }
         .nt-hero-feature .nt-prize-row:not(.is-top) { display: none; }
-        .nt-hero-feature .nt-table .nt-table-body .nt-prize-stage > .nt-hand { transform: translate(-50%, -56%) scale(.5); }
         .nt-hero-feature .nt-table-body { gap: 16px; }
     }
 }
@@ -241,7 +191,6 @@
     .nt-hero { --hero-t: 150ms; }
     .nt-hero-slide[data-state="in"] { z-index: 2; animation: nt-hero-fade 150ms linear both; }
     .nt-hero-slide[data-state="out"] { z-index: 1; animation: nt-hero-fade 150ms linear reverse both; }
-    .nt-hero-bar { display: none; }
     .nt-hero-fan-card { transition: none; }
 }
 
