@@ -2,6 +2,9 @@
 // panel is mostly in view, every [data-count-to] amount runs from 0 to its figure with an ease-out. The real figure is
 // already in the HTML, so without JavaScript, or with reduced motion, nothing moves. While counting, each amount keeps
 // its final width (no layout shift) and its final text as the accessible name.
+//
+// The final text comes from data-count-final, never from the amount's current text: wire:navigate keeps a copy of
+// the page for Back, and a copy taken mid-count holds a half-counted figure that would otherwise become the target.
 const DURATION = 2200;
 const format = new Intl.NumberFormat('en-US');
 
@@ -26,7 +29,9 @@ document.addEventListener('alpine:init', () => {
 
         run() {
             const amounts = [...this.$el.querySelectorAll('[data-count-to]')].map((el) => {
-                const final = el.textContent.trim();
+                const final = el.dataset.countFinal || el.textContent.trim();
+                el.textContent = final;
+                el.style.minWidth = '';
                 el.style.minWidth = `${el.getBoundingClientRect().width}px`;
                 el.style.textAlign = 'right';
                 el.setAttribute('aria-label', final);

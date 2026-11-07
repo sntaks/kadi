@@ -1,0 +1,593 @@
+- generic [active] [ref=f2e1]:
+  - link "Skip to content" [ref=f2e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f2e3]:
+    - link "Kadi home" [ref=f2e4] [cursor=pointer]:
+      - /url: https://kadi.test
+    - navigation "Games" [ref=f2e5]:
+      - link "Sports" [ref=f2e6] [cursor=pointer]:
+        - /url: https://kadi.test/sports
+      - link "Kadi" [ref=f2e12] [cursor=pointer]:
+        - /url: https://kadi.test/login
+      - link "Casino" [ref=f2e18] [cursor=pointer]:
+        - /url: https://kadi.test/casino
+    - search [ref=f2e23]:
+      - generic [ref=f2e24]:
+        - generic [ref=f2e28]: Search teams, leagues or games
+        - searchbox "Search teams, leagues or games" [ref=f2e29]
+        - generic [aria-hidden] [ref=f2e30]: /
+      - paragraph [ref=f2e31]
+    - generic [ref=f2e33]:
+      - link "Log in" [ref=f2e34] [cursor=pointer]:
+        - /url: https://kadi.test/login
+      - link "Join" [ref=f2e35] [cursor=pointer]:
+        - /url: https://kadi.test/register
+  - generic [ref=f2e36]:
+    - navigation "Main" [ref=f2e37]:
+      - button "Kadi" [ref=f2e39]
+      - button "Casino" [ref=f2e47]
+      - button "Sports" [ref=f2e54]
+      - generic [ref=f2e61]:
+        - link "Wallet" [ref=f2e62] [cursor=pointer]:
+          - /url: https://kadi.test/wallet
+        - link "Activity" [ref=f2e67] [cursor=pointer]:
+          - /url: https://kadi.test/activity
+        - link "Promotions" [ref=f2e74] [cursor=pointer]:
+          - /url: https://kadi.test/promotions
+        - link "Invite & Earn" [ref=f2e79] [cursor=pointer]:
+          - /url: https://kadi.test/referrals
+        - link "Responsible play" [ref=f2e84] [cursor=pointer]:
+          - /url: https://kadi.test/responsible-play
+      - generic [ref=f2e89]:
+        - heading "Help" [level=2] [ref=f2e90]
+        - link "How to play" [ref=f2e91] [cursor=pointer]:
+          - /url: https://kadi.test/how-to
+        - link "Games & prizes" [ref=f2e97] [cursor=pointer]:
+          - /url: https://kadi.test/games-guide
+        - link "FAQ" [ref=f2e102] [cursor=pointer]:
+          - /url: https://kadi.test/faq
+        - link "WhatsApp (opens in a new tab)" [ref=f2e107] [cursor=pointer]:
+          - /url: https://wa.me/kadi.OnlineKE
+          - generic [ref=f2e110]: WhatsApp
+          - generic [ref=f2e113]: (opens in a new tab)
+        - link "Terms" [ref=f2e114] [cursor=pointer]:
+          - /url: https://kadi.test/terms
+        - link "Privacy" [ref=f2e119] [cursor=pointer]:
+          - /url: https://kadi.test/privacy
+      - paragraph [ref=f2e124]: 18+ only. Play responsibly.
+    - generic [ref=f2e125]:
+      - main [ref=f2e126]:
+        - generic [ref=f2e127]:
+          - region "Kadi Online highlights" [ref=f2e128]:
+            - 'group "1 of 5: Kadi" [ref=f2e130]':
+              - region [ref=f2e132]:
+                - generic [ref=f2e133]:
+                  - generic [ref=f2e134]:
+                    - generic [ref=f2e135]: 119 players at the Kadi tables now
+                    - heading "Fortune Favors the Bold" [level=1] [ref=f2e138]
+                    - paragraph [ref=f2e139]: Kenya's card game, head to head for real money. Sit down at a single game, join a tournament or chase a jackpot.
+                    - generic "Players at the Kadi tables now" [ref=f2e140]:
+                      - generic [ref=f2e141]:
+                        - term [ref=f2e142]: Single games
+                        - definition [ref=f2e143]:
+                          - generic [ref=f2e144]: "99"
+                          - generic [ref=f2e145]: in single games
+                      - generic [ref=f2e146]:
+                        - term [ref=f2e147]: Tournaments
+                        - definition [ref=f2e148]:
+                          - generic [ref=f2e149]: "20"
+                          - generic [ref=f2e150]: in tournaments
+                      - generic [ref=f2e151]:
+                        - term [ref=f2e152]: Jackpots
+                        - definition [ref=f2e153]:
+                          - generic [ref=f2e154]: "0"
+                          - generic [ref=f2e155]: chasing jackpots
+                    - generic [ref=f2e156]:
+                      - link "Join and play" [ref=f2e157] [cursor=pointer]:
+                        - /url: https://kadi.test/register
+                      - link "How to play" [ref=f2e158] [cursor=pointer]:
+                        - /url: https://kadi.test/how-to
+                  - complementary [ref=f2e159]:
+                    - generic [ref=f2e161]:
+                      - paragraph [ref=f2e162]: Gold jackpot · KSh 100 entry
+                      - heading "Kadi Prize Pool" [level=2] [ref=f2e163]
+                    - generic [ref=f2e167]:
+                      - generic [ref=f2e168]:
+                        - term [ref=f2e169]: 1st place
+                        - definition [ref=f2e178]: KSh 16,214,774
+                      - generic [ref=f2e179]:
+                        - term [ref=f2e180]: Runner-up
+                        - definition [ref=f2e189]: KSh 3,672,461
+                      - generic [ref=f2e190]:
+                        - term [ref=f2e191]: Semis (2)
+                        - definition [ref=f2e200]: KSh 1,464,881
+                      - generic [ref=f2e201]:
+                        - term [ref=f2e202]: Quarters (4)
+                        - definition [ref=f2e208]: KSh 453,088
+                    - link "Tournament terms apply" [ref=f2e209] [cursor=pointer]:
+                      - /url: https://kadi.test/games-guide#jackpots
+            - paragraph [ref=f2e210]
+          - region [ref=f2e211]:
+            - generic [ref=f2e212]:
+              - heading "Football" [level=2] [ref=f2e213]
+              - generic [ref=f2e218]:
+                - generic [ref=f2e219]: Market
+                - combobox "Market" [ref=f2e220]:
+                  - option "1X2" [selected]
+                  - option "Double Chance"
+                  - option "Over/Under 2.5"
+                  - option "Both Teams To Score"
+            - tablist "When" [ref=f2e221]:
+              - tab "Highlights" [selected] [ref=f2e222]
+              - tab "Today" [ref=f2e223]
+              - tab "Tomorrow" [ref=f2e224]
+              - tab "This week" [ref=f2e225]
+            - generic [aria-hidden] [ref=f2e226]:
+              - generic [ref=f2e227]: Time
+              - generic [ref=f2e228]: Match
+              - generic [ref=f2e229]: "1"
+              - generic [ref=f2e230]: X
+              - generic [ref=f2e231]: "2"
+            - generic [ref=f2e232]:
+              - heading "Tuesday 10 Nov · EPL" [level=3] [ref=f2e233]
+              - generic [ref=f2e234]:
+                - time [ref=f2e236]: 16:10
+                - link "Ipswich Town Nottingham Forest" [ref=f2e237] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/11
+                  - generic [ref=f2e238]: Ipswich Town
+                  - generic [ref=f2e239]: Nottingham Forest
+                - button "Ipswich Town at 3.06" [ref=f2e240]:
+                  - generic [aria-hidden] [ref=f2e241]: "3.06"
+                - button "Draw at 3.51" [ref=f2e242]:
+                  - generic [aria-hidden] [ref=f2e243]: "3.51"
+                - button "Nottingham Forest at 2.22" [ref=f2e244]:
+                  - generic [aria-hidden] [ref=f2e245]: "2.22"
+                - link "8 more markets for Ipswich Town v Nottingham Forest" [ref=f2e246] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/11
+                  - text: "+8"
+              - heading "Wednesday 11 Nov · EPL" [level=3] [ref=f2e247]
+              - generic [ref=f2e248]:
+                - time [ref=f2e250]: 08:40
+                - link "Aston Villa Manchester City" [ref=f2e251] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/12
+                  - generic [ref=f2e252]: Aston Villa
+                  - generic [ref=f2e253]: Manchester City
+                - button "Aston Villa at 4.39" [ref=f2e254]:
+                  - generic [aria-hidden] [ref=f2e255]: "4.39"
+                - button "Draw at 4.10" [ref=f2e256]:
+                  - generic [aria-hidden] [ref=f2e257]: "4.10"
+                - button "Manchester City at 1.69" [ref=f2e258]:
+                  - generic [aria-hidden] [ref=f2e259]: "1.69"
+                - link "8 more markets for Aston Villa v Manchester City" [ref=f2e260] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/12
+                  - text: "+8"
+              - generic [ref=f2e261]:
+                - time [ref=f2e263]: 11:10
+                - link "Coventry City Fulham" [ref=f2e264] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/14
+                  - generic [ref=f2e265]: Coventry City
+                  - generic [ref=f2e266]: Fulham
+                - button "Coventry City at 2.90" [ref=f2e267]:
+                  - generic [aria-hidden] [ref=f2e268]: "2.90"
+                - button "Draw at 3.53" [ref=f2e269]:
+                  - generic [aria-hidden] [ref=f2e270]: "3.53"
+                - button "Fulham at 2.31" [ref=f2e271]:
+                  - generic [aria-hidden] [ref=f2e272]: "2.31"
+                - link "8 more markets for Coventry City v Fulham" [ref=f2e273] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/14
+                  - text: "+8"
+              - generic [ref=f2e274]:
+                - time [ref=f2e276]: 11:10
+                - link "Arsenal Everton" [ref=f2e277] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/13
+                  - generic [ref=f2e278]: Arsenal
+                  - generic [ref=f2e279]: Everton
+                - button "Arsenal at 1.38" [ref=f2e280]:
+                  - generic [aria-hidden] [ref=f2e281]: "1.38"
+                - button "Draw at 4.64" [ref=f2e282]:
+                  - generic [aria-hidden] [ref=f2e283]: "4.64"
+                - button "Everton at 8.06" [ref=f2e284]:
+                  - generic [aria-hidden] [ref=f2e285]: "8.06"
+                - link "8 more markets for Arsenal v Everton" [ref=f2e286] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/13
+                  - text: "+8"
+              - generic [ref=f2e287]:
+                - time [ref=f2e289]: 13:40
+                - link "Chelsea Tottenham Hotspur" [ref=f2e290] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/15
+                  - generic [ref=f2e291]: Chelsea
+                  - generic [ref=f2e292]: Tottenham Hotspur
+                - button "Chelsea at 1.82" [ref=f2e293]:
+                  - generic [aria-hidden] [ref=f2e294]: "1.82"
+                - button "Draw at 3.88" [ref=f2e295]:
+                  - generic [aria-hidden] [ref=f2e296]: "3.88"
+                - button "Tottenham Hotspur at 3.93" [ref=f2e297]:
+                  - generic [aria-hidden] [ref=f2e298]: "3.93"
+                - link "8 more markets for Chelsea v Tottenham Hotspur" [ref=f2e299] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/15
+                  - text: "+8"
+              - heading "Thursday 12 Nov · EPL" [level=3] [ref=f2e300]
+              - generic [ref=f2e301]:
+                - time [ref=f2e303]: 11:10
+                - link "Manchester United Bournemouth" [ref=f2e304] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/16
+                  - generic [ref=f2e305]: Manchester United
+                  - generic [ref=f2e306]: Bournemouth
+                - button "Manchester United at 1.81" [ref=f2e307]:
+                  - generic [aria-hidden] [ref=f2e308]: "1.81"
+                - button "Draw at 4.06" [ref=f2e309]:
+                  - generic [aria-hidden] [ref=f2e310]: "4.06"
+                - button "Bournemouth at 3.81" [ref=f2e311]:
+                  - generic [aria-hidden] [ref=f2e312]: "3.81"
+                - link "8 more markets for Manchester United v Bournemouth" [ref=f2e313] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/16
+                  - text: "+8"
+              - generic [ref=f2e314]:
+                - time [ref=f2e316]: 11:10
+                - link "Crystal Palace Newcastle United" [ref=f2e317] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/19
+                  - generic [ref=f2e318]: Crystal Palace
+                  - generic [ref=f2e319]: Newcastle United
+                - button "Crystal Palace at 2.60" [ref=f2e320]:
+                  - generic [aria-hidden] [ref=f2e321]: "2.60"
+                - button "Draw at 3.52" [ref=f2e322]:
+                  - generic [aria-hidden] [ref=f2e323]: "3.52"
+                - button "Newcastle United at 2.54" [ref=f2e324]:
+                  - generic [aria-hidden] [ref=f2e325]: "2.54"
+                - link "8 more markets for Crystal Palace v Newcastle United" [ref=f2e326] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/19
+                  - text: "+8"
+              - generic [ref=f2e327]:
+                - time [ref=f2e329]: 11:10
+                - link "Hull City Brentford" [ref=f2e330] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/17
+                  - generic [ref=f2e331]: Hull City
+                  - generic [ref=f2e332]: Brentford
+                - button "Hull City at 4.43" [ref=f2e333]:
+                  - generic [aria-hidden] [ref=f2e334]: "4.43"
+                - button "Draw at 3.88" [ref=f2e335]:
+                  - generic [aria-hidden] [ref=f2e336]: "3.88"
+                - button "Brentford at 1.73" [ref=f2e337]:
+                  - generic [aria-hidden] [ref=f2e338]: "1.73"
+                - link "8 more markets for Hull City v Brentford" [ref=f2e339] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/17
+                  - text: "+8"
+              - generic [ref=f2e340]:
+                - time [ref=f2e342]: 11:10
+                - link "Liverpool Brighton and Hove Albion" [ref=f2e343] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/18
+                  - generic [ref=f2e344]: Liverpool
+                  - generic [ref=f2e345]: Brighton and Hove Albion
+                - button "Liverpool at 2.02" [ref=f2e346]:
+                  - generic [aria-hidden] [ref=f2e347]: "2.02"
+                - button "Draw at 3.86" [ref=f2e348]:
+                  - generic [aria-hidden] [ref=f2e349]: "3.86"
+                - button "Brighton and Hove Albion at 3.25" [ref=f2e350]:
+                  - generic [aria-hidden] [ref=f2e351]: "3.25"
+                - link "8 more markets for Liverpool v Brighton and Hove Albion" [ref=f2e352] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/18
+                  - text: "+8"
+              - generic [ref=f2e353]:
+                - time [ref=f2e355]: 13:40
+                - link "Sunderland Leeds United" [ref=f2e356] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/20
+                  - generic [ref=f2e357]: Sunderland
+                  - generic [ref=f2e358]: Leeds United
+                - button "Sunderland at 2.75" [ref=f2e359]:
+                  - generic [aria-hidden] [ref=f2e360]: "2.75"
+                - button "Draw at 3.26" [ref=f2e361]:
+                  - generic [aria-hidden] [ref=f2e362]: "3.26"
+                - button "Leeds United at 2.55" [ref=f2e363]:
+                  - generic [aria-hidden] [ref=f2e364]: "2.55"
+                - link "8 more markets for Sunderland v Leeds United" [ref=f2e365] [cursor=pointer]:
+                  - /url: https://kadi.test/sports/match/20
+                  - text: "+8"
+            - generic [ref=f2e366]:
+              - generic [ref=f2e367]: 10 of 67 matches shown
+              - link "All 67 matches" [ref=f2e368] [cursor=pointer]:
+                - /url: https://kadi.test/sports
+          - region [ref=f2e369]:
+            - generic [ref=f2e370]:
+              - heading "Casino" [level=2] [ref=f2e371]
+              - generic [ref=f2e372]: 120 slots and 12 scratch cards, played right here
+              - generic [ref=f2e373]:
+                - button "Scroll slots left" [ref=f2e374]
+                - button "Scroll slots right" [ref=f2e377]
+            - group "Slot themes" [ref=f2e380]:
+              - button "Featured" [pressed] [ref=f2e381]
+              - button "Dragons & legends" [ref=f2e382]
+              - button "Pharaoh's vault" [ref=f2e383]
+              - button "High seas" [ref=f2e384]
+              - button "Untamed" [ref=f2e385]
+              - button "After dark" [ref=f2e386]
+              - button "Fruit stand" [ref=f2e387]
+              - button "Jackpot slots" [ref=f2e388]
+            - generic [ref=f2e390]:
+              - generic [ref=f2e391]:
+                - link "Play Dragon Fire Fortune" [ref=f2e393] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/dragon-fire-fortune
+                - generic [ref=f2e397]:
+                  - generic [ref=f2e398]: Dragon Fire Fortune
+                  - text: Dragons & legends
+              - generic [ref=f2e399]:
+                - link "Play Pharaoh’s Fortune" [ref=f2e401] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/pharaohs-fortune
+                - generic [ref=f2e405]:
+                  - generic [ref=f2e406]: Pharaoh’s Fortune
+                  - text: Pharaoh's vault
+              - generic [ref=f2e407]:
+                - link "Play BERRY BLAST" [ref=f2e409] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/berry-blast
+                - generic [ref=f2e413]:
+                  - generic [ref=f2e414]: BERRY BLAST
+                  - text: Fruit stand
+              - generic [ref=f2e415]:
+                - link "Play Buffalo Thunder Gold" [ref=f2e417] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/buffalo-thunder-gold
+                - generic [ref=f2e421]:
+                  - generic [ref=f2e422]: Buffalo Thunder Gold
+                  - text: Untamed
+              - generic [ref=f2e423]:
+                - link "Play Mermaid Millions" [ref=f2e425] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/mermaid-millions
+                - generic [ref=f2e429]:
+                  - generic [ref=f2e430]: Mermaid Millions
+                  - text: High seas
+              - generic [ref=f2e431]:
+                - link "Play Sizzling Sevens" [ref=f2e433] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/sizzling-sevens
+                - generic [ref=f2e437]:
+                  - generic [ref=f2e438]: Sizzling Sevens
+                  - text: Fruit stand
+              - generic [ref=f2e439]:
+                - link "Play Werewolf Moon Wilds" [ref=f2e441] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/werewolf-moon-wilds
+                - generic [ref=f2e445]:
+                  - generic [ref=f2e446]: Werewolf Moon Wilds
+                  - text: After dark
+              - generic [ref=f2e447]:
+                - link "Play Golden Koi Fortune" [ref=f2e449] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/golden-koi-fortune
+                - generic [ref=f2e453]:
+                  - generic [ref=f2e454]: Golden Koi Fortune
+                  - text: Dragons & legends
+              - generic [ref=f2e455]:
+                - link "Play WILD SAFARI" [ref=f2e457] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/wild-safari
+                - generic [ref=f2e461]:
+                  - generic [ref=f2e462]: WILD SAFARI
+                  - text: Untamed
+              - generic [ref=f2e463]:
+                - link "Play Kraken’s Gold" [ref=f2e465] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/krakens-gold
+                - generic [ref=f2e469]:
+                  - generic [ref=f2e470]: Kraken’s Gold
+                  - text: High seas
+              - generic [ref=f2e471]:
+                - link "Play Lucky Lanterns" [ref=f2e473] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/lucky-lanterns
+                - generic [ref=f2e477]:
+                  - generic [ref=f2e478]: Lucky Lanterns
+                  - text: Dragons & legends
+              - generic [ref=f2e479]:
+                - link "Play Crown of Embers" [ref=f2e481] [cursor=pointer]:
+                  - /url: https://kadi.test/play/slots/crown-of-embers
+                - generic [ref=f2e485]:
+                  - generic [ref=f2e486]: Crown of Embers
+                  - text: Dragons & legends
+            - generic [ref=f2e487]:
+              - generic [ref=f2e488]:
+                - heading "Scratch cards" [level=2] [ref=f2e489]
+                - generic [ref=f2e490]: Scratch the foil, see the prize
+                - link "See all" [ref=f2e492] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/scratch-cards
+              - generic [ref=f2e493]:
+                - generic [ref=f2e494]:
+                  - link "Play Outlaw" [ref=f2e496] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/outlaw
+                  - generic [ref=f2e500]:
+                    - generic [ref=f2e501]: Outlaw
+                    - text: Scratch card
+                - generic [ref=f2e502]:
+                  - link "Play Fruit Fiesta" [ref=f2e504] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/fruit
+                  - generic [ref=f2e508]:
+                    - generic [ref=f2e509]: Fruit Fiesta
+                    - text: Scratch card
+                - generic [ref=f2e510]:
+                  - link "Play Lucky Leprechaun Charms" [ref=f2e512] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/leprechaun
+                  - generic [ref=f2e516]:
+                    - generic [ref=f2e517]: Lucky Leprechaun Charms
+                    - text: Scratch card
+                - generic [ref=f2e518]:
+                  - link "Play Fantasy Quest" [ref=f2e520] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/fantasy
+                  - generic [ref=f2e524]:
+                    - generic [ref=f2e525]: Fantasy Quest
+                    - text: Scratch card
+                - generic [ref=f2e526]:
+                  - link "Play Safari Lotto" [ref=f2e528] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/safari
+                  - generic [ref=f2e532]:
+                    - generic [ref=f2e533]: Safari Lotto
+                    - text: Scratch card
+                - generic [ref=f2e534]:
+                  - link "Play Dragon" [ref=f2e536] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/dragon
+                  - generic [ref=f2e540]:
+                    - generic [ref=f2e541]: Dragon
+                    - text: Scratch card
+                - generic [ref=f2e542]:
+                  - link "Play Wizard" [ref=f2e544] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/wizard
+                  - generic [ref=f2e548]:
+                    - generic [ref=f2e549]: Wizard
+                    - text: Scratch card
+                - generic [ref=f2e550]:
+                  - link "Play Enchanted" [ref=f2e552] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/enchanted
+                  - generic [ref=f2e556]:
+                    - generic [ref=f2e557]: Enchanted
+                    - text: Scratch card
+                - generic [ref=f2e558]:
+                  - link "Play Phoenix" [ref=f2e560] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/phoenix
+                  - generic [ref=f2e564]:
+                    - generic [ref=f2e565]: Phoenix
+                    - text: Scratch card
+                - generic [ref=f2e566]:
+                  - link "Play Wild West" [ref=f2e568] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/wildwest
+                  - generic [ref=f2e572]:
+                    - generic [ref=f2e573]: Wild West
+                    - text: Scratch card
+                - generic [ref=f2e574]:
+                  - link "Play Gold Mine" [ref=f2e576] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/goldmine
+                  - generic [ref=f2e580]:
+                    - generic [ref=f2e581]: Gold Mine
+                    - text: Scratch card
+                - generic [ref=f2e582]:
+                  - link "Play Ghost Town" [ref=f2e584] [cursor=pointer]:
+                    - /url: https://kadi.test/play/scratch/ghosttown
+                  - generic [ref=f2e588]:
+                    - generic [ref=f2e589]: Ghost Town
+                    - text: Scratch card
+            - generic [ref=f2e590]:
+              - generic [ref=f2e591]:
+                - heading "Collections" [level=2] [ref=f2e592]
+                - generic [ref=f2e593]: Slots grouped by theme
+              - generic [ref=f2e594]:
+                - link "Dragons & legends 11 slots" [ref=f2e595] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/legends
+                  - generic [ref=f2e597]:
+                    - generic [ref=f2e598]: Dragons & legends
+                    - text: 11 slots
+                - link "Pharaoh's vault 13 slots" [ref=f2e599] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/pharaoh
+                  - generic [ref=f2e601]:
+                    - generic [ref=f2e602]: Pharaoh's vault
+                    - text: 13 slots
+                - link "High seas 14 slots" [ref=f2e603] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/seas
+                  - generic [ref=f2e605]:
+                    - generic [ref=f2e606]: High seas
+                    - text: 14 slots
+                - link "Untamed 10 slots" [ref=f2e607] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/wild
+                  - generic [ref=f2e609]:
+                    - generic [ref=f2e610]: Untamed
+                    - text: 10 slots
+                - link "After dark 11 slots" [ref=f2e611] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/dark
+                  - generic [ref=f2e613]:
+                    - generic [ref=f2e614]: After dark
+                    - text: 11 slots
+                - link "Fruit stand 11 slots" [ref=f2e615] [cursor=pointer]:
+                  - /url: https://kadi.test/casino/fruit
+                  - generic [ref=f2e617]:
+                    - generic [ref=f2e618]: Fruit stand
+                    - text: 11 slots
+      - contentinfo [ref=f2e619]:
+        - generic [ref=f2e620]:
+          - img "Kadi" [ref=f2e621]
+          - paragraph [ref=f2e622]: Kenya's card game, head to head for real money. Stake only what you can afford to lose.
+          - paragraph [ref=f2e623]:
+            - generic [ref=f2e624]: 18+
+            - text: Only for players aged 18 and over.
+          - list "Follow Kadi" [ref=f2e625]:
+            - listitem [ref=f2e626]:
+              - link "Kadi on Facebook (opens in a new tab)" [ref=f2e627] [cursor=pointer]:
+                - /url: https://www.facebook.com/profile.php?id=61579589735615
+            - listitem [ref=f2e628]:
+              - link "Kadi on Instagram (opens in a new tab)" [ref=f2e629] [cursor=pointer]:
+                - /url: https://www.instagram.com/kadi.online
+            - listitem [ref=f2e630]:
+              - link "Kadi on YouTube (opens in a new tab)" [ref=f2e631] [cursor=pointer]:
+                - /url: https://www.youtube.com/@KadiKingsLtd
+            - listitem [ref=f2e632]:
+              - link "Kadi on WhatsApp (opens in a new tab)" [ref=f2e633] [cursor=pointer]:
+                - /url: https://wa.me/kadi.OnlineKE
+        - generic [ref=f2e634]:
+          - heading "Play" [level=2] [ref=f2e635]
+          - list [ref=f2e636]:
+            - listitem [ref=f2e637]:
+              - link "Sports" [ref=f2e638] [cursor=pointer]:
+                - /url: https://kadi.test/sports
+            - listitem [ref=f2e639]:
+              - link "Play Kadi" [ref=f2e640] [cursor=pointer]:
+                - /url: https://kadi.test/login
+            - listitem [ref=f2e641]:
+              - link "Casino" [ref=f2e642] [cursor=pointer]:
+                - /url: https://kadi.test/casino
+            - listitem [ref=f2e643]:
+              - link "Slots" [ref=f2e644] [cursor=pointer]:
+                - /url: https://kadi.test/slots
+            - listitem [ref=f2e645]:
+              - link "Scratch cards" [ref=f2e646] [cursor=pointer]:
+                - /url: https://kadi.test/scratch-cards
+        - generic [ref=f2e647]:
+          - heading "Account" [level=2] [ref=f2e648]
+          - list [ref=f2e649]:
+            - listitem [ref=f2e650]:
+              - link "Wallet" [ref=f2e651] [cursor=pointer]:
+                - /url: https://kadi.test/wallet
+            - listitem [ref=f2e652]:
+              - link "Activity" [ref=f2e653] [cursor=pointer]:
+                - /url: https://kadi.test/activity
+            - listitem [ref=f2e654]:
+              - link "Promotions" [ref=f2e655] [cursor=pointer]:
+                - /url: https://kadi.test/promotions
+            - listitem [ref=f2e656]:
+              - link "Invite & Earn" [ref=f2e657] [cursor=pointer]:
+                - /url: https://kadi.test/referrals
+            - listitem [ref=f2e658]:
+              - link "Responsible play" [ref=f2e659] [cursor=pointer]:
+                - /url: https://kadi.test/responsible-play
+        - generic [ref=f2e660]:
+          - heading "Help" [level=2] [ref=f2e661]
+          - list [ref=f2e662]:
+            - listitem [ref=f2e663]:
+              - link "How to play" [ref=f2e664] [cursor=pointer]:
+                - /url: https://kadi.test/how-to
+            - listitem [ref=f2e665]:
+              - link "Games & prizes" [ref=f2e666] [cursor=pointer]:
+                - /url: https://kadi.test/games-guide
+            - listitem [ref=f2e667]:
+              - link "FAQ" [ref=f2e668] [cursor=pointer]:
+                - /url: https://kadi.test/faq
+            - listitem [ref=f2e669]:
+              - link "Terms" [ref=f2e670] [cursor=pointer]:
+                - /url: https://kadi.test/terms
+            - listitem [ref=f2e671]:
+              - link "Privacy" [ref=f2e672] [cursor=pointer]:
+                - /url: https://kadi.test/privacy
+          - list [ref=f2e673]:
+            - listitem [ref=f2e674]:
+              - link "0182 473 265" [ref=f2e675] [cursor=pointer]:
+                - /url: tel:+254182473265
+            - listitem [ref=f2e678]:
+              - link "WhatsApp (opens in a new tab)" [ref=f2e679] [cursor=pointer]:
+                - /url: https://wa.me/kadi.OnlineKE
+                - text: WhatsApp
+                - generic [ref=f2e682]: (opens in a new tab)
+            - listitem [ref=f2e683]:
+              - link "kadiapponline@gmail.com" [ref=f2e684] [cursor=pointer]:
+                - /url: mailto:kadiapponline@gmail.com
+        - generic [ref=f2e688]:
+          - generic [ref=f2e689]: © 2026 Kadi. All rights reserved.
+          - generic [ref=f2e690]: Play responsibly.
+  - complementary "Bet slip and open bets" [ref=f2e691]:
+    - region [ref=f2e692]:
+      - generic [ref=f2e693]:
+        - heading "Bet slip" [level=2] [ref=f2e694]
+        - generic [ref=f2e695]: "0"
+      - generic [ref=f2e696]:
+        - generic [ref=f2e701]: Your bet slip is empty
+        - paragraph [ref=f2e702]: Tap any price to add it. Three or more selections can earn a multibet bonus.
+      - generic [ref=f2e703]:
+        - generic [ref=f2e704]: Booking code
+        - textbox "Booking code" [ref=f2e705]
+        - button "Load" [ref=f2e706] [cursor=pointer]
+      - paragraph [ref=f2e707]: 18+ only. Bet with money you can afford to lose.

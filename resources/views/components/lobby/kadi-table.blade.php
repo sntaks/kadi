@@ -53,7 +53,7 @@
                         @php [$medal, $tone] = $places[$loop->index] ?? end($places); @endphp
                         <div @class(['nt-prize-row', 'is-top' => $loop->first]) data-tone="{{ $tone }}">
                             <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.$medal)</span>{{ $place }}</dt>
-                            <dd class="nt-num" data-count-to="{{ $amount }}">{{ $kes($amount) }}</dd>
+                            <dd class="nt-num" data-count-to="{{ $amount }}" data-count-final="{{ $kes($amount) }}">{{ $kes($amount) }}</dd>
                         </div>
                     @endforeach
                 </dl>

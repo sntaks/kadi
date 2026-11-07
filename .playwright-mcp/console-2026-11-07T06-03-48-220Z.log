@@ -1,0 +1,2 @@
+[    2050ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: https://kadi.test/_boost/browser-logs @ https://kadi.test/:71
+[    3768ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ https://kadi.test/:0
