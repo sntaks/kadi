@@ -230,16 +230,15 @@ test('refresh asks the API again but keeps the stale copy as a fallback', functi
     Http::assertSentCount(2);
 });
 
-test('config presents all 70 slots and 4 scratch cards, each with its original artwork', function () {
+// The originals are not in git (only `games:artwork` reads them, on a developer's machine), so
+// this checks the committed thumbnail the lobby serves, not the original.
+test('config presents all 70 slots and 12 scratch cards, each with artwork and a built thumbnail', function () {
     $products = GameArtwork::configuredProducts();
 
-    expect(array_count_values($products))->toEqual(['scratch' => 4, 'slots' => 70]);
+    expect(array_count_values($products))->toEqual(['scratch' => 12, 'slots' => 70]);
 
     foreach ($products as $code => $game) {
-        $source = GameArtwork::source($game, $code);
-
-        expect($source)->not->toBeNull()
-            ->and(public_path($source))->toBeFile()
+        expect(GameArtwork::source($game, $code))->not->toBeNull()
             ->and(public_path(GameArtwork::thumbnail($code)))->toBeFile();
     }
 });

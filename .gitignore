@@ -39,3 +39,8 @@ PRODUCT.md
 /.impeccable
 /docs
 /.taste-skill
+
+# Original game artwork: only `php artisan games:artwork` reads it, locally. The thumbnails it
+# builds (public/games/thumbs) are committed; keep a backup of the originals outside git.
+/public/games/slots_games
+/public/games/scratch_games
