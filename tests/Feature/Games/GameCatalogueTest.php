@@ -236,10 +236,10 @@ test('refresh asks the API again but keeps the stale copy as a fallback', functi
 
 // The originals are not in git (only `games:artwork` reads them, on a developer's machine), so
 // this checks the committed thumbnail the lobby serves, not the original.
-test('config presents all 70 slots and 12 scratch cards, each with artwork and a built thumbnail', function () {
+test('config presents all 120 slots and 12 scratch cards, each with artwork and a built thumbnail', function () {
     $products = GameArtwork::configuredProducts();
 
-    expect(array_count_values($products))->toEqual(['scratch' => 12, 'slots' => 70]);
+    expect(array_count_values($products))->toEqual(['scratch' => 12, 'slots' => 120]);
 
     foreach ($products as $code => $game) {
         expect(GameArtwork::source($game, $code))->not->toBeNull()
@@ -247,13 +247,13 @@ test('config presents all 70 slots and 12 scratch cards, each with artwork and a
     }
 });
 
-test('every slot is in exactly one of the six collections', function () {
+test('every slot is in exactly one of the seven collections', function () {
     $collections = config('games.collections');
     $all = array_merge(...array_column($collections, 'products'));
 
-    expect($collections)->toHaveCount(6)
-        ->and($all)->toHaveCount(70)
-        ->and(array_unique($all))->toHaveCount(70);
+    expect($collections)->toHaveCount(7)
+        ->and($all)->toHaveCount(120)
+        ->and(array_unique($all))->toHaveCount(120);
 });
 
 test('badged and featured titles are configured products', function () {

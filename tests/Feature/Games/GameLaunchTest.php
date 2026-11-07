@@ -194,7 +194,8 @@ test('a slot launches with a single-use token posted to the game with the title'
     $this->get($open)->assertOk()
         ->assertSee('action="https://slots.kadi.online/launch"', false)
         ->assertSee('name="token" value="'.LAUNCH_TOKEN.'"', false)
-        ->assertSee('name="product" value="slots_berry_blast"', false);
+        ->assertSee('name="product" value="slots_berry_blast"', false)
+        ->assertSee('name="current_game" value="slots_berry_blast"', false);
 
     // The log keeps the title's key, so "Most played" survives a prefix the API adds or drops.
     expect(GameLaunch::query()->sole())->toMatchArray(['game' => 'slots', 'product' => 'berry_blast', 'status' => 'launched', 'error' => null]);
@@ -240,7 +241,7 @@ test('Kadi keeps its ggid form without an account_id', function () {
     fakeLaunchApi();
     $this->actingAs(player());
 
-    $this->get(launchFor($this, 'kadi'))->assertOk()->assertSee('name="ggid"', false)->assertDontSee('name="account_id"', false);
+    $this->get(launchFor($this, 'kadi'))->assertOk()->assertSee('name="ggid"', false)->assertDontSee('name="account_id"', false)->assertDontSee('name="current_game"', false);
 });
 
 test('the hand-off works once: Back or refresh never re-posts a launch', function () {
@@ -281,7 +282,8 @@ test('overlapping launches each keep their own hand-off', function () {
     $slot = launchFor($this, 'slots', ['product' => 'berry_blast']);
     $card = launchFor($this, 'scratch', ['product' => 'safari']);
 
-    $this->get($card)->assertOk()->assertSee('name="product" value="scratch_safari"', false);
+    $this->get($card)->assertOk()->assertSee('name="product" value="scratch_safari"', false)
+        ->assertSee('name="current_game" value="scratch_safari"', false);
     $this->get($slot)->assertOk()->assertSee('name="product" value="slots_berry_blast"', false);
 });
 
