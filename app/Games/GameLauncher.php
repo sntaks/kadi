@@ -133,8 +133,8 @@ class GameLauncher
         return new LaunchForm($issued['launch_url'], array_filter([
             'token' => $issued['token'],
             'product' => $title?->code,
-            // The same API product code again: the slot and scratch servers read the title from `current_game`.
-            'current_game' => $title?->code,
+            // The title's key (the code without its slots_/scratch_ prefix): the slot and scratch servers read the title from it.
+            'current_game' => $title?->key,
             // The player's KadiApi customer id, encrypted and signed for the game server (random IV: changes per launch).
             'account_id' => $accountId,
         ]));

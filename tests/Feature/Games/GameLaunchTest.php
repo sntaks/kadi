@@ -195,7 +195,7 @@ test('a slot launches with a single-use token posted to the game with the title'
         ->assertSee('action="https://slots.kadi.online/launch"', false)
         ->assertSee('name="token" value="'.LAUNCH_TOKEN.'"', false)
         ->assertSee('name="product" value="slots_berry_blast"', false)
-        ->assertSee('name="current_game" value="slots_berry_blast"', false);
+        ->assertSee('name="current_game" value="berry_blast"', false);
 
     // The log keeps the title's key, so "Most played" survives a prefix the API adds or drops.
     expect(GameLaunch::query()->sole())->toMatchArray(['game' => 'slots', 'product' => 'berry_blast', 'status' => 'launched', 'error' => null]);
@@ -283,7 +283,7 @@ test('overlapping launches each keep their own hand-off', function () {
     $card = launchFor($this, 'scratch', ['product' => 'safari']);
 
     $this->get($card)->assertOk()->assertSee('name="product" value="scratch_safari"', false)
-        ->assertSee('name="current_game" value="scratch_safari"', false);
+        ->assertSee('name="current_game" value="safari"', false);
     $this->get($slot)->assertOk()->assertSee('name="product" value="slots_berry_blast"', false);
 });
 
