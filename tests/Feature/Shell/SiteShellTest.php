@@ -186,7 +186,7 @@ test('the search index lists playable titles with their play pages', function ()
     $this->games = [[
         'code' => 'slots', 'name' => 'Slots', 'status' => 'active', 'sort_order' => 2,
         'launch_url' => 'https://slots.kadi.online/play',
-        'products' => [['code' => 'berry_blast', 'name' => 'Berry Blast', 'status' => 'active']],
+        'products' => [['code' => 'slots_berry_blast', 'name' => 'Berry Blast', 'status' => 'active']],
     ]];
 
     $response = $this->getJson(route('games.search'))->assertOk()

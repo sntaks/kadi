@@ -28,8 +28,8 @@
                     <x-ui.pill tone="warn">Opens for play here soon</x-ui.pill>
                 @endif
                 @if ($favourites !== null)
-                    @php($hearted = in_array($title->code, $favourites, true))
-                    <x-ui.button variant="ghost" size="lg" wire:click="toggleFavourite(@js($title->code))" aria-pressed="{{ $hearted ? 'true' : 'false' }}">
+                    @php($hearted = in_array($title->key, $favourites, true))
+                    <x-ui.button variant="ghost" size="lg" wire:click="toggleFavourite(@js($title->key))" aria-pressed="{{ $hearted ? 'true' : 'false' }}">
                         {{ $hearted ? 'In your favourites' : 'Add to favourites' }}
                     </x-ui.button>
                 @endif

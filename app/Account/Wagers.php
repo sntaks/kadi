@@ -38,10 +38,9 @@ class Wagers
             return null;
         }
 
-        $titles = $this->catalogue->titles()->keyBy('code');
-
         return [
-            'items' => array_map(fn (array $wager) => $this->present($wager, $titles->get((string) ($wager['product'] ?? ''))?->name), $data['items']),
+            // By API code, or by key for wagers placed while the API's codes had no prefix.
+            'items' => array_map(fn (array $wager) => $this->present($wager, $this->catalogue->title((string) ($wager['product'] ?? ''))?->name), $data['items']),
             'page' => (int) ($data['pagination']['page'] ?? $page),
             'last_page' => max(1, (int) ($data['pagination']['last_page'] ?? 1)),
         ];

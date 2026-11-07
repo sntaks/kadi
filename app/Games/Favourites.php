@@ -20,7 +20,7 @@ class Favourites
 
     public function __construct(private readonly GameCatalogue $catalogue) {}
 
-    /** @return list<string> product codes, newest first */
+    /** @return list<string> title keys (GameTitle::$key), newest first */
     public function codes(?User $user): array
     {
         if ($user === null) {
@@ -36,7 +36,7 @@ class Favourites
      */
     public function titles(?User $user, ?array $codes = null): Collection
     {
-        $titles = $this->catalogue->titles()->keyBy('code');
+        $titles = $this->catalogue->titles()->keyBy('key');
 
         return collect($codes ?? $this->codes($user))->map(fn (string $code) => $titles->get($code))->filter()->values();
     }
@@ -48,16 +48,20 @@ class Favourites
      */
     public function toggle(User $user, string $code): ?bool
     {
-        if (GameFavourite::query()->where('user_id', $user->id)->where('product', $code)->delete() > 0) {
+        // Stored by key, so a prefix the API adds or drops never loses a favourite. Takes the API code too.
+        $title = $this->catalogue->title($code);
+        $key = $title->key ?? $code;
+
+        if (GameFavourite::query()->where('user_id', $user->id)->where('product', $key)->delete() > 0) {
             return false;
         }
 
-        if ($this->catalogue->title($code) === null || $this->titles($user)->count() >= self::limit()) {
+        if ($title === null || $this->titles($user)->count() >= self::limit()) {
             return null;
         }
 
         // A double tap sends two requests at once: createOrFirst rides out the unique index instead of failing.
-        GameFavourite::query()->createOrFirst(['user_id' => $user->id, 'product' => $code]);
+        GameFavourite::query()->createOrFirst(['user_id' => $user->id, 'product' => $key]);
 
         return true;
     }

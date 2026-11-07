@@ -14,7 +14,7 @@ class GamesArtworkCommand extends Command
 {
     protected $signature = 'games:artwork
         {--force : Rebuild thumbnails that are already up to date}
-        {--only=* : Only these product codes}
+        {--only=* : Only these products (keys: the code without its slots_/scratch_ prefix)}
         {--with-api : Also build titles the Kadi API lists that config/games.php does not know}';
 
     protected $description = 'Build the lobby thumbnails (small WebP) from the original game artwork';
@@ -28,7 +28,7 @@ class GamesArtworkCommand extends Command
         // under the usual naming.
         if ($this->option('with-api')) {
             foreach ($catalogue->titles() as $title) {
-                $products[$title->code] ??= $title->game;
+                $products[$title->key] ??= $title->game;
             }
         }
 

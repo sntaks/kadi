@@ -69,7 +69,7 @@ class HeroSlides
             foreach ($slide['titles'] ?? [] as $code) {
                 $game = GameArtwork::gameOf($code) ?? 'slots';
 
-                if ($path = GameArtwork::source($game, $code)) {
+                if ($path = GameArtwork::source($game, GameTitle::keyFor($game, $code))) {
                     $sources[$path] = 'card';
                 }
             }
@@ -133,9 +133,9 @@ class HeroSlides
         }
 
         $art = $titles
-            ->filter(fn (GameTitle $title) => GameArtwork::source($title->game, $title->code) !== null)
+            ->filter(fn (GameTitle $title) => GameArtwork::source($title->game, $title->key) !== null)
             ->map(fn (GameTitle $title) => [
-                ...$this->image((string) GameArtwork::source($title->game, $title->code), 'card'),
+                ...$this->image((string) GameArtwork::source($title->game, $title->key), 'card'),
                 'alt' => $title->name,
                 'href' => $title->pageUrl(),
             ])

@@ -19,7 +19,7 @@ function catalogueBody(): array
 {
     return ['data' => [
         ['code' => 'scratch', 'name' => 'Scratch Cards', 'launch_url' => 'https://scratch.kadi.online', 'status' => 'active', 'sort_order' => 3, 'products' => [
-            catalogueProduct('fruit', 'scratch', 'Fruit Fiesta'),
+            catalogueProduct('scratch_fruit', 'scratch', 'Fruit Fiesta'),
         ]],
         ['code' => 'kadi', 'name' => 'Kadi', 'launch_url' => 'https://play.kadi.online', 'status' => 'active', 'sort_order' => 1, 'products' => [
             catalogueProduct('kadi', 'kadi', 'Kadi'),
@@ -27,10 +27,10 @@ function catalogueBody(): array
             catalogueProduct('kadi_jackpot', 'kadi', 'Kadi Jackpot'),
         ]],
         ['code' => 'slots', 'name' => 'Slots', 'launch_url' => 'https://slots.kadi.online', 'status' => 'active', 'sort_order' => 2, 'products' => [
-            catalogueProduct('dragon_fire_fortune', 'slots', 'Dragon Fire Fortune'),
-            catalogueProduct('triple_jackpot_fruits', 'slots', 'Triple Jackpot Fruits'),
-            catalogueProduct('brand_new_title', 'slots', 'Brand New Title'),
-            catalogueProduct('pirate_gold', 'slots', 'Pirate Gold', 'suspended'),
+            catalogueProduct('slots_dragon_fire_fortune', 'slots', 'Dragon Fire Fortune'),
+            catalogueProduct('slots_triple_jackpot_fruits', 'slots', 'Triple Jackpot Fruits'),
+            catalogueProduct('slots_brand_new_title', 'slots', 'Brand New Title'),
+            catalogueProduct('slots_pirate_gold', 'slots', 'Pirate Gold', 'suspended'),
         ]],
     ]];
 }
@@ -64,14 +64,18 @@ test('kadi is one tile and its products are modes, not titles', function () {
         ->and($kadi->tagline)->not->toBeNull();
 });
 
-test('titles join API names with artwork, collection and badges from config', function () {
+test('titles join API names with artwork, collection and badges from config by their key (the code without its game prefix)', function () {
     Http::fake([CATALOGUE_API.'games' => Http::response(catalogueBody())]);
 
-    $dragon = catalogue()->title('dragon_fire_fortune');
-    $jackpot = catalogue()->title('triple_jackpot_fruits');
-    $scratch = catalogue()->title('fruit');
+    $dragon = catalogue()->title('slots_dragon_fire_fortune');
+    $jackpot = catalogue()->title('slots_triple_jackpot_fruits');
+    $scratch = catalogue()->title('scratch_fruit');
 
-    expect($dragon->name)->toBe('Dragon Fire Fortune')
+    expect($dragon->code)->toBe('slots_dragon_fire_fortune')
+        ->and($dragon->key)->toBe('dragon_fire_fortune')
+        ->and(catalogue()->title('dragon_fire_fortune'))->toBe($dragon)
+        ->and($scratch->key)->toBe('fruit')
+        ->and($dragon->name)->toBe('Dragon Fire Fortune')
         ->and($dragon->collection)->toBe('legends')
         ->and($dragon->featured)->toBeTrue()
         ->and($dragon->thumbnail)->toEndWith('/games/thumbs/dragon_fire_fortune.webp')
@@ -85,7 +89,7 @@ test('titles join API names with artwork, collection and badges from config', fu
 test('a product the API offers but config does not know shows as a plain fallback tile', function () {
     Http::fake([CATALOGUE_API.'games' => Http::response(catalogueBody())]);
 
-    $new = catalogue()->title('brand_new_title');
+    $new = catalogue()->title('slots_brand_new_title');
 
     expect($new)->not->toBeNull()
         ->and($new->name)->toBe('Brand New Title')
@@ -100,11 +104,11 @@ test('the API decides what is playable: suspended products and games and config-
     $body['data'][] = ['code' => 'crash', 'name' => 'Crash', 'launch_url' => 'https://crash.kadi.online', 'status' => 'suspended', 'sort_order' => 4, 'products' => []];
     Http::fake([CATALOGUE_API.'games' => Http::response($body)]);
 
-    expect(catalogue()->title('pirate_gold'))->toBeNull()
+    expect(catalogue()->title('slots_pirate_gold'))->toBeNull()
         ->and(catalogue()->game('crash'))->toBeNull()
         ->and(catalogue()->title('egypt_gold'))->toBeNull() // in config, not offered
-        ->and(catalogue()->collection('legends')->pluck('code')->all())->toBe(['dragon_fire_fortune'])
-        ->and(catalogue()->featured()->pluck('code')->all())->toBe(['dragon_fire_fortune']);
+        ->and(catalogue()->collection('legends')->pluck('code')->all())->toBe(['slots_dragon_fire_fortune'])
+        ->and(catalogue()->featured()->pluck('code')->all())->toBe(['slots_dragon_fire_fortune']);
 });
 
 test('the catalogue is cached for five minutes', function () {

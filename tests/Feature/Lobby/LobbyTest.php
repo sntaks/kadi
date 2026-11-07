@@ -33,14 +33,14 @@ function lobbyCatalogue(): array
             lobbyProduct('kadi', 'Kadi'),
         ]],
         ['code' => 'slots', 'name' => 'Slots', 'launch_url' => 'https://slots.kadi.online', 'status' => 'active', 'sort_order' => 2, 'products' => [
-            lobbyProduct('dragon_fire_fortune', 'Dragon Fire Fortune'),
-            lobbyProduct('crown_of_embers', 'Crown of Embers'),
-            lobbyProduct('berry_blast', 'Berry Blast'),
-            lobbyProduct('cherry_bomb_deluxe', 'Cherry Bomb Deluxe'),
-            lobbyProduct('canyon_quest_jackpot', 'Canyon Quest Jackpot'),
+            lobbyProduct('slots_dragon_fire_fortune', 'Dragon Fire Fortune'),
+            lobbyProduct('slots_crown_of_embers', 'Crown of Embers'),
+            lobbyProduct('slots_berry_blast', 'Berry Blast'),
+            lobbyProduct('slots_cherry_bomb_deluxe', 'Cherry Bomb Deluxe'),
+            lobbyProduct('slots_canyon_quest_jackpot', 'Canyon Quest Jackpot'),
         ]],
         ['code' => 'scratch', 'name' => 'Scratch Cards', 'launch_url' => 'https://scratch.kadi.online', 'status' => 'active', 'sort_order' => 3, 'products' => [
-            lobbyProduct('safari', 'Safari Lotto'),
+            lobbyProduct('scratch_safari', 'Safari Lotto'),
         ]],
     ]];
 }
@@ -164,6 +164,16 @@ test('a player hearts and un-hearts a title', function () {
 
     Livewire::actingAs($player)->test(Welcome::class)->call('toggleFavourite', 'berry_blast');
     expect(GameFavourite::where('user_id', $player->id)->count())->toBe(0);
+});
+
+test('favourites are kept by the title key, so the API code works too and the heart sends the key', function () {
+    $player = User::factory()->create();
+
+    expect(app(Favourites::class)->toggle($player, 'slots_berry_blast'))->toBeTrue()
+        ->and(GameFavourite::where('user_id', $player->id)->pluck('product')->all())->toBe(['berry_blast'])
+        ->and($this->actingAs($player)->get(route('home'))->getContent())->toContain('data-fav="berry_blast"')
+        ->and(app(Favourites::class)->toggle($player, 'slots_berry_blast'))->toBeFalse()
+        ->and(GameFavourite::count())->toBe(0);
 });
 
 test('only catalogue titles can be hearted', function () {

@@ -56,10 +56,11 @@ final readonly class Game
         return config("games.games.{$this->code}.launch") === 'ggid';
     }
 
+    /** By the API's product code or the title's key (a play page opened before the API renamed its codes still launches). */
     public function title(string $code): ?GameTitle
     {
         foreach ($this->titles as $title) {
-            if ($title->code === $code) {
+            if ($title->is($code)) {
                 return $title;
             }
         }

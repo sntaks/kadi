@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 
 const HERO_API = 'https://kadi-api.test/api/v1/';
 
-/** @param  list<string>  $slots */
+/** @param  list<string>  $slots  title keys; the API's codes carry the `slots_` prefix */
 function heroCatalogue(array $slots): array
 {
     return ['data' => [
@@ -21,7 +21,7 @@ function heroCatalogue(array $slots): array
             ['code' => 'kadi', 'name' => 'Kadi', 'status' => 'active'],
         ]],
         ['code' => 'slots', 'name' => 'Slots', 'launch_url' => 'https://slots.kadi.online', 'status' => 'active', 'sort_order' => 2, 'products' => array_map(
-            fn (string $code) => ['code' => $code, 'name' => ucwords(str_replace('_', ' ', substr($code, 6))), 'status' => 'active'],
+            fn (string $key) => ['code' => 'slots_'.$key, 'name' => ucwords(str_replace('_', ' ', $key)), 'status' => 'active'],
             $slots,
         )],
     ]];
@@ -84,7 +84,7 @@ test('a games slide lists only titles the catalogue offers', function () {
 
     $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'slots');
 
-    expect(collect($slide->extra['titles'])->pluck('code')->all())->toBe(['dragon_fire_fortune', 'berry_blast'])
+    expect(collect($slide->extra['titles'])->pluck('code')->all())->toBe(['slots_dragon_fire_fortune', 'slots_berry_blast'])
         ->and(collect($slide->art)->pluck('role')->unique()->all())->toBe(['card']);
 });
 

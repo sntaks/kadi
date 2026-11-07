@@ -43,10 +43,12 @@ return [
     /*
     | Per game. `titles` true: every product is its own lobby tile (slots,
     | scratch cards). false: the game is one tile and its products are modes
-    | (Kadi singles, tournaments, jackpots). Product codes are the API's own
-    | (`berry_blast`, `safari`), unique across games. `artwork` points a product
-    | at its original under public/ (`{code}` is the product code);
-    | `artwork_map` names an original per product instead.
+    | (Kadi singles, tournaments, jackpots). Products are listed here by key:
+    | the API's code without its game prefix (`slots_berry_blast` → `berry_blast`,
+    | `scratch_safari` → `safari`; App\Games\GameTitle::keyFor()), unique across
+    | games, so a prefix the API adds or drops changes nothing here. `artwork`
+    | points a product at its original under public/ (`{code}` is the key);
+    | `artwork_map` names an original per key instead.
     */
     'games' => [
         'kadi' => [

@@ -70,9 +70,11 @@ class GameCatalogue
         return $this->games()->flatMap(fn (Game $game) => $game->titles)->values();
     }
 
+    /** By the API's product code or the title's key (`slots_berry_blast` or `berry_blast`). */
     public function title(string $code): ?GameTitle
     {
-        return $this->titles()->first(fn (GameTitle $title) => $title->code === $code);
+        return $this->titles()->first(fn (GameTitle $title) => $title->code === $code)
+            ?? $this->titles()->first(fn (GameTitle $title) => $title->key === $code);
     }
 
     /** Paths under /games/ that are other pages, never a game's slug. */
@@ -130,7 +132,7 @@ class GameCatalogue
     /** @return Collection<int, GameTitle> in the order config/games.php lists them */
     public function featured(): Collection
     {
-        $titles = $this->titles()->keyBy('code');
+        $titles = $this->titles()->keyBy('key');
 
         return collect(config('games.featured', []))
             ->map(fn (string $code) => $titles->get($code))
@@ -278,24 +280,27 @@ class GameCatalogue
     }
 
     /**
-     * A lobby tile for one product: the API's code and name joined with config/games.php. Public so
-     * the /_ui gallery builds its sample tiles exactly like the lobby does.
+     * A lobby tile for one product: the API's code and name joined with config/games.php. Config,
+     * thumbnails and slugs go by the title's key (the code without its game prefix), so a prefix the
+     * API adds or drops changes nothing here. Public so the /_ui gallery builds its sample tiles
+     * exactly like the lobby does.
      *
      * @param  array<string, mixed>  $product  at least `code`; `name` from the API
      */
     public function presentTitle(string $game, array $product): GameTitle
     {
         $code = $product['code'];
+        $key = GameTitle::keyFor($game, $code);
 
         return new GameTitle(
             code: $code,
             game: $game,
             name: is_string($product['name'] ?? null) ? $product['name'] : $code,
-            thumbnail: GameArtwork::thumbnailUrl($code),
-            collection: $this->collectionMap()[$code] ?? null,
-            badges: $this->badgeMap()[$code] ?? [],
-            featured: in_array($code, config('games.featured', []), true),
-            presented: isset(($this->configured ??= GameArtwork::configuredProducts())[$code]),
+            thumbnail: GameArtwork::thumbnailUrl($key),
+            collection: $this->collectionMap()[$key] ?? null,
+            badges: $this->badgeMap()[$key] ?? [],
+            featured: in_array($key, config('games.featured', []), true),
+            presented: isset(($this->configured ??= GameArtwork::configuredProducts())[$key]),
         );
     }
 

@@ -36,7 +36,7 @@ class MostPlayed
             ->pluck('product')
             ->all());
 
-        $titles = $this->catalogue->titles()->keyBy('code');
+        $titles = $this->catalogue->titles()->keyBy('key');
         $ranked = collect($codes)->map(fn (string $code) => $titles->get($code))->filter()->take($limit)->values();
 
         return $ranked->count() >= self::MIN_TITLES ? $ranked : collect();

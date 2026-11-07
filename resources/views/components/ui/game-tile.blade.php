@@ -25,8 +25,8 @@
             <a href="{{ $href }}" class="nt-play" aria-label="Play {{ $name }}" @if ($needsAccount) data-needs-account @endif><span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></a>
         @endif
         @if ($favourite !== null)
-            <button type="button" class="nt-fav" aria-pressed="{{ $favourite ? 'true' : 'false' }}" aria-label="Favourite {{ $name }}" @if ($title) data-fav="{{ $title->code }}" @endif
-                    @if ($toggle && $title) wire:click="toggleFavourite(@js($title->code))" @endif>
+            <button type="button" class="nt-fav" aria-pressed="{{ $favourite ? 'true' : 'false' }}" aria-label="Favourite {{ $name }}" @if ($title) data-fav="{{ $title->key }}" @endif
+                    @if ($toggle && $title) wire:click="toggleFavourite(@js($title->key))" @endif>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="{{ $favourite ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2" d="M12 20.5s-7.5-4.8-7.5-10.4A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.4-7.5 10.4z"/></svg>
             </button>
         @endif

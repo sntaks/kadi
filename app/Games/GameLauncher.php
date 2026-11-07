@@ -143,7 +143,8 @@ class GameLauncher
         GameLaunch::query()->create([
             'user_id' => $user->id,
             'game' => $game->code,
-            'product' => $title?->code,
+            // The title's key, not the API code, so "Most played" survives a prefix the API adds or drops.
+            'product' => $title?->key,
             'status' => $status,
             'error' => $error,
         ]);

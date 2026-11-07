@@ -45,7 +45,7 @@ class GamesListCommand extends Command
             ])->all(),
         );
 
-        $listed = $titles->pluck('code')->all();
+        $listed = $titles->pluck('key')->all();
         $configured = array_keys(GameArtwork::configuredProducts());
         $unpresented = array_values(array_diff($listed, $configured));
         $notListed = array_values(array_diff($configured, $listed));

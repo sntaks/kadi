@@ -5,9 +5,16 @@ namespace App\Games;
 /**
  * One lobby tile inside a game: a slot or a scratch card. Name and status come
  * from the Kadi API; artwork, collection and badges from config/games.php.
+ *
+ * `code` is the API's product code (`slots_berry_blast`), sent to the game server and
+ * matched against wagers. `key` is that code without its game prefix (`berry_blast`):
+ * the stable name config/games.php, thumbnails, URL slugs, favourites and launch history
+ * use, so a prefix the API adds or drops never renames them.
  */
 final readonly class GameTitle
 {
+    public string $key;
+
     /**
      * @param  list<string>  $badges
      */
@@ -20,7 +27,21 @@ final readonly class GameTitle
         public array $badges,
         public bool $featured,
         public bool $presented,
-    ) {}
+    ) {
+        $this->key = self::keyFor($game, $code);
+    }
+
+    /** The product code without its `{game}_` prefix (`slots_berry_blast` → `berry_blast`, `scratch_safari` → `safari`). */
+    public static function keyFor(string $game, string $code): string
+    {
+        return str_starts_with($code, $game.'_') && strlen($code) > strlen($game) + 1 ? substr($code, strlen($game) + 1) : $code;
+    }
+
+    /** True for this title's API code or its key. */
+    public function is(string $codeOrKey): bool
+    {
+        return $codeOrKey === $this->code || $codeOrKey === $this->key;
+    }
 
     /** False for a product the API lists but config/games.php does not know (a plain fallback tile). */
     public function isPresented(): bool
@@ -28,10 +49,10 @@ final readonly class GameTitle
         return $this->presented;
     }
 
-    /** URL slug: the product code in kebab case (`berry_blast` → `berry-blast`). */
+    /** URL slug: the key in kebab case (`slots_berry_blast` → `berry-blast`). */
     public function slug(): string
     {
-        return str_replace('_', '-', $this->code);
+        return str_replace('_', '-', $this->key);
     }
 
     /** The in-site play page, or null while games do not open inside the site (PLATFORM_TOKEN_LAUNCH off). */
@@ -67,7 +88,7 @@ final readonly class GameTitle
         return in_array($badge, $this->badges, true);
     }
 
-    /** @return array{code: string, game: string, name: string, thumbnail: ?string, collection: ?string, badges: list<string>, featured: bool, presented: bool} */
+    /** @return array{code: string, key: string, game: string, name: string, thumbnail: ?string, collection: ?string, badges: list<string>, featured: bool, presented: bool} */
     public function toArray(): array
     {
         return get_object_vars($this);
