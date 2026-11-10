@@ -22,6 +22,16 @@ class SportsLobby
 {
     private const CACHE_SECONDS = 60;
 
+    /*
+     * Bump a key's version whenever the shape of what it stores changes: for up to a minute after a deploy the new
+     * code would otherwise read the previous release's copy (Sentry KADI-Q).
+     */
+    public const COMPETITIONS_KEY = 'sports.lobby.v2.competitions';
+
+    public const JACKPOT_KEY = 'sports.lobby.v2.jackpot';
+
+    public const SEARCH_KEY = 'sports.lobby.v2.search';
+
     /**
      * Competitions with matches open for betting, in their curated order, optionally of one sport (by slug).
      *
@@ -29,7 +39,7 @@ class SportsLobby
      */
     public function competitions(?string $sport = null): array
     {
-        $all = Cache::remember('sports.lobby.competitions', self::CACHE_SECONDS, fn (): array => Competition::query()
+        $all = Cache::remember(self::COMPETITIONS_KEY, self::CACHE_SECONDS, fn (): array => Competition::query()
             ->synced()
             ->with('sport:id,slug')
             ->withCount(['fixtures as open_count' => fn ($fixtures) => $fixtures->upcoming()->whereHas('markets')])
@@ -47,7 +57,16 @@ class SportsLobby
             ->values()
             ->all());
 
+        // A copy in an unexpected shape loses its odd entries rather than breaking every page that shows the menu.
+        $all = array_values(array_filter($all, self::wellFormed(...)));
+
         return $sport === null ? $all : array_values(array_filter($all, fn (array $competition): bool => $competition['sport'] === $sport));
+    }
+
+    /** Whether a cached competition has every field the menu reads (a copy from an earlier release may not). */
+    private static function wellFormed(mixed $competition): bool
+    {
+        return is_array($competition) && isset($competition['name'], $competition['slug'], $competition['count'], $competition['sport']);
     }
 
     /**
@@ -89,7 +108,7 @@ class SportsLobby
      */
     public function openJackpot(): ?array
     {
-        $summary = Cache::remember('sports.lobby.jackpot', self::CACHE_SECONDS, function (): array|false {
+        $summary = Cache::remember(self::JACKPOT_KEY, self::CACHE_SECONDS, function (): array|false {
             $jackpot = Jackpot::query()->current()->withCount('jackpotFixtures')->first();
             $closesAt = $jackpot?->closesAt();
 
@@ -114,7 +133,7 @@ class SportsLobby
      */
     public function searchEntries(): array
     {
-        return Cache::remember('sports.lobby.search', self::CACHE_SECONDS, function (): array {
+        return Cache::remember(self::SEARCH_KEY, self::CACHE_SECONDS, function (): array {
             $entries = array_map(fn (array $competition): array => [
                 'name' => $competition['name'],
                 'kind' => (SportProfile::find($competition['sport'])->name ?? 'Football').' · '.$competition['count'].' '.Str::plural('match', $competition['count']),
