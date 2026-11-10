@@ -105,7 +105,7 @@ return [
         // Odds are only bought for competitions with a fixture kicking off within this many days.
         'lookahead_days' => (int) env('ODDS_API_LOOKAHEAD_DAYS', 7),
         // Feed sport groups imported as sports, mapped to the name players see.
-        'sport_groups' => ['Soccer' => 'Football'],
+        'sport_groups' => ['Soccer' => 'Football', 'Basketball' => 'Basketball'],
         // Competitions synced out of the box (CompetitionSeeder) and recorded for replay.
         'default_competitions' => [
             'soccer_epl',
@@ -114,10 +114,51 @@ return [
             'soccer_germany_bundesliga',
             'soccer_france_ligue_one',
             'soccer_uefa_champs_league',
+            'basketball_nba',
+            'basketball_euroleague',
         ],
         'odds_format' => 'decimal',
         'monthly_credit_cap' => (int) env('ODDS_API_MONTHLY_CREDIT_CAP', 500),
         'credit_reserve' => (int) env('ODDS_API_CREDIT_RESERVE', 50),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sports
+    |--------------------------------------------------------------------------
+    |
+    | How each sport is priced, settled and shown (App\Sportsbook\Support\SportProfile), keyed by the
+    | sb_sports slug. `key_prefix` ties feed competitions (`basketball_nba`) to their sport. A sport without a
+    | draw has a two-way Winner (incl. overtime); only football derives markets (BTTS, correct score...) from
+    | the 1X2. `markets` are bought from the feed: every market costs one credit per competition per sync, and
+    | the plan has 500 credits a month (docs/sportsbook-sports.md has the budget).
+    |
+    */
+
+    'sports' => [
+        'football' => [
+            'name' => 'Football',
+            'icon' => 'ball',
+            'sort_order' => 1,
+            'key_prefix' => 'soccer_',
+            'has_draw' => true,
+            'derived_markets' => true,
+            'markets' => env('ODDS_API_MARKETS', 'h2h'),
+            // The highest score staff may record (back-office API).
+            'max_score' => 99,
+            'popular' => ['soccer_epl', 'soccer_uefa_champs_league', 'soccer_spain_la_liga'],
+        ],
+        'basketball' => [
+            'name' => 'Basketball',
+            'icon' => 'basketball',
+            'sort_order' => 2,
+            'key_prefix' => 'basketball_',
+            'has_draw' => false,
+            'derived_markets' => false,
+            'markets' => env('ODDS_API_BASKETBALL_MARKETS', 'h2h,totals'),
+            'max_score' => 300,
+            'popular' => ['basketball_nba', 'basketball_euroleague'],
+        ],
     ],
 
     /*

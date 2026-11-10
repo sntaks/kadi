@@ -37,7 +37,8 @@ class Competition extends SportsbookModel
     protected $table = 'sb_competitions';
 
     /** Pages under /sports that a competition's /sports/{slug} must never shadow. */
-    public const RESERVED_SLUGS = ['match', 'jackpot', 'live', 'search'];
+    /** Paths under /sports that are pages, not competitions: the sport pages (config sportsbook.sports) included. */
+    public const RESERVED_SLUGS = ['match', 'jackpot', 'live', 'search', 'football', 'basketball'];
 
     /** @use HasFactory<CompetitionFactory> */
     use HasFactory, LogsActivity;

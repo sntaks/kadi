@@ -4,6 +4,7 @@ use App\Jobs\Sportsbook\SyncCompetitionOdds;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\Sport;
 use Illuminate\Support\Facades\Queue;
 
 beforeEach(function () {
@@ -33,4 +34,20 @@ test('rejects an unknown market key without queueing anything', function () {
         ->assertFailed();
 
     Queue::assertNothingPushed();
+});
+
+test('each sport buys its own markets: football the 1X2, basketball the Winner and totals', function () {
+    config(['sportsbook.sports.football.markets' => 'h2h', 'sportsbook.sports.basketball.markets' => 'h2h,totals']);
+    $football = Competition::factory()->synced()->for(Sport::factory()->configured('football'))
+        ->has(Fixture::factory()->state(['kicks_off_at' => now()->addDays(2)]))->create();
+    $basketball = Competition::factory()->synced()->for(Sport::factory()->configured('basketball'))
+        ->has(Fixture::factory()->state(['kicks_off_at' => now()->addDays(2)]))->create();
+    Queue::fake([SyncCompetitionOdds::class]);
+
+    $this->artisan('sportsbook:sync-odds')->assertSuccessful();
+
+    Queue::assertPushed(SyncCompetitionOdds::class, fn (SyncCompetitionOdds $job): bool => $job->competition->is($football)
+        && $job->marketTypes === [MarketType::MatchResult]);
+    Queue::assertPushed(SyncCompetitionOdds::class, fn (SyncCompetitionOdds $job): bool => $job->competition->is($basketball)
+        && $job->marketTypes === [MarketType::MatchResult, MarketType::Totals]);
 });

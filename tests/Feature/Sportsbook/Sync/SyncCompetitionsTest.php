@@ -9,11 +9,13 @@ beforeEach(function () {
     Http::fake(['odds-api.test/v4/sports*' => Http::response(oddsApiFixture('sports'))]);
 });
 
-test('imports football competitions but not outright markets or other sports', function () {
+test('imports football and basketball competitions but not outright markets or other sports', function () {
     app(SyncCompetitions::class)->handle();
 
-    expect(Competition::orderBy('odds_api_key')->pluck('odds_api_key')->all())->toBe(['soccer_epl', 'soccer_spain_la_liga'])
-        ->and(Competition::firstWhere('odds_api_key', 'soccer_epl')->sport->name)->toBe('Football');
+    expect(Competition::orderBy('odds_api_key')->pluck('odds_api_key')->all())->toBe(['basketball_nba', 'soccer_epl', 'soccer_spain_la_liga'])
+        ->and(Competition::firstWhere('odds_api_key', 'soccer_epl')->sport->name)->toBe('Football')
+        ->and(Competition::firstWhere('odds_api_key', 'basketball_nba')->sport->name)->toBe('Basketball')
+        ->and(Competition::firstWhere('odds_api_key', 'basketball_nba')->sport->sort_order)->toBe(2);
 });
 
 test('adds new competitions with syncing off and never changes an existing sync switch', function () {

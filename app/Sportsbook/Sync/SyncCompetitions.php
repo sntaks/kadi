@@ -5,6 +5,7 @@ namespace App\Sportsbook\Sync;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Sport;
 use App\Sportsbook\OddsApi\OddsApi;
+use App\Sportsbook\Support\SportProfile;
 use Illuminate\Support\Str;
 
 /**
@@ -28,7 +29,8 @@ class SyncCompetitions
 
         foreach ($inFeed as $feedSport) {
             $sportName = $sportGroups[$feedSport['group']];
-            $sport = Sport::firstOrCreate(['slug' => Str::slug($sportName)], ['name' => $sportName]);
+            $slug = Str::slug($sportName);
+            $sport = Sport::firstOrCreate(['slug' => $slug], ['name' => $sportName, 'sort_order' => SportProfile::find($slug)->sortOrder ?? 99]);
 
             Competition::updateOrCreate(['odds_api_key' => $feedSport['key']], [
                 'sport_id' => $sport->id,

@@ -305,4 +305,49 @@
     .nt-nav-item > .nt-nav-n, .nt-nav-item > .nt-nav-badge { flex: none; overflow: visible; }
     .nt-nav-n { margin-left: auto; font-size: 12px; color: var(--color-ash); }
     .nt-nav-badge { margin-left: auto; font-size: 11px; color: var(--color-ash); border: 1px solid var(--color-line-2); border-radius: 999px; padding: 1px 8px; }
+
+    /* ── Sport page: sport sidebar beside the list (like bcgame.ke) ──────────────────────────────────────────────
+       A container query, not the viewport: with the side menu and the docked bet slip the page column can be
+       narrow on a wide screen. Below 860px of page the sidebar's list hides and its leagues show as chips. */
+    .nt-sport-wrap { container: sport-page / inline-size; min-width: 0; }
+    .nt-sport-layout { display: grid; gap: 14px; min-width: 0; }
+    .nt-sport-layout > * { min-width: 0; }
+    .nt-sportnav { display: grid; gap: 10px; align-content: start; min-width: 0; }
+    .nt-sportnav-sports { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+    .nt-sportnav-sports::-webkit-scrollbar { display: none; }
+    .nt-sportnav-sport {
+        flex: none; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: var(--radius-control);
+        background: var(--color-felt-2); border: 1px solid var(--color-line); font-size: 14px; font-weight: 600; color: var(--color-soft);
+        transition: border-color .15s, color .15s, background-color .15s;
+    }
+    .nt-sportnav-sport svg { width: 18px; height: 18px; }
+    .nt-sportnav-sport small { font-size: 12px; color: var(--color-ash); }
+    .nt-sportnav-sport:hover { border-color: var(--color-line-2); color: var(--color-ivory); }
+    .nt-sportnav-sport[aria-current] { background: var(--color-felt-3); border-color: var(--color-line-2); color: var(--color-gold); }
+    .nt-sportnav-list { display: none; }
+
+    @container sport-page (min-width: 860px) {
+        .nt-sport-layout { grid-template-columns: 228px minmax(0, 1fr); align-items: start; }
+        .nt-sportnav {
+            position: sticky; top: calc(var(--nt-top) + 12px); max-height: calc(100dvh - var(--nt-top) - 24px); overflow: hidden auto;
+            background: var(--color-felt); border: 1px solid var(--color-line); border-radius: var(--radius-tile); padding: 10px;
+        }
+        .nt-sportnav-sports { display: grid; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--color-line); }
+        .nt-sportnav-sport { width: 100%; }
+        .nt-sportnav-sport span { flex: 1; }
+        .nt-sportnav-chips { display: none; }
+        .nt-sportnav-list { display: grid; gap: 2px; }
+        .nt-sportnav-list h3 { margin: 12px 8px 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ash); }
+        .nt-sportnav-list a {
+            display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 10px; border-radius: 10px;
+            font-size: 14px; color: var(--color-soft); transition: background-color .15s, color .15s;
+        }
+        .nt-sportnav-list a svg { width: 16px; height: 16px; flex: none; color: var(--color-ash); }
+        .nt-sportnav-list a span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nt-sportnav-list a small { font-size: 12px; color: var(--color-ash); }
+        .nt-sportnav-list a:hover { background: var(--color-felt-2); color: var(--color-ivory); }
+        .nt-sportnav-list a[aria-current='page'] { background: var(--color-felt-3); color: var(--color-gold); }
+        .nt-sportnav-list a[aria-current='page'] svg { color: var(--color-gold); }
+    }
+    .nt-fx-line { font-size: 12px; color: var(--color-ash); text-align: center; }
 }

@@ -6,6 +6,7 @@ use App\Sportsbook\Enums\MarketSource;
 use App\Sportsbook\Enums\MarketStatus;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Enums\SuspensionReason;
+use App\Sportsbook\Support\SportProfile;
 use Carbon\CarbonImmutable;
 use Database\Factories\Sportsbook\Models\MarketFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -87,7 +88,22 @@ class Market extends SportsbookModel
 
     public function name(): string
     {
-        return $this->line === null ? $this->type->label() : $this->type->label().' '.rtrim(rtrim($this->line, '0'), '.');
+        $label = $this->type === MarketType::MatchResult && ! $this->hasDraw() ? __('Winner') : $this->type->label();
+
+        return $this->line === null ? $label : $label.' '.rtrim(rtrim($this->line, '0'), '.');
+    }
+
+    /**
+     * Whether this match result is a 1X2 (football) or a two-way Winner (basketball). Read from loaded selections
+     * when the page has them, so lists don't load each fixture's sport.
+     */
+    public function hasDraw(): bool
+    {
+        if ($this->relationLoaded('selections') && $this->selections->isNotEmpty()) {
+            return $this->selections->contains('outcome', 'draw');
+        }
+
+        return SportProfile::forSport($this->fixture?->competition?->sport)->hasDraw;
     }
 
     public function isDerived(): bool
