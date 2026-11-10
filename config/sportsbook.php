@@ -138,7 +138,7 @@ return [
     'sports' => [
         'football' => [
             'name' => 'Football',
-            'icon' => 'ball',
+            'icon' => 'football',
             'sort_order' => 1,
             'key_prefix' => 'soccer_',
             'has_draw' => true,

@@ -3,6 +3,7 @@
 namespace App\Games;
 
 use App\Account\ResponsiblePlay;
+use App\Activity\PlayerActivity;
 use App\Models\GameLaunch;
 use App\Models\User;
 use App\Services\KadiApiService;
@@ -150,5 +151,7 @@ class GameLauncher
             'status' => $status,
             'error' => $error,
         ]);
+
+        app(PlayerActivity::class)->record('game_launched', $user, ['game' => $game->code, 'title' => $title?->key, 'status' => $status, 'reason' => $error]);
     }
 }

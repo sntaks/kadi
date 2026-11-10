@@ -1,5 +1,6 @@
 <?php
 
+use App\Activity\PlayerActivity;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -33,3 +34,7 @@ Schedule::command('sportsbook:suspend-stale')->everyFiveMinutes()->when($sports)
 Schedule::command('platform:health')->everyFiveMinutes()->withoutOverlapping(10)->onOneServer();
 Schedule::command('sportsbook:send-wager-ops')->everyMinute()->withoutOverlapping(5)->onOneServer();
 Schedule::command('sportsbook:reconcile-wagers')->everyMinute()->withoutOverlapping(5)->onOneServer();
+
+// The player activity log keeps 90 days (App\Activity\PlayerActivity::RETENTION_DAYS); the security trail keeps the
+// package default (config/activitylog.php clean_after_days).
+Schedule::command('activitylog:clean', [PlayerActivity::LOG_NAME, '--days='.PlayerActivity::RETENTION_DAYS, '--force'])->dailyAt('03:30')->withoutOverlapping(60)->onOneServer();

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Referrals;
 
+use App\Activity\PlayerActivity;
 use App\Facades\KadiApi;
 use App\Referrals\ReferralCodes;
 use App\Services\ReferralWithdrawResult;
@@ -223,6 +224,8 @@ class Index extends Component
         } finally {
             $this->processingWithdraw = false;
         }
+
+        app(PlayerActivity::class)->record('withdrawal_requested', $user, ['kind' => 'referral', 'ok' => $result->outcome !== ReferralWithdrawResult::REJECTED]);
 
         $this->confirmingWithdraw = false;
 

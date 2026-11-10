@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Account;
 
+use App\Activity\PlayerActivity;
 use App\Facades\KadiApi;
 use App\Jobs\RevokeGameSessions;
 use App\Livewire\Actions\Logout;
@@ -115,6 +116,7 @@ class CloseAccount extends Component
         }
 
         Log::info('Account closed by the player', ['user' => $user->id]);
+        app(PlayerActivity::class)->record('account_closed', $user);
 
         tap($user, $logout(...))->delete();
 

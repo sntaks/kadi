@@ -48,9 +48,9 @@ final class SiteNavigation
     public function products(): array
     {
         return array_values(array_filter([
-            $this->sportsOn() ? $this->link('Sports', 'sports', 'ball', active: 'sports*') : null,
+            $this->sportsOn() ? $this->link('Sports', 'sports', 'football', active: 'sports*') : null,
             $this->playKadi('Kadi'),
-            $this->casinoOn() ? $this->link('Casino', 'casino', 'slot', active: 'casino') : null,
+            $this->casinoOn() ? $this->link('Casino', 'casino', 'chip', active: 'casino') : null,
         ]));
     }
 
@@ -64,14 +64,14 @@ final class SiteNavigation
         // Kadi · Casino · Sports, each collapsed until opened (the group of the current page starts open).
         $groups = [];
 
-        $groups[] = ['key' => 'kadi', 'label' => 'Kadi', 'icon' => 'cards', 'items' => [
+        $groups[] = ['key' => 'kadi', 'label' => 'Kadi', 'icon' => 'kadi', 'items' => [
             $this->playKadi('Play Kadi'),
             $this->link('How to play', 'rules', 'cards'),
             $this->link('Games & prizes', 'game-guide', 'gift'),
         ]];
 
         if ($this->casinoOn()) {
-            $groups[] = ['key' => 'casino', 'label' => 'Casino', 'icon' => 'slot', 'items' => [
+            $groups[] = ['key' => 'casino', 'label' => 'Casino', 'icon' => 'chip', 'items' => [
                 $this->casinoLink('All games', null),
                 $this->casinoLink('Slots', 'slots'),
                 $this->casinoLink('Scratch cards', 'scratch-cards'),
@@ -81,7 +81,7 @@ final class SiteNavigation
         }
 
         if ($this->sportsOn()) {
-            $groups[] = ['key' => 'sports', 'label' => 'Sports', 'icon' => 'ball', 'items' => $this->sportsItems()];
+            $groups[] = ['key' => 'sports', 'label' => 'Sports', 'icon' => 'football', 'items' => $this->sportsItems()];
         }
 
         return $groups;
@@ -161,9 +161,9 @@ final class SiteNavigation
 
         return [
             ['kind' => 'menu', 'label' => 'Menu', 'icon' => 'menu'],
-            $sports ? $this->link('Sports', 'sports', 'ball', active: 'sports*') : $this->link('Wallet', 'wallet', 'wallet', needsAccount: true),
-            ['kind' => 'kadi', 'label' => 'Kadi', 'icon' => 'cards'],
-            $this->casinoOn() ? $this->link('Casino', 'casino', 'slot', active: 'casino') : $this->link('Home', 'home', 'home'),
+            $sports ? $this->link('Sports', 'sports', 'football', active: 'sports*') : $this->link('Wallet', 'wallet', 'wallet', needsAccount: true),
+            ['kind' => 'kadi', 'label' => 'Kadi', 'icon' => 'kadi'],
+            $this->casinoOn() ? $this->link('Casino', 'casino', 'chip', active: 'casino') : $this->link('Home', 'home', 'home'),
             $sports ? ['kind' => 'slip', 'label' => 'Bet slip', 'icon' => 'slip'] : $this->link('Account', $this->accountRoute(), 'user', needsAccount: true),
         ];
     }
@@ -278,9 +278,9 @@ final class SiteNavigation
     private function playKadi(string $label): array
     {
         if ($this->isGuest()) {
-            return $this->item($label, route('login'), 'cards', needsAccount: true);
+            return $this->item($label, route('login'), 'kadi', needsAccount: true);
         }
 
-        return ['kind' => 'play-kadi', 'label' => $label, 'href' => null, 'icon' => 'cards', 'active' => request()->routeIs('play') && request()->route('game') === 'kadi', 'needsAccount' => false, 'external' => false];
+        return ['kind' => 'play-kadi', 'label' => $label, 'href' => null, 'icon' => 'kadi', 'active' => request()->routeIs('play') && request()->route('game') === 'kadi', 'needsAccount' => false, 'external' => false];
     }
 }

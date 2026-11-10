@@ -19,7 +19,7 @@ class Lobby
     ) {}
 
     /** Built-in /casino shelves. A collection may not reuse one of these keys (it would be shadowed). */
-    public const BUILT_IN_FILTERS = ['all' => 'All games', 'slots' => 'Slots', 'scratch-cards' => 'Scratch cards', 'jackpot' => 'Jackpot slots', 'favourites' => 'Favourites'];
+    public const BUILT_IN_FILTERS = ['all' => 'All games', 'slots' => 'Slots', 'scratch-cards' => 'Scratch cards', 'coin-flip' => 'Coin flip', 'jackpot' => 'Jackpot slots', 'favourites' => 'Favourites'];
 
     /** @var array<string, Collection<int, GameTitle>> */
     private array $byGame = [];
@@ -40,6 +40,12 @@ class Lobby
     public function scratchCards(): Collection
     {
         return $this->titlesOf('scratch');
+    }
+
+    /** Coin Flip's products, one tile each. Empty while KadiApi doesn't offer the game. @return Collection<int, GameTitle> */
+    public function coinFlips(): Collection
+    {
+        return $this->titlesOf('coinflip');
     }
 
     /** config/games.php collections that may be shelves (none named like a built-in one). @return array<string, array<string, mixed>> */
@@ -111,6 +117,11 @@ class Lobby
     {
         $filters = self::BUILT_IN_FILTERS;
 
+        // A game the API doesn't offer gets no empty tab.
+        if ($this->coinFlips()->isEmpty()) {
+            unset($filters['coin-flip']);
+        }
+
         foreach ($this->collectionConfig() as $key => $collection) {
             $filters[$key] = $collection['label'];
         }
@@ -125,6 +136,7 @@ class Lobby
             $key === 'all' => $this->catalogue->titles(),
             $key === 'slots' => $this->slots(),
             $key === 'scratch-cards' => $this->scratchCards(),
+            $key === 'coin-flip' => $this->coinFlips()->isEmpty() ? null : $this->coinFlips(),
             $key === 'jackpot' => $this->jackpotSlots(),
             $key === 'favourites' => $this->favourites->titles($user),
             array_key_exists($key, $this->collectionConfig()) => $this->catalogue->collection($key),

@@ -5,6 +5,8 @@ import './ui/reveal.js';
 import './site/hero-slider.js';
 import './site/prize-count.js';
 import './site/analytics.js';
+import './site/activity.js';
+import './site/side-rail.js';
 import './site/signin.js';
 import './sports/betslip.js';
 import './sports/match-panel.js';

@@ -3,7 +3,7 @@
 @php($user = auth()->user())
 <header class="nt-top">
     @unless ($nav->isGated())
-        <button type="button" class="nt-icon-btn lg:hidden" aria-label="Open menu" aria-controls="site-menu"
+        <button type="button" class="nt-icon-btn min-[1240px]:hidden" aria-label="Open menu" aria-controls="site-menu"
                 x-bind:aria-expanded="menuOpen" x-on:click="menuOpen = true">
             <x-site.icon name="menu" />
         </button>

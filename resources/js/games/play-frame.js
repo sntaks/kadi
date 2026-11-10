@@ -12,6 +12,7 @@ document.addEventListener('alpine:init', () => {
         error: null,
         immersive: false,
         tracked: false,
+        closeRecorded: false,
         seconds: 0,
         timers: [],
 
@@ -22,6 +23,8 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.onMessage = (event) => this.message(event);
             window.addEventListener('message', this.onMessage);
+            this.onPageHide = () => this.closed();
+            window.addEventListener('pagehide', this.onPageHide);
 
             this.launch(framed ? 'game-frame' : '_self');
             requestAnimationFrame(() => (this.started = true));
@@ -33,8 +36,17 @@ document.addEventListener('alpine:init', () => {
         destroy() {
             // Leaving the game page: the next page asks KadiApi for the balance (resources/js/games/return.js).
             markGameReturn();
+            this.closed();
             window.removeEventListener('message', this.onMessage);
+            window.removeEventListener('pagehide', this.onPageHide);
             this.timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
+        },
+
+        // The player activity log's game_closed, once per visit, however the game was left.
+        closed() {
+            if (this.closeRecorded) return;
+            this.closeRecorded = true;
+            window.kadiActivity?.('game_closed', { game, title: product ?? undefined, seconds: this.seconds });
         },
 
         launch(target) {
@@ -97,6 +109,7 @@ document.addEventListener('alpine:init', () => {
             if (type === 'balance') window.Livewire?.dispatch('wallet-refreshed');
             if (type === 'close') {
                 markGameReturn();
+                this.closed();
                 window.location.assign(lobby);
             }
         },

@@ -22,7 +22,7 @@
             <span class="nt-art-fallback" aria-hidden="true">{{ $name }}</span>
         @endif
         @if ($href)
-            <a href="{{ $href }}" class="nt-play" aria-label="Play {{ $name }}" @if ($needsAccount) data-needs-account @endif><span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></a>
+            <a href="{{ $href }}" class="nt-play" aria-label="Play {{ $name }}" data-activity="tile:{{ $title?->key ?? \Illuminate\Support\Str::slug((string) $name) }}" @if ($needsAccount) data-needs-account @endif><span><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></a>
         @endif
         @if ($favourite !== null)
             <button type="button" class="nt-fav" aria-pressed="{{ $favourite ? 'true' : 'false' }}" aria-label="Favourite {{ $name }}" @if ($title) data-fav="{{ $title->key }}" @endif

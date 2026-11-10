@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Account\ResponsiblePlay;
+use App\Auth\SingleSessionGuard;
 use App\Events\PasswordChanged;
 use App\Games\GameCatalogue;
 use App\Games\LaunchFailed;
@@ -25,6 +26,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -81,6 +83,31 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
+    /** The web guard: Laravel's session guard plus the one-device rule (App\Auth\SingleSession). */
+    private function configureSingleSessionGuard(): void
+    {
+        Auth::extend('single-session', function (Application $app, string $name, array $config) {
+            $guard = new SingleSessionGuard(
+                $name,
+                Auth::createUserProvider($config['provider'] ?? null),
+                $app['session.store'],
+                rehashOnLogin: $app['config']->get('hashing.rehash_on_login', true),
+                timeboxDuration: $app['config']->get('auth.timebox_duration', 200000),
+                hashKey: $app['config']->get('app.key'),
+            );
+
+            $guard->setCookieJar($app['cookie']);
+            $guard->setDispatcher($app['events']);
+            $guard->setRequest($app->refresh('request', $guard, 'setRequest'));
+
+            if (isset($config['remember'])) {
+                $guard->setRememberDuration($config['remember']);
+            }
+
+            return $guard;
+        });
+    }
+
     /**
      * Bootstrap any application services.
      */
@@ -95,6 +122,7 @@ class AppServiceProvider extends ServiceProvider
         // Only listeners that auto-discovery cannot see (like the multi-event security ones
         // below) are registered by hand.
 
+        $this->configureSingleSessionGuard();
         $this->configureRateLimiting();
         $this->configureSecurityEventListeners();
         $this->configureLogViewerAccess();
@@ -117,6 +145,9 @@ class AppServiceProvider extends ServiceProvider
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('push', fn (Request $request) => Limit::perMinute(20)->by($request->user()?->getAuthIdentifier() ?: $request->ip()));
+
+        // Player activity beacons (resources/js/site/activity.js): batches of up to 20 events, a few per minute.
+        RateLimiter::for('activity', fn (Request $request) => Limit::perMinute(30)->by((string) $request->user()?->getAuthIdentifier()));
 
         // GMS is one caller; the limit only stops a runaway loop on its side.
         RateLimiter::for('backoffice', fn (Request $request) => Limit::perMinute((int) config('kadi.backoffice.per_minute'))->by('gms'));

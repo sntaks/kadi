@@ -39,7 +39,8 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            // App\Auth\SingleSessionGuard: the session guard plus the one-device rule (see 'single_session').
+            'driver' => 'single-session',
             'provider' => 'users',
         ],
     ],
@@ -127,5 +128,18 @@ return [
     */
 
     'idle_timeout' => (int) env('AUTH_IDLE_TIMEOUT', 30),
+
+    /*
+    |--------------------------------------------------------------------------
+    | One Signed-In Device
+    |--------------------------------------------------------------------------
+    |
+    | A player signed in on one device can't sign in on another until the first
+    | signs out, its session ends (lifetime or idle timeout), or they release it
+    | with the e-mailed link. Needs the database session driver; off otherwise.
+    |
+    */
+
+    'single_session' => (bool) env('AUTH_SINGLE_SESSION', true),
 
 ];
