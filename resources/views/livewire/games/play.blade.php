@@ -60,6 +60,8 @@
 
         <a href="{{ route('home') }}" class="game-immersive-back absolute left-3 top-3 z-10 hidden rounded-full bg-black/70 px-3 py-1.5 text-sm text-ivory" x-show="immersive" @click.prevent="immersive = false">Exit full screen</a>
     </div>
+    {{-- Touch screens only (app.css): swiping here, or on the strips beside the frame, scrolls the page. --}}
+    <div class="game-scroll-grip" data-game-scroll-grip aria-hidden="true"><span></span></div>
 
     {{-- Session --}}
     <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-gold/15 bg-felt text-sm sm:grid-cols-3">

@@ -3,6 +3,7 @@
 namespace App\Account;
 
 use App\Games\GameCatalogue;
+use App\Games\GameName;
 use App\Models\User;
 use App\Services\KadiApiService;
 use Carbon\CarbonImmutable;
@@ -40,7 +41,9 @@ class Wagers
 
         return [
             // By API code, or by key for wagers placed while the API's codes had no prefix.
-            'items' => array_map(fn (array $wager) => $this->present($wager, $this->catalogue->title((string) ($wager['product'] ?? ''))?->name), $data['items']),
+            // A title the site hides (or the API dropped) still gets a readable name from its code.
+            'items' => array_map(fn (array $wager) => $this->present($wager, $this->catalogue->title((string) ($wager['product'] ?? ''))->name
+                ?? (filled($wager['product'] ?? null) ? GameName::fromCode($game, (string) $wager['product']) : null)), $data['items']),
             'page' => (int) ($data['pagination']['page'] ?? $page),
             'last_page' => max(1, (int) ($data['pagination']['last_page'] ?? 1)),
         ];

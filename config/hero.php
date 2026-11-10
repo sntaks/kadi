@@ -51,7 +51,7 @@ return [
             'key' => 'slots', 'kind' => 'games', 'label' => 'Slots', 'requires' => ['token_launch'],
             'eyebrow' => 'Casino', 'title' => 'Spin a slot between rounds',
             'copy' => 'Slots and scratch cards, played right here with the same wallet.',
-            'titles' => ['dragon_fire_fortune', 'crown_of_embers', 'berry_blast'],
+            'titles' => ['pharaohs_fortune', 'crown_of_embers', 'berry_blast'],
             'cta' => ['label' => 'All slots', 'route' => 'games.slots'],
             'transition' => 'slices',
         ],

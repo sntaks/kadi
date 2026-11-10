@@ -222,3 +222,21 @@ select:focus[data-flux-control] {
 }
 .game-immersive .game-immersive-back { display: inline-flex; }
 .game-stage:fullscreen { max-height: none; border-radius: 0; }
+/* Touch screens: the game is another site and takes every touch inside its frame, so a swipe there
+   never scrolls this page. Keep a strip down each side of the frame and a grip below it that do. */
+.game-scroll-grip { display: none; }
+@media (pointer: coarse) {
+  .game-stage > iframe { left: 1rem; right: 1rem; width: auto; }
+  .game-stage::before, .game-stage::after {
+    content: ""; position: absolute; z-index: 1; top: 50%; width: 3px; height: 2.5rem;
+    transform: translateY(-50%); border-radius: 9999px; background: var(--color-line-2); pointer-events: none;
+  }
+  .game-stage::before { left: 0.375rem; }
+  .game-stage::after { right: 0.375rem; }
+  .game-scroll-grip { display: flex; height: 1.75rem; align-items: center; justify-content: center; margin-top: -0.5rem; }
+  .game-scroll-grip > span { width: 3rem; height: 4px; border-radius: 9999px; background: var(--color-line-2); }
+  /* Full screen fills the screen: nothing to scroll. */
+  .game-immersive .game-stage > iframe, .game-stage:fullscreen > iframe { left: 0; right: 0; width: 100%; }
+  .game-immersive .game-stage::before, .game-immersive .game-stage::after,
+  .game-stage:fullscreen::before, .game-stage:fullscreen::after { display: none; }
+}

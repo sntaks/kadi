@@ -39,7 +39,7 @@ beforeEach(function () {
         'kadi.referrals.enabled' => true,
     ]);
 
-    $this->slots = ['dragon_fire_fortune', 'crown_of_embers', 'berry_blast'];
+    $this->slots = ['pharaohs_fortune', 'crown_of_embers', 'berry_blast'];
 
     Http::preventStrayRequests();
     Http::fake(function ($request) {
@@ -80,11 +80,11 @@ test('slides follow their switches', function (string $switch, string $slide) {
 ]);
 
 test('a games slide lists only titles the catalogue offers', function () {
-    $this->slots = ['dragon_fire_fortune', 'berry_blast'];
+    $this->slots = ['pharaohs_fortune', 'berry_blast'];
 
     $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'slots');
 
-    expect(collect($slide->extra['titles'])->pluck('code')->all())->toBe(['slots_dragon_fire_fortune', 'slots_berry_blast'])
+    expect(collect($slide->extra['titles'])->pluck('code')->all())->toBe(['slots_pharaohs_fortune', 'slots_berry_blast'])
         ->and(collect($slide->art)->pluck('role')->unique()->all())->toBe(['card']);
 });
 
@@ -286,7 +286,7 @@ test('hero images wait for their slide: nothing is requested until the slider as
 test('a games slide links each card to its game page', function () {
     $html = $this->get('/')->assertOk()->getContent();
 
-    expect($html)->toContain('href="'.url('/games/dragon-fire-fortune').'"');
+    expect($html)->toContain('href="'.url('/games/pharaohs-fortune').'"');
 });
 
 test('the slider script survives a Livewire re-render', function () {
