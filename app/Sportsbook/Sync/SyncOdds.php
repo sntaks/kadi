@@ -10,6 +10,7 @@ use App\Sportsbook\Pricing\ApplyMarketPrice;
 use App\Sportsbook\Pricing\ConsensusPricer;
 use App\Sportsbook\Pricing\Derived\DeriveMarkets;
 use App\Sportsbook\Support\SportProfile;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -39,10 +40,16 @@ class SyncOdds
         );
 
         $fixtures = [];
+        // Every fixture's markets and selections in three queries, not one per market (Sentry KADI-B/KADI-C).
+        $existing = $this->upsertFixture->existing($events, ['markets.selections']);
 
         foreach ($events as $event) {
-            $fixtures[] = DB::transaction(function () use ($competition, $event, $marketTypes): Fixture {
-                $fixture = $this->upsertFixture->handle($competition, $event);
+            $fixtures[] = DB::transaction(function () use ($competition, $event, $marketTypes, $existing): Fixture {
+                $fixture = $this->upsertFixture->handle($competition, $event, $existing);
+
+                if (! $fixture->relationLoaded('markets')) {
+                    $fixture->setRelation('markets', new EloquentCollection);
+                }
 
                 foreach ($marketTypes as $type) {
                     match ($type) {
@@ -60,6 +67,8 @@ class SyncOdds
         // Over 2.5 lines) is complete before any fixture relies on it. Only football derives markets.
         if (in_array(MarketType::MatchResult, $marketTypes, true) && $this->profile($competition)->derivedMarkets) {
             foreach ($fixtures as $fixture) {
+                // Deriving reads the markets from the database, as it always has.
+                $fixture->unsetRelation('markets');
                 // Every fixture here is in this competition: saves one query per fixture in DeriveMarkets.
                 $fixture->setRelation('competition', $competition);
                 DB::transaction(fn () => $this->deriveMarkets->handle($fixture));

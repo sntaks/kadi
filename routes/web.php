@@ -9,6 +9,7 @@ use App\Http\Controllers\Dev\MailPreviewController;
 use App\Http\Controllers\Dev\UiGalleryController;
 use App\Http\Controllers\GameLaunchController;
 use App\Http\Controllers\GameSearchController;
+use App\Http\Controllers\MovedPageController;
 use App\Http\Controllers\ProfilePictureController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\PushTestController;
@@ -36,7 +37,6 @@ use App\Livewire\Sports\Search as SportsSearch;
 use App\Livewire\Wallet\Index;
 use App\Livewire\Welcome;
 use App\Sportsbook\Models\Competition;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
@@ -100,10 +100,9 @@ Route::middleware(['auth'])->group(function () {
 // Pages the old site had (plan Phase 12). Their names and addresses keep working for bookmarks, e-mails and push
 // links, carrying the query string on: the dashboard is the landing, the profile is /account, Kadi's game history
 // is the Kadi tab of /activity.
-$moved = fn (string $route) => fn (Request $request) => redirect()->to(route($route).($request->getQueryString() ? '?'.$request->getQueryString() : ''));
-Route::get('/dashboard', $moved('home'))->name('dashboard');
-Route::get('/profile', $moved('account'))->name('profile');
-Route::get('/games/history', $moved('activity'))->name('games.history');
+Route::get('/dashboard', MovedPageController::class)->defaults('to', 'home')->name('dashboard');
+Route::get('/profile', MovedPageController::class)->defaults('to', 'account')->name('profile');
+Route::get('/games/history', MovedPageController::class)->defaults('to', 'activity')->name('games.history');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // The account area (plan Phase 6): one header and sub-tabs for the account page, wallet, activity,

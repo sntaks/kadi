@@ -11,6 +11,7 @@ use App\Sportsbook\Models\OddsSnapshot;
 use App\Sportsbook\Models\Selection;
 use App\Sportsbook\Sync\SyncOdds;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
@@ -119,4 +120,22 @@ test('keeps markets closed once the fixture has kicked off', function () {
     $market = Fixture::firstWhere('external_id', 'evt-arsenal-spurs')->markets()->where('key', 'h2h')->sole();
     expect($market->status)->toBe(MarketStatus::Suspended)
         ->and($market->suspension_reason)->toBe(SuspensionReason::KickedOff);
+});
+
+/*
+ * Sentry KADI-B/KADI-C: one fixture lookup per event and one market lookup per market. A re-sync reads the fixtures,
+ * their markets and selections once, whatever the number of events and lines.
+ */
+test('a re-sync reads fixtures, markets and selections once, not once per event or market', function () {
+    app(SyncOdds::class)->handle($this->competition, [MarketType::Totals]);
+    $marketsBefore = Market::count();
+
+    DB::enableQueryLog();
+    app(SyncOdds::class)->handle($this->competition, [MarketType::Totals]);
+
+    $reads = collect(DB::getQueryLog())->pluck('query')->filter(fn (string $sql): bool => str_starts_with($sql, 'select * from'));
+    expect($reads->filter(fn (string $sql): bool => str_contains($sql, 'from "sb_fixtures"')))->toHaveCount(1)
+        ->and($reads->filter(fn (string $sql): bool => str_contains($sql, 'from "sb_markets"')))->toHaveCount(1)
+        ->and($reads->filter(fn (string $sql): bool => str_contains($sql, 'from "sb_selections"')))->toHaveCount(1)
+        ->and(Market::count())->toBe($marketsBefore);
 });

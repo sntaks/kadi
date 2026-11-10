@@ -22,8 +22,10 @@ class SyncFixtures
     {
         $events = $this->oddsApi->events($competition->odds_api_key);
 
+        $existing = $this->upsertFixture->existing($events);
+
         foreach ($events as $event) {
-            $this->upsertFixture->handle($competition, $event);
+            $this->upsertFixture->handle($competition, $event, $existing);
         }
 
         return count($events);

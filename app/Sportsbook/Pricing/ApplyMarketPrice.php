@@ -33,7 +33,10 @@ class ApplyMarketPrice
         MarketSource $source = MarketSource::Feed,
     ): ?Market {
         $key = Market::keyFor($type, $line);
-        $market = $fixture->markets()->where('key', $key)->first();
+        // A caller syncing many fixtures loads their markets once (SyncOdds); otherwise look this one up.
+        $market = $fixture->relationLoaded('markets')
+            ? $fixture->markets->firstWhere('key', $key)
+            : $fixture->markets()->where('key', $key)->first();
 
         if ($market === null && ! $priced->isPriced() && ! $createWhenUnpriced) {
             return null;
@@ -54,6 +57,7 @@ class ApplyMarketPrice
             'status' => MarketStatus::Suspended,
         ]);
 
+        $isNew = ! $market->exists;
         $market->bookmaker_count = $priced->bookmakerCount;
 
         if (! $priced->isPriced()) {
@@ -63,26 +67,43 @@ class ApplyMarketPrice
             }
 
             $market->save();
+            $this->remember($fixture, $market, $isNew);
 
             return $market;
         }
 
-        $isNew = ! $market->exists;
         // Feed prices take over a line we had been deriving; DeriveMarkets never replaces a feed-owned line.
         $market->source = $source;
         $market->priced_at = now('UTC');
         $market->save();
+        $this->remember($fixture, $market, $isNew);
 
-        // One query for the market's selections, not one per outcome (correct score alone has 26).
-        $selections = $isNew ? collect() : $market->selections()->get()->keyBy('outcome');
+        // One query for the market's selections, not one per outcome (correct score alone has 26), and none when
+        // the caller loaded them already.
+        $selections = match (true) {
+            $isNew => collect(),
+            $market->relationLoaded('selections') => $market->selections->keyBy('outcome'),
+            default => $market->selections()->get()->keyBy('outcome'),
+        };
 
         foreach ($priced->outcomes as $outcome => $price) {
             $this->writeSelection($market, $selections->get($outcome), $outcome, $selectionNames[$outcome] ?? $outcome, $price);
         }
 
+        // Selections may have been added: whoever reads them next loads them fresh.
+        $market->unsetRelation('selections');
+
         $this->updateStatus($market, $fixture, $isNew);
 
         return $market;
+    }
+
+    /** A new market joins the fixture's loaded markets, so a later lookup on the same fixture finds it. */
+    private function remember(Fixture $fixture, Market $market, bool $isNew): void
+    {
+        if ($isNew && $fixture->relationLoaded('markets')) {
+            $fixture->markets->push($market);
+        }
     }
 
     /**
