@@ -127,7 +127,7 @@ test('activity shows Kadi history first and lists slot wagers from KadiApi', fun
     $this->answers['/wagers'] = Http::response(['success' => true, 'data' => [
         'items' => [
             ['reference' => 'w-1', 'game' => 'slots', 'product' => 'berry_blast', 'funding' => 'cash', 'stake' => 20, 'status' => 'won', 'payout' => 64, 'bonus' => 0, 'tax' => 4, 'placed_at' => '2026-11-03T10:00:00+03:00'],
-            ['reference' => 'w-2', 'game' => 'slots', 'product' => 'unknown', 'funding' => 'cash', 'stake' => 10, 'status' => 'lost', 'payout' => 0, 'bonus' => 0, 'tax' => 0, 'placed_at' => '2026-11-03T09:00:00+03:00'],
+            ['reference' => 'w-2', 'game' => 'slots', 'product' => 'slots_neon_city', 'funding' => 'cash', 'stake' => 10, 'status' => 'lost', 'payout' => 0, 'bonus' => 0, 'tax' => 0, 'placed_at' => '2026-11-03T09:00:00+03:00'],
         ],
         'pagination' => ['page' => 1, 'per_page' => 20, 'total' => 2, 'last_page' => 1],
     ]]);
@@ -138,7 +138,7 @@ test('activity shows Kadi history first and lists slot wagers from KadiApi', fun
     Livewire::actingAs($user)->test(Activity::class)
         ->call('show', 'slots')->call('load')
         ->assertSee('+KES 64.00')->assertSee('after KES 4.00 tax')
-        ->assertSee('unknown')->assertSee('No win');
+        ->assertSee('Neon City')->assertSee('No win'); // w-2: not in the catalogue, named from its code
 
     Http::assertSent(fn ($request) => str_contains($request->url(), '/wagers') && $request['game'] === 'slots' && $request['per_page'] === 20);
 });

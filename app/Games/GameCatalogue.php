@@ -235,11 +235,15 @@ class GameCatalogue
         }
 
         $config = config("games.games.{$code}", []);
+        // Titles this site has taken off (by key), whatever the API offers. Runs on every read, so a
+        // cached copy of the API answer never brings one back.
+        $hidden = (array) ($config['hidden'] ?? []);
 
         $products = collect(is_array($raw['products'] ?? null) ? $raw['products'] : [])
             ->filter(fn ($product) => is_array($product)
                 && is_string($product['code'] ?? null)
-                && ($product['status'] ?? 'active') === 'active')
+                && ($product['status'] ?? 'active') === 'active'
+                && ! in_array(GameTitle::keyFor($code, $product['code']), $hidden, true))
             ->values();
 
         $titles = ($config['titles'] ?? false)
@@ -248,7 +252,7 @@ class GameCatalogue
 
         return new Game(
             code: $code,
-            name: is_string($raw['name'] ?? null) ? $raw['name'] : $code,
+            name: GameName::format(is_string($raw['name'] ?? null) ? $raw['name'] : $code),
             launchUrl: $launchUrl,
             sortOrder: (int) ($raw['sort_order'] ?? 0),
             tagline: $config['tagline'] ?? null,
@@ -295,7 +299,7 @@ class GameCatalogue
         return new GameTitle(
             code: $code,
             game: $game,
-            name: is_string($product['name'] ?? null) ? $product['name'] : $code,
+            name: GameName::format(is_string($product['name'] ?? null) ? $product['name'] : GameName::fromCode($game, $code)),
             thumbnail: GameArtwork::thumbnailUrl($key),
             collection: $this->collectionMap()[$key] ?? null,
             badges: $this->badgeMap()[$key] ?? [],

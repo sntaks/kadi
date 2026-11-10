@@ -41,7 +41,8 @@ function catalogue(): GameCatalogue
 }
 
 beforeEach(function () {
-    config(['services.kadi_api.url' => CATALOGUE_API, 'services.kadi_api.key' => 'site-key']);
+    config(['services.kadi_api.url' => CATALOGUE_API, 'services.kadi_api.key' => 'site-key',
+        'games.games.slots.hidden' => [], 'games.games.scratch.hidden' => []]);
 });
 
 test('games come from the API in lobby order with the site key', function () {
@@ -236,6 +237,48 @@ test('refresh asks the API again but keeps the stale copy as a fallback', functi
 
 // The originals are not in git (only `games:artwork` reads them, on a developer's machine), so
 // this checks the committed thumbnail the lobby serves, not the original.
+test('a hidden title is taken off the site whether or not the API prefixes its code', function () {
+    $body = catalogueBody();
+    $body['data'][2]['products'][] = catalogueProduct('neon_city', 'slots', 'Neon City');
+    Http::fake([CATALOGUE_API.'games' => Http::response($body)]);
+    config(['games.games.slots.hidden' => ['dragon_fire_fortune', 'neon_city'], 'games.games.scratch.hidden' => ['fruit']]);
+
+    expect(catalogue()->title('slots_dragon_fire_fortune'))->toBeNull()
+        ->and(catalogue()->title('dragon_fire_fortune'))->toBeNull()
+        ->and(catalogue()->title('neon_city'))->toBeNull()
+        ->and(catalogue()->game('slots')->products)->toBe(['slots_triple_jackpot_fruits', 'slots_brand_new_title'])
+        ->and(catalogue()->game('slots')->titles)->toHaveCount(2)
+        ->and(catalogue()->game('scratch')->titles)->toBe([])
+        ->and(catalogue()->featured()->pluck('code')->all())->toBe([])
+        ->and(catalogue()->title('slots_triple_jackpot_fruits'))->not->toBeNull();
+});
+
+test('game and title names from the API are shown with a capital at the start of every word', function () {
+    $body = catalogueBody();
+    $body['data'][2]['name'] = 'SLOTS';
+    $body['data'][2]['products'][] = catalogueProduct('slots_berry_blast', 'slots', 'BERRY BLAST');
+    $body['data'][2]['products'][] = catalogueProduct('slots_curse_of_the_pyramid', 'slots', 'Curse of the Pyramid');
+    Http::fake([CATALOGUE_API.'games' => Http::response($body)]);
+
+    expect(catalogue()->game('slots')->name)->toBe('Slots')
+        ->and(catalogue()->title('berry_blast')->name)->toBe('Berry Blast')
+        ->and(catalogue()->title('curse_of_the_pyramid')->name)->toBe('Curse Of The Pyramid');
+});
+
+test('hidden titles are configured products', function () {
+    $known = GameArtwork::configuredProducts();
+    $games = (require config_path('games.php'))['games']; // beforeEach empties the lists
+
+    expect($games['slots']['hidden'])->toHaveCount(28)
+        ->and(array_values(array_diff(array_keys($known, 'scratch', true), $games['scratch']['hidden'])))->toEqualCanonicalizing(['goldmine', 'ghosttown']);
+
+    foreach (['slots', 'scratch'] as $game) {
+        foreach ($games[$game]['hidden'] as $key) {
+            expect($known[$key] ?? null)->toBe($game, "{$game}.hidden has unknown title {$key}");
+        }
+    }
+});
+
 test('config presents all 120 slots and 12 scratch cards, each with artwork and a built thumbnail', function () {
     $products = GameArtwork::configuredProducts();
 
