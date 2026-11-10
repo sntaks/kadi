@@ -21,7 +21,7 @@ test('records a free call and the quota headers it returned', function () {
 
     $sports = app(OddsApi::class)->sports();
 
-    expect($sports)->toHaveCount(4);
+    expect($sports)->toHaveCount(5);
     $this->assertDatabaseHas('sb_odds_api_calls', [
         'endpoint' => 'sports', 'credits_spent' => 0, 'credits_remaining' => 488, 'credits_used' => 12, 'http_status' => 200, 'succeeded' => true,
     ]);

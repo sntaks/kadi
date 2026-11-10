@@ -74,6 +74,11 @@ Route::middleware(RequirePlatformFlag::class.':sports')->prefix('sports')->group
     Route::get('/live', SportsLive::class)->name('sports.live');
     Route::get('/search', SportsSearch::class)->name('sports.search');
     Route::get('/match/{fixture}', SportsMatch::class)->whereNumber('fixture')->name('sports.match');
+    // One page per sport (config sportsbook.sports). Football keeps /sports, so its own slug redirects there.
+    Route::permanentRedirect('/football', '/sports');
+    Route::get('/{sport}', SportsHome::class)
+        ->whereIn('sport', array_values(array_diff(array_keys((array) config('sportsbook.sports')), ['football'])))
+        ->name('sports.sport');
     Route::get('/{competition:slug}', SportsCompetition::class)
         ->where('competition', '(?!(?:'.implode('|', Competition::RESERVED_SLUGS).')$)[a-z0-9-]+')
         ->name('sports.competition');

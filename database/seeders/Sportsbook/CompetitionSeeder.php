@@ -4,6 +4,7 @@ namespace Database\Seeders\Sportsbook;
 
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Sport;
+use App\Sportsbook\Support\SportProfile;
 use Illuminate\Database\Seeder;
 
 /**
@@ -22,18 +23,22 @@ class CompetitionSeeder extends Seeder
         'soccer_germany_bundesliga' => 'Bundesliga - Germany',
         'soccer_france_ligue_one' => 'Ligue 1 - France',
         'soccer_uefa_champs_league' => 'UEFA Champions League',
+        'basketball_nba' => 'NBA',
+        'basketball_euroleague' => 'Basketball Euroleague',
     ];
 
     public function run(): void
     {
-        $football = Sport::firstOrCreate(['slug' => 'football'], ['name' => 'Football', 'sort_order' => 1]);
-
         /** @var list<string> $keys */
         $keys = config('sportsbook.odds_api.default_competitions');
 
         foreach ($keys as $position => $key) {
+            // Each key's sport comes from its prefix (`soccer_`, `basketball_`); anything else is football, as before.
+            $profile = SportProfile::forCompetitionKey($key) ?? SportProfile::find('football');
+            $sport = Sport::firstOrCreate(['slug' => $profile->slug ?? 'football'], ['name' => $profile->name ?? 'Football', 'sort_order' => $profile->sortOrder ?? 1]);
+
             Competition::updateOrCreate(['odds_api_key' => $key], [
-                'sport_id' => $football->id,
+                'sport_id' => $sport->id,
                 'name' => Competition::where('odds_api_key', $key)->value('name') ?? self::NAMES[$key] ?? $key,
                 'is_synced' => true,
                 'sort_order' => $position + 1,

@@ -4,6 +4,8 @@ namespace App\Support;
 
 use App\Models\User;
 use App\Sportsbook\Catalogue\SportsLobby;
+use App\Sportsbook\Models\Competition;
+use App\Sportsbook\Support\SportProfile;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -220,25 +222,20 @@ final class SiteNavigation
     }
 
     /**
-     * The side menu's Sports group (plan §2): Highlights and Today with real counts, the competitions with matches
-     * open, the sports jackpot while it takes entries, and In play (a list only, so marked Soon).
+     * The side menu's Sports group (plan §2): each sport with matches open (Football, Basketball) and its real count,
+     * the sports jackpot while it takes entries, and In play (a list only, so marked Soon).
      *
      * @return list<array<string, mixed>>
      */
     private function sportsItems(): array
     {
         $lobby = app(SportsLobby::class);
-        $onHome = request()->routeIs('sports');
-        $tab = request()->query('tab');
+        $current = $this->currentSport();
+        $items = [];
 
-        $items = [
-            $this->item('Highlights', route('sports'), 'ball', active: $onHome && ($tab === null || $tab === 'highlights')) + ['count' => $lobby->highlightsCount()],
-            $this->item('Today', route('sports', ['tab' => 'today']), 'clock', active: $onHome && $tab === 'today'),
-        ];
-
-        foreach (array_slice($lobby->competitions(), 0, 8) as $competition) {
-            $items[] = $this->item($competition['name'], route('sports.competition', $competition['slug']), 'trophy',
-                active: request()->routeIs('sports.competition') && request()->route('competition')?->slug === $competition['slug']) + ['count' => $competition['count']];
+        // One entry per sport with matches open (real counts); its leagues are in the sport page's own sidebar.
+        foreach ($lobby->sports() as $sport) {
+            $items[] = $this->item($sport['name'], SportsLobby::sportUrl($sport['slug']), $sport['icon'], active: $current === $sport['slug']) + ['count' => $sport['count']];
         }
 
         if ($lobby->openJackpot() !== null) {
@@ -248,6 +245,21 @@ final class SiteNavigation
         $items[] = $this->link('In play', 'sports.live', 'live') + ['badge' => 'Soon'];
 
         return $items;
+    }
+
+    /** The sport the current page belongs to: a sport page, or a competition page's sport. */
+    private function currentSport(): ?string
+    {
+        $route = request()->route();
+
+        return match (true) {
+            request()->routeIs('sports') => 'football',
+            request()->routeIs('sports.sport') => (string) $route?->parameter('sport'),
+            request()->routeIs('sports.competition') => ($competition = $route?->parameter('competition')) instanceof Competition
+                ? SportProfile::forSport($competition->sport)->slug
+                : null,
+            default => null,
+        };
     }
 
     /** @return array<string, mixed> */

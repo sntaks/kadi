@@ -9,6 +9,7 @@ use App\Sportsbook\OddsApi\OddsApi;
 use App\Sportsbook\Pricing\ApplyMarketPrice;
 use App\Sportsbook\Pricing\ConsensusPricer;
 use App\Sportsbook\Pricing\Derived\DeriveMarkets;
+use App\Sportsbook\Support\SportProfile;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -45,7 +46,7 @@ class SyncOdds
 
                 foreach ($marketTypes as $type) {
                     match ($type) {
-                        MarketType::MatchResult => $this->priceMatchResult($fixture, $event),
+                        MarketType::MatchResult => $this->priceMatchResult($fixture, $event, $this->profile($competition)),
                         MarketType::Totals => $this->priceTotals($fixture, $event),
                         default => null,
                     };
@@ -56,8 +57,8 @@ class SyncOdds
         }
 
         // Derive only once every fixture's feed prices are in, so the competition's typical goals (from its feed
-        // Over 2.5 lines) is complete before any fixture relies on it.
-        if (in_array(MarketType::MatchResult, $marketTypes, true)) {
+        // Over 2.5 lines) is complete before any fixture relies on it. Only football derives markets.
+        if (in_array(MarketType::MatchResult, $marketTypes, true) && $this->profile($competition)->derivedMarkets) {
             foreach ($fixtures as $fixture) {
                 // Every fixture here is in this competition: saves one query per fixture in DeriveMarkets.
                 $fixture->setRelation('competition', $competition);
@@ -71,9 +72,12 @@ class SyncOdds
     /**
      * @param  EventOddsData  $event
      */
-    private function priceMatchResult(Fixture $fixture, array $event): void
+    private function priceMatchResult(Fixture $fixture, array $event, SportProfile $profile): void
     {
-        $names = ['home' => $event['home_team'], 'draw' => 'Draw', 'away' => $event['away_team']];
+        // A sport without a draw (basketball) has a two-way Winner incl. overtime: the feed's h2h has no Draw outcome.
+        $names = $profile->hasDraw
+            ? ['home' => $event['home_team'], 'draw' => 'Draw', 'away' => $event['away_team']]
+            : ['home' => $event['home_team'], 'away' => $event['away_team']];
         $outcomeByName = array_flip($names);
         $bookmakerPrices = [];
 
@@ -89,10 +93,15 @@ class SyncOdds
             $fixture,
             MarketType::MatchResult,
             null,
-            $this->pricer->price($bookmakerPrices, ['home', 'draw', 'away']),
+            $this->pricer->price($bookmakerPrices, $profile->matchResultOutcomes()),
             $names,
             createWhenUnpriced: true,
         );
+    }
+
+    private function profile(Competition $competition): SportProfile
+    {
+        return SportProfile::forSport($competition->sport);
     }
 
     /**

@@ -3,9 +3,11 @@
 use App\Sportsbook\Enums\BetStatus;
 use App\Sportsbook\Enums\JackpotStatus;
 use App\Sportsbook\Enums\MarketStatus;
+use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\FixtureResult;
 use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Models\Sport;
 use App\Sportsbook\Models\WagerOp;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -114,6 +116,19 @@ test('a refused write is not kept, so a retry with the same request id runs agai
         ->assertOk()->assertHeaderMissing('Backoffice-Replayed');
 
     expect($market->fresh()->status)->toBe(MarketStatus::Suspended);
+});
+
+test('staff can record a basketball score over 99, but a football score stops at 99', function () {
+    $football = pricedFixture(['kicks_off_at' => now('UTC')->subHours(3)]);
+    $basketball = Fixture::factory()->create([
+        'kicks_off_at' => now('UTC')->subHours(3),
+        'competition_id' => Competition::factory()->synced()->for(Sport::factory()->configured('basketball')),
+    ]);
+
+    backoffice('POST', "fixtures/{$basketball->id}/result", staffBody(['home_score' => 118, 'away_score' => 112]))->assertOk();
+    backoffice('POST', "fixtures/{$football->id}/result", staffBody(['home_score' => 118, 'away_score' => 112]))->assertUnprocessable();
+
+    expect($basketball->result()->value('home_score'))->toBe(118);
 });
 
 test('a void result may be sent as 1 as well as true', function () {

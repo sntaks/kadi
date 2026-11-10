@@ -4,7 +4,10 @@ use App\Sportsbook\Betting\Settlement\MarketRules;
 use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\BetLeg;
+use App\Sportsbook\Models\Competition;
+use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\FixtureResult;
+use App\Sportsbook\Models\Sport;
 
 function legOn(MarketType $type, string $outcome, ?string $line = null): BetLeg
 {
@@ -52,4 +55,18 @@ test('every leg on a void match is void', function (MarketType $type, string $ou
     [MarketType::MatchResult, 'home'],
     [MarketType::CorrectScore, '1-0'],
     [MarketType::HalfTimeFullTime, '1/1'],
+]);
+
+test('a basketball Winner settles on the final score incl. overtime, and a level score voids it', function (int $home, int $away, string $outcome, BetLegStatus $expected) {
+    $fixture = Fixture::factory()->create([
+        'competition_id' => Competition::factory()->create(['sport_id' => Sport::factory()->configured('basketball')]),
+    ]);
+    $leg = legOn(MarketType::MatchResult, $outcome);
+    $leg->fixture_id = $fixture->id;
+
+    expect(MarketRules::settle($leg, fullTime($home, $away)))->toBe($expected);
+})->with([
+    'home wins after overtime' => [118, 112, 'home', BetLegStatus::Won],
+    'away loses' => [118, 112, 'away', BetLegStatus::Lost],
+    'recorded level: void, never lost' => [100, 100, 'home', BetLegStatus::Void],
 ]);

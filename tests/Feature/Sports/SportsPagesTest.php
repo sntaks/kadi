@@ -111,13 +111,20 @@ test('search finds matches by team or competition', function () {
     $this->get('/sports/search?q=zzz')->assertOk()->assertSee('No matches for');
 });
 
-test('the side menu lists Highlights with the real count, competitions with matches, and In play as Soon', function () {
+test('the side menu lists each sport with its real count, then In play as Soon; leagues are in the sport sidebar', function () {
     $fixture = pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]);
     pricedFixture(['competition_id' => $fixture->competition_id, 'kicks_off_at' => now('UTC')->addDays(2)]);
     Competition::factory()->synced()->create(['name' => 'Empty League']);
 
+    $html = $this->get('/sports')->assertOk()->getContent();
+    $menu = substr($html, strpos($html, 'id="site-group-sports"'));
+
+    expect($menu)->toContain('Football')
+        ->and(substr($menu, 0, strpos($menu, 'In play')))->not->toContain($fixture->competition->name);
+
     $this->get('/sports')
-        ->assertSeeInOrder(['Highlights', '2', 'Today', $fixture->competition->name, '2', 'In play', 'Soon'])
+        ->assertSeeInOrder(['Football', '2', 'In play', 'Soon'])
+        ->assertSeeInOrder(['aria-label="Sports and leagues"', 'Highlights', 'Today', $fixture->competition->name, '2'], false)
         ->assertDontSee('Empty League');
 });
 

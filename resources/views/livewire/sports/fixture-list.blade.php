@@ -1,10 +1,10 @@
 <section class="nt-panel nt-football" aria-labelledby="football-{{ $this->getId() }}" wire:poll.300s.visible>
     <div class="nt-sb-head">
-        <h2 id="football-{{ $this->getId() }}"><x-site.icon name="ball" />{{ $heading }}</h2>
+        <h2 id="football-{{ $this->getId() }}"><x-site.icon :name="$icon" />{{ $heading }}</h2>
         <label class="nt-market">
             <span class="sr-only">Market</span>
             <select wire:model.live="marketKey">
-                @foreach (\App\Sportsbook\Catalogue\FixtureListing::LIST_MARKETS as $key => $label)
+                @foreach ($markets as $key => $label)
                     <option value="{{ $key }}">{{ $label }}</option>
                 @endforeach
             </select>
@@ -24,7 +24,7 @@
         <div class="nt-fx-cols" @if ($columns === 2) data-two @endif aria-hidden="true">
             <span>Time</span><span>Match</span>
             @foreach ($labels as $label)<span>{{ $label }}</span>@endforeach
-            @if ($columns === 2)<span></span>@endif
+            @if ($columns === 2)<span>{{ $marketKey === 'totals' ? 'Line' : '' }}</span>@endif
             <span></span>
         </div>
 

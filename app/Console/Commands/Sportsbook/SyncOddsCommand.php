@@ -6,20 +6,22 @@ use App\Jobs\Sportsbook\SyncCompetitionOdds;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\OddsApi\CreditBudget;
+use App\Sportsbook\Support\SportProfile;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 
 #[Signature('sportsbook:sync-odds
-    {--markets= : Comma-separated market keys (defaults to ODDS_API_MARKETS)}
+    {--markets= : Comma-separated market keys for every competition (defaults to each sport\'s markets, config sportsbook.sports)}
     {--sync : Run in this process instead of queueing a job per competition}')]
 #[Description('Buy and apply odds for synced competitions with fixtures coming up (spends Odds API credits)')]
 class SyncOddsCommand extends Command
 {
     public function handle(CreditBudget $budget): int
     {
-        $marketTypes = $this->marketTypes();
+        $option = $this->option('markets');
+        $marketTypes = is_string($option) && $option !== '' ? $this->marketTypes($option) : [];
 
         if ($marketTypes === null) {
             $feedKeys = array_map(fn (MarketType $type): string => $type->value, array_filter(MarketType::cases(), fn (MarketType $type): bool => $type->isFeedMarket()));
@@ -33,11 +35,15 @@ class SyncOddsCommand extends Command
             ->whereHas('fixtures', fn (Builder $query) => $query
                 ->upcoming()
                 ->where('kicks_off_at', '<=', now('UTC')->addDays((int) config('sportsbook.odds_api.lookahead_days'))))
+            ->with('sport')
             ->orderBy('sort_order')
             ->get();
 
+        // Each sport buys its own markets (football h2h; basketball h2h + totals) unless --markets says otherwise.
+        $marketsFor = fn (Competition $competition): array => $marketTypes !== [] ? $marketTypes : SportProfile::forSport($competition->sport)->markets;
+
         $regionCount = count(explode(',', (string) config('sportsbook.odds_api.region')));
-        $estimatedCredits = $competitions->count() * count($marketTypes) * $regionCount;
+        $estimatedCredits = $competitions->sum(fn (Competition $competition): int => count($marketsFor($competition))) * $regionCount;
 
         $cost = config('sportsbook.odds_api.driver') === 'live'
             ? "about {$estimatedCredits} credits"
@@ -48,8 +54,8 @@ class SyncOddsCommand extends Command
 
         foreach ($competitions as $competition) {
             $this->option('sync')
-                ? SyncCompetitionOdds::dispatchSync($competition, $marketTypes)
-                : SyncCompetitionOdds::dispatch($competition, $marketTypes);
+                ? SyncCompetitionOdds::dispatchSync($competition, $marketsFor($competition))
+                : SyncCompetitionOdds::dispatch($competition, $marketsFor($competition));
         }
 
         return self::SUCCESS;
@@ -58,10 +64,8 @@ class SyncOddsCommand extends Command
     /**
      * @return list<MarketType>|null Null when a key is not a known market type.
      */
-    private function marketTypes(): ?array
+    private function marketTypes(string $keys): ?array
     {
-        $option = $this->option('markets');
-        $keys = is_string($option) && $option !== '' ? $option : (string) config('sportsbook.odds_api.markets');
         $types = [];
 
         foreach (array_filter(array_map('trim', explode(',', $keys))) as $key) {

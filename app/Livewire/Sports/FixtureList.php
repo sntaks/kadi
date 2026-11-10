@@ -13,7 +13,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 /**
- * The football list (plan §2): tabs (Highlights, Today, Tomorrow, This week), a market switcher, and rows grouped by
+ * A sport's match list (plan §2): tabs (Highlights, Today, Tomorrow, This week), a market switcher, and rows grouped by
  * day and competition. On /sports and a competition page it grows as the player scrolls; on the landing it shows the
  * first page and links to the rest. Counts are the real ones.
  *
@@ -43,9 +43,18 @@ class FixtureList extends Component
     #[Locked]
     public string $heading = 'Football';
 
-    public function mount(?int $competitionId = null, bool $preview = false, string $tab = 'highlights', string $heading = 'Football'): void
+    /** The sport listed (a config sportsbook.sports slug); its markets set the switcher and the columns. */
+    #[Locked]
+    public string $sport = 'football';
+
+    #[Locked]
+    public string $icon = 'ball';
+
+    public function mount(?int $competitionId = null, bool $preview = false, string $tab = 'highlights', string $heading = 'Football', string $sport = 'football', string $icon = 'ball'): void
     {
         $this->heading = $heading;
+        $this->sport = $sport;
+        $this->icon = $icon;
         $this->tab = array_key_exists($tab, FixtureListing::TABS) ? $tab : 'highlights';
         $this->competitionId = $competitionId;
         $this->preview = $preview;
@@ -55,7 +64,7 @@ class FixtureList extends Component
     public function updated(string $property): void
     {
         $this->tab = array_key_exists($this->tab, FixtureListing::TABS) ? $this->tab : 'highlights';
-        $this->marketKey = array_key_exists($this->marketKey, FixtureListing::LIST_MARKETS) ? $this->marketKey : 'h2h';
+        $this->marketKey = array_key_exists($this->marketKey, FixtureListing::listMarkets($this->sport)) ? $this->marketKey : 'h2h';
 
         if ($property === 'tab' && ! $this->preview) {
             $this->shown = self::BATCH;
@@ -84,27 +93,30 @@ class FixtureList extends Component
     #[Computed]
     public function fixtures(): Collection
     {
-        return app(FixtureListing::class)->forTab($this->tab, $this->marketKey, $this->competition, $this->shown);
+        // A competition page lists that competition only; otherwise the sport's matches.
+        return app(FixtureListing::class)->forTab($this->tab, $this->marketKey, $this->competition, $this->shown, $this->competition === null ? $this->sport : null);
     }
 
     #[Computed]
     public function total(): int
     {
-        return app(FixtureListing::class)->count($this->tab, $this->competition);
+        return app(FixtureListing::class)->count($this->tab, $this->competition, $this->competition === null ? $this->sport : null);
     }
 
     public function render(): View
     {
         $tz = (string) config('sportsbook.timezone');
+        $twoWay = FixtureListing::listMarkets($this->sport) === FixtureListing::TWO_WAY_LIST_MARKETS;
 
         return view('livewire.sports.fixture-list', [
             'groups' => $this->fixtures->groupBy(fn (Fixture $fixture): string => $fixture->kicks_off_at->timezone($tz)->toDateString().'|'.$fixture->competition->name),
-            'columns' => in_array($this->marketKey, ['h2h', 'double_chance'], true) ? 3 : 2,
+            'markets' => FixtureListing::listMarkets($this->sport),
+            'columns' => $twoWay || ! in_array($this->marketKey, ['h2h', 'double_chance'], true) ? 2 : 3,
             'labels' => match ($this->marketKey) {
                 'double_chance' => ['1X', '12', 'X2'],
-                'totals:2.5' => ['Over', 'Under'],
+                'totals:2.5', 'totals' => ['Over', 'Under'],
                 'btts' => ['Yes', 'No'],
-                default => ['1', 'X', '2'],
+                default => $twoWay ? ['1', '2'] : ['1', 'X', '2'],
             },
         ]);
     }

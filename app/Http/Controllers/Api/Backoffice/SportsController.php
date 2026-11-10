@@ -23,6 +23,7 @@ use App\Sportsbook\Models\JackpotEntry;
 use App\Sportsbook\Models\Market;
 use App\Sportsbook\Models\WagerOp;
 use App\Sportsbook\OddsApi\CreditBudget;
+use App\Sportsbook\Support\SportProfile;
 use App\Sportsbook\Support\StaffActor;
 use App\Sportsbook\Trading\MarketCannotBeReopened;
 use App\Sportsbook\Trading\OverrideSelectionPrices;
@@ -179,7 +180,9 @@ class SportsController extends Controller
     /** Record or correct a fixture's result; bets and jackpots settle (or re-settle) on it. */
     public function recordResult(Request $request, Fixture $fixture, RecordResult $record): JsonResponse
     {
-        $score = ['nullable', 'integer', 'min:0', 'max:99'];
+        // Football scores stop at 99; basketball runs past 100 (config sportsbook.sports.*.max_score).
+        $fixture->loadMissing('competition.sport');
+        $score = ['nullable', 'integer', 'min:0', 'max:'.SportProfile::forSport($fixture->competition?->sport)->maxScore];
         $data = $request->validate([
             'is_void' => ['sometimes', 'boolean'],
             'home_score' => [Rule::requiredIf(! $request->boolean('is_void')), ...$score],

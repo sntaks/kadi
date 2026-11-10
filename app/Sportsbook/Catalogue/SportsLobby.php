@@ -6,6 +6,7 @@ use App\Sportsbook\Enums\MarketStatus;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Support\SportProfile;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
- * What the shell and the landing show about football (plan §2): the competitions with matches open for betting and
+ * What the shell and the landing show about sports (plan §2): the sports and competitions with matches open for betting and
  * their real counts, the jackpot taking entries, and today's big match. Counts are cached for a minute, because the
  * side menu shows them on every page; nothing is estimated.
  */
@@ -21,31 +22,63 @@ class SportsLobby
 {
     private const CACHE_SECONDS = 60;
 
-    public function __construct(private FixtureListing $listing) {}
-
-    /** Matches open for betting in the next seven days (the Highlights list), uncapped. */
-    public function highlightsCount(): int
-    {
-        return (int) Cache::remember('sports.lobby.highlights-count', self::CACHE_SECONDS, fn (): int => $this->listing->count('highlights'));
-    }
-
     /**
-     * Competitions with matches open for betting, in their curated order.
+     * Competitions with matches open for betting, in their curated order, optionally of one sport (by slug).
      *
-     * @return list<array{name: string, slug: string, count: int}>
+     * @return list<array{name: string, slug: string, count: int, sport: string, popular: bool}>
      */
-    public function competitions(): array
+    public function competitions(?string $sport = null): array
     {
-        return Cache::remember('sports.lobby.competitions', self::CACHE_SECONDS, fn (): array => Competition::query()
+        $all = Cache::remember('sports.lobby.competitions', self::CACHE_SECONDS, fn (): array => Competition::query()
             ->synced()
+            ->with('sport:id,slug')
             ->withCount(['fixtures as open_count' => fn ($fixtures) => $fixtures->upcoming()->whereHas('markets')])
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get()
             ->filter(fn (Competition $competition): bool => (int) $competition->getAttribute('open_count') > 0)
-            ->map(fn (Competition $competition): array => ['name' => $competition->name, 'slug' => $competition->slug, 'count' => (int) $competition->getAttribute('open_count')])
+            ->map(fn (Competition $competition): array => [
+                'name' => $competition->name,
+                'slug' => $competition->slug,
+                'count' => (int) $competition->getAttribute('open_count'),
+                'sport' => SportProfile::forSport($competition->sport)->slug,
+                'popular' => in_array($competition->odds_api_key, SportProfile::forSport($competition->sport)->popular, true),
+            ])
             ->values()
             ->all());
+
+        return $sport === null ? $all : array_values(array_filter($all, fn (array $competition): bool => $competition['sport'] === $sport));
+    }
+
+    /**
+     * The sports players can bet on, in menu order, with their real counts of matches open. A configured sport with
+     * nothing open is left out, so the menu never lists an empty sport.
+     *
+     * @return list<array{slug: string, name: string, icon: string, count: int}>
+     */
+    public function sports(): array
+    {
+        $counts = [];
+
+        foreach ($this->competitions() as $competition) {
+            $counts[$competition['sport']] = ($counts[$competition['sport']] ?? 0) + $competition['count'];
+        }
+
+        $sports = [];
+
+        foreach (SportProfile::all() as $slug => $profile) {
+            if (($counts[$slug] ?? 0) > 0) {
+                $sports[] = ['slug' => $slug, 'name' => $profile->name, 'icon' => $profile->icon, 'count' => $counts[$slug]];
+            }
+        }
+
+        return $sports;
+    }
+
+    /** A sport's page: football keeps /sports, the others /sports/{sport}. */
+    public static function sportUrl(string $sport): string
+    {
+        return $sport === 'football' ? route('sports') : route('sports.sport', $sport);
     }
 
     /**
@@ -84,7 +117,7 @@ class SportsLobby
         return Cache::remember('sports.lobby.search', self::CACHE_SECONDS, function (): array {
             $entries = array_map(fn (array $competition): array => [
                 'name' => $competition['name'],
-                'kind' => 'Football · '.$competition['count'].' '.Str::plural('match', $competition['count']),
+                'kind' => (SportProfile::find($competition['sport'])->name ?? 'Football').' · '.$competition['count'].' '.Str::plural('match', $competition['count']),
                 'url' => route('sports.competition', $competition['slug']),
                 'thumb' => null,
             ], $this->competitions());
@@ -166,8 +199,12 @@ class SportsLobby
      */
     private function withOpenMatchResult(Builder $query): Builder
     {
+        // The big match is a football card (1X2, kick-off): sports without a draw never take it.
+        $twoWay = array_keys(array_filter(SportProfile::all(), fn (SportProfile $profile): bool => ! $profile->hasDraw));
+
         return $query->upcoming()
-            ->whereHas('competition', fn (Builder $competitions) => $competitions->synced())
+            ->whereHas('competition', fn (Builder $competitions) => $competitions->synced()
+                ->whereDoesntHave('sport', fn (Builder $sports) => $sports->whereIn('slug', $twoWay)))
             ->whereHas('matchResultMarket', fn (Builder $markets) => $markets->where('status', MarketStatus::Open));
     }
 

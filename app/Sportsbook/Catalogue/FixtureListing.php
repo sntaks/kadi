@@ -3,8 +3,11 @@
 namespace App\Sportsbook\Catalogue;
 
 use App\Sportsbook\Enums\FixtureStatus;
+use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\Market;
+use App\Sportsbook\Support\SportProfile;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,6 +32,36 @@ class FixtureListing
     ];
 
     /**
+     * Basketball's list markets: the two-way Winner and the main points line (`totals`: each match's best-priced line).
+     *
+     * @var array<string, string>
+     */
+    public const TWO_WAY_LIST_MARKETS = [
+        'h2h' => 'Winner',
+        'totals' => 'Total points',
+    ];
+
+    /**
+     * The market switcher for a sport's list: football's 1X2 family, or Winner and total for a sport without a draw.
+     *
+     * @return array<string, string>
+     */
+    public static function listMarkets(?string $sport): array
+    {
+        return $sport !== null && ! (SportProfile::find($sport)->hasDraw ?? true) ? self::TWO_WAY_LIST_MARKETS : self::LIST_MARKETS;
+    }
+
+    /**
+     * The market a list row shows. `totals` is the match's main line: the one most bookmakers price.
+     */
+    public static function listMarket(Fixture $fixture, string $marketKey): ?Market
+    {
+        return $marketKey === 'totals'
+            ? $fixture->markets->where('type', MarketType::Totals)->sortByDesc('bookmaker_count')->first()
+            : $fixture->markets->firstWhere('key', $marketKey);
+    }
+
+    /**
      * Tabs on the home page, with their labels.
      *
      * @var array<string, string>
@@ -46,27 +79,27 @@ class FixtureListing
      * @param  int|null  $limit  How many to load (the first page of a list); the list's own cap by default.
      * @return Collection<int, Fixture>
      */
-    public function forTab(string $tab, string $marketKey, ?Competition $competition = null, ?int $limit = null): Collection
+    public function forTab(string $tab, string $marketKey, ?Competition $competition = null, ?int $limit = null, ?string $sport = null): Collection
     {
-        return $this->tabQuery($tab, $marketKey, $competition)->limit($limit ?? self::LIMIT)->get();
+        return $this->tabQuery($tab, $marketKey, $competition, $sport)->limit($limit ?? self::LIMIT)->get();
     }
 
     /**
      * How many matches the tab holds, uncapped: the number players see ("All 111 matches") is the real one.
      */
-    public function count(string $tab, ?Competition $competition = null): int
+    public function count(string $tab, ?Competition $competition = null, ?string $sport = null): int
     {
-        return $this->tabQuery($tab, 'h2h', $competition)->reorder()->toBase()->getCountForPagination();
+        return $this->tabQuery($tab, 'h2h', $competition, $sport)->reorder()->toBase()->getCountForPagination();
     }
 
     /**
      * @return Builder<Fixture>
      */
-    private function tabQuery(string $tab, string $marketKey, ?Competition $competition): Builder
+    private function tabQuery(string $tab, string $marketKey, ?Competition $competition, ?string $sport = null): Builder
     {
         $localNow = CarbonImmutable::now(config('sportsbook.timezone'));
 
-        $query = $this->bettable($marketKey, $competition);
+        $query = $this->bettable($marketKey, $competition, $sport);
 
         match ($tab) {
             'today' => $query->where('kicks_off_at', '<=', $localNow->endOfDay()->utc()),
@@ -131,16 +164,18 @@ class FixtureListing
      *
      * @return Builder<Fixture>
      */
-    private function bettable(string $marketKey, ?Competition $competition = null): Builder
+    private function bettable(string $marketKey, ?Competition $competition = null, ?string $sport = null): Builder
     {
         return Fixture::query()
             ->upcoming()
             ->when($competition !== null, fn (Builder $query) => $query->where('competition_id', $competition?->id))
-            ->whereHas('competition', fn (Builder $competitions) => $competitions->synced())
+            ->whereHas('competition', fn (Builder $competitions) => $competitions->synced()
+                ->when($sport !== null, fn (Builder $query) => SportProfile::scopeCompetitions($query, (string) $sport)))
             ->whereHas('markets')
             ->with([
                 'competition',
-                'markets' => fn ($markets) => $markets->where('key', $marketKey)->with('selections'),
+                'markets' => fn ($markets) => ($marketKey === 'totals' ? $markets->where('type', MarketType::Totals) : $markets->where('key', $marketKey))
+                    ->with('selections'),
             ])
             ->withCount('markets')
             ->orderBy('kicks_off_at');

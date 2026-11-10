@@ -6,10 +6,13 @@ use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\BetLeg;
 use App\Sportsbook\Models\FixtureResult;
+use App\Sportsbook\Support\SportProfile;
 
 /**
- * How each market settles from a result. Every market settles on the full-time (90 minutes plus stoppage) score,
+ * How each market settles from a result. Football markets settle on the full-time (90 minutes plus stoppage) score,
  * except Half-time/Full-time, which also needs the half-time score and waits (null) until an admin enters it.
+ * Sports without a draw (basketball) settle on the final score including overtime, which the scores feed reports;
+ * their two-way Winner is void if a game is recorded level (it cannot end that way).
  */
 class MarketRules
 {
@@ -32,7 +35,7 @@ class MarketRules
         $fullTime = self::resultCode($home, $away);
 
         return match ($leg->market_type) {
-            MarketType::MatchResult => self::wins(match ($leg->outcome) {
+            MarketType::MatchResult => $fullTime === 'X' && $leg->outcome !== 'draw' && ! self::hasDraw($leg) ? BetLegStatus::Void : self::wins(match ($leg->outcome) {
                 'home' => $fullTime === '1',
                 'draw' => $fullTime === 'X',
                 'away' => $fullTime === '2',
@@ -72,6 +75,13 @@ class MarketRules
             $home < $away => '2',
             default => 'X',
         };
+    }
+
+    private static function hasDraw(BetLeg $leg): bool
+    {
+        $leg->loadMissing('fixture.competition.sport');
+
+        return SportProfile::forSport($leg->fixture?->competition?->sport)->hasDraw;
     }
 
     /**
