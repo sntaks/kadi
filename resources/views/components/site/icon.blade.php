@@ -5,6 +5,12 @@
         'ball' => '<circle cx="12" cy="12" r="9"/><path d="m12 7 4 3-1.5 4.5h-5L8 10z"/><path d="M12 3v4M21 10.5l-5-.5M18 19l-3.5-4.5M6 19l3.5-4.5M3 10.5l5-.5"/>',
         'basketball' => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/><path d="M5.8 5.8c2.5 2.6 2.5 9.8 0 12.4M18.2 5.8c-2.5 2.6-2.5 9.8 0 12.4"/>',
         'cards' => '<rect x="3.5" y="5" width="11" height="15" rx="2" transform="rotate(-8 9 12.5)"/><rect x="9.5" y="4" width="11" height="15" rx="2"/><path d="M15 8.5c-1.2 1.4-2 2.3-2 3.2a2 2 0 0 0 4 0c0-.9-.8-1.8-2-3.2Z"/>',
+        // The card on the "i" of the Kadi logo: one playing card tilted 15°, a corner pip and a spade.
+        'kadi' => '<g transform="rotate(15 12 12)"><rect x="6.2" y="3.2" width="11.6" height="17.6" rx="2.2"/><path d="M8.9 6.3v.01"/><path d="M12 8.7c-1.9 1.8-3.1 2.8-3.1 4.2a1.7 1.7 0 0 0 2.8 1.3l-.5 1.5h1.6l-.5-1.5a1.7 1.7 0 0 0 2.8-1.3c0-1.4-1.2-2.4-3.1-4.2Z"/></g>',
+        // One poker chip from the front: rim, six edge notches, inner ring, centre diamond.
+        'chip' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 3v2.4M19.79 7.5l-2.07 1.2M19.79 16.5l-2.07-1.2M12 21v-2.4M4.21 16.5l2.07-1.2M4.21 7.5l2.07 1.2"/><path d="m12 10 2 2-2 2-2-2Z"/>',
+        // A classic football: the centre pentagon, its seams and the neighbouring panels' edges.
+        'football' => '<circle cx="12" cy="12" r="9"/><path d="M12 8.7l3.14 2.28-1.2 3.69h-3.88l-1.2-3.69Z"/><path d="M12 8.7V5.8M12 5.8 8.36 3.82M12 5.8l3.64-1.98M15.14 10.98l2.76-.9M17.9 10.08l.75-4.07M17.9 10.08l3 2.86M13.94 14.67l1.7 2.35M15.64 17.02l4.11-.55M15.64 17.02l-1.78 3.73M10.06 14.67l-1.7 2.35M8.36 17.02l1.78 3.73M8.36 17.02l-4.11-.55M8.86 10.98l-2.76-.9M6.1 10.08l-3 2.86M6.1 10.08l-.75-4.07"/>',
         'slot' => '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M9 5v14M15 5v14M5.5 12h1.5M11.2 12h1.6M17 12h1.5"/>',
         'wallet' => '<path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><rect x="4" y="8" width="16" height="11" rx="2.5"/><path d="M16 13.5h1.5"/>',
         'list' => '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',

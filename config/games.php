@@ -149,6 +149,13 @@ return [
                 'wizard',
             ],
         ],
+        'coinflip' => [
+            // One tile and game page per product, like slots: KadiApi lists one product now and up to four later,
+            // which then appear without a code change. No artwork yet, so the plain fallback tile.
+            'titles' => true,
+            'tagline' => 'Call it: heads or tails.',
+            'hidden' => [],
+        ],
     ],
 
     /*

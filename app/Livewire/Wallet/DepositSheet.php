@@ -3,6 +3,7 @@
 namespace App\Livewire\Wallet;
 
 use App\Account\ResponsiblePlay;
+use App\Activity\PlayerActivity;
 use App\Facades\KadiApi;
 use App\Models\User;
 use App\Services\TextSmsService;
@@ -106,7 +107,10 @@ class DepositSheet extends Component
         // Fresh, not cached: a stale or missing baseline would report a deposit too early, or never.
         $this->baseline = $balances->refresh($user)['balance'];
 
-        if (! KadiApi::stkDeposit($user, $amount, (string) Str::uuid())) {
+        $sent = KadiApi::stkDeposit($user, $amount, (string) Str::uuid());
+        app(PlayerActivity::class)->record('deposit_requested', $user, ['ok' => $sent]);
+
+        if (! $sent) {
             $this->error = "We couldn't send the M-Pesa request. Try again in a moment.";
 
             return;

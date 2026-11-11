@@ -1,6 +1,6 @@
 {{--
     The one site shell (plan §2, Phase 4), for guests and players alike: top bar, notice strip, side menu
-    (a drawer below 1024px), the page, footer and the phone bottom bar. Every page uses it, passing `$shell`
+    (full on desktop and collapsible, an icon rail on tablets, a drawer on phones), the page, footer and the phone bottom bar. Every page uses it, passing `$shell`
     (sign-in and gate pages through <x-auth.page>):
 
       app    signed-in pages: padded content column.
@@ -26,9 +26,10 @@
             <meta name="kadi-max-selections" content="{{ (int) config('sportsbook.limits.max_selections') }}">
         @endif
     </head>
-    <body @class(['nt-site min-h-screen antialiased', 'nt-has-rail' => $rail]) data-shell="{{ $shell }}"
-          x-data="{ menuOpen: false }"
-          x-on:resize.window.debounce.150ms="if (innerWidth >= 1024) menuOpen = false">
+    <body @class(['nt-site min-h-screen antialiased', 'nt-has-rail' => $rail]) data-shell="{{ $shell }}" @auth data-activity-url="{{ route('activity.beacon') }}" @endauth
+          x-data="siteShell" x-on:resize.window.debounce.150ms="resized()">
+        {{-- The side menu's rail before the first paint (same rule as resources/js/site/side-rail.js), so nothing jumps. --}}
+        <script>try{var w=innerWidth;if(w>=768&&(w<1240||localStorage.getItem('kadi.side.rail')==='1'))document.body.classList.add('nt-railed')}catch(e){}</script>
         <a href="#main" class="nt-skip">Skip to content</a>
 
         <x-site.top-bar :nav="$nav" />

@@ -2,6 +2,7 @@
 
 namespace App\Sportsbook\Betting;
 
+use App\Activity\PlayerActivity;
 use App\Models\User;
 use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Enums\BetStatus;
@@ -86,6 +87,8 @@ class PlaceBet
         }
 
         /** @var Bet $bet */
+        app(PlayerActivity::class)->record('bet_placed', $user, ['status' => $bet->status->value], $bet);
+
         return $bet;
     }
 

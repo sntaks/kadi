@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Wallet;
 
+use App\Activity\PlayerActivity;
 use App\Facades\KadiApi;
 use App\Livewire\WalletBalance;
 use App\Models\User;
@@ -451,6 +452,8 @@ class Index extends Component
         } finally {
             $this->processingWithdraw = false;
         }
+
+        app(PlayerActivity::class)->record('withdrawal_requested', $user, ['kind' => 'wallet', 'ok' => $result->outcome !== WithdrawResult::REJECTED]);
 
         if ($result->outcome === WithdrawResult::REJECTED) {
             // Definitively not paid out. Do not optimistically change the

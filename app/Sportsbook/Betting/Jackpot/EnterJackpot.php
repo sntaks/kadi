@@ -2,6 +2,7 @@
 
 namespace App\Sportsbook\Betting\Jackpot;
 
+use App\Activity\PlayerActivity;
 use App\Models\User;
 use App\Sportsbook\Enums\JackpotEntryStatus;
 use App\Sportsbook\Models\Jackpot;
@@ -68,6 +69,8 @@ class EnterJackpot
         }
 
         /** @var JackpotEntry $entry */
+        app(PlayerActivity::class)->record('jackpot_entered', $user, ['status' => $entry->status->value], $entry);
+
         return $entry;
     }
 

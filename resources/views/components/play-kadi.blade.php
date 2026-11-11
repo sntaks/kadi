@@ -10,6 +10,8 @@
 --}}
 @props(['disabled' => false])
 @php
+    // Tagged for the player activity log's clicks (resources/js/site/activity.js); a caller's own tag wins.
+    $attributes = $attributes->merge(['data-activity' => 'play-kadi']);
     // Kadi needs a verified e-mail (the `verified` middleware), and the ggid form posts off-site where
     // no middleware runs, so every Play Kadi control is disabled until the e-mail is verified.
     $user = auth()->user();

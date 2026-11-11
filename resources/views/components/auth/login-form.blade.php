@@ -7,6 +7,15 @@
 <div class="grid gap-4">
     @if (session('status') && in_array(session('signin_form'), [null, 'login'], true))<p class="nt-ok" role="status">{{ session('status') }}</p>@endif
 
+    {{-- Refused by the one-device rule (App\Auth\SingleSession): offer the e-mailed link that signs the other device out. --}}
+    @if (session()->has(\App\Auth\SingleSession::PENDING_KEY))
+        <form method="POST" action="{{ route('login.release-device') }}" class="grid gap-2 rounded-panel border border-line p-3" data-test="release-device">
+            @csrf
+            <p class="m-0 text-sm text-soft">Lost that device, or can't reach it? We'll e-mail you a link that signs it out.</p>
+            <x-ui.button type="submit" variant="ghost" block>E-mail me a sign-out link</x-ui.button>
+        </form>
+    @endif
+
     <x-auth.google-button :return-to="$returnTo" />
     <x-auth.or />
 

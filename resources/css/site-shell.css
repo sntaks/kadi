@@ -2,7 +2,7 @@
  * The one site shell (plan §2 "Menu", Phase 4): top bar, side menu, notice strip, account menu,
  * footer and the phone bottom bar. Used by layouts/site.blade.php, the one layout.
  *
- * Breakpoints: below 1024px the side menu is a drawer; below 640px the bottom bar appears.
+ * Breakpoints: the side menu is full from 1240px (collapsible), an icon rail from 768px and a drawer below; the top bar drops its tabs below 1024px; below 640px the bottom bar appears.
  * Every class is `nt-` prefixed, so the reduced-motion rule in night-table.css covers it.
  */
 
@@ -160,20 +160,66 @@
         .nt-footer { grid-template-columns: 1fr 1fr; }
     }
 
-    /* Tablet and phone: the side menu becomes a drawer. */
+    /* Tablet and phone: the top bar drops its product tabs and account menu (they live in the side menu). */
     @media (max-width: 1023.98px) {
         .nt-logo { width: auto; }
         .nt-products, .nt-top .nt-acct { display: none; }
         .nt-search { max-width: none; }
+    }
+
+    /* ── Side menu sizes (resources/js/site/side-rail.js) ─────
+       Phones: hidden, a drawer. Tablets: an icon rail; Menu or a rail group opens the full drawer over the page.
+       Desktop: full, collapsible to the rail. body.nt-railed switches the rail. */
+    .nt-rail-toggle { display: none; }
+    @media (min-width: 1240px) {
+        .nt-rail-toggle {
+            display: flex; align-items: center; gap: 11px; width: 100%; height: 36px; margin-bottom: 10px; padding: 0 10px; border-radius: 9px;
+            color: var(--color-ash); font-size: 13px; font-weight: 600;
+        }
+        .nt-rail-toggle:hover { background: var(--color-felt-2); color: var(--color-ivory); }
+        .nt-rail-toggle:focus-visible { outline: 2px solid var(--color-gold); outline-offset: -2px; }
+        .nt-rail-toggle .nt-rail-chev { width: 18px; height: 18px; flex: none; transform: rotate(90deg); transition: transform .25s var(--ease-table); }
+        .nt-railed .nt-rail-toggle .nt-rail-chev { transform: rotate(-90deg); }
+        /* Collapsing keeps the logo its full size: only the menu column narrows. */
+        .nt-railed .nt-logo { width: 196px; }
+    }
+
+    .nt-site.nt-railed { --nt-side: 72px; }
+    .nt-railed .nt-side:not(.nt-open) { padding: 12px 8px 20px; scrollbar-width: none; }
+    .nt-railed .nt-side:not(.nt-open) :is(.nt-side-close, .nt-side-acct, .nt-links h2, .nt-age, .nt-chev, .nt-nav-n, .nt-nav-end, .nt-group > ul, .nt-links > :not(.nt-nav-item)) { display: none !important; }
+    /* Labels leave the rail but stay the links' accessible names. */
+    .nt-railed .nt-side:not(.nt-open) :is(.nt-label, .nt-nav-item > span) {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .nt-railed .nt-side:not(.nt-open) :is(.nt-group, .nt-links) { padding: 4px; }
+    .nt-railed .nt-side:not(.nt-open) :is(.nt-group > button, .nt-nav-item, .nt-rail-toggle) { position: relative; justify-content: center; gap: 0; height: 44px; padding: 0; }
+    .nt-railed .nt-side:not(.nt-open) .nt-nav-item > svg:first-child { display: block; }
+
+    /* Below desktop the full menu is a drawer over the page. */
+    @media (max-width: 1239.98px) {
+        .nt-side.nt-open {
+            position: fixed; z-index: 65; left: 0; top: 0; height: 100dvh; width: min(300px, 86vw); background: var(--color-night);
+            transform: none; visibility: visible; transition: transform .3s var(--ease-table);
+        }
+        .nt-side.nt-open .nt-side-acct { display: block; padding: 4px 6px 14px; margin-bottom: 12px; border-bottom: 1px solid var(--color-line); }
+        .nt-side.nt-open .nt-side-acct .nt-who { padding: 6px 4px 10px; }
+        .nt-side.nt-open :is(.nt-nav-item, .nt-group > button) { min-height: 44px; }
+    }
+
+    /* Phones: no column for the menu; closed, the drawer waits off-screen. */
+    @media (max-width: 767.98px) {
         .nt-shell { grid-template-columns: minmax(0, 1fr); }
         .nt-side {
             position: fixed; z-index: 65; left: 0; top: 0; height: 100dvh; width: min(300px, 86vw); background: var(--color-night);
             transform: translateX(-100%); visibility: hidden; transition: transform .3s var(--ease-table), visibility 0s linear .3s;
         }
-        .nt-side.nt-open { transform: none; visibility: visible; transition: transform .3s var(--ease-table); }
         .nt-side-acct { display: block; padding: 4px 6px 14px; margin-bottom: 12px; border-bottom: 1px solid var(--color-line); }
         .nt-side-acct .nt-who { padding: 6px 4px 10px; }
         .nt-nav-item, .nt-group > button { min-height: 44px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nt-side, .nt-side.nt-open, .nt-rail-toggle .nt-rail-chev { transition: none; }
     }
 
     @media (max-width: 640px) {

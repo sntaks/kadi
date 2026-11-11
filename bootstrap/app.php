@@ -1,5 +1,6 @@
 <?php
 
+use App\Auth\SignedInElsewhere;
 use App\Http\Controllers\WebManifestController;
 use App\Http\Middleware\AuthenticatePushApiKey;
 use App\Http\Middleware\CapturePromoCode;
@@ -74,4 +75,14 @@ return Application::configure(basePath: dirname(__DIR__))
         // Server-to-server clients under /api always get JSON errors (404, 405, 500...), never
         // an HTML page or a redirect, even if they forget the Accept header.
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->is('api/*') || $request->expectsJson());
+
+        // One signed-in device: whichever way the player signed in (password, two-factor code, Google), the refusal
+        // lands on the login form, which offers the "sign out my other device" link. The passkey call gets JSON.
+        $exceptions->render(function (SignedInElsewhere $e, Request $request) {
+            if ($request->expectsJson()) {
+                return null;
+            }
+
+            return redirect()->route('login')->withErrors($e->errors())->with('signin_form', 'login');
+        });
     })->create();

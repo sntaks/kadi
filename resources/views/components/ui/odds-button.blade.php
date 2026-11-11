@@ -13,7 +13,7 @@
         ? ($pick ?? $label).': '.($suspended ? 'suspended' : 'no price yet')
         : ($pick ?? $label).' at '.$priceText.$moved.($selected ? ', in your bet slip' : '');
 @endphp
-<button type="button" aria-pressed="{{ $selected && ! $unavailable ? 'true' : 'false' }}" aria-label="{{ $name }}" @disabled($unavailable) {{ $attributes->class('nt-odds') }}>
+<button type="button" aria-pressed="{{ $selected && ! $unavailable ? 'true' : 'false' }}" aria-label="{{ $name }}" @disabled($unavailable) {{ $attributes->class('nt-odds')->merge(['data-activity' => 'odds']) }}>
     @if ($showLabel)<small aria-hidden="true">{{ $label }}</small>@endif
     <b aria-hidden="true">
         @if ($unavailable)

@@ -1,10 +1,12 @@
 <?php
 
 use App\Games\GameCatalogue;
+use App\Http\Controllers\ActivityBeaconController;
 use App\Http\Controllers\Auth\ConsentController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\GoogleLinkController;
 use App\Http\Controllers\Auth\NameUpdateController;
+use App\Http\Controllers\Auth\ReleaseDeviceController;
 use App\Http\Controllers\Dev\MailPreviewController;
 use App\Http\Controllers\Dev\UiGalleryController;
 use App\Http\Controllers\GameLaunchController;
@@ -38,6 +40,10 @@ use App\Livewire\Wallet\Index;
 use App\Livewire\Welcome;
 use App\Sportsbook\Models\Competition;
 use Illuminate\Support\Facades\Route;
+
+// One signed-in device (App\Auth\SingleSession): a refused player can have the other device signed out by e-mail.
+Route::post('/login/release-device', [ReleaseDeviceController::class, 'send'])->middleware(['guest', 'throttle:6,1'])->name('login.release-device');
+Route::get('/login/release-device/{nonce}', [ReleaseDeviceController::class, 'confirm'])->middleware(['signed', 'throttle:6,1'])->name('login.release-device.confirm');
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
@@ -89,6 +95,8 @@ Route::middleware(RequirePlatformFlag::class.':sports')->prefix('sports')->group
 Route::get('/games/search', GameSearchController::class)->middleware('throttle:60,1')->name('games.search');
 
 Route::middleware(['auth'])->group(function () {
+    // Page views, tagged clicks and game closes for the player activity log (App\Activity\PlayerActivity).
+    Route::post('/activity', ActivityBeaconController::class)->middleware('throttle:activity')->name('activity.beacon');
     Route::get('/consent', [ConsentController::class, 'show'])->name('consent.show');
     Route::post('/consent', [ConsentController::class, 'store'])->name('consent.store');
     Route::get('/name', [NameUpdateController::class, 'show'])->name('name.edit');
