@@ -1,0 +1,16 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "market_id": 2,
+            "points": [
+                {
+                    "at": "2026-11-13T12:21:05+03:00",
+                    "yes_probability": 0.625,
+                    "no_probability": 0.375
+                }
+            ]
+        }
+    }
+}

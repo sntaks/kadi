@@ -1,0 +1,16 @@
+{
+    "success": true,
+    "data": {
+        "quote": {
+            "quote_id": "9d2c3f10-7a41-4c8e-b0a3-52e6d1f0a7aa",
+            "market_id": 31,
+            "side": "yes",
+            "stake": 100,
+            "multiplier": 1.58,
+            "potential_payout": 158,
+            "price": 0.63,
+            "expires_at": "2026-11-12T09:00:10+03:00"
+        },
+        "replayed": false
+    }
+}

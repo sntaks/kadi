@@ -1,0 +1,12 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "server_time": "2026-11-13T12:24:02+03:00",
+            "has_more": false,
+            "reference_prices_at": "2026-11-13T12:24:02+03:00",
+            "markets": []
+        }
+    }
+}

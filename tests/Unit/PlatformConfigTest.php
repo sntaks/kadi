@@ -35,9 +35,13 @@ function configDefaults(string $file, array $keys): array
 test('the old look is gone; every switch is on by default except taking real-money bets', function () {
     $flags = configDefaults('platform.php', [
         'PLATFORM_TOKEN_LAUNCH', 'PLATFORM_DEEP_LINK', 'PLATFORM_SPORTS', 'PLATFORM_SPORTS_BETTING',
+        'PLATFORM_PREDICTIONS', 'PLATFORM_PREDICTIONS_BETTING',
     ]);
 
-    expect($flags)->toBe(['token_launch' => true, 'deep_link' => true, 'sports' => true, 'sports_betting' => false]);
+    expect($flags)->toBe([
+        'token_launch' => true, 'deep_link' => true, 'sports' => true, 'sports_betting' => false,
+        'predictions' => true, 'predictions_betting' => false,
+    ]);
 });
 
 test('mail previews and the UI gallery default to on only in the local environment', function (string $env, bool $expected) {

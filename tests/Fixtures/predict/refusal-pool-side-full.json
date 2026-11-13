@@ -1,0 +1,7 @@
+{
+    "success": false,
+    "message": "This side cannot take a stake that large now",
+    "code": "pool_side_full",
+    "retryable": false,
+    "max_stake": 640
+}

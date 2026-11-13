@@ -1,0 +1,43 @@
+{
+    "success": true,
+    "data": {
+        "id": 32,
+        "source": "custom",
+        "question": "Will Kenya host AFCON 2027 matches in Nairobi?",
+        "description": null,
+        "resolution_criteria": "YES if CAF confirms a match at Kasarani.",
+        "resolution_source": "CAF",
+        "category": "sport",
+        "image_url": null,
+        "external_url": null,
+        "countries": [
+            "KE"
+        ],
+        "timezone": "Africa/Nairobi",
+        "currency": "KES",
+        "status": "open",
+        "engine": "lmsr",
+        "close_at": "2026-11-23T11:41:04+03:00",
+        "resolution_deadline_at": "2026-11-25T11:41:04+03:00",
+        "result": null,
+        "min_stake": 10,
+        "max_stake": 5000,
+        "max_payout": 250000,
+        "event": null,
+        "betting_available": true,
+        "betting_closes_at": "2026-11-23T11:41:04+03:00",
+        "odds": {
+            "yes_label": "Yes",
+            "no_label": "No",
+            "yes_probability": 0.582365,
+            "no_probability": 0.417635,
+            "yes_multiplier": 1.54,
+            "no_multiplier": 2.15,
+            "is_estimate": true,
+            "is_reference": false,
+            "updated_at": "2026-11-13T11:41:05+03:00"
+        },
+        "opened_at": "2026-11-13T11:41:04+03:00",
+        "resolved_at": null
+    }
+}

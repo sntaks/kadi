@@ -1,0 +1,50 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "id": 2,
+            "source": "polymarket",
+            "question": "Will a team from LCK (South Korea) win LoL Worlds 2026?",
+            "description": "This market will resolve according to the region or country of the esports team winning 1st place in the League of Legends 2026 Season World Championship (Worlds 2026).\n\nIf the winner of Worlds 2026 is not determined by December 31, 2026 ET, this market will resolve to \"Other\".\n\nThe resolution source for this market will be official information from Fandom (https://lol.fandom.com/wiki/2026_Season_World_Championship).\n\nRegions counted in World 2026:\n- LCK (South Korea)\n- LPL (China)\n- LEC (Europe / EMEA)\n- LCP (Asia-Pacific)\n- LCS (North America)\n- CBLOL (Brazil)",
+            "resolution_criteria": "This market will resolve according to the region or country of the esports team winning 1st place in the League of Legends 2026 Season World Championship (Worlds 2026).\n\nIf the winner of Worlds 2026 is not determined by December 31, 2026 ET, this market will resolve to \"Other\".\n\nThe resolution source for this market will be official information from Fandom (https://lol.fandom.com/wiki/2026_Season_World_Championship).\n\nRegions counted in World 2026:\n- LCK (South Korea)\n- LPL (China)\n- LEC (Europe / EMEA)\n- LCP (Asia-Pacific)\n- LCS (North America)\n- CBLOL (Brazil)",
+            "resolution_source": "https://polymarket.com/event/lol-worlds-2026-winning-region-226",
+            "category": "sport",
+            "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/event-art/esports/lol/worlds-2026-winner.png",
+            "external_url": "https://polymarket.com/event/lol-worlds-2026-winning-region-226/will-a-team-from-lck-south-korea-win-lol-worlds-2026-115",
+            "countries": [
+                "KE"
+            ],
+            "timezone": "Africa/Nairobi",
+            "currency": "KES",
+            "status": "open",
+            "engine": "reference",
+            "close_at": "2027-01-01T04:59:00+03:00",
+            "resolution_deadline_at": "2027-01-08T04:59:00+03:00",
+            "result": null,
+            "min_stake": 10,
+            "max_stake": 5000,
+            "max_payout": 250000,
+            "event": {
+                "id": 2,
+                "title": "Worlds 2026 Winning Region"
+            },
+            "betting_available": true,
+            "betting_closes_at": "2027-01-01T04:44:00+03:00",
+            "odds": {
+                "yes_label": "Yes",
+                "no_label": "No",
+                "yes_probability": 0.625,
+                "no_probability": 0.375,
+                "yes_multiplier": 1.52,
+                "no_multiplier": 2.53,
+                "is_estimate": true,
+                "is_reference": true,
+                "attribution": "Reference prices from Polymarket",
+                "updated_at": "2026-11-13T12:23:59+03:00"
+            },
+            "opened_at": "2026-11-13T12:21:00+03:00",
+            "resolved_at": null
+        }
+    }
+}

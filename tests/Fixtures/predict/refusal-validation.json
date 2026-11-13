@@ -1,0 +1,14 @@
+{
+    "status": 422,
+    "body": {
+        "success": false,
+        "message": "The selected sort is invalid.",
+        "code": "validation_failed",
+        "retryable": false,
+        "errors": {
+            "sort": [
+                "The selected sort is invalid."
+            ]
+        }
+    }
+}
