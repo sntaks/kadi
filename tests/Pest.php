@@ -13,6 +13,7 @@ use App\Sportsbook\Models\Selection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Tests\Support\FakePredictApi;
 use Tests\Support\FakeWagerApi;
 use Tests\TestCase;
 
@@ -174,6 +175,12 @@ function openJackpot(int $matches = 3): Jackpot
 function wagerApi(): FakeWagerApi
 {
     return FakeWagerApi::install();
+}
+
+/** A stateful fake of the Kadi API's prediction routes (tests/Support/FakePredictApi.php). */
+function predictApi(): FakePredictApi
+{
+    return FakePredictApi::install();
 }
 
 /**
