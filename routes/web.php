@@ -28,6 +28,7 @@ use App\Livewire\Lobby\GameIndex;
 use App\Livewire\Lobby\GameShow;
 use App\Livewire\Predict\Lobby as PredictLobby;
 use App\Livewire\Predict\MarketPage as PredictMarket;
+use App\Livewire\Predict\MyBets as PredictMyBets;
 use App\Livewire\Profile\Show;
 use App\Livewire\Promotions;
 use App\Livewire\Referrals\Index as ReferralsIndex;
@@ -78,6 +79,8 @@ Route::middleware(RequirePlatformFlag::class.':deep_link')->group(function () {
 // needs PLATFORM_PREDICTIONS_BETTING or the testers list (App\Support\PredictPages::bettingFor()).
 Route::middleware(RequirePlatformFlag::class.':predictions')->prefix('predictions')->group(function () {
     Route::get('/', PredictLobby::class)->name('predictions');
+    // Before the market route (which only takes numbers anyway).
+    Route::get('/bets', PredictMyBets::class)->middleware('auth')->name('predictions.bets');
     Route::get('/{market}', PredictMarket::class)->whereNumber('market')->name('predictions.market');
 });
 

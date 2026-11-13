@@ -4,6 +4,9 @@
         @if ($world['available'] && $world['total'] > 0)
             <span class="nt-pm-count nt-num">{{ number_format($world['total'] + $kadiTotal) }} {{ \Illuminate\Support\Str::plural('market', $world['total'] + $kadiTotal) }}</span>
         @endif
+        @auth
+            <x-ui.button variant="ghost" size="sm" class="nt-pm-head-action" :href="route('predictions.bets')" wire:navigate>My bets</x-ui.button>
+        @endauth
     </header>
 
     <div class="nt-pm-filters">

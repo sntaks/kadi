@@ -61,6 +61,7 @@
                         <p class="nt-num">{{ $placed['estimate'] ? 'Estimated payout' : 'Pays' }} {{ \App\Predict\Format::kes($placed['payout']) }} if {{ $label($placed['side']) }} wins.</p>
                     @endif
                     <x-ui.button variant="ghost" block wire:click="another">Place another bet</x-ui.button>
+                    <a href="{{ route('predictions.bets') }}" class="nt-pm-link" wire:navigate>See my bets</a>
                 </div>
             @elseif ($state === 'checking')
                 <div class="nt-pm-checking" role="status" x-data="{ wait: {{ $retryIn }} }" x-init="if (wait > 0) { const t = setInterval(() => { if (--wait <= 0) clearInterval(t) }, 1000) }">
@@ -70,6 +71,7 @@
                         <span wire:loading.remove wire:target="retry"><span x-show="wait <= 0">Try again</span><span x-show="wait > 0" x-cloak>Try again in <span x-text="wait"></span>s</span></span>
                         <span wire:loading wire:target="retry">Checking…</span>
                     </x-ui.button>
+                    <a href="{{ route('predictions.bets') }}" class="nt-pm-link" wire:navigate>Check My bets</a>
                 </div>
             @elseif ($side !== '')
                 {{-- Stake --}}
