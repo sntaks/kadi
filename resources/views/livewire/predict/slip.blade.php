@@ -31,11 +31,13 @@
                 @guest
                     <x-predict.outcome-button :$market :side="$s" :$now as="button" />
                 @else
-                    <button type="button" class="nt-pm-side nt-pm-side-{{ $s }}" data-predict-side="{{ $s }}" data-can-bet="{{ $canBet ? '1' : '0' }}"
+                    @php($below = $market->odds?->paysBelowStake($s) ?? false)
+                    <button type="button" class="nt-pm-side nt-pm-side-{{ $s }}" data-predict-side="{{ $s }}" data-can-bet="{{ $canBet ? '1' : '0' }}" data-below-text="{{ __('Pays less than your stake') }}"
+                            @if ($below) aria-label="{{ $label($s) }}: {{ __('pays less than your stake') }}" @endif
                             aria-pressed="{{ $side === $s ? 'true' : 'false' }}" @disabled(! $open || ! $canBet || $state === 'checking')
                             wire:click="pick('{{ $s }}')">
                         <span class="nt-pm-side-label">{{ $label($s) }}</span>
-                        <span class="nt-pm-side-mult nt-num" data-predict-mult>{{ $multiplier !== null ? \App\Predict\Format::multiplier($multiplier) : '–' }}</span>
+                        <span class="nt-pm-side-mult nt-num" data-predict-mult>{{ $multiplier !== null ? \App\Predict\Format::multiplier($multiplier) : ($below ? __('Pays less than your stake') : '–') }}</span>
                     </button>
                 @endguest
             @endforeach

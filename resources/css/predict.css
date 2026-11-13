@@ -87,11 +87,14 @@
     .nt-pm-side[aria-pressed='true'] { background: linear-gradient(180deg, var(--color-gold-2), var(--color-gold)); color: var(--color-gold-ink); border-color: transparent; }
     .nt-pm-side[aria-pressed='true'] .nt-pm-side-label, .nt-pm-side[aria-pressed='true'] .nt-pm-side-mult { color: var(--color-gold-ink); }
     .nt-pm-side-label { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .nt-pm-side-mult { font-size: 13px; color: var(--color-soft); }
+    .nt-pm-side-mult { font-size: 13px; color: var(--color-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .nt-pm-side-chip { min-height: 30px; padding: 4px 10px; font-size: 12px; }
     .nt-pm-side-chip .nt-pm-side-mult { font-size: 12px; }
     .nt-pm-sides-lg .nt-pm-side { min-height: 56px; font-size: 16px; }
     .nt-pm-sides-lg .nt-pm-side-mult { font-size: 15px; }
+    /* Room for "Pays less than your stake" under the label. */
+    .nt-pm-sides-lg .nt-pm-side { flex-wrap: wrap; row-gap: 2px; text-align: center; }
+    .nt-pm-sides-lg .nt-pm-side-mult { white-space: normal; }
 
     /* ── Market page ─────────────────────────────────────── */
     .nt-pm-crumbs { display: flex; gap: 8px; font-size: 13px; color: var(--color-ash); }
