@@ -241,6 +241,10 @@ final class SiteNavigation
             $items[] = $this->item(Markets::categoryLabel((string) $key), route('predictions', ['category' => $key]), 'list', active: $category === $key) + ['route' => 'predictions'];
         }
 
+        if (Route::has('predictions.bets')) {
+            $items[] = $this->link('My bets', 'predictions.bets', 'slip', needsAccount: true);
+        }
+
         return $items;
     }
 

@@ -69,6 +69,29 @@ class Markets
         return $labels;
     }
 
+    /**
+     * The Yes/No labels of markets this site has already read, from the cache only (My bets must not call the API
+     * once per bet). Markets not in the cache are left out; their bets read "Yes"/"No".
+     *
+     * @param  list<int>  $ids
+     * @return array<int, array{yes: string, no: string}>
+     */
+    public static function cachedLabels(array $ids): array
+    {
+        $labels = [];
+
+        foreach (array_unique($ids) as $id) {
+            $data = Cache::get("predict.market.{$id}.fresh") ?? Cache::get("predict.market.{$id}.stale");
+            $odds = is_array($data['market']['odds'] ?? null) ? $data['market']['odds'] : null;
+
+            if ($odds !== null) {
+                $labels[$id] = ['yes' => Format::string($odds['yes_label'] ?? null) ?? 'Yes', 'no' => Format::string($odds['no_label'] ?? null) ?? 'No'];
+            }
+        }
+
+        return $labels;
+    }
+
     /** How a sort reads in the lobby. */
     public static function sortLabel(string $sort): string
     {
