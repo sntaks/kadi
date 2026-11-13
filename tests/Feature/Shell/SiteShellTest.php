@@ -147,13 +147,13 @@ test('until sports and the casino page exist, the bottom bar offers Wallet, Kadi
 });
 
 test('the game tabs list only games that have a page', function () {
-    config(['platform.sports' => false, 'platform.token_launch' => false]);
+    config(['platform.sports' => false, 'platform.token_launch' => false, 'platform.predictions' => false]);
 
     expect(collect((new SiteNavigation(null))->products())->pluck('label')->all())->toBe(['Kadi']);
 
-    config(['platform.sports' => true, 'platform.token_launch' => true]);
+    config(['platform.sports' => true, 'platform.token_launch' => true, 'platform.predictions' => true]);
 
-    expect(collect((new SiteNavigation(null))->products())->pluck('label')->all())->toBe(['Sports', 'Kadi', 'Casino']);
+    expect(collect((new SiteNavigation(null))->products())->pluck('label')->all())->toBe(['Sports', 'Kadi', 'Casino', 'Predictions']);
 });
 
 test('a guest gets a sign-in link for Play Kadi; a player gets the real control', function () {

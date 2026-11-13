@@ -10,6 +10,11 @@
         <livewire:sports.fixture-list preview key="landing-football" />
     @endif
 
+    @if ($predictions)
+        {{-- Loaded straight after the page (defer, not on scroll): the landing never waits on the prediction API. --}}
+        <livewire:predict.trending defer key="landing-predictions" />
+    @endif
+
     @if ($casino)
         <section class="nt-panel nt-casino nt-reveal" aria-labelledby="casino-title"
                  x-data="{ theme: @js($casino['themes'][0]['key'] ?? null) }">

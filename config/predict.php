@@ -22,6 +22,8 @@ return [
 
     'timeouts' => [
         'read' => 5,
+        // The feed worker runs in the background: a full list page of 100 markets can take several seconds.
+        'feed' => 15,
         'quote' => 5,
         'bet' => 8,
         'connect' => 3,
@@ -32,6 +34,9 @@ return [
         'interval_seconds' => 5,
         // The most `has_more` pages read in one tick.
         'max_pages' => 10,
+        // A cursor further behind than this reloads the list instead of catching up through /updates, whose answer
+        // would be too big to arrive within the read timeout.
+        'max_catch_up_seconds' => 300,
         // No good answer for this long: pages say prices may be out of date.
         'stale_after_seconds' => 30,
         // A reference (Polymarket) price older than this cannot be bet on: the API's own guard.
@@ -43,7 +48,7 @@ return [
         // Markets per broadcast message.
         'broadcast_batch' => 100,
         // A tick that takes longer than this frees the lock for another worker.
-        'lock_seconds' => 60,
+        'lock_seconds' => 180,
         // A market the API stops announcing leaves the feed after this long (pages then read it from the API).
         'record_ttl_seconds' => 172800,
     ],
@@ -57,8 +62,11 @@ return [
     'per_page' => 24,
 
     'cache' => [
-        'list_seconds' => 10,
-        'market_seconds' => 5,
+        // A list page. Like a market, its odds are replaced by the feed's whenever the feed's copy is newer.
+        'list_seconds' => 30,
+        // One market's text and figures. Its live part (status, betting, odds) is taken from the feed whenever the
+        // feed's copy is newer, so the text can be kept longer than the odds would allow on their own.
+        'market_seconds' => 20,
         'history_seconds' => 30,
         'my_bets_seconds' => 15,
         // How long the last good copy is served while the API fails.

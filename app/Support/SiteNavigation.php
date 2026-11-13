@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\User;
+use App\Predict\Markets;
 use App\Sportsbook\Catalogue\SportsLobby;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Support\SportProfile;
@@ -51,6 +52,7 @@ final class SiteNavigation
             $this->sportsOn() ? $this->link('Sports', 'sports', 'football', active: 'sports*') : null,
             $this->playKadi('Kadi'),
             $this->casinoOn() ? $this->link('Casino', 'casino', 'chip', active: 'casino') : null,
+            $this->predictionsOn() ? $this->link('Predictions', 'predictions', 'predict', active: 'predictions*') : null,
         ]));
     }
 
@@ -82,6 +84,10 @@ final class SiteNavigation
 
         if ($this->sportsOn()) {
             $groups[] = ['key' => 'sports', 'label' => 'Sports', 'icon' => 'football', 'items' => $this->sportsItems()];
+        }
+
+        if ($this->predictionsOn()) {
+            $groups[] = ['key' => 'predictions', 'label' => 'Predictions', 'icon' => 'predict', 'items' => $this->predictionItems()];
         }
 
         return $groups;
@@ -214,6 +220,28 @@ final class SiteNavigation
         $item['active'] = request()->routeIs('casino') && request()->route('filter') === $filter;
 
         return $item;
+    }
+
+    private function predictionsOn(): bool
+    {
+        return PredictPages::on() && Route::has('predictions');
+    }
+
+    /**
+     * All markets, then one link per category (config predict.categories). No counts: the menu never asks the API.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function predictionItems(): array
+    {
+        $category = request()->routeIs('predictions') ? request()->query('category') : null;
+        $items = [$this->item('All markets', route('predictions'), 'predict', active: request()->routeIs('predictions') && $category === null) + ['route' => 'predictions']];
+
+        foreach ((array) config('predict.categories') as $key) {
+            $items[] = $this->item(Markets::categoryLabel((string) $key), route('predictions', ['category' => $key]), 'list', active: $category === $key) + ['route' => 'predictions'];
+        }
+
+        return $items;
     }
 
     private function sportsOn(): bool
