@@ -46,7 +46,10 @@ function patchSide(root, market, side) {
 
     root.querySelectorAll(`[data-predict-side="${side}"]`).forEach((el) => {
         const mult = el.querySelector('[data-predict-mult]');
-        if (mult) mult.textContent = multiplier !== null ? `${multiplier.toFixed(2)}x` : '–';
+        const raw = odds[`${side}_multiplier`];
+        // Priced, but a win would pay back no more than the stake: say so instead of a blank.
+        const below = typeof raw === 'number' && raw > 0 && raw <= 1;
+        if (mult) mult.textContent = multiplier !== null ? `${multiplier.toFixed(2)}x` : (below ? (el.dataset.belowText ?? '–') : '–');
 
         if (el.tagName === 'BUTTON') {
             el.disabled = !open || el.dataset.canBet !== '1';

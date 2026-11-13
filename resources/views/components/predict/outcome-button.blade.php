@@ -12,11 +12,14 @@
     $label = $odds?->label($side) ?? ucfirst($side);
     $multiplier = $odds?->multiplier($side);
     $open = $market->sideAvailable($side, $now);
-    $figure = $multiplier !== null ? \App\Predict\Format::multiplier($multiplier) : '–';
-    $name = $label.': '.($open ? 'pays '.$figure.' '.strtolower($market->oddsKind()) : ($multiplier === null ? 'not on offer' : 'betting closed'));
+    // A side that would pay back less than the stake says so (short on cards, in full where there is room).
+    $belowText = $as === 'link' ? __('Under 1x') : __('Pays less than your stake');
+    $below = $odds?->paysBelowStake($side) ?? false;
+    $figure = $multiplier !== null ? \App\Predict\Format::multiplier($multiplier) : ($below ? $belowText : '–');
+    $name = $label.': '.($open ? 'pays '.$figure.' '.strtolower($market->oddsKind()) : ($below ? __('pays less than your stake') : ($multiplier === null ? 'not on offer' : 'betting closed')));
     $guest = auth()->guest();
     $classes = 'nt-pm-side nt-pm-side-'.$side;
-    $data = ['data-predict-side' => $side, 'aria-label' => $name];
+    $data = ['data-predict-side' => $side, 'aria-label' => $name, 'data-below-text' => $belowText] + ($below ? ['title' => __('Pays less than your stake')] : []);
     $asLink = $as === 'link' || ($guest && $open);
 @endphp
 @if ($asLink)

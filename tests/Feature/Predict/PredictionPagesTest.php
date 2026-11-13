@@ -101,12 +101,24 @@ test('only fixed-odds markets carry the Polymarket attribution; pool ones say Es
         ->and($card(2))->not->toContain('Reference prices from Polymarket')->toContain('Estimated');
 });
 
-test('a side without a multiplier, or one paying less than the stake, is not on offer', function () {
-    fakePredictPages([pageMarket(1, ['odds' => ['yes_multiplier' => 18, 'no_multiplier' => 0.94]])]);
+test('a side paying less than the stake is not on offer, and says why', function () {
+    fakePredictPages([pageMarket(1, ['odds' => ['yes_multiplier' => 18, 'no_multiplier' => 0.94]]), pageMarket(2, ['odds' => ['no_multiplier' => null]])]);
 
-    $this->get('/predictions')
-        ->assertSee('18.00x')
-        ->assertSee('No: not on offer');
+    $html = $this->get('/predictions')->assertSee('18.00x')->getContent();
+    $card = fn (int $id) => Str::before(Str::after($html, 'data-predict-market="'.$id.'"'), '</footer>');
+
+    expect($card(1))->toContain('>Under 1x<')->toContain('No: pays less than your stake')->toContain('title="Pays less than your stake"')
+        // No price at all is still a plain dash.
+        ->and($card(2))->not->toContain('>Under 1x<')->toContain('No: not on offer');
+});
+
+test('the slip and the sheet spell it out in full', function () {
+    fakePredictPages([], markets: [pageMarket(7, ['odds' => ['no_multiplier' => 0.94]])]);
+    $player = User::factory()->create(['linked_id' => 501]);
+
+    Livewire::actingAs($player)->test(Slip::class, ['marketId' => 7])
+        ->assertSee('Pays less than your stake')
+        ->assertSeeHtml('aria-label="No: pays less than your stake"');
 });
 
 test('event rows read only what differs between the questions', function () {
