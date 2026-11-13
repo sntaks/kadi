@@ -100,6 +100,9 @@ export function apply(market) {
     });
 
     patchChart(market);
+
+    // The slip listens: a market that stops taking bets drops its open price at once.
+    window.dispatchEvent(new CustomEvent('predict-market-live', { detail: market }));
 }
 
 function sync() {

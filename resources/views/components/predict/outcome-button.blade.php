@@ -22,7 +22,7 @@
 @if ($asLink)
     <a href="{{ route('predictions.market', ['market' => $market->id] + ($as === 'link' && $open ? ['side' => $side] : [])) }}"
        @if ($as !== 'link') data-needs-account x-on:click="$dispatch('predict-panel-handoff')" @endif
-       @if ($as === 'link') x-on:click="$openMarket($event, {{ $market->id }}, @js($market->question), @js($market->imageUrl))" @endif
+       @if ($as === 'link') x-on:click="$openMarket($event, {{ $market->id }}, @js($market->question), @js($market->imageUrl), @js($open ? $side : null))" @endif
        @unless ($open) aria-disabled="true" @endunless
        {{ $attributes->class([$classes, 'is-off' => ! $open])->merge($data) }}>
 @else

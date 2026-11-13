@@ -21,9 +21,19 @@ class MarketPanel extends Component
     #[Locked]
     public ?int $marketId = null;
 
-    public function show(int $marketId): void
+    /** The side picked on the card that opened the sheet, handed to the slip. */
+    #[Locked]
+    public ?string $side = null;
+
+    /** Grows with every opening, so the slip starts fresh each time (its key). */
+    #[Locked]
+    public int $opened = 0;
+
+    public function show(int $marketId, ?string $side = null): void
     {
         $this->marketId = $marketId;
+        $this->side = in_array($side, Market::SIDES, true) ? $side : null;
+        $this->opened++;
     }
 
     public function render(Markets $markets): View

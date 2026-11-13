@@ -38,6 +38,7 @@ class CloseAccount extends Component
         'open_game' => 'Finish the Kadi game you are in first.',
         'open_competition' => 'Finish the tournament or jackpot you joined first.',
         'open_sports_bet' => 'Wait for your sports bets and jackpot entries to settle first.',
+        'open_prediction_bet' => 'You have open prediction bets. Wait until they are settled.',
     ];
 
     public bool $confirming = false;

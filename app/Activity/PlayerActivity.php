@@ -32,6 +32,7 @@ class PlayerActivity
         'game_launched' => ['game', 'title', 'status', 'reason'],
         'bet_placed' => ['status'],
         'jackpot_entered' => ['status'],
+        'predict_bet_placed' => ['source', 'engine'],
         'deposit_requested' => ['ok'],
         'withdrawal_requested' => ['kind', 'ok'],
         'profile_updated' => ['fields'],
