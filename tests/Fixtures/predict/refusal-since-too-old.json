@@ -1,0 +1,12 @@
+{
+    "status": 422,
+    "body": {
+        "success": false,
+        "message": "The since field must be a date after -1 day.",
+        "errors": {
+            "since": [
+                "The since field must be a date after -1 day."
+            ]
+        }
+    }
+}

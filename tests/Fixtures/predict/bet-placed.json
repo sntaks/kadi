@@ -1,0 +1,28 @@
+{
+    "success": true,
+    "data": {
+        "bet": {
+            "id": 41,
+            "reference": "bet-7f3a91",
+            "market_id": 12,
+            "question": "Will Gor Mahia win the 2026/27 league?",
+            "market_status": "open",
+            "side": "yes",
+            "currency": "KES",
+            "stake": 100,
+            "status": "open",
+            "multiplier": 1.76,
+            "multiplier_at_placement": 1.76,
+            "potential_payout": 176,
+            "payout": null,
+            "is_estimate": true,
+            "placed_at": "2026-11-10T09:30:00+00:00",
+            "settled_at": null
+        },
+        "balance": {
+            "balance": 900,
+            "wallet_version": 53
+        },
+        "replayed": false
+    }
+}

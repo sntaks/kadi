@@ -1,0 +1,18 @@
+{
+    "success": true,
+    "data": {
+        "market_id": 12,
+        "points": [
+            {
+                "at": "2026-11-10T09:00:00+00:00",
+                "yes_probability": 0.5,
+                "no_probability": 0.5
+            },
+            {
+                "at": "2026-11-10T09:30:00+00:00",
+                "yes_probability": 0.5098,
+                "no_probability": 0.4902
+            }
+        ]
+    }
+}

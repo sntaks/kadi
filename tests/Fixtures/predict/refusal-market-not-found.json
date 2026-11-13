@@ -1,0 +1,9 @@
+{
+    "status": 404,
+    "body": {
+        "success": false,
+        "message": "No market has that id",
+        "code": "market_not_found",
+        "retryable": false
+    }
+}

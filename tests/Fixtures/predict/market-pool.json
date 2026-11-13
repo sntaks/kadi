@@ -1,0 +1,45 @@
+{
+    "success": true,
+    "data": {
+        "id": 12,
+        "source": "custom",
+        "question": "Will Gor Mahia win the 2026/27 league?",
+        "description": null,
+        "resolution_criteria": "Resolves YES if Gor Mahia are champions on the final FKF table.",
+        "resolution_source": "FKF",
+        "category": "sport",
+        "image_url": null,
+        "external_url": null,
+        "countries": [
+            "KE"
+        ],
+        "timezone": "Africa/Nairobi",
+        "currency": "KES",
+        "status": "open",
+        "engine": "pool",
+        "close_at": "2026-12-01T18:00:00+00:00",
+        "resolution_deadline_at": "2026-12-03T18:00:00+00:00",
+        "result": null,
+        "min_stake": 10,
+        "max_stake": 5000,
+        "max_payout": 250000,
+        "event": null,
+        "betting_available": true,
+        "betting_closes_at": "2026-12-01T18:00:00+00:00",
+        "odds": {
+            "yes_label": "Yes",
+            "no_label": "No",
+            "yes_probability": 0.51,
+            "no_probability": 0.49,
+            "yes_multiplier": 1.76,
+            "no_multiplier": 1.83,
+            "is_estimate": true,
+            "is_reference": false,
+            "volume": 100,
+            "bets_count": 1,
+            "updated_at": "2026-11-10T09:30:00+00:00"
+        },
+        "opened_at": "2026-11-10T09:00:00+00:00",
+        "resolved_at": null
+    }
+}

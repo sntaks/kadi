@@ -46,6 +46,9 @@
         <env name="GAMES_ACCOUNT_ID_KEY" value="6f23fa26063697ed59d279a088c8ed86a636aaaf0d577a72f5528a3569a8ec0d"/>
         <env name="GAMES_ACCOUNT_ID_MAC_KEY" value="c9b81c85ad08bfe489a9766ab5a6ef4065a6d7d27a1b379b5e18e34a1ad804aa"/>
         <env name="PLATFORM_SPORTS_BETTING" value="true"/>
+        <env name="PLATFORM_PREDICTIONS" value="true"/>
+        <env name="PLATFORM_PREDICTIONS_BETTING" value="true"/>
+        <env name="PREDICT_BETTING_TESTERS" value=""/>
         <env name="KADI_IN_FRAME" value="true"/>
     </php>
 </phpunit>

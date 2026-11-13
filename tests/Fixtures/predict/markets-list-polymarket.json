@@ -1,0 +1,192 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "items": [
+                {
+                    "id": 2,
+                    "source": "polymarket",
+                    "question": "Will a team from LCK (South Korea) win LoL Worlds 2026?",
+                    "description": "This market will resolve according to the region or country of the esports team winning 1st place in the League of Legends 2026 Season World Championship (Worlds 2026).\n\nIf the winner of Worlds 2026 is not determined by December 31, 2026 ET, this market will resolve to \"Other\".\n\nThe resolution source for this market will be official information from Fandom (https://lol.fandom.com/wiki/2026_Season_World_Championship).\n\nRegions counted in World 2026:\n- LCK (South Korea)\n- LPL (China)\n- LEC (Europe / EMEA)\n- LCP (Asia-Pacific)\n- LCS (North America)\n- CBLOL (Brazil)",
+                    "resolution_criteria": "This market will resolve according to the region or country of the esports team winning 1st place in the League of Legends 2026 Season World Championship (Worlds 2026).\n\nIf the winner of Worlds 2026 is not determined by December 31, 2026 ET, this market will resolve to \"Other\".\n\nThe resolution source for this market will be official information from Fandom (https://lol.fandom.com/wiki/2026_Season_World_Championship).\n\nRegions counted in World 2026:\n- LCK (South Korea)\n- LPL (China)\n- LEC (Europe / EMEA)\n- LCP (Asia-Pacific)\n- LCS (North America)\n- CBLOL (Brazil)",
+                    "resolution_source": "https://polymarket.com/event/lol-worlds-2026-winning-region-226",
+                    "category": "sport",
+                    "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/event-art/esports/lol/worlds-2026-winner.png",
+                    "external_url": "https://polymarket.com/event/lol-worlds-2026-winning-region-226/will-a-team-from-lck-south-korea-win-lol-worlds-2026-115",
+                    "countries": [
+                        "KE"
+                    ],
+                    "timezone": "Africa/Nairobi",
+                    "currency": "KES",
+                    "status": "open",
+                    "engine": "reference",
+                    "close_at": "2027-01-01T04:59:00+03:00",
+                    "resolution_deadline_at": "2027-01-08T04:59:00+03:00",
+                    "result": null,
+                    "min_stake": 10,
+                    "max_stake": 5000,
+                    "max_payout": 250000,
+                    "event": {
+                        "id": 2,
+                        "title": "Worlds 2026 Winning Region"
+                    },
+                    "betting_available": true,
+                    "betting_closes_at": "2027-01-01T04:44:00+03:00",
+                    "odds": {
+                        "yes_label": "Yes",
+                        "no_label": "No",
+                        "yes_probability": 0.625,
+                        "no_probability": 0.375,
+                        "yes_multiplier": 1.52,
+                        "no_multiplier": 2.53,
+                        "is_estimate": true,
+                        "is_reference": true,
+                        "attribution": "Reference prices from Polymarket",
+                        "updated_at": "2026-11-13T12:23:53+03:00"
+                    },
+                    "opened_at": "2026-11-13T12:21:00+03:00",
+                    "resolved_at": null
+                },
+                {
+                    "id": 3,
+                    "source": "polymarket",
+                    "question": "Will a team from LPL (China) win LoL Worlds 2026?",
+                    "description": "This market will resolve according to the region or country of the esports team winning 1st place in the League of Legends 2026 Season World Championship (Worlds 2026).\n\nIf the winner of Worlds 2026 is not determined by December 31, 2026 ET, this market will resolve to \"Other\".\n\nThe resolution source for this market will be official information from Fandom (https://lol.fandom.com/wiki/2026_Season_World_Championship).\n\nRegions counted in World 2026:\n- LCK (South Korea)\n- LPL (China)\n- LEC (Europe / EMEA)\n- LCP (Asia-Pacific)\n- LCS (North America)\n- CBLOL (Brazil)",
+                    "resolution_criteria": "This market will resolve according to the region or country of the esports team winning 1st place in the League of Legends 2026 Season World Championship (Worlds 2026).\n\nIf the winner of Worlds 2026 is not determined by December 31, 2026 ET, this market will resolve to \"Other\".\n\nThe resolution source for this market will be official information from Fandom (https://lol.fandom.com/wiki/2026_Season_World_Championship).\n\nRegions counted in World 2026:\n- LCK (South Korea)\n- LPL (China)\n- LEC (Europe / EMEA)\n- LCP (Asia-Pacific)\n- LCS (North America)\n- CBLOL (Brazil)",
+                    "resolution_source": "https://polymarket.com/event/lol-worlds-2026-winning-region-226",
+                    "category": "sport",
+                    "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/event-art/esports/lol/worlds-2026-winner.png",
+                    "external_url": "https://polymarket.com/event/lol-worlds-2026-winning-region-226/will-a-team-from-lpl-china-win-lol-worlds-2026-779",
+                    "countries": [
+                        "KE"
+                    ],
+                    "timezone": "Africa/Nairobi",
+                    "currency": "KES",
+                    "status": "open",
+                    "engine": "reference",
+                    "close_at": "2027-01-01T04:59:00+03:00",
+                    "resolution_deadline_at": "2027-01-08T04:59:00+03:00",
+                    "result": null,
+                    "min_stake": 10,
+                    "max_stake": 5000,
+                    "max_payout": 250000,
+                    "event": {
+                        "id": 2,
+                        "title": "Worlds 2026 Winning Region"
+                    },
+                    "betting_available": true,
+                    "betting_closes_at": "2027-01-01T04:44:00+03:00",
+                    "odds": {
+                        "yes_label": "Yes",
+                        "no_label": "No",
+                        "yes_probability": 0.375,
+                        "no_probability": 0.625,
+                        "yes_multiplier": 2.53,
+                        "no_multiplier": 1.52,
+                        "is_estimate": true,
+                        "is_reference": true,
+                        "attribution": "Reference prices from Polymarket",
+                        "updated_at": "2026-11-13T12:23:53+03:00"
+                    },
+                    "opened_at": "2026-11-13T12:21:00+03:00",
+                    "resolved_at": null
+                },
+                {
+                    "id": 136,
+                    "source": "polymarket",
+                    "question": "Will Detroit Lions win the 2027 NFL NFC Championship?",
+                    "description": "This market will resolve according to the team that wins the 2027 NFC championship game.\n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL NFC championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL NFC championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+                    "resolution_criteria": "This market will resolve according to the team that wins the 2027 NFC championship game.\n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL NFC championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL NFC championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+                    "resolution_source": "https://polymarket.com/event/pro-football-2027-nfc-champion",
+                    "category": "sport",
+                    "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/nfl-2027-nfc-champion-TryBukjOvfB5.png",
+                    "external_url": "https://polymarket.com/event/pro-football-2027-nfc-champion/will-detroit-lions-win-the-2027-nfl-nfc-championship-721",
+                    "countries": [
+                        "KE"
+                    ],
+                    "timezone": "Africa/Nairobi",
+                    "currency": "KES",
+                    "status": "open",
+                    "engine": "reference",
+                    "close_at": "2027-01-25T00:00:00+03:00",
+                    "resolution_deadline_at": "2027-02-01T00:00:00+03:00",
+                    "result": null,
+                    "min_stake": 10,
+                    "max_stake": 5000,
+                    "max_payout": 250000,
+                    "event": {
+                        "id": 21,
+                        "title": "Pro Football: 2027 NFC Champion "
+                    },
+                    "betting_available": true,
+                    "betting_closes_at": "2027-01-24T23:45:00+03:00",
+                    "odds": {
+                        "yes_label": "Yes",
+                        "no_label": "No",
+                        "yes_probability": 0.093,
+                        "no_probability": 0.907,
+                        "yes_multiplier": 10.24,
+                        "no_multiplier": 1.05,
+                        "is_estimate": true,
+                        "is_reference": true,
+                        "attribution": "Reference prices from Polymarket",
+                        "updated_at": "2026-11-13T12:23:53+03:00"
+                    },
+                    "opened_at": "2026-11-13T12:21:04+03:00",
+                    "resolved_at": null
+                },
+                {
+                    "id": 415,
+                    "source": "polymarket",
+                    "question": "Will Paris Saint-Germain win the 2026-27 Ligue 1 Championship?",
+                    "description": "This market will resolve according to the team that wins the 2026-27 Ligue 1 Championship.\n\nIf at any point it becomes impossible for a listed team to win the 2026-27 Ligue 1 Championship per the rules of Ligue 1 (e.g., they are eliminated in the playoffs), the corresponding market will resolve to \"No\".\n\nIf the 2026-27 Ligue 1 season is cancelled, postponed after June 14, 2027, 11:59 PM ET or there is otherwise no winner declared within that timeframe, this market will resolve to \"Other\".\n\nThe primary resolution source will be official information from Ligue 1; however, a consensus of credible reporting may also be used.",
+                    "resolution_criteria": "This market will resolve according to the team that wins the 2026-27 Ligue 1 Championship.\n\nIf at any point it becomes impossible for a listed team to win the 2026-27 Ligue 1 Championship per the rules of Ligue 1 (e.g., they are eliminated in the playoffs), the corresponding market will resolve to \"No\".\n\nIf the 2026-27 Ligue 1 season is cancelled, postponed after June 14, 2027, 11:59 PM ET or there is otherwise no winner declared within that timeframe, this market will resolve to \"Other\".\n\nThe primary resolution source will be official information from Ligue 1; however, a consensus of credible reporting may also be used.",
+                    "resolution_source": "https://polymarket.com/event/ligue-1-2027-champion-20260701201053335",
+                    "category": "sport",
+                    "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/ligue-1-2027-champion-20260701201053335-DS1QqDABIRwW.png",
+                    "external_url": "https://polymarket.com/event/ligue-1-2027-champion-20260701201053335/will-paris-saint-germain-win-the-2026-27-ligue-1-championship-20260701201053346",
+                    "countries": [
+                        "KE"
+                    ],
+                    "timezone": "Africa/Nairobi",
+                    "currency": "KES",
+                    "status": "open",
+                    "engine": "reference",
+                    "close_at": "2027-06-15T03:59:00+03:00",
+                    "resolution_deadline_at": "2027-06-22T03:59:00+03:00",
+                    "result": null,
+                    "min_stake": 10,
+                    "max_stake": 5000,
+                    "max_payout": 250000,
+                    "event": {
+                        "id": 413,
+                        "title": "Ligue 1: 2027 Champion"
+                    },
+                    "betting_available": true,
+                    "betting_closes_at": "2027-06-15T03:44:00+03:00",
+                    "odds": {
+                        "yes_label": "Yes",
+                        "no_label": "No",
+                        "yes_probability": 0.905,
+                        "no_probability": 0.095,
+                        "yes_multiplier": 1.05,
+                        "no_multiplier": 10.02,
+                        "is_estimate": true,
+                        "is_reference": true,
+                        "attribution": "Reference prices from Polymarket",
+                        "updated_at": "2026-11-13T12:23:53+03:00"
+                    },
+                    "opened_at": "2026-11-13T12:21:06+03:00",
+                    "resolved_at": null
+                }
+            ],
+            "pagination": {
+                "page": 1,
+                "per_page": 50,
+                "total": 78,
+                "last_page": 2
+            }
+        }
+    }
+}

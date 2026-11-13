@@ -7,8 +7,9 @@
 |
 | The Kadi, Casino and Sports site is the only site (plan Phase 12): the
 | old look is gone. What is left are switches for parts of it: on by
-| default, except taking real-money sports bets, which an environment must
-| turn on deliberately (PLATFORM_SPORTS_BETTING=true).
+| default, except taking real-money sports and prediction bets, which an
+| environment must turn on deliberately (PLATFORM_SPORTS_BETTING=true,
+| PLATFORM_PREDICTIONS_BETTING=true).
 |
 */
 
@@ -28,5 +29,12 @@ return [
     // Placing sports bets through the Kadi API wallet (real money). Needs `sports` on. Off unless set, so a deploy
     // never starts taking bets on an environment nobody decided to open.
     'sports_betting' => (bool) env('PLATFORM_SPORTS_BETTING', false),
+
+    // Prediction market pages (/predictions): markets, prices and the slip (browse only).
+    'predictions' => (bool) env('PLATFORM_PREDICTIONS', true),
+
+    // Placing prediction bets through the Kadi API wallet (real money). Needs `predictions` on. Off unless set;
+    // PREDICT_BETTING_TESTERS (config/predict.php) can bet while it is off.
+    'predictions_betting' => (bool) env('PLATFORM_PREDICTIONS_BETTING', false),
 
 ];
