@@ -46,7 +46,7 @@
                             <x-predict.chances :$market />
                             <x-predict.attribution :odds="$market->odds" />
                         </div>
-                        <x-predict.pick :$market :$now :$canBet :$bettingOn :question="false" />
+                        <livewire:predict.slip :market-id="$market->id" :initial-side="$side" :key="'sheet-slip-'.$market->id.'-'.$opened" />
                         <x-predict.stats :$market />
                         <x-predict.rules :$market :$criteria />
                     @elseif ($marketId !== null)

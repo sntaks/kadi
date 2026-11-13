@@ -137,6 +137,36 @@
     /* The pick panel lives on the page and in the sheet: its own spacing, not the page's section gap. */
     .nt-pm-pick { display: grid; gap: 16px; }
     .nt-pm-pick .nt-btn-block { min-height: 48px; }
+    /* ── Bet slip (App\Livewire\Predict\Slip) ───────────────── */
+    .nt-pm-stake { display: grid; gap: 8px; }
+    .nt-pm-stake label { font-size: 13px; font-weight: 700; color: var(--color-soft); }
+    .nt-pm-stake small { font-size: 12px; color: var(--color-ash); }
+    .nt-pm-stake-input {
+        display: flex; align-items: center; gap: 8px; padding: 0 14px; min-height: 52px;
+        border-radius: var(--radius-control); background: var(--color-felt-2); border: 1px solid var(--color-line-2);
+    }
+    .nt-pm-stake-input:focus-within { border-color: var(--color-gold); }
+    .nt-pm-stake-input span { font-size: 14px; font-weight: 700; color: var(--color-ash); }
+    .nt-pm-stake-input input {
+        flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--color-ivory);
+        font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums;
+    }
+    .nt-pm-quick { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nt-pm-quick .nt-chip[aria-pressed='true'] { border-color: var(--color-gold); color: var(--color-gold); }
+    .nt-pm-estimate, .nt-pm-quote p, .nt-pm-changed p, .nt-pm-notice p, .nt-pm-done p, .nt-pm-checking p { margin: 0; font-size: 14px; color: var(--color-soft); }
+    .nt-pm-quote { display: grid; gap: 4px; padding: 12px 14px; border-radius: var(--radius-control); background: rgb(248 192 56 / .08); border: 1px solid var(--color-line-2); }
+    .nt-pm-quote b { color: var(--color-gold); }
+    .nt-pm-quote small { font-size: 12px; color: var(--color-ash); }
+    .nt-pm-changed, .nt-pm-done, .nt-pm-checking { display: grid; gap: 10px; }
+    .nt-pm-done b, .nt-pm-checking b { font-size: 16px; color: var(--color-ivory); }
+    .nt-pm-done b::before { content: '✓ '; color: var(--color-win); }
+    .nt-pm-notice { display: grid; gap: 8px; padding: 10px 12px; border-radius: var(--radius-control); background: rgb(232 96 79 / .08); border: 1px solid rgb(232 96 79 / .28); }
+    .nt-pm-notice p { color: var(--color-hot-soft); }
+    .nt-pm-notice button, .nt-pm-notice a {
+        justify-self: start; padding: 0; border: 0; background: none; cursor: pointer;
+        font-size: 13px; font-weight: 700; color: var(--color-gold); text-decoration: underline;
+    }
+
     .nt-pm-pick-label { font-size: 12px; font-weight: 700; color: var(--color-ash); }
     .nt-pm-pick-q { margin: -6px 0 2px; font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--color-ivory); }
 

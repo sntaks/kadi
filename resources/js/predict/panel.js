@@ -78,7 +78,7 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        open({ id, title, url, image = null, pageTitle = null }, { fromHistory = false } = {}) {
+        open({ id, title, url, image = null, side = null, pageTitle = null }, { fromHistory = false } = {}) {
             this.remember();
 
             if (pageTitle) this.pageTitle = pageTitle;
@@ -104,8 +104,10 @@ document.addEventListener('alpine:init', () => {
             this.pushed = true;
             this.isOpen = true;
 
-            if (this.loaded !== id) {
-                this.$wire.show(id).then(() => {
+            // A side picked on the card always reloads, so the slip opens on it.
+            if (this.loaded !== id || side) {
+                this.loaded = null;
+                this.$wire.show(id, side).then(() => {
                     if (this.requested === id) {
                         this.loaded = id;
                     }
@@ -173,7 +175,7 @@ document.addEventListener('alpine:init', () => {
      * Click handler for market links: opens the market in the sheet, but leaves new-tab and modified clicks to the
      * browser, and loads the page itself where no sheet exists.
      */
-    window.Alpine.magic('openMarket', (el) => (event, id, title, image = null) => {
+    window.Alpine.magic('openMarket', (el) => (event, id, title, image = null, side = null) => {
         if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
             return;
         }
@@ -182,7 +184,7 @@ document.addEventListener('alpine:init', () => {
         const url = el.href.split('?')[0];
 
         if (document.querySelector('[data-predict-panel]')) {
-            window.dispatchEvent(new CustomEvent('open-predict-market', { detail: { id, title, url, image } }));
+            window.dispatchEvent(new CustomEvent('open-predict-market', { detail: { id, title, url, image, side } }));
         } else {
             window.Livewire.navigate(el.href);
         }

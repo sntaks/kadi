@@ -2,6 +2,7 @@
 
 use App\Livewire\Predict\Lobby;
 use App\Livewire\Predict\MarketPage;
+use App\Livewire\Predict\Slip;
 use App\Models\User;
 use App\Predict\Data\Market;
 use App\Predict\MarketFeed;
@@ -254,15 +255,15 @@ test('a guest gets sign-in links for the sides; a player without betting gets di
 
     // Betting not open yet (phpunit.xml pins it on, as in production once opened).
     config(['platform.predictions_betting' => false]);
-    $player = User::factory()->create();
-    Livewire::actingAs($player)->test(MarketPage::class, ['market' => 2007])
+    $player = User::factory()->create(['linked_id' => 501]);
+    Livewire::actingAs($player)->test(Slip::class, ['marketId' => 2007])
         ->assertSee('Betting on predictions opens soon')
         ->assertSeeHtml('data-can-bet="0"');
 
     config(['predict.betting_testers' => [$player->id]]);
-    Livewire::actingAs($player)->test(MarketPage::class, ['market' => 2007])
+    Livewire::actingAs($player)->test(Slip::class, ['marketId' => 2007])
         ->assertSeeHtml('data-can-bet="1"')
-        ->assertSeeHtml('predict-pick');
+        ->assertSeeHtml('wire:click="pick(\'yes\')"');
 });
 
 test('past the cut-off the market page closes betting on our clock', function () {

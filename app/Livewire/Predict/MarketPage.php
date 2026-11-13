@@ -36,11 +36,17 @@ class MarketPage extends Component
         $this->withChart = true;
     }
 
+    /** The side picked on the lobby (?side=yes), handed to the slip. */
+    #[Locked]
+    public ?string $side = null;
+
     public function mount(int $market, Markets $markets): void
     {
         abort_if($markets->find($market) === null, 404);
 
         $this->marketId = $market;
+        $side = request()->query('side');
+        $this->side = in_array($side, Market::SIDES, true) ? $side : null;
     }
 
     public function sync(MarketFeed $feed): void

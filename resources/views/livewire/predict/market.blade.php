@@ -50,7 +50,7 @@
         </div>
 
         <aside class="nt-pm-aside">
-            <x-predict.pick :$market :$now :$canBet :$bettingOn />
+            <livewire:predict.slip :market-id="$market->id" :initial-side="$side" show-question :key="'slip-'.$market->id" />
 
             @if ($related !== [])
                 <section class="nt-pm-related" aria-labelledby="pm-related">
