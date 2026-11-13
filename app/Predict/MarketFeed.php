@@ -65,6 +65,13 @@ class MarketFeed
         $this->changed = [];
 
         try {
+            if ($this->tooFarBehind()) {
+                // After a long stop (worker down, deploy gap) the catch-up answer is too big to arrive within the
+                // read timeout, and asking again would fail the same way forever: reload the list instead.
+                Log::info('Predictions: the feed fell behind, reloading the list');
+                $this->reset();
+            }
+
             $ok = Cache::get(self::CURSOR_KEY) === null ? $this->bootstrap() : $this->poll();
 
             if ($ok) {
@@ -160,6 +167,19 @@ class MarketFeed
         return $age > (int) config('predict.feed.reference_price_max_age_seconds', 45);
     }
 
+    /**
+     * The cursor's `since` is older than `predict.feed.max_catch_up_seconds`: catching up through /updates would
+     * mean one very large answer (pool odds move with every bet).
+     */
+    private function tooFarBehind(): bool
+    {
+        $cursor = Cache::get(self::CURSOR_KEY);
+        $since = is_array($cursor) ? Format::time($cursor['since'] ?? null) : null;
+
+        return $since !== null
+            && Date::now()->getTimestamp() - $since->getTimestamp() > (int) config('predict.feed.max_catch_up_seconds', 300);
+    }
+
     /** Forget the cursor: the next tick loads every market from the list again. */
     public function reset(): void
     {
@@ -179,7 +199,7 @@ class MarketFeed
         $maxPages = (int) config('predict.feed.bootstrap_max_pages', 20);
 
         do {
-            $response = $this->api->markets(['page' => $page, 'per_page' => 100]);
+            $response = $this->api->markets(['page' => $page, 'per_page' => 100], 'feed');
 
             if (! $response->ok() || ! is_array($response->data['items'] ?? null)) {
                 return false;

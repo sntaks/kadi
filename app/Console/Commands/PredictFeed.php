@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Predict\MarketFeed;
+use App\Predict\Markets;
 use App\Support\PredictPages;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Date;
@@ -53,6 +54,9 @@ class PredictFeed extends Command
         }
 
         $result = $feed->tick();
+
+        // Keep the lobby's first pages cached, so a first visit never waits on the API (a cache hit when fresh).
+        $this->laravel->make(Markets::class)->warmLobby();
 
         if ($this->output->isVerbose()) {
             $this->line(match (true) {

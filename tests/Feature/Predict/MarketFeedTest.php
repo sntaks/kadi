@@ -198,6 +198,19 @@ test('a refused cursor starts again from the list', function () {
         ->and(Cache::get(MarketFeed::INDEX_KEY))->toBe([5]);
 });
 
+test('a feed far behind reloads the list instead of one huge catch-up', function () {
+    feedCursor('2026-11-13T10:00:00Z');
+    Http::fake([
+        '*/predict/updates*' => Http::response(updatesAnswer([])),
+        '*/predict/markets*' => Http::response(listAnswer([feedMarket(5)])),
+    ]);
+
+    expect(app(MarketFeed::class)->tick()['ok'])->toBeTrue()
+        ->and(Cache::get(MarketFeed::CURSOR_KEY)['since'])->toBe('2026-11-13T11:36:20Z');
+
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), '/predict/updates'));
+});
+
 test('a bootstrap drops markets the list no longer shows', function () {
     Cache::forever(MarketFeed::INDEX_KEY, [9]);
     Cache::forever(MarketFeed::recordKey(9), ['api' => ['id' => 9], 'hash' => 'x', 'changed_at' => 0]);
@@ -265,13 +278,23 @@ test('the worker idles while the prediction pages are off', function () {
     Http::assertNothingSent();
 });
 
-test('one worker tick follows the feed', function () {
+test('one worker tick follows the feed and keeps the lobby lists warm', function () {
     feedCursor();
-    Http::fake(['*/predict/updates*' => Http::response(updatesAnswer([feedMarket(7)]))]);
+    Http::fake([
+        '*/predict/updates*' => Http::response(updatesAnswer([feedMarket(7)])),
+        '*/predict/markets*' => Http::response(listAnswer([feedMarket(7)])),
+    ]);
 
     $this->artisan('predict:feed', ['--once' => true])->assertSuccessful();
 
     expect(app(MarketFeed::class)->live(7))->not->toBeNull();
+    // Every category (and All) times both sections, default sort, plus the landing's trending shelf.
+    $lists = 2 * (1 + count(config('predict.categories'))) + 1;
+    Http::assertSentCount(1 + $lists);
+
+    // Still fresh: the next tick asks for no list.
+    $this->artisan('predict:feed', ['--once' => true])->assertSuccessful();
+    Http::assertSentCount(2 + $lists);
 });
 
 test('platform health reports a feed with no good answer while predictions are on', function () {

@@ -77,6 +77,11 @@
             @endif
         @endif
 
+        {{-- Pages that list prediction markets open them in a sheet (App\Livewire\Predict\MarketPanel). --}}
+        @if (($predictPanel ?? false) && \App\Support\PredictPages::on() && ! $nav->isGated())
+            <livewire:predict.market-panel />
+        @endif
+
         <x-structured-data :page="$page ?? ($shell === 'page' ? 'home' : 'dashboard')" :noindex="$noindex ?? $shell !== 'page'" />
         @if (auth()->check() && ! $nav->isGated())
             <livewire:phone-required />

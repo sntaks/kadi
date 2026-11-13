@@ -15,6 +15,7 @@
 @import './lobby.css';
 @import './account.css';
 @import './sports.css';
+@import './predict.css';
 @import './hero.css';
 
 @source '../views';

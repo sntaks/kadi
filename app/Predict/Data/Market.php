@@ -120,6 +120,40 @@ final readonly class Market
         return $this->takesBets($now) && $this->odds?->multiplier($side) !== null;
     }
 
+    /**
+     * Why this market cannot be bet at $now, in a few words, or null while it takes bets.
+     */
+    public function unavailableReason(DateTimeInterface $now): ?string
+    {
+        if ($this->takesBets($now)) {
+            return null;
+        }
+
+        return match ($this->status) {
+            'suspended' => 'Betting paused',
+            'resolved', 'settled' => in_array($this->result, self::SIDES, true)
+                ? 'Result: '.($this->odds?->label($this->result) ?? ucfirst((string) $this->result))
+                : 'Result being confirmed',
+            'voided' => 'Voided: stakes refunded',
+            default => 'Betting closed',
+        };
+    }
+
+    /**
+     * The resolution source as a link, only when it is a polymarket.com page (the only off-site link a market may
+     * carry). Anything else an admin typed is shown as plain text.
+     */
+    public function resolutionSourceUrl(): ?string
+    {
+        return self::polymarketUrl($this->resolutionSource);
+    }
+
+    /** Pool markets pay an estimate fixed when the market closes; the others offer fixed odds through a quote. */
+    public function oddsKind(): string
+    {
+        return $this->usesQuote() ? 'Fixed odds' : 'Estimated';
+    }
+
     private static function httpsUrl(mixed $url): ?string
     {
         $url = Format::string($url);

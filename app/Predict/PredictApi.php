@@ -31,10 +31,11 @@ class PredictApi
      * GET /predict/markets: `data.items` and `data.pagination`.
      *
      * @param  array{source?: string, category?: string, sort?: string, status?: string, page?: int, per_page?: int}  $filters
+     * @param  string  $timeout  `read` for pages (a player is waiting), `feed` for the background feed worker
      */
-    public function markets(array $filters = []): PredictResponse
+    public function markets(array $filters = [], string $timeout = 'read'): PredictResponse
     {
-        return $this->send(fn () => $this->http('read')->get('predict/markets', array_filter($filters, filled(...))), 'markets');
+        return $this->send(fn () => $this->http($timeout)->get('predict/markets', array_filter($filters, filled(...))), 'markets');
     }
 
     public function market(int $id): PredictResponse
@@ -69,7 +70,8 @@ class PredictApi
     public function updates(string $since, ?int $afterId = null): PredictResponse
     {
         return $this->send(
-            fn () => $this->http('read')->get('predict/updates', array_filter(['since' => $since, 'after_id' => $afterId], filled(...))),
+            // Only the feed worker calls this, in the background: it can wait longer than a page could.
+            fn () => $this->http('feed')->get('predict/updates', array_filter(['since' => $since, 'after_id' => $afterId], filled(...))),
             'updates',
         );
     }

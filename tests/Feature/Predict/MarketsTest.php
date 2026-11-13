@@ -44,7 +44,7 @@ test('an outage serves the last good copy and backs off', function () {
     ]);
     $markets = app(Markets::class);
     $markets->list();
-    $this->travel(11)->seconds();
+    $this->travel(31)->seconds();
 
     expect($markets->list()['markets'])->toHaveCount(4)
         ->and($markets->list()['available'])->toBeTrue();

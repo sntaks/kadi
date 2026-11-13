@@ -26,6 +26,8 @@ use App\Livewire\Legal\Terms;
 use App\Livewire\Lobby\Casino;
 use App\Livewire\Lobby\GameIndex;
 use App\Livewire\Lobby\GameShow;
+use App\Livewire\Predict\Lobby as PredictLobby;
+use App\Livewire\Predict\MarketPage as PredictMarket;
 use App\Livewire\Profile\Show;
 use App\Livewire\Promotions;
 use App\Livewire\Referrals\Index as ReferralsIndex;
@@ -70,6 +72,13 @@ Route::middleware(RequirePlatformFlag::class.':deep_link')->group(function () {
     Route::get('/scratch-cards', GameIndex::class)->defaults('game', 'scratch')->name('games.scratch');
     // Never /games/history or /games/search, which are their own pages.
     Route::get('/games/{slug}', GameShow::class)->where('slug', '(?!(?:'.implode('|', GameCatalogue::RESERVED_SLUGS).')$)[a-z0-9-]+')->name('games.show');
+});
+
+// Prediction markets (plan Phases 3-5): the lobby and one page per market. Guests may look; placing a bet also
+// needs PLATFORM_PREDICTIONS_BETTING or the testers list (App\Support\PredictPages::bettingFor()).
+Route::middleware(RequirePlatformFlag::class.':predictions')->prefix('predictions')->group(function () {
+    Route::get('/', PredictLobby::class)->name('predictions');
+    Route::get('/{market}', PredictMarket::class)->whereNumber('market')->name('predictions.market');
 });
 
 // Sports (plan Phase 9): football lists, matches, the sports jackpot and in-play list, in the new shell. Betting

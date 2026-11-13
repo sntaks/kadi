@@ -9,6 +9,7 @@ use App\Games\Lobby;
 use App\Livewire\Concerns\TogglesFavourites;
 use App\Models\User;
 use App\Sportsbook\Catalogue\SportsLobby;
+use App\Support\PredictPages;
 use App\Support\SportsPages;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
@@ -64,6 +65,7 @@ class Welcome extends Component
             'casino' => $casino,
             'favourites' => $favourites,
             'sports' => $sports,
+            'predictions' => PredictPages::on(),
             'bigMatch' => $bigMatch,
             'also' => $beside['fixtures'],
             'alsoIsToday' => $beside['today'],
@@ -74,6 +76,7 @@ class Welcome extends Component
                 'rail' => $sports,
                 'noindex' => false,
                 'page' => 'home',
+                'predictPanel' => PredictPages::on(),
                 'og' => 'og-lobby.jpg',
                 'description' => $casino
                     ? 'Play Kadi online, the Kenyan card game, head to head for real money, plus slots and scratch cards. One wallet, M-Pesa deposits.'

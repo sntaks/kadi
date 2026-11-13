@@ -260,17 +260,17 @@ test('the side menu and the slip never show sports while the sports pages are of
     $this->get('/faq')->assertOk()->assertDontSee('data-bet-slip', false)->assertDontSee('Highlights');
 });
 
-test('the side menu groups read Kadi, Casino, Sports and start collapsed, except the group of the current page', function () {
+test('the side menu groups read Kadi, Casino, Sports, Predictions and start collapsed, except the group of the current page', function () {
     config(['platform.token_launch' => true]);
     pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]);
 
     $faq = $this->get('/faq')->assertOk();
-    $faq->assertSeeInOrder(['aria-controls="site-group-kadi"', 'aria-controls="site-group-casino"', 'aria-controls="site-group-sports"'], false);
-    expect(substr_count($faq->getContent(), 'aria-expanded="false" x-bind:aria-expanded="open"'))->toBe(3);
+    $faq->assertSeeInOrder(['aria-controls="site-group-kadi"', 'aria-controls="site-group-casino"', 'aria-controls="site-group-sports"', 'aria-controls="site-group-predictions"'], false);
+    expect(substr_count($faq->getContent(), 'aria-expanded="false" x-bind:aria-expanded="open"'))->toBe(4);
 
     $sports = $this->get('/sports')->assertOk();
     $sports->assertSee('aria-expanded="true" x-bind:aria-expanded="open" aria-controls="site-group-sports"', false);
-    expect(substr_count($sports->getContent(), 'aria-expanded="false" x-bind:aria-expanded="open"'))->toBe(2);
+    expect(substr_count($sports->getContent(), 'aria-expanded="false" x-bind:aria-expanded="open"'))->toBe(3);
 });
 
 test('the docked slip sits under the notice strip, so its buttons are never covered', function () {
