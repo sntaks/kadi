@@ -38,7 +38,23 @@ return [
         'reference_price_max_age_seconds' => 45,
         // The pages' own wire:poll, behind the live channel.
         'page_poll_seconds' => 25,
+        // The most list pages (100 markets each) read when the feed starts without a cursor.
+        'bootstrap_max_pages' => 20,
+        // Markets per broadcast message.
+        'broadcast_batch' => 100,
+        // A tick that takes longer than this frees the lock for another worker.
+        'lock_seconds' => 60,
+        // A market the API stops announcing leaves the feed after this long (pages then read it from the API).
+        'record_ttl_seconds' => 172800,
     ],
+
+    // platform:health reports the feed when it has not had a good answer for this long while predictions are on.
+    'health' => [
+        'feed_stale_minutes' => 2,
+    ],
+
+    // Markets per lobby page (the API allows up to 100).
+    'per_page' => 24,
 
     'cache' => [
         'list_seconds' => 10,

@@ -1,0 +1,51 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "id": 2007,
+            "source": "polymarket",
+            "question": "Will Elon Musk post 200-219 tweets from November 6 to November 13, 2026?",
+            "description": "This market will resolve according to the number of times Elon Musk (@elonmusk), posts on X from November 6 12:00 PM ET to November 13, 2026 12:00 PM ET.\n\nFor the purposes of this market, only main feed posts, quote posts and reposts will count.\n\nReplies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker.\n\nDeleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes).\n\nCommunity reposts which are not counted by the tracker not count toward the total.\n\nThe resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.polymarket.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+            "resolution_criteria": "This market will resolve according to the number of times Elon Musk (@elonmusk), posts on X from November 6 12:00 PM ET to November 13, 2026 12:00 PM ET.\n\nFor the purposes of this market, only main feed posts, quote posts and reposts will count.\n\nReplies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker.\n\nDeleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes).\n\nCommunity reposts which are not counted by the tracker not count toward the total.\n\nThe resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.polymarket.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+            "resolution_source": "https://polymarket.com/event/elon-musk-of-tweets-november-6-november-13-2026",
+            "category": "entertainment",
+            "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/elon-musk-of-tweets-nov-22-29-apMPG21-pzx_.jpg",
+            "external_url": "https://polymarket.com/event/elon-musk-of-tweets-november-6-november-13-2026/elon-musk-of-tweets-november-6-november-13-2026-200-219",
+            "countries": [
+                "KE"
+            ],
+            "timezone": "Africa/Nairobi",
+            "currency": "KES",
+            "status": "open",
+            "engine": "pool",
+            "close_at": "2026-11-13T17:00:00+03:00",
+            "resolution_deadline_at": "2026-11-20T17:00:00+03:00",
+            "result": null,
+            "min_stake": 10,
+            "max_stake": 5000,
+            "max_payout": 250000,
+            "event": {
+                "id": 1309,
+                "title": "Elon Musk # tweets November 6 - November 13, 2026?"
+            },
+            "betting_available": true,
+            "betting_closes_at": "2026-11-13T16:45:00+03:00",
+            "odds": {
+                "yes_label": "Yes",
+                "no_label": "No",
+                "yes_probability": 0.369,
+                "no_probability": 0.631,
+                "yes_multiplier": 2.43,
+                "no_multiplier": 1.42,
+                "is_estimate": true,
+                "is_reference": false,
+                "volume": 0,
+                "bets_count": 0,
+                "updated_at": "2026-11-13T14:26:07+03:00"
+            },
+            "opened_at": "2026-11-13T14:26:07+03:00",
+            "resolved_at": null
+        }
+    }
+}

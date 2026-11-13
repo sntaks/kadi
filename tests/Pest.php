@@ -222,3 +222,14 @@ function decryptAccountId(string $token): ?string
 
     return $plain === false ? null : $plain;
 }
+
+/**
+ * A Kadi API prediction answer from tests/Fixtures/predict: live ones are `{status, body}`, documentation samples the
+ * whole body.
+ *
+ * @return array<string, mixed>
+ */
+function predictFixture(string $name): array
+{
+    return json_decode(file_get_contents(base_path("tests/Fixtures/predict/{$name}.json")), true, flags: JSON_THROW_ON_ERROR);
+}
