@@ -1,0 +1,14 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "side": "yes",
+            "stake": 100,
+            "estimated_multiplier": 2.11,
+            "estimated_payout": 211,
+            "is_estimate": true,
+            "replayed": false
+        }
+    }
+}

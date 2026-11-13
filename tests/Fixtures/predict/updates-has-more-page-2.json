@@ -1,0 +1,58 @@
+{
+    "status": 200,
+    "body": {
+        "success": true,
+        "data": {
+            "server_time": "2026-11-13T14:37:57+03:00",
+            "has_more": false,
+            "reference_prices_at": "2026-11-13T14:37:57+03:00",
+            "markets": [
+                {
+                    "id": 1218,
+                    "source": "polymarket",
+                    "question": "Will Masoud Pezeshkian be head of state in Iran end of 2026?",
+                    "description": "This market will resolve to the individual who de facto holds and exercises the powers of the head of state of the Islamic Republic of Iran on December 31, 2026 at 12:00 PM ET.\n\nFor the purposes of this market, “de facto holds” refers to the individual who exercises primary governing authority over the Iranian state at that time, including effective control over the armed forces, national institutions, and core executive decision-making, regardless of formal title, constitutional designation, or international recognition.\n\nFormal appointment, recognition by the United Nations, or recognition by foreign governments is not required.\n\nIf more than one individual claims to be head of state, this market will resolve to the individual who demonstrably exercises primary governing control within Iran’s territory at the specified time.\n\nIndicators of de facto authority may include control over the armed forces and security services; control over executive ministries and state administrative institutions; enforcement of national laws; issuance of binding national directives; and effective control over the capital and core state infrastructure.\n\nSymbolic status, foreign recognition without domestic control, nomination without effective authority, or expired prior service will not qualify.\n\nIf no individual exercises effective governing control at the specified time, this market will resolve to “No Head of State”.\n\nThe primary resolution source will be a consensus of credible reporting assessing who exercises effective governing authority at the specified time.",
+                    "resolution_criteria": "This market will resolve to the individual who de facto holds and exercises the powers of the head of state of the Islamic Republic of Iran on December 31, 2026 at 12:00 PM ET.\n\nFor the purposes of this market, “de facto holds” refers to the individual who exercises primary governing authority over the Iranian state at that time, including effective control over the armed forces, national institutions, and core executive decision-making, regardless of formal title, constitutional designation, or international recognition.\n\nFormal appointment, recognition by the United Nations, or recognition by foreign governments is not required.\n\nIf more than one individual claims to be head of state, this market will resolve to the individual who demonstrably exercises primary governing control within Iran’s territory at the specified time.\n\nIndicators of de facto authority may include control over the armed forces and security services; control over executive ministries and state administrative institutions; enforcement of national laws; issuance of binding national directives; and effective control over the capital and core state infrastructure.\n\nSymbolic status, foreign recognition without domestic control, nomination without effective authority, or expired prior service will not qualify.\n\nIf no individual exercises effective governing control at the specified time, this market will resolve to “No Head of State”.\n\nThe primary resolution source will be a consensus of credible reporting assessing who exercises effective governing authority at the specified time.",
+                    "resolution_source": "https://polymarket.com/event/iran-leader-end-of-2026",
+                    "category": "politics",
+                    "image_url": "https://polymarket-upload.s3.us-east-2.amazonaws.com/khamenei-out-as-supreme-leader-of-iran-in-2025-VNDMf5RqFLwB.jpg",
+                    "external_url": "https://polymarket.com/event/iran-leader-end-of-2026/will-masoud-pezeshkian-be-head-of-state-in-iran-end-of-2026",
+                    "countries": [
+                        "KE"
+                    ],
+                    "timezone": "Africa/Nairobi",
+                    "currency": "KES",
+                    "status": "open",
+                    "engine": "pool",
+                    "close_at": "2026-12-31T17:00:00+03:00",
+                    "resolution_deadline_at": "2027-01-07T17:00:00+03:00",
+                    "result": null,
+                    "min_stake": 10,
+                    "max_stake": 5000,
+                    "max_payout": 250000,
+                    "event": {
+                        "id": 790,
+                        "title": "Iran leader end of 2026?"
+                    },
+                    "betting_available": true,
+                    "betting_closes_at": "2026-12-31T16:45:00+03:00",
+                    "odds": {
+                        "yes_label": "Yes",
+                        "no_label": "No",
+                        "yes_probability": 0.05,
+                        "no_probability": 0.95,
+                        "yes_multiplier": 18,
+                        "no_multiplier": 0.94,
+                        "is_estimate": true,
+                        "is_reference": false,
+                        "volume": 0,
+                        "bets_count": 0,
+                        "updated_at": "2026-11-13T14:21:45+03:00"
+                    },
+                    "opened_at": "2026-11-13T14:21:45+03:00",
+                    "resolved_at": null
+                }
+            ]
+        }
+    }
+}

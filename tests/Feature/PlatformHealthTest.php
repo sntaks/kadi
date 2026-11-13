@@ -3,6 +3,7 @@
 use App\Games\GameCatalogue;
 use App\Models\GameLaunch;
 use App\Models\User;
+use App\Predict\MarketFeed;
 use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\WagerOp;
 use App\Support\PlatformHealth;
@@ -21,6 +22,8 @@ beforeEach(function () {
     Http::fake(['api.test/api/v1/games*' => fn () => $this->catalogueUp
         ? Http::response(['data' => [['code' => 'slots', 'name' => 'Slots', 'status' => 'active', 'sort_order' => 2, 'launch_url' => 'https://slots.kadi.online/play', 'products' => []]]])
         : Http::response([], 503)]);
+    // A prediction feed that has just answered (its own check is in Predict/MarketFeedTest).
+    Cache::forever(MarketFeed::OK_AT_KEY, now()->getTimestamp());
 });
 
 function healthLaunches(int $count, string $status, ?string $error = null): void

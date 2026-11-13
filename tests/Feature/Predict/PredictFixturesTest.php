@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Http;
 /**
  * The API's own answers (tests/Fixtures/predict) read through the client and the data objects.
  */
-function predictFixture(string $name): array
-{
-    return json_decode(file_get_contents(base_path("tests/Fixtures/predict/{$name}.json")), true, flags: JSON_THROW_ON_ERROR);
-}
-
 function fakePredict(string $name, int $status = 200): PredictApi
 {
     $fixture = predictFixture($name);

@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Games\GameCatalogue;
 use App\Models\GameLaunch;
+use App\Predict\MarketFeed;
 use App\Sportsbook\Wagers\NeedsOperator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
@@ -21,7 +22,7 @@ class PlatformHealth
     /** @var array{ops: int, failed_ops: int, oldest_op_at: ?string, pending_bets: int, pending_jackpot_entries: int}|null */
     private ?array $counts = null;
 
-    public function __construct(private NeedsOperator $needsOperator, private GameCatalogue $catalogue) {}
+    public function __construct(private NeedsOperator $needsOperator, private GameCatalogue $catalogue, private MarketFeed $predictFeed) {}
 
     /**
      * @return array<string, array{message: string, context: array<string, int|float|string>}|null>
@@ -35,6 +36,7 @@ class PlatformHealth
             'wager_ops' => $this->wagerOps(),
             'wager_placements' => $this->placements(),
             'game_catalogue' => $this->catalogue(),
+            'predict_feed' => $this->predictFeed(),
         ];
     }
 
@@ -139,6 +141,36 @@ class PlatformHealth
 
         return $minutes < $limit ? null : [
             'message' => "The game catalogue is stale: the Kadi API last answered {$minutes} minutes ago.",
+            'context' => ['minutes' => $minutes],
+        ];
+    }
+
+    /**
+     * The prediction market feed worker (`predict:feed`) has had no good answer for a while: open pages show prices
+     * that may be out of date. Either the worker is not running or the Kadi API is not answering it.
+     *
+     * @return array{message: string, context: array<string, int|float|string>}|null
+     */
+    private function predictFeed(): ?array
+    {
+        if (! PredictPages::on()) {
+            return null;
+        }
+
+        $seconds = $this->predictFeed->secondsSinceOk();
+        $limit = (int) config('predict.health.feed_stale_minutes', 2);
+
+        if ($seconds === null) {
+            return [
+                'message' => 'The prediction market feed has never had an answer from the Kadi API: is predict:feed running?',
+                'context' => ['minutes' => -1],
+            ];
+        }
+
+        $minutes = intdiv($seconds, 60);
+
+        return $minutes < $limit ? null : [
+            'message' => "The prediction market feed is stale: its last good answer was {$minutes} minutes ago.",
             'context' => ['minutes' => $minutes],
         ];
     }
