@@ -33,6 +33,14 @@ final class OddsApiSource
         );
     }
 
+    /** The books a match's extra markets are bought from (`sportsbook.per_event.bookmakers`), else the default source. */
+    public static function forEventOdds(): self
+    {
+        $own = self::list((string) config('sportsbook.per_event.bookmakers'));
+
+        return $own !== [] ? new self(regions: self::list((string) config('sportsbook.odds_api.region')), bookmakers: $own) : self::fromConfig();
+    }
+
     /**
      * Markets grouped by the source they are bought from, one group per API call, default source first.
      *

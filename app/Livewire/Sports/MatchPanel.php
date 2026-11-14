@@ -52,7 +52,7 @@ class MatchPanel extends Component
     #[Computed]
     public function marketsByTab(): Collection
     {
-        return $this->fixture === null ? collect() : MarketTabs::group($this->fixture->markets()->with('selections')->get());
+        return $this->fixture === null ? collect() : MarketTabs::group($this->fixture->markets()->with('selections')->get()->each->setRelation('fixture', $this->fixture));
     }
 
     public function render(): View

@@ -19,7 +19,7 @@ class MarketTabs
      */
     public const TABS = [
         'main' => ['label' => 'Main', 'types' => [MarketType::MatchResult, MarketType::DoubleChance, MarketType::DrawNoBet]],
-        'goals' => ['label' => 'Goals', 'types' => [MarketType::Totals, MarketType::BothTeamsToScore]],
+        'goals' => ['label' => 'Goals', 'types' => [MarketType::Totals, MarketType::BothTeamsToScore, MarketType::HomeTeamTotals, MarketType::AwayTeamTotals]],
         'handicap' => ['label' => 'Handicap', 'types' => [MarketType::Spreads]],
         'correct-score' => ['label' => 'Correct Score', 'types' => [MarketType::CorrectScore]],
         'half-time' => ['label' => 'Half-time', 'types' => [MarketType::HalfTimeFullTime]],

@@ -62,7 +62,7 @@ test('the sportsbook schedule runs only while sports is on; money owed is sent w
         ->filter(fn ($event) => str_contains((string) $event->command, 'sportsbook:'));
     $money = fn ($event) => str_contains((string) $event->command, 'wager-ops') || str_contains((string) $event->command, 'reconcile-wagers');
 
-    expect($events)->toHaveCount(6)
+    expect($events)->toHaveCount(7)
         ->and($events->reject($money)->every(fn ($event) => $event->filtersPass(app())))->toBe($sports)
         ->and($events->filter($money)->every(fn ($event) => $event->filtersPass(app())))->toBeTrue();
 })->with([true, false]);

@@ -56,6 +56,33 @@ class ReplayOddsApi implements OddsApi
     }
 
     /**
+     * A match's recorded extras (`event-odds-{competition}.json`, made with `--per-event`), cut down to the markets
+     * asked for. Null without a recording for that match: locally, most matches have no extras.
+     */
+    public function eventOdds(string $sportKey, string $eventId, array $markets, OddsApiPurpose $purpose = OddsApiPurpose::PerEvent): ?array
+    {
+        if (! is_file(self::recordingFile($this->recordingsPath, 'event-odds', $sportKey))) {
+            return null;
+        }
+
+        $event = collect($this->load('event-odds', $sportKey))->firstWhere('id', $eventId);
+
+        if (! is_array($event)) {
+            return null;
+        }
+
+        foreach ($event['bookmakers'] ?? [] as $index => $bookmaker) {
+            $event['bookmakers'][$index]['markets'] = array_values(array_filter(
+                $bookmaker['markets'] ?? [],
+                fn (array $market): bool => in_array($market['key'] ?? null, $markets, true),
+            ));
+        }
+
+        /** @var array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>} */
+        return $event;
+    }
+
+    /**
      * The recorded scores. Recorded games had already finished, so they match no replayed (always upcoming) fixture:
      * locally, results are entered in the admin panel.
      */

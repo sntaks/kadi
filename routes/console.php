@@ -22,6 +22,9 @@ Schedule::command('sportsbook:sync-fixtures')->hourly()->when($sports)->withoutO
 // Paid: one credit per synced competition per market per region. Once a day on the free plan.
 Schedule::command('sportsbook:sync-odds')->dailyAt('09:00')->timezone('Africa/Nairobi')->when($sports)->withoutOverlapping(60)->onOneServer();
 
+// Paid: each match's extra markets (alternate lines, team goal lines), once in each window before kick-off (plan §10.6).
+Schedule::command('sportsbook:sync-event-odds')->hourly()->when($sports)->withoutOverlapping(30)->onOneServer();
+
 // Free postponement voids every run; paid scores (2 credits) only for competitions with bets waiting on a result,
 // at most every 12 hours each.
 Schedule::command('sportsbook:settle')->hourly()->when($sports)->withoutOverlapping(30)->onOneServer();

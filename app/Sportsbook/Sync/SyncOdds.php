@@ -92,7 +92,7 @@ class SyncOdds
         $outcomeByName = array_flip($names);
         $bookmakerPrices = [];
 
-        foreach ($this->marketsOfType($event, MarketType::MatchResult) as $bookmakerKey => $outcomes) {
+        foreach (LinePrices::outcomesByBook($event, MarketType::MatchResult->value) as $bookmakerKey => $outcomes) {
             foreach ($outcomes as $outcome) {
                 if (isset($outcomeByName[$outcome['name']])) {
                     $bookmakerPrices[$bookmakerKey][$outcomeByName[$outcome['name']]] = (float) $outcome['price'];
@@ -123,19 +123,7 @@ class SyncOdds
      */
     private function priceTotals(Fixture $fixture, array $event): void
     {
-        $pricesByLine = [];
-
-        foreach ($this->marketsOfType($event, MarketType::Totals) as $bookmakerKey => $outcomes) {
-            foreach ($outcomes as $outcome) {
-                $side = strtolower($outcome['name']);
-
-                if (isset($outcome['point']) && in_array($side, ['over', 'under'], true) && ! Market::isQuarterLine($outcome['point'])) {
-                    $pricesByLine[(string) (float) $outcome['point']][$bookmakerKey][$side] = (float) $outcome['price'];
-                }
-            }
-        }
-
-        foreach ($pricesByLine as $line => $bookmakerPrices) {
+        foreach (LinePrices::overUnder(LinePrices::outcomesByBook($event, MarketType::Totals->value)) as $line => $bookmakerPrices) {
             $this->applyMarketPrice->handle(
                 $fixture,
                 MarketType::Totals,
@@ -156,26 +144,9 @@ class SyncOdds
      */
     private function priceSpreads(Fixture $fixture, array $event): void
     {
-        $pricesByLine = [];
+        $outcomes = LinePrices::outcomesByBook($event, MarketType::Spreads->value);
 
-        foreach ($this->marketsOfType($event, MarketType::Spreads) as $bookmakerKey => $outcomes) {
-            $home = collect($outcomes)->first(fn (array $outcome): bool => $outcome['name'] === $event['home_team'] && isset($outcome['point']));
-            $away = collect($outcomes)->first(fn (array $outcome): bool => $outcome['name'] === $event['away_team'] && isset($outcome['point']));
-
-            if ($home === null || $away === null) {
-                continue;
-            }
-
-            $line = (float) $home['point'];
-
-            if (abs($line + (float) $away['point']) > 0.001 || Market::isQuarterLine($line)) {
-                continue;
-            }
-
-            $pricesByLine[Market::formatLine($line)][$bookmakerKey] = ['home' => (float) $home['price'], 'away' => (float) $away['price']];
-        }
-
-        foreach ($pricesByLine as $line => $bookmakerPrices) {
+        foreach (LinePrices::handicaps($outcomes, $event['home_team'], $event['away_team']) as $line => $bookmakerPrices) {
             $this->applyMarketPrice->handle(
                 $fixture,
                 MarketType::Spreads,
@@ -188,26 +159,5 @@ class SyncOdds
                 createWhenUnpriced: false,
             );
         }
-    }
-
-    /**
-     * Each bookmaker's outcomes for one market type.
-     *
-     * @param  EventOddsData  $event
-     * @return array<string, list<array{name: string, price: float|int, point?: float|int}>>
-     */
-    private function marketsOfType(array $event, MarketType $type): array
-    {
-        $markets = [];
-
-        foreach ($event['bookmakers'] as $bookmaker) {
-            foreach ($bookmaker['markets'] as $market) {
-                if ($market['key'] === $type->value) {
-                    $markets[$bookmaker['key']] = $market['outcomes'];
-                }
-            }
-        }
-
-        return $markets;
     }
 }

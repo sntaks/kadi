@@ -11,8 +11,8 @@ use App\Sportsbook\Pricing\ApplyMarketPrice;
 use App\Sportsbook\Pricing\PricedMarket;
 
 /**
- * Creates or refreshes a fixture's derived markets from its priced 1X2. An Over/Under line the feed already prices is
- * left to the feed. When the 1X2 cannot be priced, the derived markets are suspended with it.
+ * Creates or refreshes a fixture's derived markets from its priced 1X2. An Over/Under line the feed already prices (in
+ * bulk or as a match extra) is left to the feed. When the 1X2 cannot be priced, the derived markets are suspended with it.
  */
 class DeriveMarkets
 {
@@ -35,7 +35,8 @@ class DeriveMarkets
             return;
         }
 
-        $feedKeys = $fixture->markets()->where('source', MarketSource::Feed)->pluck('key')->all();
+        // Either feed owns its lines: the bulk main lines and a match's extra lines.
+        $feedKeys = $fixture->markets()->whereIn('source', [MarketSource::Feed, MarketSource::EventFeed])->pluck('key')->all();
         $derivedMarkets = $this->pricer->price(
             $fair,
             $fixture->home_team,

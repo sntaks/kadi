@@ -51,7 +51,7 @@ class MatchPage extends Component
     #[Computed]
     public function marketsByTab(): Collection
     {
-        return MarketTabs::group($this->fixture->markets()->with('selections')->get());
+        return MarketTabs::group($this->fixture->markets()->with('selections')->get()->each->setRelation('fixture', $this->fixture));
     }
 
     public function render(): View

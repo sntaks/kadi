@@ -25,12 +25,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $home_team
  * @property string $away_team
  * @property CarbonImmutable $kicks_off_at
+ * @property CarbonImmutable|null $extras_synced_at
  * @property FixtureStatus $status
  * @property CarbonImmutable|null $last_seen_in_feed_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['competition_id', 'external_id', 'home_team', 'away_team', 'kicks_off_at', 'status', 'last_seen_in_feed_at'])]
+#[Fillable(['competition_id', 'external_id', 'home_team', 'away_team', 'kicks_off_at', 'status', 'last_seen_in_feed_at', 'extras_synced_at'])]
 class Fixture extends SportsbookModel
 {
     protected $table = 'sb_fixtures';
@@ -47,6 +48,7 @@ class Fixture extends SportsbookModel
     {
         return [
             'kicks_off_at' => 'datetime',
+            'extras_synced_at' => 'datetime',
             'last_seen_in_feed_at' => 'datetime',
             'status' => FixtureStatus::class,
         ];

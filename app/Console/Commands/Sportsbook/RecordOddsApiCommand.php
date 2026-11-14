@@ -17,6 +17,7 @@ use function Laravel\Prompts\confirm;
 #[Signature('sportsbook:record-odds-api
     {--markets=h2h,totals : Comma-separated market keys to record}
     {--competition=* : Competition keys to record (defaults to the default competitions)}
+    {--per-event=0 : Also record the extra markets (config sportsbook.per_event.markets) of this many upcoming matches per competition}
     {--force : Skip the credit confirmation}')]
 #[Description('Record live Odds API responses for the replay driver (spends credits for odds)')]
 class RecordOddsApiCommand extends Command
@@ -33,7 +34,10 @@ class RecordOddsApiCommand extends Command
         $competitions = $this->option('competition') ?: config('sportsbook.odds_api.default_competitions');
         $marketsOption = $this->option('markets');
         $markets = is_string($marketsOption) ? array_values(array_filter(array_map('trim', explode(',', $marketsOption)))) : [];
-        $estimatedCredits = count($competitions) * OddsApiSource::creditsFor($markets);
+        $perEvent = max(0, (int) $this->option('per-event'));
+        $eventMarkets = (array) config('sportsbook.per_event.markets');
+        $estimatedCredits = count($competitions) * (OddsApiSource::creditsFor($markets)
+            + $perEvent * count($eventMarkets) * OddsApiSource::forEventOdds()->creditsPerMarket());
 
         $this->line('Recording sports, fixtures and ['.implode(', ', $markets).'] odds for: '.implode(', ', $competitions));
         $this->line("Odds cost about {$estimatedCredits} credits; sports and fixtures are free.");
@@ -52,7 +56,16 @@ class RecordOddsApiCommand extends Command
 
         foreach ($competitions as $competition) {
             $this->write($path, 'events', $competition, $live->events($competition));
-            $this->write($path, 'odds', $competition, $live->odds($competition, $markets, OddsApiPurpose::Recording));
+            $odds = $live->odds($competition, $markets, OddsApiPurpose::Recording);
+            $this->write($path, 'odds', $competition, $odds);
+
+            if ($perEvent > 0) {
+                $upcoming = collect($odds)->filter(fn (array $event): bool => now('UTC')->lt($event['commence_time']))->take($perEvent);
+                /** @var list<string> $eventMarkets */
+                $extras = $upcoming->map(fn (array $event): ?array => $live->eventOdds($competition, $event['id'], $eventMarkets, OddsApiPurpose::Recording))->filter()->values()->all();
+                $this->write($path, 'event-odds', $competition, $extras);
+            }
+
             $this->line("Recorded {$competition}.");
         }
 

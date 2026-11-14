@@ -117,6 +117,35 @@ class LiveOddsApi implements OddsApi
         return $events;
     }
 
+    public function eventOdds(string $sportKey, string $eventId, array $markets, OddsApiPurpose $purpose = OddsApiPurpose::PerEvent): ?array
+    {
+        $source = OddsApiSource::forEventOdds();
+
+        try {
+            /** @var array<string, mixed> $event An empty answer when the match has no odds. */
+            $event = $this->budget->spend(count($markets) * $source->creditsPerMarket(), fn (): array => $this->send('event-odds', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/events/{$eventId}/odds", [
+                ...$source->query(),
+                'markets' => implode(',', $markets),
+                'oddsFormat' => 'decimal',
+                'dateFormat' => 'iso',
+            ]), $purpose), $purpose);
+        } catch (RequestException $exception) {
+            // The match is no longer in the feed (finished, moved or removed): nothing to buy, and nothing was spent.
+            if ($exception->response->status() === 404) {
+                return null;
+            }
+
+            throw $exception;
+        }
+
+        if (! isset($event['id'])) {
+            return null;
+        }
+
+        /** @var array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int, description?: string}>}>}>} $event */
+        return $event;
+    }
+
     public function scores(string $sportKey, int $daysFrom, OddsApiPurpose $purpose = OddsApiPurpose::Scores): array
     {
         /** @var list<array{id: string, sport_key: string, commence_time: string, completed: bool, home_team: string, away_team: string, scores: list<array{name: string, score: string}>|null, last_update: string|null}> */

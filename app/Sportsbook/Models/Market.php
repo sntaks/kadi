@@ -110,6 +110,13 @@ class Market extends SportsbookModel
     {
         $label = $this->type === MarketType::MatchResult && ! $this->hasDraw() ? __('Winner') : $this->type->label();
 
+        // A team's goal line is named by the team: "Manchester City goals 1.5".
+        if (in_array($this->type, [MarketType::HomeTeamTotals, MarketType::AwayTeamTotals], true)) {
+            $team = $this->type === MarketType::HomeTeamTotals ? $this->fixture?->home_team : $this->fixture?->away_team;
+
+            return __(':team goals', ['team' => $team ?? __('Team')]).' '.self::formatLine((string) $this->line);
+        }
+
         // A handicap is named by the home side's line: "Handicap -1.5" (home -1.5, away +1.5).
         return $this->line === null ? $label : $label.' '.self::formatLine($this->line, signed: $this->type === MarketType::Spreads);
     }
