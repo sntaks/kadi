@@ -1,0 +1,55 @@
+{
+    "recorded_at": "2026-11-14T12:09:44Z",
+    "endpoint": "events",
+    "sport_key": "icehockey_liiga",
+    "data": [
+        {
+            "id": "2c00d391c11d2ed0c033bf6e03f4f337",
+            "sport_key": "icehockey_liiga",
+            "sport_title": "Liiga",
+            "commence_time": "2026-11-14T15:00:00Z",
+            "home_team": "Sport",
+            "away_team": "HPK"
+        },
+        {
+            "id": "53d74511f9a5033103bc169aabfccc6f",
+            "sport_key": "icehockey_liiga",
+            "sport_title": "Liiga",
+            "commence_time": "2026-11-14T15:00:00Z",
+            "home_team": "JYP",
+            "away_team": "Pelicans"
+        },
+        {
+            "id": "1d0775dfdec4b45b1c3ba3b42873875d",
+            "sport_key": "icehockey_liiga",
+            "sport_title": "Liiga",
+            "commence_time": "2026-11-14T15:00:00Z",
+            "home_team": "Ässät",
+            "away_team": "Jokerit"
+        },
+        {
+            "id": "caec98739eaab8af3683c1a659bcb97d",
+            "sport_key": "icehockey_liiga",
+            "sport_title": "Liiga",
+            "commence_time": "2026-11-14T15:00:00Z",
+            "home_team": "Jukurit",
+            "away_team": "KooKoo"
+        },
+        {
+            "id": "adbe91ad1bfbef19d97e6ca397fc6d6b",
+            "sport_key": "icehockey_liiga",
+            "sport_title": "Liiga",
+            "commence_time": "2026-11-14T15:00:00Z",
+            "home_team": "Kärpät",
+            "away_team": "Tappara"
+        },
+        {
+            "id": "6c57d3a644b0886ce56d298ab0d58212",
+            "sport_key": "icehockey_liiga",
+            "sport_title": "Liiga",
+            "commence_time": "2026-11-15T13:00:00Z",
+            "home_team": "Ilves",
+            "away_team": "SaiPa"
+        }
+    ]
+}

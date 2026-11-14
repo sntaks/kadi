@@ -49,6 +49,10 @@ class CompetitionSeeder extends Seeder
         'soccer_uefa_european_championship' => 'UEFA Euro',
         'soccer_uefa_euro_qualification' => 'UEFA Euro Qualification',
         'basketball_nbl' => 'NBL',
+        'icehockey_nhl' => 'NHL',
+        'icehockey_sweden_hockey_league' => 'SHL',
+        'icehockey_liiga' => 'Liiga',
+        'icehockey_ahl' => 'AHL',
     ];
 
     public function run(): void

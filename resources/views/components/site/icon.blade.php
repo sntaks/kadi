@@ -4,6 +4,8 @@
     $paths = [
         'ball' => '<circle cx="12" cy="12" r="9"/><path d="m12 7 4 3-1.5 4.5h-5L8 10z"/><path d="M12 3v4M21 10.5l-5-.5M18 19l-3.5-4.5M6 19l3.5-4.5M3 10.5l5-.5"/>',
         'basketball' => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/><path d="M5.8 5.8c2.5 2.6 2.5 9.8 0 12.4M18.2 5.8c-2.5 2.6-2.5 9.8 0 12.4"/>',
+        // Ice hockey: a stick with its blade to the right and a puck beside it.
+        'ice-hockey' => '<path d="M9 3l6.2 13.4c.4.9 1.3 1.6 2.3 1.6H21"/><ellipse cx="6.5" cy="17" rx="3.5" ry="1.5"/><path d="M3 17v1.6c0 .8 1.6 1.5 3.5 1.5s3.5-.7 3.5-1.5V17"/>',
         'cards' => '<rect x="3.5" y="5" width="11" height="15" rx="2" transform="rotate(-8 9 12.5)"/><rect x="9.5" y="4" width="11" height="15" rx="2"/><path d="M15 8.5c-1.2 1.4-2 2.3-2 3.2a2 2 0 0 0 4 0c0-.9-.8-1.8-2-3.2Z"/>',
         // The card on the "i" of the Kadi logo: one playing card tilted 15°, a corner pip and a spade.
         'kadi' => '<g transform="rotate(15 12 12)"><rect x="6.2" y="3.2" width="11.6" height="17.6" rx="2.2"/><path d="M8.9 6.3v.01"/><path d="M12 8.7c-1.9 1.8-3.1 2.8-3.1 4.2a1.7 1.7 0 0 0 2.8 1.3l-.5 1.5h1.6l-.5-1.5a1.7 1.7 0 0 0 2.8-1.3c0-1.4-1.2-2.4-3.1-4.2Z"/></g>',

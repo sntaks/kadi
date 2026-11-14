@@ -119,7 +119,7 @@ return [
         // Odds are only bought for competitions with a fixture kicking off within this many days.
         'lookahead_days' => (int) env('ODDS_API_LOOKAHEAD_DAYS', 7),
         // Feed sport groups imported as sports, mapped to the name players see.
-        'sport_groups' => ['Soccer' => 'Football', 'Basketball' => 'Basketball'],
+        'sport_groups' => ['Soccer' => 'Football', 'Basketball' => 'Basketball', 'Ice Hockey' => 'Ice Hockey'],
         // Competitions synced out of the box (CompetitionSeeder) and recorded for replay.
         'default_competitions' => [
             'soccer_epl',
@@ -153,6 +153,11 @@ return [
             'soccer_uefa_european_championship',
             'soccer_uefa_euro_qualification',
             'basketball_nbl',
+            // Phase 4a: ice hockey.
+            'icehockey_nhl',
+            'icehockey_sweden_hockey_league',
+            'icehockey_liiga',
+            'icehockey_ahl',
         ],
         'odds_format' => 'decimal',
         'monthly_credit_cap' => (int) env('ODDS_API_MONTHLY_CREDIT_CAP', 100000),
@@ -228,7 +233,22 @@ return [
             'derived_markets' => false,
             'markets' => env('ODDS_API_BASKETBALL_MARKETS', 'h2h,totals'),
             'max_score' => 300,
+            'totals_label' => 'Total points',
             'popular' => ['basketball_nba', 'basketball_euroleague'],
+        ],
+        // Plan §10.3 (phase 4a). The feed's h2h is two-way and includes overtime and the shootout, as do its totals;
+        // results come from the scores feed's final score (verified on 19 NHL games, 2026-11-14).
+        'ice-hockey' => [
+            'name' => 'Ice Hockey',
+            'icon' => 'ice-hockey',
+            'sort_order' => 3,
+            'key_prefix' => 'icehockey_',
+            'has_draw' => false,
+            'derived_markets' => false,
+            'markets' => env('ODDS_API_ICEHOCKEY_MARKETS', 'h2h,totals'),
+            'max_score' => 30,
+            'totals_label' => 'Total goals',
+            'popular' => ['icehockey_nhl'],
         ],
     ],
 

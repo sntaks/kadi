@@ -38,7 +38,7 @@ class Competition extends SportsbookModel
 
     /** Pages under /sports that a competition's /sports/{slug} must never shadow. */
     /** Paths under /sports that are pages, not competitions: the sport pages (config sportsbook.sports) included. */
-    public const RESERVED_SLUGS = ['match', 'jackpot', 'live', 'search', 'football', 'basketball'];
+    public const RESERVED_SLUGS = ['match', 'jackpot', 'live', 'search', 'football', 'basketball', 'ice-hockey'];
 
     /** @use HasFactory<CompetitionFactory> */
     use HasFactory, LogsActivity;

@@ -87,3 +87,18 @@ test('a basketball Winner settles on the final score incl. overtime, and a level
     'away loses' => [118, 112, 'away', BetLegStatus::Lost],
     'recorded level: void, never lost' => [100, 100, 'home', BetLegStatus::Void],
 ]);
+
+test('an ice hockey Winner settles on the final score incl. overtime and the shootout, and a level score voids it', function (int $home, int $away, string $outcome, BetLegStatus $expected) {
+    $fixture = Fixture::factory()->create([
+        'competition_id' => Competition::factory()->create(['sport_id' => Sport::factory()->configured('ice-hockey')]),
+    ]);
+    $leg = legOn(MarketType::MatchResult, $outcome);
+    $leg->fixture_id = $fixture->id;
+
+    expect(MarketRules::settle($leg, fullTime($home, $away)))->toBe($expected);
+})->with([
+    // The scores feed's final score counts the shootout winner's goal (3-2 after a shootout).
+    'home wins in the shootout' => [3, 2, 'home', BetLegStatus::Won],
+    'away loses' => [3, 2, 'away', BetLegStatus::Lost],
+    'recorded level: void, never lost' => [2, 2, 'away', BetLegStatus::Void],
+]);

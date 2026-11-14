@@ -1,0 +1,3402 @@
+{
+    "recorded_at": "2026-11-14T12:09:47Z",
+    "endpoint": "odds",
+    "sport_key": "icehockey_ahl",
+    "data": [
+        {
+            "id": "3eff4b8dea9e3177eb7b78b654abb260",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-14T22:05:00Z",
+            "home_team": "Rochester Americans",
+            "away_team": "Laval Rocket",
+            "bookmakers": [
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Laval Rocket",
+                                    "price": 1.69
+                                },
+                                {
+                                    "name": "Rochester Americans",
+                                    "price": 2.04
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Laval Rocket",
+                                    "price": 2.04
+                                },
+                                {
+                                    "name": "Rochester Americans",
+                                    "price": 2.56
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.86,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.86,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Laval Rocket",
+                                    "price": 2.14
+                                },
+                                {
+                                    "name": "Rochester Americans",
+                                    "price": 2.65
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Laval Rocket",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "Rochester Americans",
+                                    "price": 2.05
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Laval Rocket",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Rochester Americans",
+                                    "price": 2.3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.73,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Laval Rocket",
+                                    "price": 2.1
+                                },
+                                {
+                                    "name": "Rochester Americans",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0e66bbc770f6347f506ff54196ea7099",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-14T23:00:00Z",
+            "home_team": "Utica Comets",
+            "away_team": "Syracuse Crunch",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Syracuse Crunch",
+                                    "price": 2.43
+                                },
+                                {
+                                    "name": "Utica Comets",
+                                    "price": 2.12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.8
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Syracuse Crunch",
+                                    "price": 2.65
+                                },
+                                {
+                                    "name": "Utica Comets",
+                                    "price": 2.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Syracuse Crunch",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Utica Comets",
+                                    "price": 1.73
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Syracuse Crunch",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Utica Comets",
+                                    "price": 1.71
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Syracuse Crunch",
+                                    "price": 2.52
+                                },
+                                {
+                                    "name": "Utica Comets",
+                                    "price": 1.99
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Syracuse Crunch",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Utica Comets",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "6fbe900737c7b505be5af9962a2730ec",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-14T23:05:00Z",
+            "home_team": "W-B/Scranton Penguins",
+            "away_team": "Hamilton Hammers",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hamilton Hammers",
+                                    "price": 2.65
+                                },
+                                {
+                                    "name": "W-B/Scranton Penguins",
+                                    "price": 1.93
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.72,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hamilton Hammers",
+                                    "price": 2.95
+                                },
+                                {
+                                    "name": "W-B/Scranton Penguins",
+                                    "price": 1.98
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.35
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.87,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.87,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hamilton Hammers",
+                                    "price": 2.2
+                                },
+                                {
+                                    "name": "W-B/Scranton Penguins",
+                                    "price": 1.62
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f5fc6a709e466afb50702af09be26928",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T00:00:00Z",
+            "home_team": "Iowa Wild",
+            "away_team": "Grand Rapids Griffins",
+            "bookmakers": [
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Grand Rapids Griffins",
+                                    "price": 1.65
+                                },
+                                {
+                                    "name": "Iowa Wild",
+                                    "price": 2.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Grand Rapids Griffins",
+                                    "price": 1.95
+                                },
+                                {
+                                    "name": "Iowa Wild",
+                                    "price": 2.64
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Grand Rapids Griffins",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "Iowa Wild",
+                                    "price": 2.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Grand Rapids Griffins",
+                                    "price": 1.93
+                                },
+                                {
+                                    "name": "Iowa Wild",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.82,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.67,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.94,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.77,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.94,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.77,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Grand Rapids Griffins",
+                                    "price": 2.08
+                                },
+                                {
+                                    "name": "Iowa Wild",
+                                    "price": 2.8
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Grand Rapids Griffins",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Iowa Wild",
+                                    "price": 2.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f0537f2b9a763b09fe2fd4d51d358fa9",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T00:05:00Z",
+            "home_team": "Lehigh Valley Phantoms",
+            "away_team": "Charlotte Checkers",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.89,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 2.08
+                                },
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 2.12
+                                },
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.43
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.8
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.7,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.78,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.89,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.95,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 1.66
+                                },
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.08
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 1.96
+                                },
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.62
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0b8feed34268fbd6ac62b7981628694d",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T00:15:00Z",
+            "home_team": "Hartford Wolf Pack",
+            "away_team": "Springfield Thunderbirds",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.96,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hartford Wolf Pack",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Springfield Thunderbirds",
+                                    "price": 2.7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.96,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hartford Wolf Pack",
+                                    "price": 2.12
+                                },
+                                {
+                                    "name": "Springfield Thunderbirds",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.65,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hartford Wolf Pack",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "Springfield Thunderbirds",
+                                    "price": 2.05
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hartford Wolf Pack",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "Springfield Thunderbirds",
+                                    "price": 1.99
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hartford Wolf Pack",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Springfield Thunderbirds",
+                                    "price": 2.6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Hartford Wolf Pack",
+                                    "price": 2.1
+                                },
+                                {
+                                    "name": "Springfield Thunderbirds",
+                                    "price": 2.65
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "79cd9b25528da59730759e397f11915c",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T01:00:00Z",
+            "home_team": "Rockford IceHogs",
+            "away_team": "Manitoba Moose",
+            "bookmakers": [
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.92,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.78,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 2.08
+                                },
+                                {
+                                    "name": "Rockford IceHogs",
+                                    "price": 2.8
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 2.08
+                                },
+                                {
+                                    "name": "Rockford IceHogs",
+                                    "price": 2.48
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.92,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.78,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "Rockford IceHogs",
+                                    "price": 2.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 1.62
+                                },
+                                {
+                                    "name": "Rockford IceHogs",
+                                    "price": 2.06
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 1.95
+                                },
+                                {
+                                    "name": "Rockford IceHogs",
+                                    "price": 2.7
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Rockford IceHogs",
+                                    "price": 2.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0a7f1e785ece770cd414d3e1950ef529",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T02:00:00Z",
+            "home_team": "Ontario Reign",
+            "away_team": "Abbotsford Canucks",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 1.68
+                                },
+                                {
+                                    "name": "Ontario Reign",
+                                    "price": 1.97
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 2.02
+                                },
+                                {
+                                    "name": "Ontario Reign",
+                                    "price": 2.56
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 2.1
+                                },
+                                {
+                                    "name": "Ontario Reign",
+                                    "price": 2.38
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.95
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 2.18
+                                },
+                                {
+                                    "name": "Ontario Reign",
+                                    "price": 2.65
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "Ontario Reign",
+                                    "price": 2
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.95,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.73,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Ontario Reign",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5fb141d92868eac202e260cfb1998aec",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T02:00:00Z",
+            "home_team": "Henderson Silver Knights",
+            "away_team": "Calgary Wranglers",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Calgary Wranglers",
+                                    "price": 2.23
+                                },
+                                {
+                                    "name": "Henderson Silver Knights",
+                                    "price": 2.32
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.65
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.7,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Calgary Wranglers",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Henderson Silver Knights",
+                                    "price": 2.35
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Calgary Wranglers",
+                                    "price": 1.91
+                                },
+                                {
+                                    "name": "Henderson Silver Knights",
+                                    "price": 1.8
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Calgary Wranglers",
+                                    "price": 1.85
+                                },
+                                {
+                                    "name": "Henderson Silver Knights",
+                                    "price": 1.78
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Calgary Wranglers",
+                                    "price": 2.38
+                                },
+                                {
+                                    "name": "Henderson Silver Knights",
+                                    "price": 2.16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Calgary Wranglers",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "Henderson Silver Knights",
+                                    "price": 2.3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ef39344641897c121cbdf6d35db3d66f",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T02:00:00Z",
+            "home_team": "San Jose Barracuda",
+            "away_team": "San Diego Gulls",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.87,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "San Diego Gulls",
+                                    "price": 2.2
+                                },
+                                {
+                                    "name": "San Jose Barracuda",
+                                    "price": 2.35
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.72,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.76,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.83,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.87,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "San Diego Gulls",
+                                    "price": 2.35
+                                },
+                                {
+                                    "name": "San Jose Barracuda",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "San Diego Gulls",
+                                    "price": 1.8
+                                },
+                                {
+                                    "name": "San Jose Barracuda",
+                                    "price": 1.85
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.95,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "San Diego Gulls",
+                                    "price": 2.3
+                                },
+                                {
+                                    "name": "San Jose Barracuda",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "San Diego Gulls",
+                                    "price": 1.78
+                                },
+                                {
+                                    "name": "San Jose Barracuda",
+                                    "price": 1.85
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "San Diego Gulls",
+                                    "price": 2.28
+                                },
+                                {
+                                    "name": "San Jose Barracuda",
+                                    "price": 2.38
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "560ba0b2a353a22cf28119bb88b0edc5",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T03:10:00Z",
+            "home_team": "Bakersfield Condors",
+            "away_team": "Colorado Eagles",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bakersfield Condors",
+                                    "price": 2.12
+                                },
+                                {
+                                    "name": "Colorado Eagles",
+                                    "price": 2.28
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.7,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bakersfield Condors",
+                                    "price": 1.8
+                                },
+                                {
+                                    "name": "Colorado Eagles",
+                                    "price": 1.91
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.95,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.73,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bakersfield Condors",
+                                    "price": 2.33
+                                },
+                                {
+                                    "name": "Colorado Eagles",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bakersfield Condors",
+                                    "price": 1.77
+                                },
+                                {
+                                    "name": "Colorado Eagles",
+                                    "price": 1.86
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bakersfield Condors",
+                                    "price": 2.18
+                                },
+                                {
+                                    "name": "Colorado Eagles",
+                                    "price": 2.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bakersfield Condors",
+                                    "price": 2.25
+                                },
+                                {
+                                    "name": "Colorado Eagles",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "bc80fcf3af338e7eba5a8e662708bd0f",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T18:00:00Z",
+            "home_team": "Belleville Senators",
+            "away_team": "Cleveland Monsters",
+            "bookmakers": [
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.06,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Belleville Senators",
+                                    "price": 1.82
+                                },
+                                {
+                                    "name": "Cleveland Monsters",
+                                    "price": 1.88
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Belleville Senators",
+                                    "price": 2.14
+                                },
+                                {
+                                    "name": "Cleveland Monsters",
+                                    "price": 2.32
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.06,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Belleville Senators",
+                                    "price": 2.43
+                                },
+                                {
+                                    "name": "Cleveland Monsters",
+                                    "price": 2.08
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.57,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.93,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Belleville Senators",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Cleveland Monsters",
+                                    "price": 2.2
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Belleville Senators",
+                                    "price": 2.3
+                                },
+                                {
+                                    "name": "Cleveland Monsters",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "af82ec876e810752d6385fdccae4995e",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T20:00:00Z",
+            "home_team": "Hershey Bears",
+            "away_team": "Charlotte Checkers",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Hershey Bears",
+                                    "price": 2.12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.7
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.78,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.7,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.89,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Charlotte Checkers",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Hershey Bears",
+                                    "price": 2.22
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.89,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fc9dd682f09982fe555cd21a4dfb2cbc",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T20:05:00Z",
+            "home_team": "Providence Bruins",
+            "away_team": "Toronto Marlies",
+            "bookmakers": [
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Providence Bruins",
+                                    "price": 1.85
+                                },
+                                {
+                                    "name": "Toronto Marlies",
+                                    "price": 1.78
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Providence Bruins",
+                                    "price": 2.38
+                                },
+                                {
+                                    "name": "Toronto Marlies",
+                                    "price": 2.28
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.92,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Providence Bruins",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "Toronto Marlies",
+                                    "price": 2.3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T12:09:01Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Providence Bruins",
+                                    "price": 1.91
+                                },
+                                {
+                                    "name": "Toronto Marlies",
+                                    "price": 1.83
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:01Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Providence Bruins",
+                                    "price": 2.14
+                                },
+                                {
+                                    "name": "Toronto Marlies",
+                                    "price": 2.33
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.79,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.92,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "689b7af30f015a0ed20b6ebc7e16b44e",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T21:00:00Z",
+            "home_team": "Chicago Wolves",
+            "away_team": "Manitoba Moose",
+            "bookmakers": [
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.92,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.78,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Chicago Wolves",
+                                    "price": 2.32
+                                },
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 2.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.85
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.81,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.68,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.92,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.78,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Chicago Wolves",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Manitoba Moose",
+                                    "price": 2.33
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "17ea5d8347719233cf789d73a2855ff0",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T23:00:00Z",
+            "home_team": "Coachella Valley Firebirds",
+            "away_team": "Abbotsford Canucks",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 2.25
+                                },
+                                {
+                                    "name": "Coachella Valley Firebirds",
+                                    "price": 2.45
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abbotsford Canucks",
+                                    "price": 2.14
+                                },
+                                {
+                                    "name": "Coachella Valley Firebirds",
+                                    "price": 2.3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.61,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.89,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.71,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.02,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.71,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.02,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "df575f038d9c7419498937ec63d49f21",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T23:00:00Z",
+            "home_team": "Tucson Roadrunners",
+            "away_team": "Texas Stars",
+            "bookmakers": [
+                {
+                    "key": "smarkets",
+                    "title": "Smarkets",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Texas Stars",
+                                    "price": 1.99
+                                },
+                                {
+                                    "name": "Tucson Roadrunners",
+                                    "price": 1.67
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Texas Stars",
+                                    "price": 2.58
+                                },
+                                {
+                                    "name": "Tucson Roadrunners",
+                                    "price": 2.02
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.71,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.02,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Texas Stars",
+                                    "price": 2.55
+                                },
+                                {
+                                    "name": "Tucson Roadrunners",
+                                    "price": 2.04
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.7
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.61,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.88,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.71,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.02,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Texas Stars",
+                                    "price": 2.7
+                                },
+                                {
+                                    "name": "Tucson Roadrunners",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Texas Stars",
+                                    "price": 2.6
+                                },
+                                {
+                                    "name": "Tucson Roadrunners",
+                                    "price": 2.1
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "bbec500180746759348a25d398abe1a9",
+            "sport_key": "icehockey_ahl",
+            "sport_title": "AHL",
+            "commence_time": "2026-11-15T23:05:00Z",
+            "home_team": "W-B/Scranton Penguins",
+            "away_team": "Lehigh Valley Phantoms",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T12:09:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "W-B/Scranton Penguins",
+                                    "price": 2.07
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.63,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.87,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T12:09:30Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:30Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.73,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.98,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T12:09:44Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T12:09:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.73,
+                                    "point": 5.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.98,
+                                    "point": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T12:08:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T12:08:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lehigh Valley Phantoms",
+                                    "price": 2.55
+                                },
+                                {
+                                    "name": "W-B/Scranton Penguins",
+                                    "price": 2.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
