@@ -32,14 +32,14 @@ function configDefaults(string $file, array $keys): array
     }
 }
 
-test('the old look is gone; every switch is on by default except taking real-money bets', function () {
+test('the old look is gone; every switch is on by default except taking real-money bets and in play', function () {
     $flags = configDefaults('platform.php', [
-        'PLATFORM_TOKEN_LAUNCH', 'PLATFORM_DEEP_LINK', 'PLATFORM_SPORTS', 'PLATFORM_SPORTS_BETTING',
+        'PLATFORM_TOKEN_LAUNCH', 'PLATFORM_DEEP_LINK', 'PLATFORM_SPORTS', 'PLATFORM_SPORTS_BETTING', 'PLATFORM_SPORTS_IN_PLAY',
         'PLATFORM_PREDICTIONS', 'PLATFORM_PREDICTIONS_BETTING',
     ]);
 
     expect($flags)->toBe([
-        'token_launch' => true, 'deep_link' => true, 'sports' => true, 'sports_betting' => false,
+        'token_launch' => true, 'deep_link' => true, 'sports' => true, 'sports_betting' => false, 'sports_in_play' => false,
         'predictions' => true, 'predictions_betting' => false,
     ]);
 });

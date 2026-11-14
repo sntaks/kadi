@@ -15,7 +15,7 @@ test('suspends open markets whose fixture has kicked off', function () {
 
     $suspended = app(SuspendStaleMarkets::class)->handle();
 
-    expect($suspended)->toBe(['kicked_off' => 1, 'stale' => 0])
+    expect($suspended)->toBe(['kicked_off' => 1, 'stale' => 0, 'live_stale' => 0, 'late' => 0])
         ->and($market->fresh()->suspension_reason)->toBe(SuspensionReason::KickedOff);
 });
 
@@ -25,7 +25,7 @@ test('suspends open markets whose odds are older than the stale window', functio
 
     $suspended = app(SuspendStaleMarkets::class)->handle();
 
-    expect($suspended)->toBe(['kicked_off' => 0, 'stale' => 1])
+    expect($suspended)->toBe(['kicked_off' => 0, 'stale' => 1, 'live_stale' => 0, 'late' => 0])
         ->and($stale->fresh()->suspension_reason)->toBe(SuspensionReason::StaleOdds)
         ->and($fresh->fresh()->status)->toBe(MarketStatus::Open);
 });

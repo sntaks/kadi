@@ -9,6 +9,7 @@ use App\Sportsbook\Enums\SuspensionReason;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\Market;
 use App\Sportsbook\Models\Selection;
+use App\Sportsbook\Support\InPlay;
 
 /**
  * Writes a priced market to a fixture: feed prices, fair probabilities, a history snapshot whenever the offered
@@ -22,6 +23,7 @@ class ApplyMarketPrice
     /**
      * @param  array<string, string>  $selectionNames  Outcome => name shown to players, e.g. ['draw' => 'Draw'].
      * @param  bool  $createWhenUnpriced  Whether to create the market (suspended) when it cannot be priced yet.
+     * @param  bool  $live  An in-play price (`SyncLive`): a kicked-off match follows the in-play rules instead of closing.
      */
     public function handle(
         Fixture $fixture,
@@ -31,6 +33,7 @@ class ApplyMarketPrice
         array $selectionNames,
         bool $createWhenUnpriced,
         MarketSource $source = MarketSource::Feed,
+        bool $live = false,
     ): ?Market {
         $key = Market::keyFor($type, $line);
         // A caller syncing many fixtures loads their markets once (SyncOdds); otherwise look this one up.
@@ -93,9 +96,40 @@ class ApplyMarketPrice
         // Selections may have been added: whoever reads them next loads them fresh.
         $market->unsetRelation('selections');
 
-        $this->updateStatus($market, $fixture, $isNew);
+        $this->updateStatus($market, $fixture, $isNew, $live);
 
         return $market;
+    }
+
+    /**
+     * In play (plan §4.3): a freshly priced live market opens unless staff suspended it, the line is already decided,
+     * the match is in its late phase, or a score change is still being held (the feed's prices lag the goal).
+     */
+    private function updateLiveStatus(Market $market, Fixture $fixture, bool $isNew): void
+    {
+        if (in_array($market->suspension_reason, [SuspensionReason::Manual, SuspensionReason::LineDecided, SuspensionReason::LatePhase], true)) {
+            return;
+        }
+
+        $holdUntil = $fixture->score_changed_at?->addSeconds((int) config('sportsbook.in_play.score_change_hold_seconds'));
+
+        if ($holdUntil !== null && now('UTC')->lt($holdUntil)) {
+            if ($market->isOpen() || $market->suspension_reason !== SuspensionReason::ScoreChanged) {
+                $market->suspend(SuspensionReason::ScoreChanged);
+            }
+
+            return;
+        }
+
+        if (now('UTC')->gte(InPlay::closesAt($fixture))) {
+            $market->suspend(SuspensionReason::LatePhase);
+
+            return;
+        }
+
+        if (! $market->isOpen() && ($isNew || $market->suspension_reason === SuspensionReason::KickedOff || $market->suspension_reason?->clearsOnReprice())) {
+            $market->reopen();
+        }
     }
 
     /** A new market joins the fixture's loaded markets, so a later lookup on the same fixture finds it. */
@@ -124,8 +158,14 @@ class ApplyMarketPrice
         $selection->recordOfferedPriceChange($offeredBefore);
     }
 
-    private function updateStatus(Market $market, Fixture $fixture, bool $isNew): void
+    private function updateStatus(Market $market, Fixture $fixture, bool $isNew, bool $live = false): void
     {
+        if ($fixture->hasKickedOff() && $live) {
+            $this->updateLiveStatus($market, $fixture, $isNew);
+
+            return;
+        }
+
         if ($fixture->hasKickedOff()) {
             if ($market->isOpen() || $market->suspension_reason !== SuspensionReason::KickedOff) {
                 $market->suspend(SuspensionReason::KickedOff);

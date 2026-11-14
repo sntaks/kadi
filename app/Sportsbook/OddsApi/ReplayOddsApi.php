@@ -88,8 +88,11 @@ class ReplayOddsApi implements OddsApi
      */
     public function scores(string $sportKey, int $daysFrom, OddsApiPurpose $purpose = OddsApiPurpose::Scores): array
     {
+        // A live tick (no daysFrom) gets the games recorded in play (`record-scores --live`), which stay in play.
+        $endpoint = $daysFrom === 0 && is_file(self::recordingFile($this->recordingsPath, 'scores-live', $sportKey)) ? 'scores-live' : 'scores';
+
         /** @var list<array{id: string, sport_key: string, commence_time: string, completed: bool, home_team: string, away_team: string, scores: list<array{name: string, score: string}>|null, last_update: string|null}> */
-        return $this->load('scores', $sportKey);
+        return $this->load($endpoint, $sportKey);
     }
 
     /**

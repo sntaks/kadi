@@ -16,6 +16,7 @@ use function Laravel\Prompts\confirm;
 #[Signature('sportsbook:record-scores
     {competition : The competition key, e.g. soccer_epl}
     {--days=3 : Include games completed in this many days (1 to 3)}
+    {--live : Record the games in play now (no --days, 1 credit) for the in-play replay; run it while matches are on, with record-odds-api}
     {--force : Skip the credit confirmation}')]
 #[Description('Record a live Odds API scores response for the replay driver and tests (spends 2 credits)')]
 class RecordScoresCommand extends Command
@@ -37,9 +38,10 @@ class RecordScoresCommand extends Command
             return self::FAILURE;
         }
 
-        $days = max(1, min(3, is_numeric($daysOption) ? (int) $daysOption : 3));
+        $live = (bool) $this->option('live');
+        $days = $live ? 0 : max(1, min(3, is_numeric($daysOption) ? (int) $daysOption : 3));
 
-        if (! $this->option('force') && ! confirm("Spend 2 Odds API credits on {$competition} scores for the last {$days} days?", default: false)) {
+        if (! $this->option('force') && ! confirm($live ? "Spend 1 Odds API credit on {$competition} live scores?" : "Spend 2 Odds API credits on {$competition} scores for the last {$days} days?", default: false)) {
             $this->warn('Nothing recorded.');
 
             return self::FAILURE;
@@ -50,10 +52,10 @@ class RecordScoresCommand extends Command
         File::ensureDirectoryExists($path);
 
         File::put(
-            ReplayOddsApi::recordingFile($path, 'scores', $competition),
+            ReplayOddsApi::recordingFile($path, $live ? 'scores-live' : 'scores', $competition),
             json_encode([
                 'recorded_at' => now('UTC')->toIso8601ZuluString(),
-                'endpoint' => 'scores',
+                'endpoint' => $live ? 'scores-live' : 'scores',
                 'sport_key' => $competition,
                 'data' => $scores,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR)."\n",

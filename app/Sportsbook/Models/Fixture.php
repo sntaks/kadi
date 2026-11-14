@@ -26,12 +26,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $away_team
  * @property CarbonImmutable $kicks_off_at
  * @property CarbonImmutable|null $extras_synced_at
+ * @property int|null $home_score Live score from the scores feed (in play only; results live in sb_fixture_results)
+ * @property int|null $away_score
+ * @property CarbonImmutable|null $score_updated_at
+ * @property CarbonImmutable|null $score_changed_at
+ * @property CarbonImmutable|null $feed_completed_at
  * @property FixtureStatus $status
  * @property CarbonImmutable|null $last_seen_in_feed_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['competition_id', 'external_id', 'home_team', 'away_team', 'kicks_off_at', 'status', 'last_seen_in_feed_at', 'extras_synced_at'])]
+#[Fillable(['competition_id', 'external_id', 'home_team', 'away_team', 'kicks_off_at', 'status', 'last_seen_in_feed_at', 'extras_synced_at', 'home_score', 'away_score', 'score_updated_at', 'score_changed_at', 'feed_completed_at'])]
 class Fixture extends SportsbookModel
 {
     protected $table = 'sb_fixtures';
@@ -49,6 +54,11 @@ class Fixture extends SportsbookModel
         return [
             'kicks_off_at' => 'datetime',
             'extras_synced_at' => 'datetime',
+            'home_score' => 'integer',
+            'away_score' => 'integer',
+            'score_updated_at' => 'datetime',
+            'score_changed_at' => 'datetime',
+            'feed_completed_at' => 'datetime',
             'last_seen_in_feed_at' => 'datetime',
             'status' => FixtureStatus::class,
         ];

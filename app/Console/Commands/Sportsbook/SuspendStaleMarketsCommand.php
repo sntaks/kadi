@@ -15,7 +15,7 @@ class SuspendStaleMarketsCommand extends Command
     {
         $suspended = $suspendStaleMarkets->handle();
 
-        $this->info("Suspended {$suspended['kicked_off']} kicked-off and {$suspended['stale']} stale markets.");
+        $this->info("Suspended {$suspended['kicked_off']} kicked-off, {$suspended['stale']} stale, {$suspended['live_stale']} live-stale and {$suspended['late']} late-phase markets.");
 
         return self::SUCCESS;
     }
