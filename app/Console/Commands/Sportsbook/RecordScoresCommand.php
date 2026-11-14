@@ -4,6 +4,7 @@ namespace App\Console\Commands\Sportsbook;
 
 use App\Sportsbook\OddsApi\CreditBudget;
 use App\Sportsbook\OddsApi\LiveOddsApi;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
 use App\Sportsbook\OddsApi\ReplayOddsApi;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -44,7 +45,7 @@ class RecordScoresCommand extends Command
             return self::FAILURE;
         }
 
-        $scores = LiveOddsApi::fromConfig($budget)->scores($competition, $days);
+        $scores = LiveOddsApi::fromConfig($budget)->scores($competition, $days, OddsApiPurpose::Recording);
         $path = (string) config('sportsbook.odds_api.recordings_path');
         File::ensureDirectoryExists($path);
 

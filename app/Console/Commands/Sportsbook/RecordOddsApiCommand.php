@@ -4,6 +4,8 @@ namespace App\Console\Commands\Sportsbook;
 
 use App\Sportsbook\OddsApi\CreditBudget;
 use App\Sportsbook\OddsApi\LiveOddsApi;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
+use App\Sportsbook\OddsApi\OddsApiSource;
 use App\Sportsbook\OddsApi\ReplayOddsApi;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -31,8 +33,7 @@ class RecordOddsApiCommand extends Command
         $competitions = $this->option('competition') ?: config('sportsbook.odds_api.default_competitions');
         $marketsOption = $this->option('markets');
         $markets = is_string($marketsOption) ? array_values(array_filter(array_map('trim', explode(',', $marketsOption)))) : [];
-        $regionCount = count(explode(',', (string) config('sportsbook.odds_api.region')));
-        $estimatedCredits = count($competitions) * count($markets) * $regionCount;
+        $estimatedCredits = count($competitions) * count($markets) * OddsApiSource::fromConfig()->creditsPerMarket();
 
         $this->line('Recording sports, fixtures and ['.implode(', ', $markets).'] odds for: '.implode(', ', $competitions));
         $this->line("Odds cost about {$estimatedCredits} credits; sports and fixtures are free.");
@@ -51,7 +52,7 @@ class RecordOddsApiCommand extends Command
 
         foreach ($competitions as $competition) {
             $this->write($path, 'events', $competition, $live->events($competition));
-            $this->write($path, 'odds', $competition, $live->odds($competition, $markets));
+            $this->write($path, 'odds', $competition, $live->odds($competition, $markets, OddsApiPurpose::Recording));
             $this->line("Recorded {$competition}.");
         }
 

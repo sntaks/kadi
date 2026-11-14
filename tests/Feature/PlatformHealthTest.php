@@ -5,10 +5,13 @@ use App\Models\GameLaunch;
 use App\Models\User;
 use App\Predict\MarketFeed;
 use App\Sportsbook\Models\Bet;
+use App\Sportsbook\Models\OddsApiCall;
 use App\Sportsbook\Models\WagerOp;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
 use App\Support\PlatformHealth;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 
 /*
@@ -150,4 +153,32 @@ test('a timestamp read back as a numeric string, as Redis returns it, counts as 
     $this->catalogueUp = false;
 
     expect(app(PlatformHealth::class)->check()['game_catalogue'])->toBeNull();
+});
+
+test('Odds API credits nearing the cap or a purpose\'s allowance are reported', function () {
+    $this->travelTo(Date::parse('2026-11-20 12:00:00', 'UTC'));
+    config(['sportsbook.odds_api.monthly_credit_cap' => 100_000, 'sportsbook.odds_api.allowances' => ['live' => 72_000, 'scores' => 3_000]]);
+
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Live)->create(['credits_spent' => 57_000]);
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Scores)->create(['credits_spent' => 100]);
+    // Last month's spend does not count.
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Live)->create(['credits_spent' => 20_000, 'created_at' => '2026-10-31 20:00:00']);
+
+    expect(app(PlatformHealth::class)->check()['odds_api_budget'])->toBeNull();
+
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Live)->create(['credits_spent' => 700]);
+
+    $problem = app(PlatformHealth::class)->check()['odds_api_budget'];
+    expect($problem['message'])->toBe('Odds API credits are running low this month: live 57,700 of 72,000.')
+        ->and($problem['context'])->toMatchArray(['spent' => 57_800, 'cap' => 100_000, 'live_spent' => 57_700, 'live_allowance' => 72_000, 'scores_spent' => 100]);
+
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Recording)->create(['credits_spent' => 25_000]);
+
+    expect(app(PlatformHealth::class)->check()['odds_api_budget']['message'])->toContain('total 82,800 of 100,000');
+});
+
+test('a purpose switched off with an allowance of 0 is not a warning', function () {
+    config(['sportsbook.odds_api.allowances' => ['live' => 0]]);
+
+    expect(app(PlatformHealth::class)->check()['odds_api_budget'])->toBeNull();
 });

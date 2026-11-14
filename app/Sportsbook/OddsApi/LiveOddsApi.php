@@ -12,7 +12,8 @@ use Throwable;
 
 /**
  * Calls The Odds API. Paid calls pass the credit budget first and are never retried, because a retry spends again.
- * Every call, free or paid, is written to the odds_api_calls ledger with the quota headers it returned.
+ * Every call, free or paid, is written to the odds_api_calls ledger with the quota headers it returned; paid calls
+ * also with their purpose, which each purpose's monthly allowance is counted from.
  */
 class LiveOddsApi implements OddsApi
 {
@@ -20,7 +21,7 @@ class LiveOddsApi implements OddsApi
         private readonly CreditBudget $budget,
         private readonly string $apiKey,
         private readonly string $baseUrl,
-        private readonly string $region,
+        private readonly OddsApiSource $source,
     ) {}
 
     public static function fromConfig(CreditBudget $budget): self
@@ -29,7 +30,7 @@ class LiveOddsApi implements OddsApi
             budget: $budget,
             apiKey: (string) config('services.odds_api.key'),
             baseUrl: (string) config('services.odds_api.base_url'),
-            region: (string) config('sportsbook.odds_api.region'),
+            source: OddsApiSource::fromConfig(),
         );
     }
 
@@ -46,31 +47,31 @@ class LiveOddsApi implements OddsApi
             ->get("/sports/{$sportKey}/events", ['dateFormat' => 'iso']));
     }
 
-    public function odds(string $sportKey, array $markets): array
+    public function odds(string $sportKey, array $markets, OddsApiPurpose $purpose = OddsApiPurpose::PreMatch): array
     {
         /** @var list<array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}> */
-        return $this->budget->spend(count($markets) * count(explode(',', $this->region)), fn (): array => $this->send('odds', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/odds", [
-            'regions' => $this->region,
+        return $this->budget->spend(count($markets) * $this->source->creditsPerMarket(), fn (): array => $this->send('odds', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/odds", [
+            ...$this->source->query(),
             'markets' => implode(',', $markets),
             'oddsFormat' => 'decimal',
             'dateFormat' => 'iso',
-        ])));
+        ]), $purpose), $purpose);
     }
 
-    public function scores(string $sportKey, int $daysFrom): array
+    public function scores(string $sportKey, int $daysFrom, OddsApiPurpose $purpose = OddsApiPurpose::Scores): array
     {
         /** @var list<array{id: string, sport_key: string, commence_time: string, completed: bool, home_team: string, away_team: string, scores: list<array{name: string, score: string}>|null, last_update: string|null}> */
         return $this->budget->spend($daysFrom > 0 ? 2 : 1, fn (): array => $this->send('scores', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/scores", array_filter([
             'daysFrom' => $daysFrom > 0 ? $daysFrom : null,
             'dateFormat' => 'iso',
-        ]))));
+        ])), $purpose), $purpose);
     }
 
     /**
      * @param  callable(PendingRequest): Response  $request
      * @return array<int, mixed>
      */
-    private function send(string $endpoint, ?string $sportKey, callable $request): array
+    private function send(string $endpoint, ?string $sportKey, callable $request, ?OddsApiPurpose $purpose = null): array
     {
         $http = Http::baseUrl($this->baseUrl)
             ->withQueryParameters(['apiKey' => $this->apiKey])
@@ -82,12 +83,12 @@ class LiveOddsApi implements OddsApi
             $response = $request($http);
         } catch (Throwable $exception) {
             $response = $exception instanceof RequestException ? $exception->response : null;
-            $this->record($endpoint, $sportKey, $response, $exception);
+            $this->record($endpoint, $sportKey, $purpose, $response, $exception);
 
             throw $exception;
         }
 
-        $this->record($endpoint, $sportKey, $response);
+        $this->record($endpoint, $sportKey, $purpose, $response);
         $response->throw();
 
         $data = $response->json();
@@ -105,11 +106,12 @@ class LiveOddsApi implements OddsApi
                 && ($exception->response->serverError() || $exception->response->status() === 429)));
     }
 
-    private function record(string $endpoint, ?string $sportKey, ?Response $response, ?Throwable $exception = null): void
+    private function record(string $endpoint, ?string $sportKey, ?OddsApiPurpose $purpose, ?Response $response, ?Throwable $exception = null): void
     {
         OddsApiCall::create([
             'endpoint' => $endpoint,
             'sport_key' => $sportKey,
+            'purpose' => $purpose?->value,
             'credits_spent' => (int) ($response?->header('x-requests-last') ?: 0),
             'credits_remaining' => $this->headerAsInt($response, 'x-requests-remaining'),
             'credits_used' => $this->headerAsInt($response, 'x-requests-used'),

@@ -14,7 +14,7 @@ beforeEach(function () {
     useLiveOddsApi();
     config(['sportsbook.odds.margin' => 0.06, 'sportsbook.odds.minimum_bookmakers' => 3]);
     $this->travelTo(Date::parse('2026-10-18 09:00:00', 'UTC'));
-    Http::fake(['odds-api.test/v4/sports/basketball_nba/odds*' => Http::response(oddsApiFixture('odds-basketball_nba'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '486'])]);
+    Http::fake(['odds-api.test/v4/sports/basketball_nba/odds*' => Http::response(oddsApiFixture('odds-basketball_nba'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '98486'])]);
     $this->competition = Competition::factory()->synced()->create([
         'odds_api_key' => 'basketball_nba',
         'sport_id' => Sport::factory()->configured('basketball'),

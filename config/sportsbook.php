@@ -100,6 +100,9 @@ return [
         'driver' => env('ODDS_API_DRIVER', 'replay'),
         'recordings_path' => database_path('sportsbook/odds-api-recordings'),
         'region' => env('ODDS_API_REGION', 'uk'),
+        // Comma-separated bookmaker keys (e.g. pinnacle,betfair_ex_uk,williamhill). When set they replace `region`:
+        // each group of 10 costs one region's credits. Leave empty to use the region. The replay driver ignores it.
+        'bookmakers' => env('ODDS_API_BOOKMAKERS', ''),
         // Comma-separated market keys pulled by the scheduled odds sync.
         'markets' => env('ODDS_API_MARKETS', 'h2h'),
         // Odds are only bought for competitions with a fixture kicking off within this many days.
@@ -118,8 +121,19 @@ return [
             'basketball_euroleague',
         ],
         'odds_format' => 'decimal',
-        'monthly_credit_cap' => (int) env('ODDS_API_MONTHLY_CREDIT_CAP', 500),
-        'credit_reserve' => (int) env('ODDS_API_CREDIT_RESERVE', 50),
+        'monthly_credit_cap' => (int) env('ODDS_API_MONTHLY_CREDIT_CAP', 100000),
+        'credit_reserve' => (int) env('ODDS_API_CREDIT_RESERVE', 2000),
+        // Credits a month per purpose (App\Sportsbook\OddsApi\OddsApiPurpose), on top of the cap: a purpose that
+        // reaches its allowance stops until next month, so in play can never starve pre-match prices or settlement.
+        // What is left under the cap (10,000 by default) is headroom, which recordings spend. Plan §10.2.
+        'allowances' => [
+            'pre_match' => (int) env('ODDS_API_ALLOWANCE_PRE_MATCH', 9000),
+            'per_event' => (int) env('ODDS_API_ALLOWANCE_PER_EVENT', 6000),
+            'live' => (int) env('ODDS_API_ALLOWANCE_LIVE', 72000),
+            'scores' => (int) env('ODDS_API_ALLOWANCE_SCORES', 3000),
+        ],
+        // platform:health warns once the month's spend reaches this share of the cap or of any allowance.
+        'warn_at' => (float) env('ODDS_API_WARN_AT', 0.8),
     ],
 
     /*
@@ -131,7 +145,7 @@ return [
     | sb_sports slug. `key_prefix` ties feed competitions (`basketball_nba`) to their sport. A sport without a
     | draw has a two-way Winner (incl. overtime); only football derives markets (BTTS, correct score...) from
     | the 1X2. `markets` are bought from the feed: every market costs one credit per competition per sync, and
-    | the plan has 500 credits a month (docs/sportsbook-sports.md has the budget).
+    | the plan has 100,000 credits a month (docs/sportsbook-sports.md has the budget).
     |
     */
 

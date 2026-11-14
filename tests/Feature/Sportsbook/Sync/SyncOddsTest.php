@@ -18,7 +18,7 @@ beforeEach(function () {
     useLiveOddsApi();
     config(['sportsbook.odds.margin' => 0.06, 'sportsbook.odds.minimum_bookmakers' => 3]);
     $this->travelTo(Date::parse('2026-10-18 09:00:00', 'UTC'));
-    Http::fake(['odds-api.test/v4/sports/soccer_epl/odds*' => Http::response(oddsApiFixture('odds-soccer_epl'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '486'])]);
+    Http::fake(['odds-api.test/v4/sports/soccer_epl/odds*' => Http::response(oddsApiFixture('odds-soccer_epl'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '98486'])]);
     $this->competition = Competition::factory()->synced()->create(['odds_api_key' => 'soccer_epl']);
 });
 

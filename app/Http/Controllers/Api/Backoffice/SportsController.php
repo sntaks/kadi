@@ -63,14 +63,15 @@ class SportsController extends Controller
         return $this->ok(['jackpot' => $jackpot->id, 'status' => $jackpot->status->value, 'tiers' => SettleJackpot::tiers($jackpot)]);
     }
 
-    /** Odds API credits spent this month and what is left (the paid feed). */
+    /** Odds API credits spent this month and what is left (the paid feed), in total and per purpose. */
     public function oddsApiCredits(CreditBudget $budget): JsonResponse
     {
         return $this->ok([
             'spent_this_month' => $budget->spentThisMonth(),
             'remaining' => $budget->remaining(),
-            'monthly_cap' => (int) config('sportsbook.odds_api.monthly_credit_cap'),
-            'reserve' => (int) config('sportsbook.odds_api.credit_reserve'),
+            'monthly_cap' => $budget->monthlyCap(),
+            'reserve' => $budget->reserve(),
+            'purposes' => $budget->usageThisMonth(),
         ]);
     }
 

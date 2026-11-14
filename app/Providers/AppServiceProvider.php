@@ -54,10 +54,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->scoped(GameCatalogue::class);
 
         // The merged sportsbook (plan Phase 7). Replay serves recordings and never spends Odds API credits.
-        $this->app->bind(CreditBudget::class, fn (): CreditBudget => new CreditBudget(
-            monthlyCap: (int) config('sportsbook.odds_api.monthly_credit_cap'),
-            reserve: (int) config('sportsbook.odds_api.credit_reserve'),
-        ));
+        $this->app->bind(CreditBudget::class, fn (): CreditBudget => CreditBudget::fromConfig());
         $this->app->bind(OddsApi::class, fn (Application $app): OddsApi => config('sportsbook.odds_api.driver') === 'live'
             ? LiveOddsApi::fromConfig($app->make(CreditBudget::class))
             : new ReplayOddsApi((string) config('sportsbook.odds_api.recordings_path')));
