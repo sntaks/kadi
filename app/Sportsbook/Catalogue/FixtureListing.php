@@ -71,7 +71,8 @@ class FixtureListing
         'highlights' => 'Highlights',
         'today' => 'Today',
         'tomorrow' => 'Tomorrow',
-        'upcoming' => 'This week',
+        // Every priced match, up to `odds_api.lookahead_days` ahead (14 in production): not "This week".
+        'upcoming' => 'Upcoming',
     ];
 
     private const LIMIT = 60;

@@ -4,6 +4,7 @@ use App\Livewire\Account\Activity;
 use App\Livewire\Sports\BetSlip;
 use App\Livewire\Sports\FixtureList;
 use App\Models\User;
+use App\Sportsbook\Catalogue\FixtureListing;
 use App\Sportsbook\Enums\MarketStatus;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
@@ -286,4 +287,18 @@ test('a signed-in player whose account is not linked yet is told so, not asked t
         ->call('syncPicks', [slipPick($home)])
         ->assertSee('Your account is still being set up')
         ->assertDontSee('Verify your e-mail');
+});
+
+test('the Upcoming tab lists every priced match up to the lookahead, and Highlights only the next 7 days', function () {
+    config(['sportsbook.odds_api.lookahead_days' => 14]);
+    $soon = pricedFixture(['home_team' => 'Soon FC', 'kicks_off_at' => now('UTC')->addDays(3)]);
+    $later = pricedFixture(['home_team' => 'Later FC', 'kicks_off_at' => now('UTC')->addDays(10)]);
+
+    $listing = app(FixtureListing::class);
+
+    expect(FixtureListing::TABS['upcoming'])->toBe('Upcoming')
+        ->and($listing->forTab('upcoming', 'h2h')->pluck('id')->all())->toBe([$soon->id, $later->id])
+        ->and($listing->forTab('highlights', 'h2h')->pluck('id')->all())->toBe([$soon->id]);
+
+    $this->get('/sports')->assertSeeInOrder(['Highlights', 'Today', 'Tomorrow', 'Upcoming'])->assertDontSee('This week');
 });
