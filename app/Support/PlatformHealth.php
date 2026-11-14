@@ -5,7 +5,11 @@ namespace App\Support;
 use App\Games\GameCatalogue;
 use App\Models\GameLaunch;
 use App\Predict\MarketFeed;
+use App\Sportsbook\Enums\MarketSource;
+use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\Market;
 use App\Sportsbook\OddsApi\CreditBudget;
+use App\Sportsbook\Support\InPlay;
 use App\Sportsbook\Wagers\NeedsOperator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
@@ -44,6 +48,7 @@ class PlatformHealth
             'game_catalogue' => $this->catalogue(),
             'predict_feed' => $this->predictFeed(),
             'odds_api_budget' => $this->oddsApiBudget(),
+            'live_feed' => $this->liveFeed(),
         ];
     }
 
@@ -179,6 +184,45 @@ class PlatformHealth
         return $minutes < $limit ? null : [
             'message' => "The prediction market feed is stale: its last good answer was {$minutes} minutes ago.",
             'context' => ['minutes' => $minutes],
+        ];
+    }
+
+    /**
+     * In play is on and matches are trading, but none has had a live price for three ticks: the live tick
+     * (`sportsbook:sync-live`, every 20 s on the scheduler) is not running, or the feed is not answering. Live markets
+     * close by themselves meanwhile (live-feed-stale), so players lose in-play betting, not money.
+     *
+     * @return array{message: string, context: array<string, int|float|string>}|null
+     */
+    private function liveFeed(): ?array
+    {
+        if (! InPlay::on()) {
+            return null;
+        }
+
+        $trading = InPlay::liveFixtures(Fixture::query())->with('competition.sport')->get()
+            ->filter(fn (Fixture $fixture): bool => InPlay::isTrading($fixture));
+
+        if ($trading->isEmpty()) {
+            return null;
+        }
+
+        $limit = 3 * (int) config('sportsbook.in_play.tick_seconds');
+        $latest = Market::query()
+            ->whereIn('fixture_id', $trading->pluck('id'))
+            ->where('source', MarketSource::Feed)
+            ->max('priced_at');
+        $seconds = $latest === null ? -1 : (int) Date::parse($latest, 'UTC')->diffInSeconds(now('UTC'));
+
+        if ($seconds !== -1 && $seconds < $limit) {
+            return null;
+        }
+
+        return [
+            'message' => $seconds === -1
+                ? "In play is on and {$trading->count()} matches are trading, but none has a live price yet: is sportsbook:sync-live running?"
+                : "Live prices are stale: {$trading->count()} matches are trading and the newest live price is {$seconds} seconds old.",
+            'context' => ['matches' => $trading->count(), 'seconds' => $seconds, 'limit_seconds' => $limit],
         ];
     }
 

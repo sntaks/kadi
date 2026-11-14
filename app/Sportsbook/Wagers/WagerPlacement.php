@@ -13,6 +13,7 @@ use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\FreeBet;
 use App\Sportsbook\Models\JackpotEntry;
 use App\Sportsbook\Support\Money;
+use App\Sportsbook\Support\SportProfile;
 use App\Support\WalletBalanceWriter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -216,8 +217,11 @@ class WagerPlacement
         };
     }
 
+    /** KadiApi keeps at most 4 KB of metadata on a wager. */
+    public const METADATA_MAX_BYTES = 4000;
+
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     private function body(Bet|JackpotEntry $subject): array
     {
@@ -230,7 +234,38 @@ class WagerPlacement
             'stake' => $freeBet ? null : Money::decimal($subject->stake),
             'free_bet_amount' => $freeBet ? Money::decimal($subject->stake) : null,
             'channel' => 'web',
-        ], fn (?string $value): bool => $value !== null);
+            'metadata' => $subject instanceof Bet ? self::metadata($subject) : null,
+        ], fn (mixed $value): bool => $value !== null);
+    }
+
+    /**
+     * What KadiApi stores on a bet's wager for support, disputes and GMS (plan §11): its sports, whether it is in play,
+     * and each leg's match id, market and line. Match data only: never the player, a price, a stake or a reference. The
+     * same bet always gives the same metadata, so a resend with the same reference is the same body. Legs are dropped
+     * if the whole would not fit in KadiApi's 4 KB.
+     *
+     * @return array{sports: list<string>, in_play: bool, legs?: list<array{fixture: int, market: string, line?: string, live?: bool}>}
+     */
+    public static function metadata(Bet $bet): array
+    {
+        $bet->loadMissing('legs.fixture.competition.sport');
+
+        $metadata = [
+            'sports' => array_values($bet->legs->map(fn ($leg): string => SportProfile::forSport($leg->fixture?->competition?->sport)->slug)->unique()->all()),
+            'in_play' => $bet->isInPlay(),
+            'legs' => array_values($bet->legs->map(fn ($leg): array => array_filter([
+                'fixture' => $leg->fixture_id,
+                'market' => $leg->market_type->value,
+                'line' => $leg->market_line,
+                'live' => $leg->in_play ?: null,
+            ], fn (mixed $value): bool => $value !== null))->all()),
+        ];
+
+        if (strlen((string) json_encode($metadata)) > self::METADATA_MAX_BYTES) {
+            unset($metadata['legs']);
+        }
+
+        return $metadata;
     }
 
     private function open(Bet|JackpotEntry $subject): Bet|JackpotEntry

@@ -5,7 +5,7 @@
 // only the parameters listed here are passed on, and only short plain values.
 const ALLOWED = {
     game_launch: ['game', 'product', 'target'],
-    bet_placed: ['product', 'bet_type', 'legs', 'free_bet'],
+    bet_placed: ['product', 'bet_type', 'legs', 'free_bet', 'in_play'],
     slip_shared: ['method'],
 };
 

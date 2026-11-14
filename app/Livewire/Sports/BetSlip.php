@@ -171,7 +171,7 @@ class BetSlip extends Component
             return;
         }
 
-        $this->dispatch('kadi-track', name: 'bet_placed', params: ['product' => 'sportsbook', 'bet_type' => $bet->type->value, 'legs' => count($this->picks) ?: $bet->legs()->count(), 'free_bet' => $bet->isFreeBet()]);
+        $this->dispatch('kadi-track', name: 'bet_placed', params: ['product' => 'sportsbook', 'bet_type' => $bet->type->value, 'legs' => count($this->picks) ?: $bet->legs()->count(), 'free_bet' => $bet->isFreeBet(), 'in_play' => $bet->isInPlay()]);
     }
 
     public function newSlip(): void
