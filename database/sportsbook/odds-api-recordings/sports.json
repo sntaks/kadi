@@ -1,5 +1,5 @@
 {
-    "recorded_at": "2026-11-14T10:34:23Z",
+    "recorded_at": "2026-11-14T11:29:43Z",
     "endpoint": "sports",
     "sport_key": null,
     "data": [
@@ -55,14 +55,6 @@
             "key": "aussierules_afl",
             "group": "Aussie Rules",
             "title": "AFL",
-            "description": "Aussie Football",
-            "active": true,
-            "has_outrights": false
-        },
-        {
-            "key": "aussierules_aflw",
-            "group": "Aussie Rules",
-            "title": "AFL Women's",
             "description": "Aussie Football",
             "active": true,
             "has_outrights": false

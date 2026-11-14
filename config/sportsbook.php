@@ -103,6 +103,11 @@ return [
         // Comma-separated bookmaker keys (e.g. pinnacle,betfair_ex_uk,williamhill). When set they replace `region`:
         // each group of 10 costs one region's credits. Leave empty to use the region. The replay driver ignores it.
         'bookmakers' => env('ODDS_API_BOOKMAKERS', ''),
+        // Competitions bought from their own region (same credits): UK books hardly price Australia's NBL (probe
+        // 2026-11-14: 2-3 books in uk, 6-11 in au). A market's own bookmakers (below) still come first.
+        'competition_regions' => [
+            'basketball_nbl' => 'au',
+        ],
         // Markets bought from their own bookmakers, in a call of their own (same credits per market). The UK region
         // hardly prices football handicaps; these nine books do (EPL probe 2026-11-14: 12 of 20 matches had a whole or
         // half line priced by 3 or more of them).
@@ -125,6 +130,29 @@ return [
             'soccer_uefa_champs_league',
             'basketball_nba',
             'basketball_euroleague',
+            // Plan §10.3 (phase 3). Seasonal ones are dormant until the feed lists them: syncing them costs nothing
+            // until a match is due.
+            'soccer_uefa_europa_league',
+            'soccer_uefa_europa_conference_league',
+            'soccer_uefa_nations_league',
+            'soccer_efl_champ',
+            'soccer_netherlands_eredivisie',
+            'soccer_portugal_primeira_liga',
+            'soccer_spl',
+            'soccer_turkey_super_league',
+            'soccer_brazil_campeonato',
+            'soccer_usa_mls',
+            'soccer_england_efl_cup',
+            'soccer_fa_cup',
+            'soccer_germany_dfb_pokal',
+            'soccer_spain_copa_del_rey',
+            'soccer_fifa_world_cup',
+            'soccer_fifa_world_cup_qualifiers_europe',
+            'soccer_fifa_world_cup_qualifiers_south_america',
+            'soccer_africa_cup_of_nations',
+            'soccer_uefa_european_championship',
+            'soccer_uefa_euro_qualification',
+            'basketball_nbl',
         ],
         'odds_format' => 'decimal',
         'monthly_credit_cap' => (int) env('ODDS_API_MONTHLY_CREDIT_CAP', 100000),

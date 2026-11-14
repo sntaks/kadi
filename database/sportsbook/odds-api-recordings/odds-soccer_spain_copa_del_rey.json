@@ -1,0 +1,188 @@
+{
+    "recorded_at": "2026-11-14T11:27:22Z",
+    "endpoint": "odds",
+    "sport_key": "soccer_spain_copa_del_rey",
+    "data": [
+        {
+            "id": "17a5dc0d57afe1e516da8356bb0c3949",
+            "sport_key": "soccer_spain_copa_del_rey",
+            "sport_title": "Copa del Rey",
+            "commence_time": "2026-11-18T19:00:00Z",
+            "home_team": "Alcoyano",
+            "away_team": "Mallorca",
+            "bookmakers": [
+                {
+                    "key": "williamhill",
+                    "title": "William Hill",
+                    "last_update": "2026-11-14T11:26:36Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:36Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 6
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 1.55
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.7
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:25:05Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:25:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 5.5
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 1.52
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfred_uk",
+                    "title": "Betfred (UK)",
+                    "last_update": "2026-11-14T11:26:36Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:36Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 5.5
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 1.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "sport888",
+                    "title": "888sport",
+                    "last_update": "2026-11-14T11:26:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 6
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 1.53
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.7
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "boylesports",
+                    "title": "BoyleSports",
+                    "last_update": "2026-11-14T11:26:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 5
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 1.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pinnacle",
+                    "title": "Pinnacle",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 1.83,
+                                    "point": 1
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 1.88,
+                                    "point": -1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:39Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alcoyano",
+                                    "price": 1.44,
+                                    "point": 1.5
+                                },
+                                {
+                                    "name": "Mallorca",
+                                    "price": 2.43,
+                                    "point": -1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
