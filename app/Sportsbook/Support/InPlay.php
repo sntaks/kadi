@@ -55,6 +55,16 @@ final class InPlay
             && self::coversCompetition($fixture->competition);
     }
 
+    /** Whether this match trades in play right now: in play on, covered competition, kicked off, before its late phase. */
+    public static function isTrading(Fixture $fixture): bool
+    {
+        return self::on()
+            && $fixture->hasKickedOff()
+            && $fixture->feed_completed_at === null
+            && self::coversCompetition($fixture->competition)
+            && now('UTC')->lt(self::closesAt($fixture));
+    }
+
     /** When live betting on this match closes (estimated from kick-off: the feed has no match clock). */
     public static function closesAt(Fixture $fixture): CarbonImmutable
     {

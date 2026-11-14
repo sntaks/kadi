@@ -1,7 +1,8 @@
 {{-- One market of a match, with every selection as a price. --}}
 @props(['market', 'fixture'])
 @php
-    $open = $market->isOpen() && ! $fixture->hasKickedOff();
+    // A started match: each price decides for itself whether it trades live (x-sports.odds, BettableSelections::isLive()).
+    $open = $market->isOpen();
     $columns = match (true) {
         $market->type === \App\Sportsbook\Enums\MarketType::CorrectScore => 'nt-mkt-grid-5',
         $market->selections->count() === 2 => 'nt-mkt-grid-2',

@@ -12,7 +12,15 @@
             <span>{{ $fixture->home_team }}</span><span class="nt-vs" aria-label="versus">v</span><span>{{ $fixture->away_team }}</span>
         </{{ $inPanel ? 'h2' : 'h1' }}>
         <p class="nt-num"><time datetime="{{ $fixture->kicks_off_at->toIso8601String() }}">{{ $fixture->kickoffLabel() }}</time> EAT</p>
-        @if ($fixture->hasKickedOff())
+        @if ($fixture->hasKickedOff() && $fixture->home_score !== null && $fixture->away_score !== null)
+            <p class="nt-match-live" data-test="live-score">
+                <span class="nt-score nt-num" aria-label="Score {{ $fixture->home_score }} to {{ $fixture->away_score }}">{{ $fixture->home_score }} – {{ $fixture->away_score }}</span>
+                <span class="nt-meta"><span class="nt-live-dot" aria-hidden="true"></span>Live</span>
+            </p>
+        @endif
+        @if (\App\Sportsbook\Support\InPlay::isTrading($fixture))
+            <p class="nt-meta" role="status" data-test="live-note">Live: the main markets stay open in play. Live bets are checked for a few seconds before they're placed.</p>
+        @elseif ($fixture->hasKickedOff())
             <p class="nt-slip-error" role="status">This match has started, so betting on it is closed.</p>
         @endif
     </header>

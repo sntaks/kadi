@@ -4,8 +4,10 @@ namespace App\Support;
 
 use App\Models\User;
 use App\Predict\Markets;
+use App\Sportsbook\Catalogue\FixtureListing;
 use App\Sportsbook\Catalogue\SportsLobby;
 use App\Sportsbook\Models\Competition;
+use App\Sportsbook\Support\InPlay;
 use App\Sportsbook\Support\SportProfile;
 use Illuminate\Support\Facades\Route;
 
@@ -255,7 +257,8 @@ final class SiteNavigation
 
     /**
      * The side menu's Sports group (plan §2): each sport with matches open (Football, Basketball) and its real count,
-     * the sports jackpot while it takes entries, and In play (a list only, so marked Soon).
+     * the sports jackpot while it takes entries, and In play: with its real count of matches in play while in-play
+     * betting is on, otherwise a list only, marked Soon.
      *
      * @return list<array<string, mixed>>
      */
@@ -274,7 +277,8 @@ final class SiteNavigation
             $items[] = $this->link('Sports jackpot', 'sports.jackpot', 'gift');
         }
 
-        $items[] = $this->link('In play', 'sports.live', 'live') + ['badge' => 'Soon'];
+        $items[] = $this->link('In play', 'sports.live', 'live')
+            + (InPlay::on() ? ['count' => app(FixtureListing::class)->inPlayCount()] : ['badge' => 'Soon']);
 
         return $items;
     }

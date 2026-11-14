@@ -114,8 +114,10 @@
                         <li class="nt-pick" wire:key="slip-{{ $selection->id }}" x-show="$store.betslip.has({{ $selection->id }})" @if ($line['status'] === 'unavailable') data-closed @endif>
                             <span class="nt-pick-what">
                                 <b>{{ $selection->name }}</b>
+                                @if ($line['in_play'] ?? false)<span class="nt-pill nt-pick-live" data-test="live-pick">Live</span>@endif
                                 <span>{{ $selection->market->name() }} · <a href="{{ route('sports.match', $fixture) }}" x-on:click="$store.betslip.isOpen = false; $openMatch($event, {{ $fixture->id }}, @js($fixture->name()))">{{ $fixture->name() }}</a></span>
                                 @if ($line['message'])<span class="nt-pick-note">{{ $line['message'] }}</span>@endif
+                                @if ($line['in_play'] ?? false)<span class="nt-pick-note">Live bets are checked for a few seconds before they're placed.</span>@endif
                             </span>
                             <span class="nt-pick-price nt-num">
                                 @if ($line['status'] === 'unavailable')

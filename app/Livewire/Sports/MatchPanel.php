@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 /**
@@ -53,6 +54,20 @@ class MatchPanel extends Component
     public function marketsByTab(): Collection
     {
         return $this->fixture === null ? collect() : MarketTabs::group($this->fixture->markets()->with('selections')->get()->each->setRelation('fixture', $this->fixture));
+    }
+
+    /**
+     * A live tick refreshed scores or prices: redraw only when this match was in it (plan §4.7). The page also polls
+     * while the match trades in play, in case Reverb is down.
+     *
+     * @param  array{fixtures?: list<array{id?: int}>}  $event
+     */
+    #[On('echo:sports.live,.fixtures.updated')]
+    public function refreshLive(array $event = []): void
+    {
+        if (! in_array($this->fixtureId, array_column($event['fixtures'] ?? [], 'id'), true)) {
+            $this->skipRender();
+        }
     }
 
     public function render(): View
