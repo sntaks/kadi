@@ -13,7 +13,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 /**
- * A sport's match list (plan §2): tabs (Highlights, Today, Tomorrow, This week), a market switcher, and rows grouped by
+ * A sport's match list (plan §2): tabs (Highlights, Today, Tomorrow, Upcoming), a market switcher, and rows grouped by
  * day and competition. On /sports and a competition page it grows as the player scrolls; on the landing it shows the
  * first page and links to the rest. Counts are the real ones.
  *
