@@ -9,11 +9,14 @@ use App\Sportsbook\Enums\BetStatus;
 use App\Sportsbook\Enums\BetType;
 use App\Sportsbook\Enums\FreeBetStatus;
 use App\Sportsbook\Enums\OddsChangePolicy;
+use App\Sportsbook\Jobs\AcceptInPlayBet;
 use App\Sportsbook\Models\Bet;
+use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\FreeBet;
 use App\Sportsbook\Models\Selection;
 use App\Sportsbook\Promotions\MultibetBonus;
 use App\Sportsbook\Support\Money;
+use App\Sportsbook\Support\SportProfile;
 use App\Sportsbook\Wagers\WagerPlacement;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +33,10 @@ use RuntimeException;
  *    at the current prices, with a new UUID wager reference.
  * 2. After the commit, POST /wagers takes the stake (WagerPlacement): the bet is then open, rejected (nothing
  *    charged; the reason is kept), or still pending when the API did not answer, until it is looked up.
+ *
+ * A slip with any live pick (plan §4.4) is saved the same way on the `sportsbook_live` product, with each live leg's
+ * score, but not sent: AcceptInPlayBet sends it after the delay, once the picks are checked again. The slip shows it
+ * as pending ("Checking your bet…") until then.
  *
  * With a free bet, its whole amount is the stake (funding free_bet) and nothing leaves the wallet; the slip's total
  * odds must reach the free bet's minimum. A cash multi records the multibet bonus it qualifies for; a free bet gets
@@ -78,6 +85,13 @@ class PlaceBet
             $placed = $clientKey === null ? null : Bet::query()->where('user_id', $user->id)->where('client_key', $clientKey)->first();
 
             return $placed ?? throw $e;
+        }
+
+        if ($bet->accept_after !== null) {
+            AcceptInPlayBet::dispatch($bet->id)->delay($bet->accept_after);
+            app(PlayerActivity::class)->record('bet_placed', $user, ['status' => $bet->status->value], $bet);
+
+            return $bet;
         }
 
         $bet = $this->placement->place($user, $bet, $token, $ip);
@@ -159,7 +173,9 @@ class PlaceBet
             throw new BetNotPlaced(BetNotPlaced::FREE_BET_MIN_ODDS, __('This free bet needs total odds of at least :odds.', ['odds' => $freeBet->min_odds]));
         }
 
-        $payout = Payout::for($stake, $odds);
+        $inPlay = $quote->inPlay;
+        $cap = Payout::cap($inPlay);
+        $payout = Payout::for($stake, $odds, $cap);
         $bonusPercent = $freeBet === null ? MultibetBonus::percentFor($prices) : 0;
 
         $bet = Bet::create([
@@ -171,11 +187,13 @@ class PlaceBet
             'status' => BetStatus::Pending,
             'stake' => $stake,
             'total_odds' => $odds,
-            'potential_payout' => $freeBet !== null ? $payout - $stake : $payout + MultibetBonus::amount($stake, $payout, $bonusPercent),
+            'product' => $inPlay ? (string) config('sportsbook.wagers.products.live_bet') : null,
+            'potential_payout' => $freeBet !== null ? $payout - $stake : $payout + MultibetBonus::amount($stake, $payout, $bonusPercent, $cap),
             'bonus_percent' => $bonusPercent,
             'odds_change_policy' => $policy,
             'client_key' => $clientKey,
             'placed_at' => now('UTC'),
+            'accept_after' => $inPlay ? now('UTC')->addSeconds($this->delaySeconds($quote)) : null,
         ]);
 
         foreach ($quote->lines as $line) {
@@ -194,6 +212,8 @@ class PlaceBet
                 'outcome' => $selection->outcome,
                 'selection_name' => $selection->name,
                 'price' => $selection->price(),
+                'in_play' => $line['in_play'],
+                'score_at_placement' => $line['in_play'] ? self::score($market->fixture) : null,
                 'status' => BetLegStatus::Open,
             ]);
         }
@@ -202,6 +222,21 @@ class PlaceBet
         $freeBet?->update(['status' => FreeBetStatus::Used, 'used_at' => now('UTC')]);
 
         return $bet;
+    }
+
+    /** The longest bet delay among the slip's live picks' sports (football 8 s, basketball 5 s). */
+    private function delaySeconds(BetSlipQuote $quote): int
+    {
+        return (int) collect($quote->lines)
+            ->filter(fn (array $line): bool => $line['in_play'])
+            ->map(fn (array $line): int => (int) config('sportsbook.in_play.bet_delay_seconds.'.SportProfile::forSport($line['selection']->market->fixture->competition?->sport)->slug, 8))
+            ->max();
+    }
+
+    /** A live match's score as recorded on a leg ("1-0"); compared again before the bet is sent. */
+    public static function score(Fixture $fixture): string
+    {
+        return ($fixture->home_score ?? 0).'-'.($fixture->away_score ?? 0);
     }
 
     /**

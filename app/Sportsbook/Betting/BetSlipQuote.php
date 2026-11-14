@@ -12,7 +12,9 @@ use App\Sportsbook\Promotions\MultibetBonus;
  * The possible win includes the multibet bonus the slip qualifies for if every pick wins. With a free bet it is only
  * the winnings above the stake, since a free bet's stake never comes back, and there is no bonus.
  *
- * @phpstan-type Line array{selection: Selection, seen_price: string, status: 'ok'|'price_changed'|'unavailable', message: string|null}
+ * A slip with any live pick (plan §4.5) has the in-play limits: a lower maximum stake and payout.
+ *
+ * @phpstan-type Line array{selection: Selection, seen_price: string, status: 'ok'|'price_changed'|'unavailable', message: string|null, in_play: bool}
  */
 final readonly class BetSlipQuote
 {
@@ -31,6 +33,7 @@ final readonly class BetSlipQuote
         public int $qualifyingLegs = 0,
         public int $bonusPercent = 0,
         public float $bonus = 0.0,
+        public bool $inPlay = false,
     ) {}
 
     /**
@@ -62,6 +65,7 @@ final readonly class BetSlipQuote
                     default => 'ok',
                 },
                 'message' => $unavailable,
+                'in_play' => $unavailable === null && $bettableSelections->isLive($selection),
             ];
         }
 
@@ -73,14 +77,16 @@ final readonly class BetSlipQuote
         // different win from what the bet would pay.
         $combinedOdds = $prices->isEmpty() ? '0.00' : Payout::combinedOdds($prices);
         $totalOdds = (float) $combinedOdds;
-        [$stakeAmount, $stakeErrors] = self::validateStake($stake, $lines);
+        $inPlay = collect($lines)->contains(fn (array $line): bool => $line['in_play']);
+        [$stakeAmount, $stakeErrors] = self::validateStake($stake, $lines, $inPlay);
         $stakeCents = $stakeAmount !== null ? (int) round($stakeAmount * 100) : 0;
-        $payoutCents = Payout::for($stakeCents, $combinedOdds);
+        $cap = Payout::cap($inPlay);
+        $payoutCents = Payout::for($stakeCents, $combinedOdds, $cap);
         $uncappedWin = $stakeAmount !== null ? $stakeAmount * $totalOdds : 0.0;
-        $maxPayout = (float) config('sportsbook.limits.max_payout');
+        $maxPayout = $cap / 100;
         $qualifyingLegs = $isFreeBet ? 0 : MultibetBonus::qualifyingLegs($prices);
         $bonusPercent = MultibetBonus::percentForLegs($qualifyingLegs);
-        $bonusCents = MultibetBonus::amount($stakeCents, $payoutCents, $bonusPercent);
+        $bonusCents = MultibetBonus::amount($stakeCents, $payoutCents, $bonusPercent, $cap);
 
         return new self(
             $lines,
@@ -93,6 +99,7 @@ final readonly class BetSlipQuote
             $qualifyingLegs,
             $bonusPercent,
             $bonusCents / 100,
+            $inPlay,
         );
     }
 
@@ -159,7 +166,7 @@ final readonly class BetSlipQuote
      * @param  list<Line>  $lines
      * @return array{0: float|null, 1: list<string>}
      */
-    private static function validateStake(string $stake, array $lines): array
+    private static function validateStake(string $stake, array $lines, bool $inPlay = false): array
     {
         $stake = trim($stake);
 
@@ -173,7 +180,7 @@ final readonly class BetSlipQuote
 
         $amount = (float) $stake;
         $minimum = (int) config('sportsbook.limits.min_stake');
-        $maximum = (int) config('sportsbook.limits.max_stake');
+        $maximum = (int) config($inPlay ? 'sportsbook.in_play.max_stake' : 'sportsbook.limits.max_stake');
         $errors = [];
 
         if ($amount < $minimum) {
@@ -181,7 +188,9 @@ final readonly class BetSlipQuote
         }
 
         if ($amount > $maximum) {
-            $errors[] = __('The maximum stake is KES :amount.', ['amount' => number_format($maximum)]);
+            $errors[] = $inPlay
+                ? __('The maximum stake on a bet with a live pick is KES :amount.', ['amount' => number_format($maximum)])
+                : __('The maximum stake is KES :amount.', ['amount' => number_format($maximum)]);
         }
 
         return [$amount, $errors];

@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['bet_id', 'selection_id', 'market_id', 'fixture_id', 'fixture_name', 'kicks_off_at', 'market_type', 'market_line', 'market_name', 'outcome', 'selection_name', 'price', 'status', 'void_reason', 'settled_at'])]
+#[Fillable(['bet_id', 'selection_id', 'market_id', 'fixture_id', 'fixture_name', 'kicks_off_at', 'market_type', 'market_line', 'market_name', 'outcome', 'selection_name', 'price', 'in_play', 'score_at_placement', 'status', 'void_reason', 'settled_at'])]
 class BetLeg extends SportsbookModel
 {
     protected $table = 'sb_bet_legs';
@@ -52,6 +52,7 @@ class BetLeg extends SportsbookModel
             'market_type' => MarketType::class,
             'market_line' => 'decimal:2',
             'price' => 'decimal:2',
+            'in_play' => 'boolean',
             'status' => BetLegStatus::class,
             'settled_at' => 'datetime',
         ];

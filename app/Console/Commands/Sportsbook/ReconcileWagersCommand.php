@@ -29,7 +29,13 @@ class ReconcileWagersCommand extends Command
         $dispatched = 0;
 
         foreach (['bet' => Bet::query()->where('status', BetStatus::Pending), 'jackpot_entry' => JackpotEntry::query()->where('status', JackpotEntryStatus::Pending)] as $type => $query) {
-            foreach ($query->where('placed_at', '<', $before)->pluck('id') as $id) {
+            // A live bet still waiting out its delay was never sent: looking it up would void it. Its own job sends it;
+            // only one whose job never ran (well past `accept_after`) is looked up, and a tombstone then rejects it.
+            $due = $type === 'bet'
+                ? $query->where(fn (Builder $bets) => $bets->whereNull('accept_after')->where('placed_at', '<', $before)->orWhere('accept_after', '<', $before))
+                : $query->where('placed_at', '<', $before);
+
+            foreach ($due->pluck('id') as $id) {
                 if (! WagerPlacement::onHold($type, (int) $id)) {
                     ReconcileWager::dispatch($type, (int) $id);
                     $dispatched++;

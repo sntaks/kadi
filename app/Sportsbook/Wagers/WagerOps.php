@@ -142,8 +142,13 @@ class WagerOps
         return $subject instanceof Bet ? 'bet' : 'jackpot_entry';
     }
 
+    /** The wager's own product: a live bet keeps `sportsbook_live` for its placement and every later op. */
     public static function product(Bet|JackpotEntry $subject): string
     {
+        if ($subject instanceof Bet && filled($subject->product)) {
+            return (string) $subject->product;
+        }
+
         return (string) config('sportsbook.wagers.products.'.self::subjectType($subject));
     }
 

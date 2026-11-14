@@ -18,6 +18,15 @@ class Payout
     /**
      * @param  iterable<string>  $prices
      */
+    /**
+     * The maximum payout in cents: the in-play limit for a bet with any live leg (it must stay within the Kadi API
+     * `sportsbook_live` product's max_payout), otherwise the pre-match one.
+     */
+    public static function cap(bool $inPlay = false): int
+    {
+        return Money::fromShillings((int) config($inPlay ? 'sportsbook.in_play.max_payout' : 'sportsbook.limits.max_payout'));
+    }
+
     public static function combinedOdds(iterable $prices): string
     {
         $odds = 1.0;
@@ -34,9 +43,9 @@ class Payout
     /**
      * Stake times odds, in cents, capped at the maximum payout.
      */
-    public static function for(int $stake, string $odds): int
+    public static function for(int $stake, string $odds, ?int $cap = null): int
     {
-        $cap = Money::fromShillings((int) config('sportsbook.limits.max_payout'));
+        $cap ??= self::cap();
         $oddsHundredths = (int) round((float) $odds * 100);
 
         if ($stake <= 0 || $oddsHundredths <= 0) {
