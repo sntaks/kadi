@@ -10,6 +10,8 @@ enum MarketType: string
     case MatchResult = 'h2h';
     case Totals = 'totals';
     case Spreads = 'spreads';
+    case HomeTeamTotals = 'home_team_totals';
+    case AwayTeamTotals = 'away_team_totals';
     case DoubleChance = 'double_chance';
     case DrawNoBet = 'draw_no_bet';
     case BothTeamsToScore = 'btts';
@@ -22,6 +24,7 @@ enum MarketType: string
             self::MatchResult => __('1X2'),
             self::Totals => __('Over/Under'),
             self::Spreads => __('Handicap'),
+            self::HomeTeamTotals, self::AwayTeamTotals => __('Team goals'),
             self::DoubleChance => __('Double Chance'),
             self::DrawNoBet => __('Draw No Bet'),
             self::BothTeamsToScore => __('Both Teams To Score'),
@@ -43,6 +46,6 @@ enum MarketType: string
      */
     public function hasLines(): bool
     {
-        return in_array($this, [self::Totals, self::Spreads], true);
+        return in_array($this, [self::Totals, self::Spreads, self::HomeTeamTotals, self::AwayTeamTotals], true);
     }
 }

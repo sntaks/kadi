@@ -144,6 +144,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Per-match extras (plan §10.6)
+    |--------------------------------------------------------------------------
+    |
+    | Alternate handicaps, alternate goal lines and team goal lines, bought per match from the event endpoint
+    | (`sportsbook:sync-event-odds`, hourly) once in each window before kick-off. One credit per market returned,
+    | from up to 10 named books. Spend counts against the `per_event` allowance.
+    |
+    */
+
+    'per_event' => [
+        'enabled' => (bool) env('SPORTSBOOK_PER_EVENT_ENABLED', true),
+        'competitions' => array_values(array_filter(array_map('trim', explode(',', (string) env('SPORTSBOOK_PER_EVENT_COMPETITIONS',
+            'soccer_epl,soccer_spain_la_liga,soccer_italy_serie_a,soccer_germany_bundesliga,soccer_france_ligue_one,soccer_uefa_champs_league'))))),
+        'markets' => array_values(array_filter(array_map('trim', explode(',', (string) env('SPORTSBOOK_PER_EVENT_MARKETS',
+            'alternate_spreads,alternate_totals,alternate_team_totals'))))),
+        'bookmakers' => env('ODDS_API_PER_EVENT_BOOKMAKERS', 'pinnacle,onexbet,bovada,fanduel,draftkings,betmgm,betrivers,fanatics,coolbet,betfair_ex_uk'),
+        // Hours before kick-off: a match is bought once while its kick-off is this far away (the day before, and
+        // shortly before kick-off).
+        'windows' => [[20, 28], [1, 3]],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Sports
     |--------------------------------------------------------------------------
     |

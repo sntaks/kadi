@@ -60,6 +60,9 @@ class MarketRules
             }),
             MarketType::Totals => self::totals($leg, $home + $away),
             MarketType::Spreads => self::spreads($leg, $home, $away),
+            // A team's goal line counts that team's full-time goals only.
+            MarketType::HomeTeamTotals => self::totals($leg, $home),
+            MarketType::AwayTeamTotals => self::totals($leg, $away),
             MarketType::CorrectScore => self::wins($leg->outcome === 'other' ? $home > 4 || $away > 4 : $leg->outcome === "{$home}-{$away}"),
             MarketType::HalfTimeFullTime => $result->hasHalfTimeScore()
                 ? self::wins($leg->outcome === self::resultCode((int) $result->half_time_home_score, (int) $result->half_time_away_score).'/'.$fullTime)
