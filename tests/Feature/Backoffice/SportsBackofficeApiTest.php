@@ -252,7 +252,10 @@ test('exposure, odds API credits and the day\'s reconciliation are served with t
     betOn($api->player(), [[pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]), 'home']]);
 
     backoffice('GET', 'exposure?limit=10')->assertOk()->assertJsonPath('data.matches.0.bets', 1);
-    backoffice('GET', 'odds-api/credits')->assertOk()->assertJsonStructure(['data' => ['spent_this_month', 'remaining', 'monthly_cap', 'reserve']]);
+    backoffice('GET', 'odds-api/credits')->assertOk()
+        ->assertJsonStructure(['data' => ['spent_this_month', 'remaining', 'monthly_cap', 'reserve', 'purposes' => ['pre_match' => ['spent', 'allowance'], 'per_event', 'live', 'scores', 'recording']]])
+        ->assertJsonPath('data.purposes.live.allowance', 72000)
+        ->assertJsonPath('data.purposes.recording.allowance', null);
     backoffice('GET', 'reconciliation?date='.now(config('sportsbook.timezone'))->toDateString())
         ->assertOk()
         ->assertJsonPath('data.products.sportsbook.placed.open', 1)

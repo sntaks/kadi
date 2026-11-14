@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Http;
 beforeEach(function () {
     $this->api = wagerApi();
     useLiveOddsApi();
-    Http::fake(['odds-api.test/v4/sports/*/scores*' => Http::response(oddsApiFixture('scores-soccer_epl'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '484'])]);
+    Http::fake(['odds-api.test/v4/sports/*/scores*' => Http::response(oddsApiFixture('scores-soccer_epl'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '98484'])]);
     $this->travelTo(Date::parse('2026-10-17 10:00:00', 'UTC'));
     $this->competition = Competition::factory()->synced()->create(['odds_api_key' => 'soccer_epl']);
 });

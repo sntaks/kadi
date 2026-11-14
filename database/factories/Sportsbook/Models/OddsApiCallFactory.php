@@ -3,6 +3,7 @@
 namespace Database\Factories\Sportsbook\Models;
 
 use App\Sportsbook\Models\OddsApiCall;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class OddsApiCallFactory extends Factory
         return [
             'endpoint' => 'odds',
             'sport_key' => 'soccer_epl',
+            'purpose' => OddsApiPurpose::PreMatch,
             'credits_spent' => 1,
             'credits_remaining' => 400,
             'credits_used' => 100,
@@ -30,5 +32,11 @@ class OddsApiCallFactory extends Factory
             'error' => null,
             'created_at' => now(),
         ];
+    }
+
+    /** A paid call for another purpose. */
+    public function purpose(OddsApiPurpose $purpose): static
+    {
+        return $this->state(['purpose' => $purpose, 'endpoint' => $purpose === OddsApiPurpose::Scores ? 'scores' : 'odds']);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Games\GameCatalogue;
 use App\Models\GameLaunch;
 use App\Predict\MarketFeed;
+use App\Sportsbook\OddsApi\CreditBudget;
 use App\Sportsbook\Wagers\NeedsOperator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
@@ -22,7 +23,12 @@ class PlatformHealth
     /** @var array{ops: int, failed_ops: int, oldest_op_at: ?string, pending_bets: int, pending_jackpot_entries: int}|null */
     private ?array $counts = null;
 
-    public function __construct(private NeedsOperator $needsOperator, private GameCatalogue $catalogue, private MarketFeed $predictFeed) {}
+    public function __construct(
+        private NeedsOperator $needsOperator,
+        private GameCatalogue $catalogue,
+        private MarketFeed $predictFeed,
+        private CreditBudget $oddsApiBudget,
+    ) {}
 
     /**
      * @return array<string, array{message: string, context: array<string, int|float|string>}|null>
@@ -37,6 +43,7 @@ class PlatformHealth
             'wager_placements' => $this->placements(),
             'game_catalogue' => $this->catalogue(),
             'predict_feed' => $this->predictFeed(),
+            'odds_api_budget' => $this->oddsApiBudget(),
         ];
     }
 
@@ -172,6 +179,44 @@ class PlatformHealth
         return $minutes < $limit ? null : [
             'message' => "The prediction market feed is stale: its last good answer was {$minutes} minutes ago.",
             'context' => ['minutes' => $minutes],
+        ];
+    }
+
+    /**
+     * This month's Odds API spend has reached `warn_at` (80 %) of the cap or of a purpose's allowance. Past the
+     * allowance that purpose stops (in play: live markets stay closed; scores: bets wait to settle) until next month.
+     *
+     * @return array{message: string, context: array<string, int|float|string>}|null
+     */
+    private function oddsApiBudget(): ?array
+    {
+        $warnAt = (float) config('sportsbook.odds_api.warn_at', 0.8);
+        $cap = $this->oddsApiBudget->monthlyCap();
+        $spent = $this->oddsApiBudget->spentThisMonth();
+        $over = [];
+        $context = ['spent' => $spent, 'cap' => $cap];
+
+        if ($cap > 0 && $spent >= $warnAt * $cap) {
+            $over[] = 'total '.number_format($spent).' of '.number_format($cap);
+        }
+
+        foreach ($this->oddsApiBudget->usageThisMonth() as $purpose => ['spent' => $used, 'allowance' => $allowance]) {
+            if ($allowance === null) {
+                continue;
+            }
+
+            $context["{$purpose}_spent"] = $used;
+            $context["{$purpose}_allowance"] = $allowance;
+
+            // An allowance of 0 switches a purpose off on purpose: nothing to warn about until it spends.
+            if ($used > 0 && $used >= $warnAt * $allowance) {
+                $over[] = "{$purpose} ".number_format($used).' of '.number_format($allowance);
+            }
+        }
+
+        return $over === [] ? null : [
+            'message' => 'Odds API credits are running low this month: '.implode(', ', $over).'.',
+            'context' => $context,
         ];
     }
 

@@ -34,7 +34,11 @@ class ReplayOddsApi implements OddsApi
         return $this->load('events', $sportKey);
     }
 
-    public function odds(string $sportKey, array $markets): array
+    /**
+     * The recorded odds, cut down to the markets asked for. Named bookmakers (`bookmakers` config) are not applied:
+     * replay serves whichever books were recorded.
+     */
+    public function odds(string $sportKey, array $markets, OddsApiPurpose $purpose = OddsApiPurpose::PreMatch): array
     {
         $events = $this->load('odds', $sportKey);
 
@@ -55,7 +59,7 @@ class ReplayOddsApi implements OddsApi
      * The recorded scores. Recorded games had already finished, so they match no replayed (always upcoming) fixture:
      * locally, results are entered in the admin panel.
      */
-    public function scores(string $sportKey, int $daysFrom): array
+    public function scores(string $sportKey, int $daysFrom, OddsApiPurpose $purpose = OddsApiPurpose::Scores): array
     {
         /** @var list<array{id: string, sport_key: string, commence_time: string, completed: bool, home_team: string, away_team: string, scores: list<array{name: string, score: string}>|null, last_update: string|null}> */
         return $this->load('scores', $sportKey);

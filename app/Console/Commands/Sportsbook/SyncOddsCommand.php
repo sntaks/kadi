@@ -6,6 +6,8 @@ use App\Jobs\Sportsbook\SyncCompetitionOdds;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\OddsApi\CreditBudget;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
+use App\Sportsbook\OddsApi\OddsApiSource;
 use App\Sportsbook\Support\SportProfile;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -42,15 +44,17 @@ class SyncOddsCommand extends Command
         // Each sport buys its own markets (football h2h; basketball h2h + totals) unless --markets says otherwise.
         $marketsFor = fn (Competition $competition): array => $marketTypes !== [] ? $marketTypes : SportProfile::forSport($competition->sport)->markets;
 
-        $regionCount = count(explode(',', (string) config('sportsbook.odds_api.region')));
-        $estimatedCredits = $competitions->sum(fn (Competition $competition): int => count($marketsFor($competition))) * $regionCount;
+        $estimatedCredits = $competitions->sum(fn (Competition $competition): int => count($marketsFor($competition)))
+            * OddsApiSource::fromConfig()->creditsPerMarket();
 
         $cost = config('sportsbook.odds_api.driver') === 'live'
             ? "about {$estimatedCredits} credits"
             : 'no credits (replay driver)';
 
+        $allowance = $budget->allowance(OddsApiPurpose::PreMatch);
         $this->line("Pricing {$competitions->count()} competitions for {$cost}"
-            .' ('.$budget->spentThisMonth().' spent this month, '.($budget->remaining() ?? 'unknown').' remaining).');
+            .' ('.$budget->spentThisMonth().' spent this month, '.$budget->spentThisMonth(OddsApiPurpose::PreMatch).' on pre-match'
+            .($allowance !== null ? " of {$allowance}" : '').', '.($budget->remaining() ?? 'unknown').' remaining).');
 
         foreach ($competitions as $competition) {
             $this->option('sync')

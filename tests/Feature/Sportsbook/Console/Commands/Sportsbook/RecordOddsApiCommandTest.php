@@ -1,5 +1,7 @@
 <?php
 
+use App\Sportsbook\Models\OddsApiCall;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -30,7 +32,7 @@ test('records sports, fixtures and odds for replay once confirmed', function () 
     $this->travelTo(Date::parse('2026-10-17 12:00:00', 'UTC'));
     Http::fake([
         'odds-api.test/v4/sports/soccer_epl/events*' => Http::response(oddsApiFixture('events-soccer_epl')),
-        'odds-api.test/v4/sports/soccer_epl/odds*' => Http::response(oddsApiFixture('odds-soccer_epl'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '486']),
+        'odds-api.test/v4/sports/soccer_epl/odds*' => Http::response(oddsApiFixture('odds-soccer_epl'), 200, ['x-requests-last' => '2', 'x-requests-remaining' => '98486']),
         'odds-api.test/v4/sports*' => Http::response(oddsApiFixture('sports')),
     ]);
 
@@ -41,5 +43,7 @@ test('records sports, fixtures and odds for replay once confirmed', function () 
     expect(File::exists("{$this->recordingsPath}/sports.json"))->toBeTrue()
         ->and(File::exists("{$this->recordingsPath}/events-soccer_epl.json"))->toBeTrue()
         ->and($odds['recorded_at'])->toBe('2026-10-17T12:00:00Z')
-        ->and($odds['data'])->toEqual(oddsApiFixture('odds-soccer_epl'));
+        ->and($odds['data'])->toEqual(oddsApiFixture('odds-soccer_epl'))
+        // Recordings spend the headroom, never the pre-match allowance the daily sync needs.
+        ->and(OddsApiCall::firstWhere('endpoint', 'odds')->purpose)->toBe(OddsApiPurpose::Recording);
 });

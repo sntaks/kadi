@@ -2,6 +2,7 @@
 
 namespace App\Sportsbook\Models;
 
+use App\Sportsbook\OddsApi\OddsApiPurpose;
 use Carbon\CarbonImmutable;
 use Database\Factories\Sportsbook\Models\OddsApiCallFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $id
  * @property string $endpoint
  * @property string|null $sport_key
+ * @property OddsApiPurpose|null $purpose
  * @property int $credits_spent
  * @property int|null $credits_remaining
  * @property int|null $credits_used
@@ -21,7 +23,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string|null $error
  * @property CarbonImmutable $created_at
  */
-#[Fillable(['endpoint', 'sport_key', 'credits_spent', 'credits_remaining', 'credits_used', 'http_status', 'succeeded', 'error', 'created_at'])]
+#[Fillable(['endpoint', 'sport_key', 'purpose', 'credits_spent', 'credits_remaining', 'credits_used', 'http_status', 'succeeded', 'error', 'created_at'])]
 class OddsApiCall extends SportsbookModel
 {
     protected $table = 'sb_odds_api_calls';
@@ -39,6 +41,7 @@ class OddsApiCall extends SportsbookModel
     protected function casts(): array
     {
         return [
+            'purpose' => OddsApiPurpose::class,
             'succeeded' => 'boolean',
             'created_at' => 'datetime',
         ];

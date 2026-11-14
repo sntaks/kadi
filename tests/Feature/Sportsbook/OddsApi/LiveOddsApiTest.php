@@ -1,8 +1,11 @@
 <?php
 
 use App\Sportsbook\Models\OddsApiCall;
+use App\Sportsbook\OddsApi\CreditBudget;
 use App\Sportsbook\OddsApi\CreditBudgetExceeded;
 use App\Sportsbook\OddsApi\OddsApi;
+use App\Sportsbook\OddsApi\OddsApiPurpose;
+use App\Sportsbook\OddsApi\OddsApiSource;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\RequestException;
@@ -89,4 +92,98 @@ test('never stores the API key in the ledger when a connection error quotes the 
     expect($call->succeeded)->toBeFalse()
         ->and($call->error)->toContain('apiKey=[redacted]')
         ->and($call->error)->not->toContain('test-api-key');
+});
+
+test('records what each paid call was for, and free calls without a purpose', function () {
+    Http::fake([
+        'odds-api.test/v4/sports/soccer_epl/odds*' => Http::response([], 200, ['x-requests-last' => '1', 'x-requests-remaining' => '400']),
+        'odds-api.test/v4/sports/soccer_epl/scores*' => Http::response([], 200, ['x-requests-last' => '2', 'x-requests-remaining' => '398']),
+        'odds-api.test/v4/sports/soccer_epl/events*' => Http::response([], 200, ['x-requests-last' => '0']),
+    ]);
+
+    app(OddsApi::class)->odds('soccer_epl', ['h2h']);
+    app(OddsApi::class)->odds('soccer_epl', ['h2h'], OddsApiPurpose::Live);
+    app(OddsApi::class)->scores('soccer_epl', 3);
+    app(OddsApi::class)->events('soccer_epl');
+
+    expect(OddsApiCall::query()->orderBy('id')->pluck('purpose')->all())
+        ->toBe([OddsApiPurpose::PreMatch, OddsApiPurpose::Live, OddsApiPurpose::Scores, null]);
+});
+
+test('refuses a paid call past its purpose\'s allowance while other purposes keep spending', function () {
+    config(['sportsbook.odds_api.monthly_credit_cap' => 100_000, 'sportsbook.odds_api.allowances' => ['live' => 100, 'scores' => 50]]);
+    Http::fake(['odds-api.test/v4/sports/soccer_epl/*' => Http::response([], 200, ['x-requests-last' => '1', 'x-requests-remaining' => '90000'])]);
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Live)->create(['credits_spent' => 99, 'credits_remaining' => 90_000]);
+
+    expect(fn () => app(OddsApi::class)->odds('soccer_epl', ['h2h', 'totals'], OddsApiPurpose::Live))
+        ->toThrow(CreditBudgetExceeded::class, '99 of the 100-credit monthly live allowance is already spent');
+    Http::assertNothingSent();
+
+    app(OddsApi::class)->odds('soccer_epl', ['h2h', 'totals']);
+    app(OddsApi::class)->scores('soccer_epl', 3);
+
+    Http::assertSentCount(2);
+});
+
+test('a purpose without an allowance of its own is held only by the cap', function () {
+    config(['sportsbook.odds_api.monthly_credit_cap' => 1_000, 'sportsbook.odds_api.allowances' => ['pre_match' => 10]]);
+    Http::fake(['odds-api.test/v4/sports/soccer_epl/odds*' => Http::response([], 200, ['x-requests-last' => '1', 'x-requests-remaining' => '900'])]);
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Recording)->create(['credits_spent' => 500]);
+
+    app(OddsApi::class)->odds('soccer_epl', ['h2h'], OddsApiPurpose::Recording);
+
+    Http::assertSentCount(1);
+});
+
+test('an allowance of 0 switches a purpose off', function () {
+    config(['sportsbook.odds_api.allowances' => ['live' => 0]]);
+    Http::fake();
+
+    expect(fn () => app(OddsApi::class)->odds('soccer_epl', ['h2h'], OddsApiPurpose::Live))->toThrow(CreditBudgetExceeded::class);
+
+    Http::assertNothingSent();
+});
+
+test('named bookmakers replace the region and cost one region per ten books', function () {
+    config(['sportsbook.odds_api.bookmakers' => 'pinnacle, betfair_ex_uk,williamhill,,pinnacle']);
+    Http::fake(['odds-api.test/v4/sports/soccer_epl/odds*' => Http::response([], 200, ['x-requests-last' => '2', 'x-requests-remaining' => '400'])]);
+
+    app(OddsApi::class)->odds('soccer_epl', ['h2h', 'totals']);
+
+    Http::assertSent(fn (Request $request): bool => $request['bookmakers'] === 'pinnacle,betfair_ex_uk,williamhill'
+        && ! isset($request['regions']));
+    expect(OddsApiSource::fromConfig()->creditsPerMarket())->toBe(1);
+
+    config(['sportsbook.odds_api.bookmakers' => implode(',', array_map(fn (int $i): string => "book{$i}", range(1, 11)))]);
+    expect(OddsApiSource::fromConfig()->creditsPerMarket())->toBe(2);
+
+    config(['sportsbook.odds_api.bookmakers' => '', 'sportsbook.odds_api.region' => 'uk,eu']);
+    expect(OddsApiSource::fromConfig()->creditsPerMarket())->toBe(2)
+        ->and(OddsApiSource::fromConfig()->query())->toBe(['regions' => 'uk,eu']);
+});
+
+test('a refused call checks the cost of the books it would use', function () {
+    config(['sportsbook.odds_api.bookmakers' => implode(',', array_map(fn (int $i): string => "book{$i}", range(1, 11))),
+        'sportsbook.odds_api.allowances' => ['pre_match' => 3]]);
+    Http::fake();
+
+    // Two markets from 11 books = 2 × 2 = 4 credits, over an allowance of 3.
+    expect(fn () => app(OddsApi::class)->odds('soccer_epl', ['h2h', 'totals']))->toThrow(CreditBudgetExceeded::class, 'Refusing a 4-credit');
+});
+
+test('usage this month is reported per purpose with each allowance', function () {
+    $this->travelTo(Date::parse('2026-11-14 12:00:00', 'UTC'));
+    config(['sportsbook.odds_api.allowances' => ['pre_match' => 9000, 'live' => 72000]]);
+    OddsApiCall::factory()->create(['credits_spent' => 3]);
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Live)->create(['credits_spent' => 4]);
+    OddsApiCall::factory()->purpose(OddsApiPurpose::Live)->create(['credits_spent' => 400, 'created_at' => '2026-10-31 23:00:00']);
+    OddsApiCall::factory()->create(['credits_spent' => 0, 'purpose' => null, 'endpoint' => 'events']);
+
+    expect(CreditBudget::fromConfig()->usageThisMonth())->toBe([
+        'pre_match' => ['spent' => 3, 'allowance' => 9000],
+        'per_event' => ['spent' => 0, 'allowance' => null],
+        'live' => ['spent' => 4, 'allowance' => 72000],
+        'scores' => ['spent' => 0, 'allowance' => null],
+        'recording' => ['spent' => 0, 'allowance' => null],
+    ]);
 });

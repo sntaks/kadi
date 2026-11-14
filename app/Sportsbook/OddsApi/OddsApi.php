@@ -29,18 +29,20 @@ interface OddsApi
     public function events(string $sportKey): array;
 
     /**
-     * Bookmaker prices for one competition. Costs one credit per market per region.
+     * Bookmaker prices for one competition. Costs one credit per market per region (or per 10 named bookmakers),
+     * counted against $purpose's monthly allowance.
      *
      * @param  list<string>  $markets
      * @return list<EventOddsData>
      */
-    public function odds(string $sportKey, array $markets): array;
+    public function odds(string $sportKey, array $markets, OddsApiPurpose $purpose = OddsApiPurpose::PreMatch): array;
 
     /**
      * Scores for one competition: games in play and, with $daysFrom (1 to 3), games completed in that many days.
-     * Costs 2 credits with $daysFrom, 1 without. Full-time scores only: there is no half-time score.
+     * Costs 2 credits with $daysFrom, 1 without, counted against $purpose's monthly allowance. Full-time scores only:
+     * there is no half-time score.
      *
      * @return list<ScoreData>
      */
-    public function scores(string $sportKey, int $daysFrom): array;
+    public function scores(string $sportKey, int $daysFrom, OddsApiPurpose $purpose = OddsApiPurpose::Scores): array;
 }
