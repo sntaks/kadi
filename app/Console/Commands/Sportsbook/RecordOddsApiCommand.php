@@ -36,8 +36,8 @@ class RecordOddsApiCommand extends Command
         $markets = is_string($marketsOption) ? array_values(array_filter(array_map('trim', explode(',', $marketsOption)))) : [];
         $perEvent = max(0, (int) $this->option('per-event'));
         $eventMarkets = (array) config('sportsbook.per_event.markets');
-        $estimatedCredits = count($competitions) * (OddsApiSource::creditsFor($markets)
-            + $perEvent * count($eventMarkets) * OddsApiSource::forEventOdds()->creditsPerMarket());
+        $estimatedCredits = array_sum(array_map(fn (string $competition): int => OddsApiSource::creditsFor($markets, $competition)
+            + $perEvent * count($eventMarkets) * OddsApiSource::forEventOdds()->creditsPerMarket(), $competitions));
 
         $this->line('Recording sports, fixtures and ['.implode(', ', $markets).'] odds for: '.implode(', ', $competitions));
         $this->line("Odds cost about {$estimatedCredits} credits; sports and fixtures are free.");

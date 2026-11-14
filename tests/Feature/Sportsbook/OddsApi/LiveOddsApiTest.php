@@ -187,3 +187,19 @@ test('usage this month is reported per purpose with each allowance', function ()
         'recording' => ['spent' => 0, 'allowance' => null],
     ]);
 });
+
+test('a competition with its own region is bought from it, and a market\'s own books still come first', function () {
+    config([
+        'sportsbook.odds_api.competition_regions' => ['basketball_nbl' => 'au'],
+        'sportsbook.odds_api.market_bookmakers' => ['spreads' => 'pinnacle,bovada'],
+    ]);
+    Http::fake(['odds-api.test/v4/sports/*/odds*' => Http::response([], 200, ['x-requests-last' => '1', 'x-requests-remaining' => '90000'])]);
+
+    app(OddsApi::class)->odds('basketball_nbl', ['h2h', 'totals', 'spreads']);
+    app(OddsApi::class)->odds('basketball_nba', ['h2h']);
+
+    Http::assertSent(fn (Request $request): bool => str_contains($request->url(), 'basketball_nbl') && ($request->data()['regions'] ?? null) === 'au' && $request['markets'] === 'h2h,totals');
+    Http::assertSent(fn (Request $request): bool => str_contains($request->url(), 'basketball_nbl') && ($request->data()['bookmakers'] ?? null) === 'pinnacle,bovada' && $request['markets'] === 'spreads');
+    Http::assertSent(fn (Request $request): bool => str_contains($request->url(), 'basketball_nba') && ($request->data()['regions'] ?? null) === 'uk');
+    expect(OddsApiSource::creditsFor(['h2h', 'totals'], 'basketball_nbl'))->toBe(2);
+});

@@ -7,7 +7,9 @@ namespace App\Sportsbook\OddsApi;
  * Named bookmakers replace the regions when set. The API charges each group of 10 bookmakers like one region.
  *
  * A market can have its own bookmakers (`sportsbook.odds_api.market_bookmakers`), e.g. football handicaps, which the
- * UK region hardly prices: such markets are bought in a call of their own, which costs the same per market.
+ * UK region hardly prices: such markets are bought in a call of their own, which costs the same per market. A
+ * competition can have its own region (`sportsbook.odds_api.competition_regions`), e.g. Australia's NBL, which UK
+ * books hardly price; a market's own bookmakers still come first.
  */
 final class OddsApiSource
 {
@@ -22,15 +24,26 @@ final class OddsApiSource
         public readonly array $bookmakers = [],
     ) {}
 
-    /** The source for one market key, or the default source when the market has no bookmakers of its own. */
-    public static function fromConfig(?string $market = null): self
+    /**
+     * The source for one market of one competition: the market's own bookmakers, else the competition's own region,
+     * else the default source.
+     */
+    public static function fromConfig(?string $market = null, ?string $competition = null): self
     {
+        $regions = self::list((string) config('sportsbook.odds_api.region'));
         $own = $market !== null ? self::list((string) (config("sportsbook.odds_api.market_bookmakers.{$market}") ?? '')) : [];
 
-        return new self(
-            regions: self::list((string) config('sportsbook.odds_api.region')),
-            bookmakers: $own !== [] ? $own : self::list((string) config('sportsbook.odds_api.bookmakers')),
-        );
+        if ($own !== []) {
+            return new self(regions: $regions, bookmakers: $own);
+        }
+
+        $competitionRegions = $competition !== null ? self::list((string) (config('sportsbook.odds_api.competition_regions')[$competition] ?? '')) : [];
+
+        if ($competitionRegions !== []) {
+            return new self(regions: $competitionRegions);
+        }
+
+        return new self(regions: $regions, bookmakers: self::list((string) config('sportsbook.odds_api.bookmakers')));
     }
 
     /** The books a match's extra markets are bought from (`sportsbook.per_event.bookmakers`), else the default source. */
@@ -47,12 +60,13 @@ final class OddsApiSource
      * @param  list<string>  $markets
      * @return list<array{source: self, markets: list<string>}>
      */
-    public static function groupMarkets(array $markets): array
+    public static function groupMarkets(array $markets, ?string $competition = null): array
     {
-        $groups = [json_encode(self::fromConfig()->query()) => ['source' => self::fromConfig(), 'markets' => []]];
+        $default = self::fromConfig(competition: $competition);
+        $groups = [json_encode($default->query()) => ['source' => $default, 'markets' => []]];
 
         foreach ($markets as $market) {
-            $source = self::fromConfig($market);
+            $source = self::fromConfig($market, $competition);
             $key = json_encode($source->query());
             $groups[$key] ??= ['source' => $source, 'markets' => []];
             $groups[$key]['markets'][] = $market;
@@ -66,9 +80,9 @@ final class OddsApiSource
      *
      * @param  list<string>  $markets
      */
-    public static function creditsFor(array $markets): int
+    public static function creditsFor(array $markets, ?string $competition = null): int
     {
-        return array_sum(array_map(fn (string $market): int => self::fromConfig($market)->creditsPerMarket(), $markets));
+        return array_sum(array_map(fn (string $market): int => self::fromConfig($market, $competition)->creditsPerMarket(), $markets));
     }
 
     /**

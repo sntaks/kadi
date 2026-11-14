@@ -1,0 +1,671 @@
+{
+    "recorded_at": "2026-11-14T11:27:19Z",
+    "endpoint": "odds",
+    "sport_key": "soccer_germany_dfb_pokal",
+    "data": [
+        {
+            "id": "b5f465ecd8f5f2a7cdb74b729ab10b34",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-01T17:00:00Z",
+            "home_team": "Holstein Kiel",
+            "away_team": "1. FC Köln",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "1. FC Köln",
+                                    "price": 1.93
+                                },
+                                {
+                                    "name": "Holstein Kiel",
+                                    "price": 3.25
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "1. FC Köln",
+                                    "price": 1.9
+                                },
+                                {
+                                    "name": "Holstein Kiel",
+                                    "price": 3.15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "1. FC Köln",
+                                    "price": 1.53,
+                                    "point": 0
+                                },
+                                {
+                                    "name": "Holstein Kiel",
+                                    "price": 2.51,
+                                    "point": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5501e3d975076b40a8346ad357f811bd",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-01T17:00:00Z",
+            "home_team": "VfB Stuttgart",
+            "away_team": "Dynamo Dresden",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Dynamo Dresden",
+                                    "price": 10.5
+                                },
+                                {
+                                    "name": "VfB Stuttgart",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 6.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Dynamo Dresden",
+                                    "price": 10
+                                },
+                                {
+                                    "name": "VfB Stuttgart",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 6.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Dynamo Dresden",
+                                    "price": 1.63,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "VfB Stuttgart",
+                                    "price": 2.14,
+                                    "point": -2.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "e3cd8753068edfc9c469a3b3f6318a0f",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-01T19:45:00Z",
+            "home_team": "Bayern Munich",
+            "away_team": "Hertha Berlin",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bayern Munich",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Hertha Berlin",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bayern Munich",
+                                    "price": 1.08
+                                },
+                                {
+                                    "name": "Hertha Berlin",
+                                    "price": 16
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bayern Munich",
+                                    "price": 1.63,
+                                    "point": -2.5
+                                },
+                                {
+                                    "name": "Hertha Berlin",
+                                    "price": 2.09,
+                                    "point": 2.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "9231a872e0ad940d6ac62c6f54fcf5ca",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-01T19:45:00Z",
+            "home_team": "Borussia Monchengladbach",
+            "away_team": "SV Darmstadt 98",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Borussia Monchengladbach",
+                                    "price": 1.36
+                                },
+                                {
+                                    "name": "SV Darmstadt 98",
+                                    "price": 6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.7
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Borussia Monchengladbach",
+                                    "price": 1.4
+                                },
+                                {
+                                    "name": "SV Darmstadt 98",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Borussia Monchengladbach",
+                                    "price": 2.04,
+                                    "point": -1.5
+                                },
+                                {
+                                    "name": "SV Darmstadt 98",
+                                    "price": 1.78,
+                                    "point": 1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "a320d0d3ffd249666c5920aa8e9a8c1a",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-02T17:00:00Z",
+            "home_team": "1. FC Kaiserslautern",
+            "away_team": "SC Freiburg",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "1. FC Kaiserslautern",
+                                    "price": 4.6
+                                },
+                                {
+                                    "name": "SC Freiburg",
+                                    "price": 1.52
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.33
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "1. FC Kaiserslautern",
+                                    "price": 4.75
+                                },
+                                {
+                                    "name": "SC Freiburg",
+                                    "price": 1.54
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.35
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "1. FC Kaiserslautern",
+                                    "price": 1.52,
+                                    "point": 1.5
+                                },
+                                {
+                                    "name": "SC Freiburg",
+                                    "price": 2.38,
+                                    "point": -1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0ae48d3e3c8b8418a16ce740bea526a8",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-02T17:00:00Z",
+            "home_team": "Bayer Leverkusen",
+            "away_team": "RB Leipzig",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bayer Leverkusen",
+                                    "price": 1.77
+                                },
+                                {
+                                    "name": "RB Leipzig",
+                                    "price": 3.45
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bayer Leverkusen",
+                                    "price": 1.8
+                                },
+                                {
+                                    "name": "RB Leipzig",
+                                    "price": 3.6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bayer Leverkusen",
+                                    "price": 1.43,
+                                    "point": 0
+                                },
+                                {
+                                    "name": "RB Leipzig",
+                                    "price": 2.58,
+                                    "point": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "c4512e2fdfb536f21ecd25d2fb23b8df",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-02T19:45:00Z",
+            "home_team": "VfL Bochum",
+            "away_team": "Augsburg",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Augsburg",
+                                    "price": 2.12
+                                },
+                                {
+                                    "name": "VfL Bochum",
+                                    "price": 2.9
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Augsburg",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "VfL Bochum",
+                                    "price": 3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:21Z",
+                            "outcomes": [
+                                {
+                                    "name": "Augsburg",
+                                    "price": 1.67,
+                                    "point": 0
+                                },
+                                {
+                                    "name": "VfL Bochum",
+                                    "price": 2.22,
+                                    "point": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "1ddfef2420de06d39d39b6a5112d63da",
+            "sport_key": "soccer_germany_dfb_pokal",
+            "sport_title": "DFB-Pokal",
+            "commence_time": "2026-12-02T19:45:00Z",
+            "home_team": "Eintracht Frankfurt",
+            "away_team": "Borussia Dortmund",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:27:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Borussia Dortmund",
+                                    "price": 1.75
+                                },
+                                {
+                                    "name": "Eintracht Frankfurt",
+                                    "price": 3.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Borussia Dortmund",
+                                    "price": 1.78
+                                },
+                                {
+                                    "name": "Eintracht Frankfurt",
+                                    "price": 3.6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:21Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:21Z",
+                            "outcomes": [
+                                {
+                                    "name": "Borussia Dortmund",
+                                    "price": 1.39,
+                                    "point": 0
+                                },
+                                {
+                                    "name": "Eintracht Frankfurt",
+                                    "price": 2.73,
+                                    "point": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

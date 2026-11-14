@@ -56,7 +56,7 @@ class LiveOddsApi implements OddsApi
     {
         $events = [];
 
-        foreach (OddsApiSource::groupMarkets($markets) as $index => ['source' => $source, 'markets' => $group]) {
+        foreach (OddsApiSource::groupMarkets($markets, $sportKey) as $index => ['source' => $source, 'markets' => $group]) {
             /** @var list<array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}> $answer */
             $buy = fn (): array => $this->budget->spend(count($group) * $source->creditsPerMarket(), fn (): array => $this->send('odds', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/odds", [
                 ...$source->query(),

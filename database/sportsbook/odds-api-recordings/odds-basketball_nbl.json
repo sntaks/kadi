@@ -1,0 +1,863 @@
+{
+    "recorded_at": "2026-11-14T11:29:45Z",
+    "endpoint": "odds",
+    "sport_key": "basketball_nbl",
+    "data": [
+        {
+            "id": "759e801627efd21b6914923fa4a2eb81",
+            "sport_key": "basketball_nbl",
+            "sport_title": "NBL",
+            "commence_time": "2026-11-14T10:41:00Z",
+            "home_team": "Perth Wildcats",
+            "away_team": "Illawarra Hawks",
+            "bookmakers": [
+                {
+                    "key": "sportsbet",
+                    "title": "SportsBet",
+                    "last_update": "2026-11-14T11:29:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 3
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.38
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pointsbetau",
+                    "title": "PointsBet (AU)",
+                    "last_update": "2026-11-14T11:29:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 2.75
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.43
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "tab",
+                    "title": "TAB",
+                    "last_update": "2026-11-14T11:29:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 2.8
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet",
+                    "title": "Unibet",
+                    "last_update": "2026-11-14T11:29:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 2.55
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.44
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.88,
+                                    "point": 195.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.8,
+                                    "point": 195.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "tabtouch",
+                    "title": "TABtouch",
+                    "last_update": "2026-11-14T11:29:05Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 2.5
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.43
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 195.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.78,
+                                    "point": 195.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_au",
+                    "title": "Betfair",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 3.05
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.43
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Illawarra Hawks",
+                                    "price": 3.35
+                                },
+                                {
+                                    "name": "Perth Wildcats",
+                                    "price": 1.49
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "651c6e3cbea982674a0be5c758cf4939",
+            "sport_key": "basketball_nbl",
+            "sport_title": "NBL",
+            "commence_time": "2026-11-15T04:00:00Z",
+            "home_team": "Sydney Kings",
+            "away_team": "New Zealand Breakers",
+            "bookmakers": [
+                {
+                    "key": "sportsbet",
+                    "title": "SportsBet",
+                    "last_update": "2026-11-14T11:29:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.1
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.24
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.87,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "neds",
+                    "title": "Neds",
+                    "last_update": "2026-11-14T11:29:08Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:08Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "playup",
+                    "title": "PlayUp",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.2
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.22
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 184.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 184.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betr_au",
+                    "title": "Betr",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.05
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.23
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "ladbrokes_au",
+                    "title": "Ladbrokes",
+                    "last_update": "2026-11-14T11:29:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "picklebet_au",
+                    "title": "Picklebet (AU)",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.22
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "tab",
+                    "title": "TAB",
+                    "last_update": "2026-11-14T11:29:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.23
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betright",
+                    "title": "Bet Right",
+                    "last_update": "2026-11-14T11:29:05Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 3.8
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.24
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pointsbetau",
+                    "title": "PointsBet (AU)",
+                    "last_update": "2026-11-14T11:29:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.4
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.2
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "tabtouch",
+                    "title": "TABtouch",
+                    "last_update": "2026-11-14T11:29:05Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.2
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.23
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.88,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.91,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet",
+                    "title": "Unibet",
+                    "last_update": "2026-11-14T11:29:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "New Zealand Breakers",
+                                    "price": 4.2
+                                },
+                                {
+                                    "name": "Sydney Kings",
+                                    "price": 1.23
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.88,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.91,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "adcf72385b8be585760fa6d6a49ad1d9",
+            "sport_key": "basketball_nbl",
+            "sport_title": "NBL",
+            "commence_time": "2026-11-15T06:00:00Z",
+            "home_team": "Brisbane Bullets",
+            "away_team": "Tasmania JackJumpers",
+            "bookmakers": [
+                {
+                    "key": "sportsbet",
+                    "title": "SportsBet",
+                    "last_update": "2026-11-14T11:29:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 1.99
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.82
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.87,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.89,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "tab",
+                    "title": "TAB",
+                    "last_update": "2026-11-14T11:29:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 1.95
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.85
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 186.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 186.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "ladbrokes_au",
+                    "title": "Ladbrokes",
+                    "last_update": "2026-11-14T11:29:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.77
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betr_au",
+                    "title": "Betr",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.77
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "picklebet_au",
+                    "title": "Picklebet (AU)",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.76
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "neds",
+                    "title": "Neds",
+                    "last_update": "2026-11-14T11:29:08Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:08Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.77
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betright",
+                    "title": "Bet Right",
+                    "last_update": "2026-11-14T11:29:05Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 1.89
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.85
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "playup",
+                    "title": "PlayUp",
+                    "last_update": "2026-11-14T11:29:38Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.8
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:38Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.88,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pointsbetau",
+                    "title": "PointsBet (AU)",
+                    "last_update": "2026-11-14T11:29:06Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.82
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:06Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.9,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet",
+                    "title": "Unibet",
+                    "last_update": "2026-11-14T11:29:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2.06
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.76
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.88,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "tabtouch",
+                    "title": "TABtouch",
+                    "last_update": "2026-11-14T11:29:05Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Brisbane Bullets",
+                                    "price": 2.06
+                                },
+                                {
+                                    "name": "Tasmania JackJumpers",
+                                    "price": 1.76
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:29:05Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 185.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.88,
+                                    "point": 185.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

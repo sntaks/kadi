@@ -46,6 +46,7 @@ class SyncOddsCommand extends Command
 
         $estimatedCredits = $competitions->sum(fn (Competition $competition): int => OddsApiSource::creditsFor(
             array_map(fn (MarketType $type): string => $type->value, $marketsFor($competition)),
+            $competition->odds_api_key,
         ));
 
         $cost = config('sportsbook.odds_api.driver') === 'live'

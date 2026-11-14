@@ -1,0 +1,1573 @@
+{
+    "recorded_at": "2026-11-14T11:27:17Z",
+    "endpoint": "odds",
+    "sport_key": "soccer_england_efl_cup",
+    "data": [
+        {
+            "id": "e4e9e99f02b9e2284afbb4ca6df76ef6",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-15T16:00:00Z",
+            "home_team": "Fleetwood Town",
+            "away_team": "Everton",
+            "bookmakers": [
+                {
+                    "key": "pinnacle",
+                    "title": "Pinnacle",
+                    "last_update": "2026-11-14T11:26:49Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:49Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.88,
+                                    "point": -1.75
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 1.94,
+                                    "point": 1.75
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5529c4c09f4988630f9cb92b6b915a39",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-15T18:00:00Z",
+            "home_team": "Liverpool",
+            "away_team": "Bournemouth",
+            "bookmakers": [
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-14T11:25:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:25:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.47
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "skybet",
+                    "title": "Sky Bet",
+                    "last_update": "2026-11-14T11:27:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-14T11:26:47Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 5.4
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.62
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 6.2
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pinnacle",
+                    "title": "Pinnacle",
+                    "last_update": "2026-11-14T11:26:49Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:49Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 2.05,
+                                    "point": 0.75
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.78,
+                                    "point": -0.75
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "29491d82c4bf601a7416206316ceb66e",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-15T18:00:00Z",
+            "home_team": "Manchester City",
+            "away_team": "Bradford City",
+            "bookmakers": [
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.08
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-14T11:25:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:25:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 23
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 11
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 23
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 11
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "skybet",
+                    "title": "Sky Bet",
+                    "last_update": "2026-11-14T11:27:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 23
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 11
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-14T11:26:47Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 19
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 10.5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 28
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.16
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 12.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.1
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.1
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8.5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 4
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 2.04,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.91,
+                                    "point": -2.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pinnacle",
+                    "title": "Pinnacle",
+                    "last_update": "2026-11-14T11:26:49Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:49Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 1.98,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.85,
+                                    "point": -2.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "marathonbet",
+                    "title": "Marathon Bet",
+                    "last_update": "2026-11-14T11:26:04Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 1.98,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.85,
+                                    "point": -2.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "76c2626b0acd4796dcd2bd23ff1c86c8",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-15T18:00:00Z",
+            "home_team": "Crystal Palace",
+            "away_team": "Sunderland",
+            "bookmakers": [
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-14T11:25:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:25:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.9
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.8
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.9
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.9
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "skybet",
+                    "title": "Sky Bet",
+                    "last_update": "2026-11-14T11:27:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.9
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.8
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-14T11:26:47Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.99
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.45
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 2.14
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 4.3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "pinnacle",
+                    "title": "Pinnacle",
+                    "last_update": "2026-11-14T11:26:49Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:49Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 2,
+                                    "point": -0.5
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 1.83,
+                                    "point": 0.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "e45828357c52d8ee17b9c1d1ddb82106",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-16T19:30:00Z",
+            "home_team": "Crystal Palace",
+            "away_team": "Sunderland",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T11:26:48Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.93
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.55
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.89,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.83,
+                                    "point": 2.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.88
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.55
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.88
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.55
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.95
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.35
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.35
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.98
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.95
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 3.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.4
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 2.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "marathonbet",
+                    "title": "Marathon Bet",
+                    "last_update": "2026-11-14T11:26:04Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 2.92,
+                                    "point": -1
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 1.42,
+                                    "point": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Crystal Palace",
+                                    "price": 1.53,
+                                    "point": 0
+                                },
+                                {
+                                    "name": "Sunderland",
+                                    "price": 2.76,
+                                    "point": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "74cf1b24b3733833e8559ceb41ad061f",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-16T20:00:00Z",
+            "home_team": "Liverpool",
+            "away_team": "Bournemouth",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T11:26:48Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 5.6
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.53
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4.2
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.74,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2,
+                                    "point": 2.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 5.4
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 5.4
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 4.8
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.55
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 5
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.58
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 5
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 1.57
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.75
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.91,
+                                    "point": 2.75
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 2.75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "marathonbet",
+                    "title": "Marathon Bet",
+                    "last_update": "2026-11-14T11:26:04Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 1.79,
+                                    "point": 1
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 2.05,
+                                    "point": -1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bournemouth",
+                                    "price": 1.52,
+                                    "point": 1.5
+                                },
+                                {
+                                    "name": "Liverpool",
+                                    "price": 2.78,
+                                    "point": -1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "7f00a749999bf02702be44a1facd4e93",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-16T20:00:00Z",
+            "home_team": "Manchester City",
+            "away_team": "Bradford City",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T11:26:48Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 19
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.09
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 10.5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 2.38,
+                                    "point": 4.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.53,
+                                    "point": 4.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 18
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 10
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bradford City",
+                                    "price": 18
+                                },
+                                {
+                                    "name": "Manchester City",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 10
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0441a583698e09f724a5e2c8fd8a1de0",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-16T20:00:00Z",
+            "home_team": "Fleetwood Town",
+            "away_team": "Everton",
+            "bookmakers": [
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 11.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 11.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-14T11:26:48Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.21
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 6.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:48Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.6,
+                                    "point": 2.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.23,
+                                    "point": 2.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "55386e8f44342460292aa8ab6ad76735",
+            "sport_key": "soccer_england_efl_cup",
+            "sport_title": "EFL Cup",
+            "commence_time": "2026-12-17T20:00:00Z",
+            "home_team": "Fleetwood Town",
+            "away_team": "Everton",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-14T11:26:47Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.21
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 6
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-14T11:26:47Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.26
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 22
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-14T11:25:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:25:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.3
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "skybet",
+                    "title": "Sky Bet",
+                    "last_update": "2026-11-14T11:27:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:27:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.3
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.3
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-14T11:26:15Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:15Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "leovegas",
+                    "title": "LeoVegas",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-14T11:26:33Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.2
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "totals",
+                            "last_update": "2026-11-14T11:26:33Z",
+                            "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 1.85,
+                                    "point": 3
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 1.75,
+                                    "point": 3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "onexbet",
+                    "title": "1xBet",
+                    "last_update": "2026-11-14T11:26:46Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:46Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.78,
+                                    "point": -1.5
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 2.21,
+                                    "point": 1.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "marathonbet",
+                    "title": "Marathon Bet",
+                    "last_update": "2026-11-14T11:26:04Z",
+                    "markets": [
+                        {
+                            "key": "spreads",
+                            "last_update": "2026-11-14T11:26:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Everton",
+                                    "price": 1.73,
+                                    "point": -1.5
+                                },
+                                {
+                                    "name": "Fleetwood Town",
+                                    "price": 2.14,
+                                    "point": 1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

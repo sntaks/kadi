@@ -1,0 +1,31 @@
+{
+    "recorded_at": "2026-11-14T11:29:44Z",
+    "endpoint": "events",
+    "sport_key": "basketball_nbl",
+    "data": [
+        {
+            "id": "759e801627efd21b6914923fa4a2eb81",
+            "sport_key": "basketball_nbl",
+            "sport_title": "NBL",
+            "commence_time": "2026-11-14T10:41:00Z",
+            "home_team": "Perth Wildcats",
+            "away_team": "Illawarra Hawks"
+        },
+        {
+            "id": "651c6e3cbea982674a0be5c758cf4939",
+            "sport_key": "basketball_nbl",
+            "sport_title": "NBL",
+            "commence_time": "2026-11-15T04:00:00Z",
+            "home_team": "Sydney Kings",
+            "away_team": "New Zealand Breakers"
+        },
+        {
+            "id": "adcf72385b8be585760fa6d6a49ad1d9",
+            "sport_key": "basketball_nbl",
+            "sport_title": "NBL",
+            "commence_time": "2026-11-15T06:00:00Z",
+            "home_team": "Brisbane Bullets",
+            "away_team": "Tasmania JackJumpers"
+        }
+    ]
+}

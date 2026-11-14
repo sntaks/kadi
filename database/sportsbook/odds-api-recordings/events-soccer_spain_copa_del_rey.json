@@ -1,0 +1,15 @@
+{
+    "recorded_at": "2026-11-14T11:27:20Z",
+    "endpoint": "events",
+    "sport_key": "soccer_spain_copa_del_rey",
+    "data": [
+        {
+            "id": "17a5dc0d57afe1e516da8356bb0c3949",
+            "sport_key": "soccer_spain_copa_del_rey",
+            "sport_title": "Copa del Rey",
+            "commence_time": "2026-11-18T19:00:00Z",
+            "home_team": "Alcoyano",
+            "away_team": "Mallorca"
+        }
+    ]
+}
