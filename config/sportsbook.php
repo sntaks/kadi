@@ -177,6 +177,45 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | In play (plan §3–§4, §10.3)
+    |--------------------------------------------------------------------------
+    |
+    | Live prices for the bulk feed markets of matches in play, from
+    | `sportsbook:sync-live` (every 20 s, ticking every `tick_seconds`), only
+    | while PLATFORM_SPORTS_IN_PLAY is on. Scores first, then odds: one credit
+    | per market per competition in play, plus one for its scores, counted
+    | against the `live` allowance. There is no match clock: the feed gives the
+    | score only, so the late phase is estimated from kick-off.
+    |
+    */
+
+    'in_play' => [
+        'competitions' => array_values(array_filter(array_map('trim', explode(',', (string) env('SPORTSBOOK_IN_PLAY_COMPETITIONS',
+            'soccer_epl,soccer_spain_la_liga,soccer_italy_serie_a,soccer_germany_bundesliga,soccer_france_ligue_one,soccer_uefa_champs_league,basketball_euroleague'))))),
+        // Feed markets priced in play, per sport (main lines only; derived and extra markets stay closed).
+        'markets' => [
+            'football' => 'h2h,totals,spreads',
+            'basketball' => 'h2h,totals',
+        ],
+        // The provider refreshes in-play prices every 40 s: a faster tick buys nothing.
+        'tick_seconds' => (int) env('SPORTSBOOK_IN_PLAY_TICK_SECONDS', 40),
+        // A live price older than this is suspended.
+        'live_stale_seconds' => (int) env('SPORTSBOOK_IN_PLAY_STALE_SECONDS', 90),
+        // After a score change, a market reopens only on prices fetched at least this long after the change (the
+        // feed's prices lag the goal), never on the same tick.
+        'score_change_hold_seconds' => (int) env('SPORTSBOOK_IN_PLAY_SCORE_HOLD_SECONDS', 40),
+        // Higher than pre-match (0.06): the feed's live prices lag the bookmakers'.
+        'margin' => (float) env('SPORTSBOOK_IN_PLAY_MARGIN', 0.08),
+        // Minutes after kick-off when live betting closes, per sport. Football: 85'. EuroLeague: about the last two
+        // minutes (40 playing minutes take about 1 h 45 with breaks).
+        'close_after_minutes' => [
+            'football' => 85,
+            'basketball' => 100,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Per-match extras (plan §10.6)
     |--------------------------------------------------------------------------
     |

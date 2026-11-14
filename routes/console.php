@@ -1,6 +1,7 @@
 <?php
 
 use App\Activity\PlayerActivity;
+use App\Sportsbook\Support\InPlay;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -21,6 +22,9 @@ Schedule::command('sportsbook:sync-fixtures')->hourly()->when($sports)->withoutO
 
 // Paid: one credit per synced competition per market per region. Once a day on the free plan.
 Schedule::command('sportsbook:sync-odds')->dailyAt('09:00')->timezone('Africa/Nairobi')->when($sports)->withoutOverlapping(60)->onOneServer();
+
+// Paid: in-play scores and prices for matches on, every 40 s (plan §4.2). Only while in play is on.
+Schedule::command('sportsbook:sync-live')->everyTwentySeconds()->when(fn (): bool => InPlay::on())->withoutOverlapping(2)->onOneServer();
 
 // Paid: each match's extra markets (alternate lines, team goal lines), once in each window before kick-off (plan §10.6).
 Schedule::command('sportsbook:sync-event-odds')->hourly()->when($sports)->withoutOverlapping(30)->onOneServer();
