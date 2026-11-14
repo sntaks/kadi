@@ -11,6 +11,7 @@ use App\Sportsbook\Support\SportProfile;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -120,19 +121,30 @@ class FixtureListing
     }
 
     /**
-     * Fixtures in play: kicked off recently and still listed by the feed. Betting on them is closed.
+     * Fixtures in play: kicked off recently and still listed by the feed, with their 1X2/Winner market and live score.
+     * Betting is open only on markets trading live (in play on, covered competition; plan §4.7); the rest show
+     * "Betting closed".
      *
      * @return Collection<int, Fixture>
      */
     public function inPlay(): Collection
     {
         return Fixture::query()
-            ->with('competition')
+            ->with(['competition.sport', 'markets' => fn ($markets) => $markets->where('key', 'h2h')->with('selections')])
             ->where('status', FixtureStatus::Scheduled)
             ->whereBetween('kicks_off_at', [now('UTC')->subMinutes((int) config('sportsbook.settlement.result_after_minutes')), now('UTC')])
             ->whereHas('competition', fn (Builder $competitions) => $competitions->synced())
+            ->whereNull('feed_completed_at')
             ->orderBy('kicks_off_at')
             ->get();
+    }
+
+    /**
+     * How many matches are in play, for the menu: cached briefly, since every page draws the menu.
+     */
+    public function inPlayCount(): int
+    {
+        return (int) Cache::remember('sportsbook.in-play-count', 30, fn (): int => $this->inPlay()->count());
     }
 
     /**
