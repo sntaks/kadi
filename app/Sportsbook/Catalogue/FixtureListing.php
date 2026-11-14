@@ -32,23 +32,23 @@ class FixtureListing
     ];
 
     /**
-     * Basketball's list markets: the two-way Winner and the main points line (`totals`: each match's best-priced line).
-     *
-     * @var array<string, string>
-     */
-    public const TWO_WAY_LIST_MARKETS = [
-        'h2h' => 'Winner',
-        'totals' => 'Total points',
-    ];
-
-    /**
-     * The market switcher for a sport's list: football's 1X2 family, or Winner and total for a sport without a draw.
+     * The market switcher for a sport's list: football's 1X2 family, or for a sport without a draw (basketball, ice
+     * hockey) the two-way Winner and the main total (`totals`: each match's best-priced line), named per sport
+     * ("Total points", "Total goals").
      *
      * @return array<string, string>
      */
     public static function listMarkets(?string $sport): array
     {
-        return $sport !== null && ! (SportProfile::find($sport)->hasDraw ?? true) ? self::TWO_WAY_LIST_MARKETS : self::LIST_MARKETS;
+        return self::isTwoWay($sport)
+            ? ['h2h' => 'Winner', 'totals' => SportProfile::find((string) $sport)->totalsLabel ?? 'Total goals']
+            : self::LIST_MARKETS;
+    }
+
+    /** Whether a sport's list shows a two-way Winner (no draw). */
+    public static function isTwoWay(?string $sport): bool
+    {
+        return $sport !== null && ! (SportProfile::find($sport)->hasDraw ?? true);
     }
 
     /**

@@ -1,0 +1,63 @@
+{
+    "recorded_at": "2026-11-14T12:09:42Z",
+    "endpoint": "events",
+    "sport_key": "icehockey_sweden_hockey_league",
+    "data": [
+        {
+            "id": "b367f0ee83f367c49ecc8e5e96f7216c",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T14:15:00Z",
+            "home_team": "Rögle BK",
+            "away_team": "Frölunda HC"
+        },
+        {
+            "id": "b886c71c239af196a41ac269653cce5b",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T14:15:00Z",
+            "home_team": "HV71",
+            "away_team": "Timrå IK"
+        },
+        {
+            "id": "86cc916791aa66e7dbd8d458f1b668b7",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T14:15:00Z",
+            "home_team": "Malmö Redhawks",
+            "away_team": "Växjö Lakers"
+        },
+        {
+            "id": "067877d91c64fbe5ea8ca99aa634e9dc",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T17:00:00Z",
+            "home_team": "IF Björklöven",
+            "away_team": "Brynäs IF"
+        },
+        {
+            "id": "5bb28346822681c72d878e1351974bf4",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T17:00:00Z",
+            "home_team": "Örebro HK",
+            "away_team": "Djurgårdens IF"
+        },
+        {
+            "id": "352b71699e366e46ee34f0063e153715",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T17:00:00Z",
+            "home_team": "Luleå HF",
+            "away_team": "Färjestad BK"
+        },
+        {
+            "id": "74a2259fa4834a5a5e2143dc86c26de9",
+            "sport_key": "icehockey_sweden_hockey_league",
+            "sport_title": "SHL",
+            "commence_time": "2026-11-14T17:00:00Z",
+            "home_team": "Skellefteå AIK",
+            "away_team": "Linköping HC"
+        }
+    ]
+}

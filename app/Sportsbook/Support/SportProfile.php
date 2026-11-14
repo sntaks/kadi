@@ -29,6 +29,7 @@ final class SportProfile
         public readonly array $markets,
         public readonly array $popular,
         public readonly int $maxScore = 99,
+        public readonly string $totalsLabel = 'Total goals',
     ) {}
 
     /** @return array<string, self> by slug, in menu order */
@@ -122,6 +123,7 @@ final class SportProfile
             markets: $markets === [] ? [MarketType::MatchResult] : $markets,
             popular: array_values((array) ($config['popular'] ?? [])),
             maxScore: (int) ($config['max_score'] ?? 99),
+            totalsLabel: (string) ($config['totals_label'] ?? 'Total goals'),
         );
     }
 

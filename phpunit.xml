@@ -44,6 +44,7 @@
         <env name="PLATFORM_SPORTS" value="true"/>
         <env name="ODDS_API_MARKETS" value="h2h,totals,spreads"/>
         <env name="ODDS_API_BASKETBALL_MARKETS" value="h2h,totals"/>
+        <env name="ODDS_API_ICEHOCKEY_MARKETS" value="h2h,totals"/>
         <env name="ODDS_API_BOOKMAKERS" value=""/>
         <env name="ODDS_API_SPREADS_BOOKMAKERS" value="pinnacle,onexbet,marathonbet,mybookieag,bovada,coolbet,betonlineag,lowvig,betus"/>
         <!-- Throwaway test keys for encrypt_account_id(); never the real pair. -->
