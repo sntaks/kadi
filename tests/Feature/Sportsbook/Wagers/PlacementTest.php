@@ -46,12 +46,32 @@ test('the player token comes from a launch token redeemed with the game key, and
         ->and($this->api->callsTo('place')[0]['headers']['Authorization'][0])->toStartWith('Bearer pt|');
 });
 
-test('the wager is sent with its UUID, the product and the stake in shillings', function () {
+test('the wager is sent with its UUID, the product, the stake in shillings and match-only metadata', function () {
     $bet = placeFor($this->api->player(), '150');
+    $leg = $bet->legs->sole();
 
     expect($this->api->callsTo('place')[0]['body'])->toBe([
         'product' => 'sportsbook', 'reference' => $bet->wager_reference, 'funding' => 'cash', 'stake' => '150.00', 'channel' => 'web',
+        'metadata' => ['sports' => ['football'], 'in_play' => false, 'legs' => [['fixture' => $leg->fixture_id, 'market' => 'h2h']]],
     ]);
+});
+
+test('wager metadata never carries the player, prices, stakes or references, and drops legs past 4 KB', function () {
+    $bet = placeFor($this->api->player(), '150');
+    $metadata = $this->api->callsTo('place')[0]['body']['metadata'];
+
+    // Only these keys, ever: match data, no player, price, stake or reference.
+    expect(array_keys($metadata))->toBe(['sports', 'in_play', 'legs'])
+        ->and(collect($metadata['legs'])->flatMap(fn (array $leg) => array_keys($leg))->unique()->diff(['fixture', 'market', 'line', 'live'])->all())->toBe([])
+        ->and(json_encode($metadata))->not->toContain($bet->reference)->not->toContain($bet->wager_reference)->not->toContain('150.00');
+
+    config(['sportsbook.limits.max_selections' => 400]);
+    $legs = $bet->legs->sole();
+    foreach (range(1, 120) as $i) {
+        $bet->legs()->create([...$legs->only(['selection_id', 'market_id', 'fixture_id', 'fixture_name', 'kicks_off_at', 'market_type', 'market_name', 'outcome', 'selection_name', 'price', 'status']), 'market_line' => '2.50']);
+    }
+
+    expect(WagerPlacement::metadata($bet->fresh()))->toBe(['sports' => ['football'], 'in_play' => false]);
 });
 
 test('too little money: the bet is kept as not placed, nothing is charged, and the slip can be sent again', function () {

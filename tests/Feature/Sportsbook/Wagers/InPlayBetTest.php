@@ -86,6 +86,7 @@ test('after the delay it is placed on sportsbook_live, and settles on it too', f
 
     expect($bet->status)->toBe(BetStatus::Open)
         ->and($this->api->callsTo('place')[0]['body']['product'])->toBe('sportsbook_live')
+        ->and($this->api->callsTo('place')[0]['body']['metadata'])->toBe(['sports' => ['football'], 'in_play' => true, 'legs' => [['fixture' => $this->live->id, 'market' => 'h2h', 'live' => true]]])
         ->and($this->api->wager('sportsbook_live', $bet->wager_reference))->not->toBeNull();
 
     recordScore($this->live, 2, 0);

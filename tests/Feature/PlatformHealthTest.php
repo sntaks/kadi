@@ -5,7 +5,11 @@ use App\Models\GameLaunch;
 use App\Models\User;
 use App\Predict\MarketFeed;
 use App\Sportsbook\Models\Bet;
+use App\Sportsbook\Models\Competition;
+use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\Market;
 use App\Sportsbook\Models\OddsApiCall;
+use App\Sportsbook\Models\Sport;
 use App\Sportsbook\Models\WagerOp;
 use App\Sportsbook\OddsApi\OddsApiPurpose;
 use App\Support\PlatformHealth;
@@ -181,4 +185,25 @@ test('a purpose switched off with an allowance of 0 is not a warning', function 
     config(['sportsbook.odds_api.allowances' => ['live' => 0]]);
 
     expect(app(PlatformHealth::class)->check()['odds_api_budget'])->toBeNull();
+});
+
+test('live prices that stop arriving while matches trade in play are reported', function () {
+    config(['platform.sports_in_play' => true]);
+    $football = Sport::factory()->configured('football')->create();
+    $epl = Competition::factory()->synced()->for($football)->create(['odds_api_key' => 'soccer_epl']);
+    $live = Fixture::factory()->for($epl)->create(['kicks_off_at' => now('UTC')->subMinutes(20)]);
+
+    // Trading, but never priced live: the tick is not running.
+    expect(app(PlatformHealth::class)->check()['live_feed']['message'])->toContain('is sportsbook:sync-live running');
+
+    $market = Market::factory()->for($live)->create(['priced_at' => now('UTC')->subSeconds(30)]);
+    expect(app(PlatformHealth::class)->check()['live_feed'])->toBeNull();
+
+    $market->update(['priced_at' => now('UTC')->subSeconds(150)]);
+    $problem = app(PlatformHealth::class)->check()['live_feed'];
+    expect($problem['message'])->toContain('Live prices are stale')
+        ->and($problem['context'])->toMatchArray(['matches' => 1, 'limit_seconds' => 120]);
+
+    config(['platform.sports_in_play' => false]);
+    expect(app(PlatformHealth::class)->check()['live_feed'])->toBeNull();
 });
