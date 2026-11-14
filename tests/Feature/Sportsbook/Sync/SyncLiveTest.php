@@ -260,10 +260,13 @@ test('basketball closes about two minutes from the end', function () {
     expect($market->fresh()->suspension_reason)->toBe(SuspensionReason::LatePhase);
 });
 
-test('an open live market still takes no bets until live placement ships (phase 5b)', function () {
+test('an open live market can be bet on (phase 5b), and not once in play is off', function () {
     tick();
     $selection = liveMarket('h2h')->selections()->firstWhere('outcome', 'home');
 
     expect(liveMarket('h2h')->status)->toBe(MarketStatus::Open)
-        ->and(app(BettableSelections::class)->unavailableReason($selection))->toBe('This match has started.');
+        ->and(app(BettableSelections::class)->unavailableReason($selection))->toBeNull();
+
+    config(['platform.sports_in_play' => false]);
+    expect(app(BettableSelections::class)->unavailableReason($selection->fresh()))->toBe('This match has started.');
 });

@@ -67,9 +67,9 @@ class SettleBet
                 return $bet;
             }
 
-            $payout = Payout::for($bet->stake, Payout::combinedOdds($wonPrices));
+            $payout = Payout::for($bet->stake, Payout::combinedOdds($wonPrices), $bet->payoutCap());
             $winnings = $bet->isFreeBet() ? max(0, $payout - $bet->stake) : $payout;
-            $bonus = $bet->isFreeBet() ? 0 : MultibetBonus::amount($bet->stake, $payout, min($bet->bonus_percent, MultibetBonus::percentFor($wonPrices)));
+            $bonus = $bet->isFreeBet() ? 0 : MultibetBonus::amount($bet->stake, $payout, min($bet->bonus_percent, MultibetBonus::percentFor($wonPrices)), $bet->payoutCap());
 
             $bet->update(['status' => BetStatus::Won, 'payout' => $winnings + $bonus, 'bonus' => $bonus, 'tax' => null, 'settled_at' => now('UTC')]);
             $this->ops->settle($bet, $bet->wagerVersion(), 'won', $winnings, $bonus);

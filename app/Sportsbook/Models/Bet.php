@@ -3,6 +3,7 @@
 namespace App\Sportsbook\Models;
 
 use App\Models\User;
+use App\Sportsbook\Betting\Payout;
 use App\Sportsbook\Enums\BetStatus;
 use App\Sportsbook\Enums\BetType;
 use App\Sportsbook\Enums\OddsChangePolicy;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $free_bet_id Placed with this free bet: no money left the wallet for the stake.
  * @property string $reference Short, for support.
  * @property string|null $wager_reference The Kadi API wager reference (a UUID).
+ * @property string|null $product The Kadi API product when not the default (`sportsbook_live` for a bet with an in-play leg).
  * @property BetType $type
  * @property BetStatus $status
  * @property string|null $reject_reason The API's refusal code (or not_placed) for a rejected bet.
@@ -37,11 +39,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $client_key
  * @property int $settlement_version
  * @property CarbonImmutable $placed_at
+ * @property CarbonImmutable|null $accept_after A live bet is held until then, checked again, then sent to the Kadi API.
  * @property CarbonImmutable|null $settled_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
-#[Fillable(['user_id', 'free_bet_id', 'reference', 'wager_reference', 'type', 'status', 'reject_reason', 'stake', 'total_odds', 'potential_payout', 'bonus_percent', 'payout', 'bonus', 'tax', 'odds_change_policy', 'client_key', 'settlement_version', 'placed_at', 'settled_at'])]
+#[Fillable(['user_id', 'free_bet_id', 'reference', 'wager_reference', 'product', 'type', 'status', 'reject_reason', 'stake', 'total_odds', 'potential_payout', 'bonus_percent', 'payout', 'bonus', 'tax', 'odds_change_policy', 'client_key', 'settlement_version', 'placed_at', 'accept_after', 'settled_at'])]
 class Bet extends SportsbookModel
 {
     protected $table = 'sb_bets';
@@ -69,6 +72,7 @@ class Bet extends SportsbookModel
             'settlement_version' => 'integer',
             'odds_change_policy' => OddsChangePolicy::class,
             'placed_at' => 'datetime',
+            'accept_after' => 'datetime',
             'settled_at' => 'datetime',
         ];
     }
@@ -116,5 +120,17 @@ class Bet extends SportsbookModel
     public function legs(): HasMany
     {
         return $this->hasMany(BetLeg::class)->orderBy('id');
+    }
+
+    /** Whether this bet has an in-play leg: placed on `sportsbook_live`, with the in-play limits. */
+    public function isInPlay(): bool
+    {
+        return $this->product === config('sportsbook.wagers.products.live_bet');
+    }
+
+    /** The maximum payout in cents this bet may pay (payout plus bonus), the same at placement and settlement. */
+    public function payoutCap(): int
+    {
+        return Payout::cap($this->isInPlay());
     }
 }

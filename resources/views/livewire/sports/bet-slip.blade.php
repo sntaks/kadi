@@ -68,9 +68,15 @@
             @if ($placed)
                 <div class="nt-slip-done" role="status" data-test="bet-placed"
                      @if ($placed->status === BetStatus::Pending) wire:poll.3s="refreshPlaced" @endif>
-                    @if ($placed->status === BetStatus::Pending)
+                    @if ($placed->status === BetStatus::Pending && $placed->accept_after !== null)
+                        <b>Checking your bet…</b>
+                        <p data-test="live-delay">Live bets are held for a few seconds while the odds and score are checked. Your stake can only be taken once.</p>
+                    @elseif ($placed->status === BetStatus::Pending)
                         <b>Checking your bet…</b>
                         <p>Your wallet hasn't answered yet. We're checking, and your stake can only be taken once.</p>
+                    @elseif ($placed->status === BetStatus::Rejected && $placed->accept_after !== null)
+                        <b>Your bet wasn't placed</b>
+                        <p data-test="live-rejected">{{ \App\Sportsbook\Wagers\WagerPlacement::refusal((string) $placed->reject_reason)[1] }} You can build the slip again.</p>
                     @elseif ($placed->status === BetStatus::Rejected)
                         <b>Your bet wasn't placed</b>
                         <p>Nothing was taken from your wallet. You can build the slip again.</p>

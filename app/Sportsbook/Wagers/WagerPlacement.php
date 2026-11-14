@@ -96,10 +96,16 @@ class WagerPlacement
     /**
      * Send a pending bet or entry, saved and committed, to the API. Returns it with its new status.
      */
-    public function place(User $user, Bet|JackpotEntry $subject, string $token, ?string $ip = null): Bet|JackpotEntry
+    public function place(User $user, Bet|JackpotEntry $subject, string $token, ?string $ip = null, bool $renewToken = true): Bet|JackpotEntry
     {
         $body = $this->body($subject);
         $response = $this->client->place($token, $body);
+
+        // From a queued job (a live bet after its delay) the player may have logged out, which revoked the token:
+        // nothing was placed, and with no session there is nobody to renew it for (plan §11 Q3).
+        if ($response->invalidPlayerToken() && ! $renewToken) {
+            return $this->reject($subject, 'player_token_invalid');
+        }
 
         if ($response->invalidPlayerToken()) {
             // The token expired or was revoked: one fresh token, and the same reference, so nothing can be placed twice.
@@ -130,6 +136,16 @@ class WagerPlacement
         ReconcileWager::dispatch(WagerOps::subjectType($subject), $subject->id)->delay(now()->addSeconds(self::RECONCILE_DELAY_SECONDS));
 
         return $subject->fresh() ?? $subject;
+    }
+
+    /**
+     * Reject a pending bet that was never sent to the API (a live bet that failed its check after the delay). Nothing
+     * moved, so there is nothing to look up or void; a free bet is given back.
+     */
+    public function rejectUnsent(Bet $bet, string $code): Bet
+    {
+        /** @var Bet */
+        return $this->reject($bet, $code);
     }
 
     /**
@@ -190,6 +206,12 @@ class WagerPlacement
             'not_linked' => [self::REFUSED_NOT_ALLOWED, __('Your account is still being set up. Try again in a minute.')],
             'stake_below_limit', 'stake_above_limit', 'payout_above_limit' => [self::REFUSED_STAKE, __('This stake is outside the limits for sports bets.')],
             'product_not_active', 'product_not_allowed', 'not_configured' => [self::REFUSED_WALLET, __('Sports betting is closed right now. Please try again later.')],
+            // A live bet that failed its check after the delay (AcceptInPlayBet). Nothing was charged.
+            'live_score_changed' => [self::REFUSED_WALLET, __('The score changed while your live bet was being checked. Nothing was charged.')],
+            'live_price_changed' => [self::REFUSED_WALLET, __('The odds moved while your live bet was being checked. Nothing was charged.')],
+            'live_price_stale' => [self::REFUSED_WALLET, __('Live odds were out of date when your bet was checked. Nothing was charged.')],
+            'live_market_closed', 'selection_closed' => [self::REFUSED_WALLET, __('A selection closed while your live bet was being checked. Nothing was charged.')],
+            'player_token_invalid' => [self::REFUSED_WALLET, __('You were signed out before your live bet was sent. Nothing was charged.')],
             default => [self::REFUSED_WALLET, __('Your wallet could not take this bet right now. Nothing was charged. Please try again.')],
         };
     }

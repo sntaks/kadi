@@ -212,6 +212,16 @@ return [
             'football' => 85,
             'basketball' => 100,
         ],
+        // Phase 5b (plan §4.4–§4.5, Q4 decided 2026-11-14). A slip with any live leg waits this long (the longest of
+        // its sports), is checked again (market open, price fresh and acceptable, score unchanged), then sent.
+        'bet_delay_seconds' => [
+            'football' => (int) env('SPORTSBOOK_IN_PLAY_DELAY_FOOTBALL', 8),
+            'basketball' => (int) env('SPORTSBOOK_IN_PLAY_DELAY_BASKETBALL', 5),
+        ],
+        // Limits for a bet with any live leg, in shillings. Never above the Kadi API `sportsbook_live` product's
+        // max_stake / max_payout: the API refuses a payout over its limit at settlement.
+        'max_stake' => (int) env('SPORTSBOOK_IN_PLAY_MAX_STAKE', 5_000),
+        'max_payout' => (int) env('SPORTSBOOK_IN_PLAY_MAX_PAYOUT', 250_000),
     ],
 
     /*
@@ -332,6 +342,8 @@ return [
         'products' => [
             'bet' => 'sportsbook',
             'jackpot_entry' => 'sportsbook_jackpot',
+            // A bet with any in-play leg (plan §11.1): its own limits and its own line in finance reports.
+            'live_bet' => 'sportsbook_live',
         ],
         'timeout_seconds' => (int) env('SPORTSBOOK_WAGER_TIMEOUT', 10),
         // Queue for the outbox and reconcile jobs. The scheduler also sends due ops every minute without a worker.

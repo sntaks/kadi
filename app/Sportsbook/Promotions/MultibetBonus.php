@@ -72,13 +72,13 @@ class MultibetBonus
      * The bonus in cents on a payout: the percentage of the profit, cut so payout plus bonus stays within the maximum
      * payout.
      */
-    public static function amount(int $stake, int $payout, int $percent): int
+    public static function amount(int $stake, int $payout, int $percent, ?int $cap = null): int
     {
         if ($percent <= 0 || $payout <= $stake) {
             return 0;
         }
 
-        $cap = Money::fromShillings((int) config('sportsbook.limits.max_payout'));
+        $cap ??= Money::fromShillings((int) config('sportsbook.limits.max_payout'));
 
         return max(0, min(intdiv(($payout - $stake) * $percent, 100), $cap - $payout));
     }
