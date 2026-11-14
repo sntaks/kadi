@@ -6,6 +6,7 @@ use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\BetLeg;
 use App\Sportsbook\Models\FixtureResult;
+use App\Sportsbook\Models\Market;
 use App\Sportsbook\Support\SportProfile;
 
 /**
@@ -58,6 +59,7 @@ class MarketRules
                 default => null,
             }),
             MarketType::Totals => self::totals($leg, $home + $away),
+            MarketType::Spreads => self::spreads($leg, $home, $away),
             MarketType::CorrectScore => self::wins($leg->outcome === 'other' ? $home > 4 || $away > 4 : $leg->outcome === "{$home}-{$away}"),
             MarketType::HalfTimeFullTime => $result->hasHalfTimeScore()
                 ? self::wins($leg->outcome === self::resultCode((int) $result->half_time_home_score, (int) $result->half_time_away_score).'/'.$fullTime)
@@ -95,6 +97,11 @@ class MarketRules
 
         $line = (float) $leg->market_line;
 
+        // Quarter lines are never offered; one that slipped through is left for an admin, not settled whole.
+        if (Market::isQuarterLine($line)) {
+            return null;
+        }
+
         if ((float) $goals === $line) {
             return BetLegStatus::Void;
         }
@@ -102,6 +109,30 @@ class MarketRules
         return self::wins(match ($leg->outcome) {
             'over' => $goals > $line,
             'under' => $goals < $line,
+            default => null,
+        });
+    }
+
+    /**
+     * Handicap: the line (the home side's handicap) is added to the home score. Home wins the bet if it is then
+     * ahead, away if behind; level is a push: void. Football uses the full-time score, sports without a draw the
+     * final score including overtime, like every other market.
+     */
+    private static function spreads(BetLeg $leg, int $home, int $away): ?BetLegStatus
+    {
+        if ($leg->market_line === null || Market::isQuarterLine($leg->market_line)) {
+            return null;
+        }
+
+        $margin = $home + (float) $leg->market_line - $away;
+
+        if (abs($margin) < 0.001) {
+            return BetLegStatus::Void;
+        }
+
+        return self::wins(match ($leg->outcome) {
+            'home' => $margin > 0,
+            'away' => $margin < 0,
             default => null,
         });
     }

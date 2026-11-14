@@ -42,6 +42,10 @@
         <env name="PLATFORM_TOKEN_LAUNCH" value="true"/>
         <env name="PLATFORM_DEEP_LINK" value="true"/>
         <env name="PLATFORM_SPORTS" value="true"/>
+        <env name="ODDS_API_MARKETS" value="h2h,totals,spreads"/>
+        <env name="ODDS_API_BASKETBALL_MARKETS" value="h2h,totals"/>
+        <env name="ODDS_API_BOOKMAKERS" value=""/>
+        <env name="ODDS_API_SPREADS_BOOKMAKERS" value="pinnacle,onexbet,marathonbet,mybookieag,bovada,coolbet,betonlineag,lowvig,betus"/>
         <!-- Throwaway test keys for encrypt_account_id(); never the real pair. -->
         <env name="GAMES_ACCOUNT_ID_KEY" value="6f23fa26063697ed59d279a088c8ed86a636aaaf0d577a72f5528a3569a8ec0d"/>
         <env name="GAMES_ACCOUNT_ID_MAC_KEY" value="c9b81c85ad08bfe489a9766ab5a6ef4065a6d7d27a1b379b5e18e34a1ad804aa"/>

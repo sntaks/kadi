@@ -103,6 +103,12 @@ return [
         // Comma-separated bookmaker keys (e.g. pinnacle,betfair_ex_uk,williamhill). When set they replace `region`:
         // each group of 10 costs one region's credits. Leave empty to use the region. The replay driver ignores it.
         'bookmakers' => env('ODDS_API_BOOKMAKERS', ''),
+        // Markets bought from their own bookmakers, in a call of their own (same credits per market). The UK region
+        // hardly prices football handicaps; these nine books do (EPL probe 2026-11-14: 12 of 20 matches had a whole or
+        // half line priced by 3 or more of them).
+        'market_bookmakers' => [
+            'spreads' => env('ODDS_API_SPREADS_BOOKMAKERS', 'pinnacle,onexbet,marathonbet,mybookieag,bovada,coolbet,betonlineag,lowvig,betus'),
+        ],
         // Comma-separated market keys pulled by the scheduled odds sync.
         'markets' => env('ODDS_API_MARKETS', 'h2h'),
         // Odds are only bought for competitions with a fixture kicking off within this many days.
@@ -157,7 +163,7 @@ return [
             'key_prefix' => 'soccer_',
             'has_draw' => true,
             'derived_markets' => true,
-            'markets' => env('ODDS_API_MARKETS', 'h2h'),
+            'markets' => env('ODDS_API_MARKETS', 'h2h,totals,spreads'),
             // The highest score staff may record (back-office API).
             'max_score' => 99,
             'popular' => ['soccer_epl', 'soccer_uefa_champs_league', 'soccer_spain_la_liga'],

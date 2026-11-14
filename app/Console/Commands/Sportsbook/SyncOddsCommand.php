@@ -44,8 +44,9 @@ class SyncOddsCommand extends Command
         // Each sport buys its own markets (football h2h; basketball h2h + totals) unless --markets says otherwise.
         $marketsFor = fn (Competition $competition): array => $marketTypes !== [] ? $marketTypes : SportProfile::forSport($competition->sport)->markets;
 
-        $estimatedCredits = $competitions->sum(fn (Competition $competition): int => count($marketsFor($competition)))
-            * OddsApiSource::fromConfig()->creditsPerMarket();
+        $estimatedCredits = $competitions->sum(fn (Competition $competition): int => OddsApiSource::creditsFor(
+            array_map(fn (MarketType $type): string => $type->value, $marketsFor($competition)),
+        ));
 
         $cost = config('sportsbook.odds_api.driver') === 'live'
             ? "about {$estimatedCredits} credits"

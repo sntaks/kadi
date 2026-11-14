@@ -1,5 +1,5 @@
 {
-    "recorded_at": "2026-11-10T16:52:05Z",
+    "recorded_at": "2026-11-14T09:49:24Z",
     "endpoint": "sports",
     "sport_key": null,
     "data": [
@@ -26,6 +26,14 @@
             "description": "US College Football Championship Winner",
             "active": true,
             "has_outrights": true
+        },
+        {
+            "key": "americanfootball_ncaaf_fcs",
+            "group": "American Football",
+            "title": "NCAAF FCS",
+            "description": "US College Football, FCS",
+            "active": true,
+            "has_outrights": false
         },
         {
             "key": "americanfootball_nfl",
@@ -108,14 +116,6 @@
             "has_outrights": true
         },
         {
-            "key": "basketball_wncaab",
-            "group": "Basketball",
-            "title": "WNCAAB",
-            "description": "US Women's College Basketball",
-            "active": true,
-            "has_outrights": false
-        },
-        {
             "key": "boxing_boxing",
             "group": "Boxing",
             "title": "Boxing",
@@ -178,6 +178,14 @@
             "description": "2027 Winner",
             "active": true,
             "has_outrights": true
+        },
+        {
+            "key": "handball_germany_bundesliga",
+            "group": "Handball",
+            "title": "Handball-Bundesliga",
+            "description": "German HBL",
+            "active": true,
+            "has_outrights": false
         },
         {
             "key": "icehockey_ahl",
@@ -348,14 +356,6 @@
             "has_outrights": false
         },
         {
-            "key": "soccer_england_efl_trophy",
-            "group": "Soccer",
-            "title": "EFL Trophy",
-            "description": "EFL Trophy",
-            "active": true,
-            "has_outrights": false
-        },
-        {
             "key": "soccer_england_league1",
             "group": "Soccer",
             "title": "League 1",
@@ -376,6 +376,14 @@
             "group": "Soccer",
             "title": "EPL",
             "description": "English Premier League",
+            "active": true,
+            "has_outrights": false
+        },
+        {
+            "key": "soccer_france_coupe_de_france",
+            "group": "Soccer",
+            "title": "Coupe de France",
+            "description": "French Soccer",
             "active": true,
             "has_outrights": false
         },
@@ -407,6 +415,14 @@
             "key": "soccer_germany_bundesliga2",
             "group": "Soccer",
             "title": "Bundesliga 2 - Germany",
+            "description": "German Soccer",
+            "active": true,
+            "has_outrights": false
+        },
+        {
+            "key": "soccer_germany_bundesliga_women",
+            "group": "Soccer",
+            "title": "Frauen-Bundesliga",
             "description": "German Soccer",
             "active": true,
             "has_outrights": false
@@ -452,6 +468,22 @@
             "has_outrights": false
         },
         {
+            "key": "soccer_japan_j_league",
+            "group": "Soccer",
+            "title": "J League",
+            "description": "Japan Soccer League",
+            "active": true,
+            "has_outrights": false
+        },
+        {
+            "key": "soccer_korea_kleague1",
+            "group": "Soccer",
+            "title": "K League 1",
+            "description": "Korean Soccer",
+            "active": true,
+            "has_outrights": false
+        },
+        {
             "key": "soccer_mexico_ligamx",
             "group": "Soccer",
             "title": "Liga MX",
@@ -464,6 +496,14 @@
             "group": "Soccer",
             "title": "Dutch Eredivisie",
             "description": "Dutch Soccer",
+            "active": true,
+            "has_outrights": false
+        },
+        {
+            "key": "soccer_norway_eliteserien",
+            "group": "Soccer",
+            "title": "Eliteserien - Norway",
+            "description": "Norwegian Soccer",
             "active": true,
             "has_outrights": false
         },
@@ -564,14 +604,6 @@
             "has_outrights": false
         },
         {
-            "key": "soccer_uefa_champs_league_women",
-            "group": "Soccer",
-            "title": "UEFA Champions League Women",
-            "description": "European Champions League Women",
-            "active": true,
-            "has_outrights": false
-        },
-        {
             "key": "soccer_uefa_europa_conference_league",
             "group": "Soccer",
             "title": "UEFA Europa Conference League",
@@ -600,6 +632,14 @@
             "group": "Soccer",
             "title": "MLS",
             "description": "Major League Soccer",
+            "active": true,
+            "has_outrights": false
+        },
+        {
+            "key": "tennis_atp_finals",
+            "group": "Tennis",
+            "title": "ATP Finals",
+            "description": "Men's Singles",
             "active": true,
             "has_outrights": false
         },
