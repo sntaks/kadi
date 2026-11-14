@@ -5,6 +5,7 @@ namespace App\Sportsbook\Sync;
 use App\Sportsbook\Enums\MarketType;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
+use App\Sportsbook\Models\Market;
 use App\Sportsbook\OddsApi\OddsApi;
 use App\Sportsbook\Pricing\ApplyMarketPrice;
 use App\Sportsbook\Pricing\ConsensusPricer;
@@ -55,6 +56,7 @@ class SyncOdds
                     match ($type) {
                         MarketType::MatchResult => $this->priceMatchResult($fixture, $event, $this->profile($competition)),
                         MarketType::Totals => $this->priceTotals($fixture, $event),
+                        MarketType::Spreads => $this->priceSpreads($fixture, $event),
                         default => null,
                     };
                 }
@@ -114,7 +116,8 @@ class SyncOdds
     }
 
     /**
-     * Each goal line (2.5, 3.5, ...) is its own market; only lines enough bookmakers price are created.
+     * Each goal line (2.5, 3.5, ...) is its own market; only lines enough bookmakers price are created. Quarter
+     * lines (2.25, 2.75) are skipped: they half win or half lose, which we don't settle yet.
      *
      * @param  EventOddsData  $event
      */
@@ -126,7 +129,7 @@ class SyncOdds
             foreach ($outcomes as $outcome) {
                 $side = strtolower($outcome['name']);
 
-                if (isset($outcome['point']) && in_array($side, ['over', 'under'], true)) {
+                if (isset($outcome['point']) && in_array($side, ['over', 'under'], true) && ! Market::isQuarterLine($outcome['point'])) {
                     $pricesByLine[(string) (float) $outcome['point']][$bookmakerKey][$side] = (float) $outcome['price'];
                 }
             }
@@ -139,6 +142,49 @@ class SyncOdds
                 (float) $line,
                 $this->pricer->price($bookmakerPrices, ['over', 'under']),
                 ['over' => "Over {$line}", 'under' => "Under {$line}"],
+                createWhenUnpriced: false,
+            );
+        }
+    }
+
+    /**
+     * Handicaps (Asian handicap, the feed's `spreads`). Each line is its own market, keyed by the home side's
+     * handicap: line -1.5 is "home -1.5 / away +1.5". A bookmaker counts for a line only when its two sides mirror
+     * each other. Quarter lines are skipped, as for totals. Only lines enough bookmakers price are created.
+     *
+     * @param  EventOddsData  $event
+     */
+    private function priceSpreads(Fixture $fixture, array $event): void
+    {
+        $pricesByLine = [];
+
+        foreach ($this->marketsOfType($event, MarketType::Spreads) as $bookmakerKey => $outcomes) {
+            $home = collect($outcomes)->first(fn (array $outcome): bool => $outcome['name'] === $event['home_team'] && isset($outcome['point']));
+            $away = collect($outcomes)->first(fn (array $outcome): bool => $outcome['name'] === $event['away_team'] && isset($outcome['point']));
+
+            if ($home === null || $away === null) {
+                continue;
+            }
+
+            $line = (float) $home['point'];
+
+            if (abs($line + (float) $away['point']) > 0.001 || Market::isQuarterLine($line)) {
+                continue;
+            }
+
+            $pricesByLine[Market::formatLine($line)][$bookmakerKey] = ['home' => (float) $home['price'], 'away' => (float) $away['price']];
+        }
+
+        foreach ($pricesByLine as $line => $bookmakerPrices) {
+            $this->applyMarketPrice->handle(
+                $fixture,
+                MarketType::Spreads,
+                (float) $line,
+                $this->pricer->price($bookmakerPrices, ['home', 'away']),
+                [
+                    'home' => $event['home_team'].' '.Market::formatLine($line, signed: true),
+                    'away' => $event['away_team'].' '.Market::formatLine(-(float) $line, signed: true),
+                ],
                 createWhenUnpriced: false,
             );
         }

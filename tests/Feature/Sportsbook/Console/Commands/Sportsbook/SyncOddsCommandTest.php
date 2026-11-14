@@ -22,7 +22,7 @@ test('buys odds only for synced competitions with a fixture inside the lookahead
 
     Queue::assertPushed(SyncCompetitionOdds::class, 1);
     Queue::assertPushed(SyncCompetitionOdds::class, fn (SyncCompetitionOdds $job): bool => $job->competition->is($due)
-        && $job->marketTypes === [MarketType::MatchResult]);
+        && $job->marketTypes === [MarketType::MatchResult, MarketType::Totals, MarketType::Spreads]);
 });
 
 test('rejects an unknown market key without queueing anything', function () {

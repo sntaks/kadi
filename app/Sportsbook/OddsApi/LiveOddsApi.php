@@ -8,6 +8,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -21,7 +22,6 @@ class LiveOddsApi implements OddsApi
         private readonly CreditBudget $budget,
         private readonly string $apiKey,
         private readonly string $baseUrl,
-        private readonly OddsApiSource $source,
     ) {}
 
     public static function fromConfig(CreditBudget $budget): self
@@ -30,7 +30,6 @@ class LiveOddsApi implements OddsApi
             budget: $budget,
             apiKey: (string) config('services.odds_api.key'),
             baseUrl: (string) config('services.odds_api.base_url'),
-            source: OddsApiSource::fromConfig(),
         );
     }
 
@@ -47,15 +46,75 @@ class LiveOddsApi implements OddsApi
             ->get("/sports/{$sportKey}/events", ['dateFormat' => 'iso']));
     }
 
+    /**
+     * One paid call per book source (markets with their own bookmakers are bought separately, at the same cost per
+     * market), merged into one list of events. The first call holds the main markets and its failure (or refusal)
+     * throws as before. A later call failing only leaves its markets out: their existing prices go stale on their
+     * own, and the main prices already paid for are still applied.
+     */
     public function odds(string $sportKey, array $markets, OddsApiPurpose $purpose = OddsApiPurpose::PreMatch): array
     {
-        /** @var list<array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}> */
-        return $this->budget->spend(count($markets) * $this->source->creditsPerMarket(), fn (): array => $this->send('odds', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/odds", [
-            ...$this->source->query(),
-            'markets' => implode(',', $markets),
-            'oddsFormat' => 'decimal',
-            'dateFormat' => 'iso',
-        ]), $purpose), $purpose);
+        $events = [];
+
+        foreach (OddsApiSource::groupMarkets($markets) as $index => ['source' => $source, 'markets' => $group]) {
+            /** @var list<array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}> $answer */
+            $buy = fn (): array => $this->budget->spend(count($group) * $source->creditsPerMarket(), fn (): array => $this->send('odds', $sportKey, fn (PendingRequest $http): Response => $http->get("/sports/{$sportKey}/odds", [
+                ...$source->query(),
+                'markets' => implode(',', $group),
+                'oddsFormat' => 'decimal',
+                'dateFormat' => 'iso',
+            ]), $purpose), $purpose);
+
+            try {
+                $answer = $buy();
+            } catch (Throwable $exception) {
+                if ($index === 0) {
+                    throw $exception;
+                }
+
+                Log::warning("Odds API {$sportKey} [".implode(',', $group).'] not bought: '.class_basename($exception));
+
+                continue;
+            }
+
+            $events = self::mergeEvents($events, $answer);
+        }
+
+        return array_values($events);
+    }
+
+    /**
+     * Adds one answer's bookmakers and markets to the events gathered so far, keyed by event id.
+     *
+     * @param  array<string, array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}>  $events
+     * @param  list<array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}>  $answer
+     * @return array<string, array{id: string, sport_key: string, commence_time: string, home_team: string, away_team: string, bookmakers: list<array{key: string, markets: list<array{key: string, outcomes: list<array{name: string, price: float|int, point?: float|int}>}>}>}>
+     */
+    private static function mergeEvents(array $events, array $answer): array
+    {
+        foreach ($answer as $event) {
+            if (! isset($events[$event['id']])) {
+                $events[$event['id']] = $event;
+
+                continue;
+            }
+
+            $bookmakers = $events[$event['id']]['bookmakers'];
+
+            foreach ($event['bookmakers'] as $bookmaker) {
+                $index = array_search($bookmaker['key'], array_column($bookmakers, 'key'), true);
+
+                if ($index === false) {
+                    $bookmakers[] = $bookmaker;
+                } else {
+                    $bookmakers[$index]['markets'] = [...$bookmakers[$index]['markets'], ...$bookmaker['markets']];
+                }
+            }
+
+            $events[$event['id']]['bookmakers'] = $bookmakers;
+        }
+
+        return $events;
     }
 
     public function scores(string $sportKey, int $daysFrom, OddsApiPurpose $purpose = OddsApiPurpose::Scores): array

@@ -20,6 +20,7 @@ class MarketTabs
     public const TABS = [
         'main' => ['label' => 'Main', 'types' => [MarketType::MatchResult, MarketType::DoubleChance, MarketType::DrawNoBet]],
         'goals' => ['label' => 'Goals', 'types' => [MarketType::Totals, MarketType::BothTeamsToScore]],
+        'handicap' => ['label' => 'Handicap', 'types' => [MarketType::Spreads]],
         'correct-score' => ['label' => 'Correct Score', 'types' => [MarketType::CorrectScore]],
         'half-time' => ['label' => 'Half-time', 'types' => [MarketType::HalfTimeFullTime]],
     ];
@@ -35,7 +36,8 @@ class MarketTabs
         return collect(self::TABS)
             ->map(fn (array $tab) => $markets
                 ->filter(fn (Market $market): bool => in_array($market->type, $tab['types'], true) && $market->selections->isNotEmpty())
-                ->sortBy(fn (Market $market): string => array_search($market->type, $tab['types'], true).'-'.str_pad((string) $market->line, 6, '0', STR_PAD_LEFT))
+                // By type, then line from lowest to highest (handicaps go negative: -1.5 before -0.5 before +0.5).
+                ->sortBy(fn (Market $market): string => sprintf('%02d-%09.2f', array_search($market->type, $tab['types'], true), (float) $market->line + 1000))
                 ->values())
             ->filter(fn (Collection $markets): bool => $markets->isNotEmpty());
     }

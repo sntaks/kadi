@@ -33,7 +33,7 @@ class RecordOddsApiCommand extends Command
         $competitions = $this->option('competition') ?: config('sportsbook.odds_api.default_competitions');
         $marketsOption = $this->option('markets');
         $markets = is_string($marketsOption) ? array_values(array_filter(array_map('trim', explode(',', $marketsOption)))) : [];
-        $estimatedCredits = count($competitions) * count($markets) * OddsApiSource::fromConfig()->creditsPerMarket();
+        $estimatedCredits = count($competitions) * OddsApiSource::creditsFor($markets);
 
         $this->line('Recording sports, fixtures and ['.implode(', ', $markets).'] odds for: '.implode(', ', $competitions));
         $this->line("Odds cost about {$estimatedCredits} credits; sports and fixtures are free.");

@@ -58,11 +58,31 @@ class Market extends SportsbookModel
     }
 
     /**
-     * The unique key for a market of this type and line, e.g. "h2h" or "totals:2.5".
+     * The unique key for a market of this type and line, e.g. "h2h", "totals:2.5" or "spreads:-1.5".
      */
     public static function keyFor(MarketType $type, ?float $line = null): string
     {
-        return $line === null ? $type->value : $type->value.':'.rtrim(rtrim(number_format($line, 2, '.', ''), '0'), '.');
+        return $line === null ? $type->value : $type->value.':'.self::formatLine($line);
+    }
+
+    /**
+     * A line as players read it: "2.5", "-1.5", "0". With $signed, positive lines get a "+" ("+1.5"), as handicaps do.
+     */
+    public static function formatLine(float|string $line, bool $signed = false): string
+    {
+        $text = rtrim(rtrim(number_format((float) $line, 2, '.', ''), '0'), '.');
+        $text = $text === '-0' || $text === '' ? '0' : $text;
+
+        return $signed && (float) $line > 0 ? "+{$text}" : $text;
+    }
+
+    /**
+     * A quarter line (2.25, -0.75): half the stake on each neighbouring line, so a bet can half win or half lose.
+     * Not offered yet (plan §10.3); whole and half lines settle as win, lose or void.
+     */
+    public static function isQuarterLine(float|string $line): bool
+    {
+        return ((int) round(abs((float) $line) * 4)) % 2 === 1;
     }
 
     /**
@@ -90,7 +110,8 @@ class Market extends SportsbookModel
     {
         $label = $this->type === MarketType::MatchResult && ! $this->hasDraw() ? __('Winner') : $this->type->label();
 
-        return $this->line === null ? $label : $label.' '.rtrim(rtrim($this->line, '0'), '.');
+        // A handicap is named by the home side's line: "Handicap -1.5" (home -1.5, away +1.5).
+        return $this->line === null ? $label : $label.' '.self::formatLine($this->line, signed: $this->type === MarketType::Spreads);
     }
 
     /**

@@ -3,8 +3,11 @@
 namespace App\Sportsbook\OddsApi;
 
 /**
- * Where odds are taken from: whole regions (`regions=uk`) or up to a few named bookmakers (`bookmakers=pinnacle,...`).
+ * Where odds are taken from: whole regions (`regions=uk`) or a few named bookmakers (`bookmakers=pinnacle,...`).
  * Named bookmakers replace the regions when set. The API charges each group of 10 bookmakers like one region.
+ *
+ * A market can have its own bookmakers (`sportsbook.odds_api.market_bookmakers`), e.g. football handicaps, which the
+ * UK region hardly prices: such markets are bought in a call of their own, which costs the same per market.
  */
 final class OddsApiSource
 {
@@ -19,12 +22,45 @@ final class OddsApiSource
         public readonly array $bookmakers = [],
     ) {}
 
-    public static function fromConfig(): self
+    /** The source for one market key, or the default source when the market has no bookmakers of its own. */
+    public static function fromConfig(?string $market = null): self
     {
+        $own = $market !== null ? self::list((string) (config("sportsbook.odds_api.market_bookmakers.{$market}") ?? '')) : [];
+
         return new self(
             regions: self::list((string) config('sportsbook.odds_api.region')),
-            bookmakers: self::list((string) config('sportsbook.odds_api.bookmakers')),
+            bookmakers: $own !== [] ? $own : self::list((string) config('sportsbook.odds_api.bookmakers')),
         );
+    }
+
+    /**
+     * Markets grouped by the source they are bought from, one group per API call, default source first.
+     *
+     * @param  list<string>  $markets
+     * @return list<array{source: self, markets: list<string>}>
+     */
+    public static function groupMarkets(array $markets): array
+    {
+        $groups = [json_encode(self::fromConfig()->query()) => ['source' => self::fromConfig(), 'markets' => []]];
+
+        foreach ($markets as $market) {
+            $source = self::fromConfig($market);
+            $key = json_encode($source->query());
+            $groups[$key] ??= ['source' => $source, 'markets' => []];
+            $groups[$key]['markets'][] = $market;
+        }
+
+        return array_values(array_filter($groups, fn (array $group): bool => $group['markets'] !== []));
+    }
+
+    /**
+     * What buying these markets costs in credits, each from its own source.
+     *
+     * @param  list<string>  $markets
+     */
+    public static function creditsFor(array $markets): int
+    {
+        return array_sum(array_map(fn (string $market): int => self::fromConfig($market)->creditsPerMarket(), $markets));
     }
 
     /**
