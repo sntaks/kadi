@@ -29,6 +29,9 @@ class GameShow extends Component
         $this->slug = $slug;
     }
 
+    /** Casino tab of each game without its own index page. */
+    private const CASINO_TABS = ['coin-flip' => 'coinflip', 'roulette' => 'roulette'];
+
     public function render(GameCatalogue $catalogue, Lobby $lobby): View
     {
         $title = $catalogue->titleBySlug($this->slug);
@@ -43,7 +46,12 @@ class GameShow extends Component
             ->take(6)
             ->values();
 
-        $index = $title->game === 'scratch' ? ['Scratch cards', route('games.scratch')] : ['Slots', route('games.slots')];
+        $index = match ($title->game) {
+            'slots' => ['Slots', route('games.slots')],
+            'scratch' => ['Scratch cards', route('games.scratch')],
+            // Coin Flip, Roulette…: their casino tab (a game the API offers always has one).
+            default => ['Casino', route('casino', ['filter' => array_search($title->game, self::CASINO_TABS, true) ?: null])],
+        };
 
         return view('livewire.lobby.game-show', [
             'title' => $title,
