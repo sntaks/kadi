@@ -70,7 +70,12 @@ final readonly class GameTitle
     /** "Slot" or "Scratch card". */
     public function typeLabel(): string
     {
-        return $this->game === 'scratch' ? 'Scratch card' : 'Slot';
+        return match ($this->game) {
+            'scratch' => 'Scratch card',
+            'coinflip' => 'Coin flip',
+            'roulette' => 'Roulette',
+            default => 'Slot',
+        };
     }
 
     /** "Pharaoh's vault", "Scratch card"… the line under the tile name. */

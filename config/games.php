@@ -156,6 +156,12 @@ return [
             'tagline' => 'Call it: heads or tails.',
             'hidden' => [],
         ],
+        'roulette' => [
+            // One tile and game page per product, like Coin Flip. No artwork yet, so the plain fallback tile.
+            'titles' => true,
+            'tagline' => 'Place your chips, watch the wheel.',
+            'hidden' => [],
+        ],
     ],
 
     /*

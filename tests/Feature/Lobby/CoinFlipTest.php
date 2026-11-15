@@ -39,7 +39,7 @@ beforeEach(function () {
         'platform.deep_link' => true,
     ]);
 
-    $this->coinProducts = [['code' => 'coin_flip', 'name' => 'Coin Flip']];
+    $this->coinProducts = [['code' => 'gold_rush', 'name' => 'Gold Rush']];
 
     Http::preventStrayRequests();
     Http::fake(fn ($request) => $request->url() === COIN_API.'games'
@@ -48,15 +48,15 @@ beforeEach(function () {
 });
 
 test('Coin Flip shows in the casino as its own tile, with the fallback art until artwork arrives', function () {
-    $title = app(GameCatalogue::class)->title('coin_flip');
+    $title = app(GameCatalogue::class)->title('gold_rush');
 
     expect($title)->not->toBeNull()
         ->and($title->game)->toBe('coinflip')
         ->and($title->thumbnail)->toBeNull()
-        ->and(app(Lobby::class)->filter('all', null)->pluck('key'))->toContain('coin_flip');
+        ->and(app(Lobby::class)->filter('all', null)->pluck('key'))->toContain('gold_rush');
 
-    $this->get(route('casino'))->assertOk()->assertSee('Coin Flip');
-    $this->get(route('casino', ['filter' => 'coin-flip']))->assertOk()->assertSee('Coin Flip')->assertDontSee('Berry Blast');
+    $this->get(route('casino'))->assertOk()->assertSee('Gold Rush');
+    $this->get(route('casino', ['filter' => 'coin-flip']))->assertOk()->assertSee('Gold Rush')->assertDontSee('Berry Blast');
 });
 
 // The site menu never reads the catalogue (SiteShellTest), so Coin flip is a tab on the casino page, not a menu link.
@@ -78,9 +78,9 @@ test('each product the API adds is its own tile, with no code change', function 
 test('without Coin Flip in the API there is no tile, tab, menu link or page', function () {
     $this->coinProducts = [];
 
-    expect(app(GameCatalogue::class)->title('coin_flip'))->toBeNull()
+    expect(app(GameCatalogue::class)->title('gold_rush'))->toBeNull()
         ->and(app(Lobby::class)->filters())->not->toHaveKey('coin-flip');
 
-    $this->get(route('casino'))->assertOk()->assertDontSee('Coin Flip')->assertDontSee(route('casino', ['filter' => 'coin-flip']), false);
+    $this->get(route('casino'))->assertOk()->assertDontSee('Gold Rush')->assertDontSee(route('casino', ['filter' => 'coin-flip']), false);
     $this->get(route('casino', ['filter' => 'coin-flip']))->assertNotFound();
 });
