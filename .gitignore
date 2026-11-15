@@ -44,3 +44,6 @@ PRODUCT.md
 # builds (public/games/thumbs) are committed; keep a backup of the originals outside git.
 /public/games/slots_games
 /public/games/scratch_games
+
+# Playwright MCP console/page snapshots
+/.playwright-mcp/
