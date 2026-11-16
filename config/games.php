@@ -154,12 +154,18 @@ return [
             // which then appear without a code change. No artwork yet, so the plain fallback tile.
             'titles' => true,
             'tagline' => 'Call it: heads or tails.',
+            'artwork_map' => [
+                'gold_rush' => 'games/coin_flip_games/gold_rush.png',
+            ],
             'hidden' => [],
         ],
         'roulette' => [
             // One tile and game page per product, like Coin Flip. No artwork yet, so the plain fallback tile.
             'titles' => true,
             'tagline' => 'Place your chips, watch the wheel.',
+            'artwork_map' => [
+                'classic_black' => 'games/roulette_games/classic_black.png',
+            ],
             'hidden' => [],
         ],
     ],
