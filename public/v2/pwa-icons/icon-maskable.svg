@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<rect width="1024" height="1024" fill="#0E0D0B"/>
+<g transform="translate(512 512) rotate(18) scale(0.78)">
+<rect x="-247" y="-348" width="494" height="696" rx="84" fill="#0C1028"/>
+<rect x="-213" y="-316" width="426" height="632" rx="58" fill="#F4F1EA"/>
+<g transform="scale(1)"><path d="M 0,-174 C -36,-118 -150,-76 -150,20 C -150,98 -68,122 -6,57 C -12,112 -38,147 -80,178 L 80,178 C 38,147 12,112 6,57 C 68,122 150,98 150,20 C 150,-76 36,-118 0,-174 Z" fill="#0C1028"/><path d="M -42,-58 Q -42,-72 -28,-64 L 78,-9 Q 92,0 78,9 L -28,64 Q -42,72 -42,58 Z" fill="#F8C038"/></g>
+<path d="M 68,316 C 110,289 113,246 179,231 C 193,228 206,227 213,217 L 213,258 Q 213,316 155,316 Z" fill="#F8C038"/>
+</g></svg>

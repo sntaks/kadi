@@ -79,6 +79,8 @@ final class SiteNavigation
                 $this->casinoLink('All games', null),
                 $this->casinoLink('Slots', 'slots'),
                 $this->casinoLink('Scratch cards', 'scratch-cards'),
+                $this->casinoLink('Coin flip', 'coin-flip'),
+                $this->casinoLink('Roulette', 'roulette'),
                 $this->casinoLink('Jackpot slots', 'jackpot'),
                 $this->casinoLink('Favourites', 'favourites'),
             ]];
@@ -230,14 +232,21 @@ final class SiteNavigation
     }
 
     /**
-     * All markets, then one link per category (config predict.categories). No counts: the menu never asks the API.
+     * All markets, Local markets, World markets, then one link per category (config predict.categories). No counts:
+     * the menu never asks the API.
      *
      * @return list<array<string, mixed>>
      */
     private function predictionItems(): array
     {
-        $category = request()->routeIs('predictions') ? request()->query('category') : null;
-        $items = [$this->item('All markets', route('predictions'), 'predict', active: request()->routeIs('predictions') && $category === null) + ['route' => 'predictions']];
+        $onLobby = request()->routeIs('predictions');
+        $category = $onLobby ? request()->query('category') : null;
+        $source = $onLobby ? request()->query('source') : null;
+        $items = [$this->item('All markets', route('predictions'), 'predict', active: $onLobby && $category === null && $source === null) + ['route' => 'predictions']];
+
+        foreach (array_keys(Markets::SECTIONS) as $key) {
+            $items[] = $this->item(Markets::sectionLabel($key), route('predictions', ['source' => $key]), $key === 'local' ? 'kadi' : 'globe', active: $category === null && $source === $key) + ['route' => 'predictions'];
+        }
 
         foreach ((array) config('predict.categories') as $key) {
             $items[] = $this->item(Markets::categoryLabel((string) $key), route('predictions', ['category' => $key]), 'list', active: $category === $key) + ['route' => 'predictions'];

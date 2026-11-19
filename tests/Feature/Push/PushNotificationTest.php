@@ -66,8 +66,8 @@ test('the payload always carries a visible title and body, icons, a ttl and a sa
 
     expect($payload['title'])->toBe('Deposit received')
         ->and($payload['body'])->toBe('Your vault was topped up.')
-        ->and($payload['icon'])->toBe('/pwa-icons/icon-192.png')
-        ->and($payload['badge'])->toBe('/pwa-icons/badge-72.png')
+        ->and($payload['icon'])->toBe('/v2/pwa-icons/icon-192.png')
+        ->and($payload['badge'])->toBe('/v2/pwa-icons/badge-72.png')
         ->and($payload['tag'])->toBe('deposit')
         ->and($payload['data'])->toBe(['url' => '/wallet'])
         ->and($message->getOptions())->toBe(['TTL' => 1800, 'urgency' => 'normal']);

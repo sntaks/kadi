@@ -11,11 +11,11 @@
             @case('kadi')
                 @auth
                     <x-play-kadi class="nt-kadi-btn" aria-label="Play Kadi">
-                        <span><img src="{{ asset('logo/kadi-card.png') }}" alt="" width="30" height="30"></span>{{ $item['label'] }}
+                        <span><img src="{{ asset('v2/master-2048.svg') }}" alt="" width="30" height="30"></span>{{ $item['label'] }}
                     </x-play-kadi>
                 @else
                     <a href="{{ route('login') }}" class="nt-kadi-btn" aria-label="Play Kadi" data-needs-account>
-                        <span><img src="{{ asset('logo/kadi-card.png') }}" alt="" width="30" height="30"></span>{{ $item['label'] }}
+                        <span><img src="{{ asset('v2/master-2048.svg') }}" alt="" width="30" height="30"></span>{{ $item['label'] }}
                     </a>
                 @endauth
                 @break

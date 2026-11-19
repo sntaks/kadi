@@ -21,6 +21,12 @@ class Lobby
     /** Built-in /casino shelves. A collection may not reuse one of these keys (it would be shadowed). */
     public const BUILT_IN_FILTERS = ['all' => 'All games', 'slots' => 'Slots', 'scratch-cards' => 'Scratch cards', 'coin-flip' => 'Coin flip', 'roulette' => 'Roulette', 'jackpot' => 'Jackpot slots', 'favourites' => 'Favourites'];
 
+    /**
+     * Shelves the side menu always links to (it never reads the catalogue), so their pages always exist: while the
+     * API offers none of the game, the page shows an empty shelf and only the casino tab is hidden.
+     */
+    public const MENU_FILTERS = ['coin-flip', 'roulette'];
+
     /** @var array<string, Collection<int, GameTitle>> */
     private array $byGame = [];
 
@@ -137,6 +143,16 @@ class Lobby
         }
 
         return $filters;
+    }
+
+    /**
+     * Every shelf that has a page: the tabs (filters()) plus the menu's always-linked shelves.
+     *
+     * @return array<string, string>
+     */
+    public function pages(): array
+    {
+        return $this->filters() + array_intersect_key(self::BUILT_IN_FILTERS, array_flip(self::MENU_FILTERS));
     }
 
     /** @return Collection<int, GameTitle>|null null for an unknown filter */

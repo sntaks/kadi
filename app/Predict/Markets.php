@@ -17,7 +17,16 @@ use Illuminate\Support\Facades\Date;
  */
 class Markets
 {
+    /** The lobby's sections as the page and menu name them (?source=local|world), and the API source of each. */
+    public const SECTIONS = ['local' => 'custom', 'world' => 'polymarket'];
+
     public function __construct(private PredictApi $api, private MarketFeed $feed) {}
+
+    /** How a lobby section reads in menus, chips and headings. */
+    public static function sectionLabel(string $section): string
+    {
+        return $section === 'local' ? 'Local markets' : 'World markets';
+    }
 
     /** How a category reads in menus and chips. */
     public static function categoryLabel(string $category): string

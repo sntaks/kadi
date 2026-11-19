@@ -18,9 +18,9 @@
     "url": "{{ $appUrl }}",
     "logo": {
         "@@type": "ImageObject",
-        "url": "{{ $appUrl }}/favicon.svg",
-        "width": 512,
-        "height": 512
+        "url": "{{ $appUrl }}/v2/master-2048.png",
+        "width": 2048,
+        "height": 2048
     },
     "contactPoint": {!! json_encode(array_filter([
         '@type' => 'ContactPoint',

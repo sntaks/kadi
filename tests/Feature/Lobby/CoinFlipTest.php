@@ -2,11 +2,12 @@
 
 use App\Games\GameCatalogue;
 use App\Games\Lobby;
+use App\Support\SiteNavigation;
 use Illuminate\Support\Facades\Http;
 
 /*
- * Coin Flip: a casino game from KadiApi, one tile and page per product like slots (config/games.php). No artwork
- * yet, so the plain fallback tile. More products appear as the API adds them.
+ * Coin Flip: a casino game from KadiApi, one tile and page per product like slots (config/games.php). Configured artwork is
+ * used when available; new API products still get a plain fallback tile.
  */
 const COIN_API = 'https://kadi-api.test/api/v1/';
 
@@ -47,19 +48,20 @@ beforeEach(function () {
         : Http::response([], 200));
 });
 
-test('Coin Flip shows in the casino as its own tile, with the fallback art until artwork arrives', function () {
+test('Coin Flip shows in the casino as its own tile, with its configured artwork', function () {
     $title = app(GameCatalogue::class)->title('gold_rush');
 
     expect($title)->not->toBeNull()
         ->and($title->game)->toBe('coinflip')
-        ->and($title->thumbnail)->toBeNull()
+        ->and($title->thumbnail)->toBe(asset('games/thumbs/gold_rush.webp'))
         ->and(app(Lobby::class)->filter('all', null)->pluck('key'))->toContain('gold_rush');
 
-    $this->get(route('casino'))->assertOk()->assertSee('Gold Rush');
+    $this->get(route('casino'))->assertOk()->assertSee('Gold Rush')
+        ->assertSee('src="'.asset('games/thumbs/gold_rush.webp').'"', false);
     $this->get(route('casino', ['filter' => 'coin-flip']))->assertOk()->assertSee('Gold Rush')->assertDontSee('Berry Blast');
 });
 
-// The site menu never reads the catalogue (SiteShellTest), so Coin flip is a tab on the casino page, not a menu link.
+// The casino tab shows only while the API offers Coin Flip; the side menu link is always there (it never reads the catalogue).
 test('the casino page offers a Coin flip tab', function () {
     expect(app(Lobby::class)->filters())->toHaveKey('coin-flip');
 
@@ -75,12 +77,39 @@ test('each product the API adds is its own tile, with no code change', function 
     expect(app(Lobby::class)->coinFlips()->pluck('key')->all())->toBe(['coin_flip', 'coin_flip_turbo']);
 });
 
-test('without Coin Flip in the API there is no tile, tab, menu link or page', function () {
+test('without Coin Flip in the API there is no tile or tab, and its page is an empty shelf', function () {
     $this->coinProducts = [];
 
     expect(app(GameCatalogue::class)->title('gold_rush'))->toBeNull()
         ->and(app(Lobby::class)->filters())->not->toHaveKey('coin-flip');
 
-    $this->get(route('casino'))->assertOk()->assertDontSee('Gold Rush')->assertDontSee(route('casino', ['filter' => 'coin-flip']), false);
-    $this->get(route('casino', ['filter' => 'coin-flip']))->assertNotFound();
+    $tabs = fn (string $html) => Str::between($html, 'aria-label="Casino shelves"', '</nav>');
+    expect($tabs($this->get(route('casino'))->assertOk()->assertDontSee('Gold Rush')->getContent()))
+        ->not->toContain(route('casino', ['filter' => 'coin-flip']));
+
+    // The side menu links here without reading the catalogue, so the page stays, as an empty shelf.
+    $this->get(route('casino', ['filter' => 'coin-flip']))->assertOk()
+        ->assertSee('Nothing to play here right now')
+        ->assertDontSee('Gold Rush');
+});
+
+test('Coin Flip products without configured artwork keep a fallback tile', function () {
+    $this->coinProducts = [['code' => 'new_table', 'name' => 'New Table']];
+
+    $title = app(GameCatalogue::class)->title('new_table');
+
+    expect($title)->not->toBeNull()
+        ->and($title->thumbnail)->toBeNull();
+
+    $this->get(route('casino', ['filter' => 'coin-flip']))->assertOk()
+        ->assertSee('class="nt-art-fallback" aria-hidden="true">New Table</span>', false);
+});
+
+test('the casino side menu always links to Coin flip and Roulette, without reading the catalogue', function () {
+    $this->coinProducts = [];
+    $items = collect(collect((new SiteNavigation(null))->groups())->firstWhere('key', 'casino')['items']);
+
+    expect($items->pluck('label')->all())->toContain('Coin flip', 'Roulette')
+        ->and($items->firstWhere('label', 'Coin flip')['href'])->toBe(route('casino', ['filter' => 'coin-flip']))
+        ->and($items->firstWhere('label', 'Roulette')['href'])->toBe(route('casino', ['filter' => 'roulette']));
 });

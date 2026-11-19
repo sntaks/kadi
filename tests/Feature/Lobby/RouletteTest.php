@@ -5,8 +5,8 @@ use App\Games\Lobby;
 use Illuminate\Support\Facades\Http;
 
 /*
- * Roulette: a casino game from KadiApi, one tile and page per product like Coin Flip (config/games.php). No artwork
- * yet, so the plain fallback tile.
+ * Roulette: a casino game from KadiApi, one tile and page per product like Coin Flip (config/games.php). Configured artwork is
+ * used when available; new API products still get a plain fallback tile.
  */
 const ROULETTE_API = 'https://kadi-api.test/api/v1/';
 
@@ -44,16 +44,17 @@ beforeEach(function () {
         : Http::response([], 200));
 });
 
-test('Roulette shows in the casino as its own tile, with the fallback art until artwork arrives', function () {
+test('Roulette shows in the casino as its own tile, with its configured artwork', function () {
     $title = app(GameCatalogue::class)->title('classic_black');
 
     expect($title)->not->toBeNull()
         ->and($title->game)->toBe('roulette')
-        ->and($title->thumbnail)->toBeNull()
+        ->and($title->thumbnail)->toBe(asset('games/thumbs/classic_black.webp'))
         ->and($title->typeLabel())->toBe('Roulette')
         ->and(app(Lobby::class)->filter('all', null)->pluck('key'))->toContain('classic_black');
 
-    $this->get(route('casino'))->assertOk()->assertSee('Classic Black Roulette');
+    $this->get(route('casino'))->assertOk()->assertSee('Classic Black Roulette')
+        ->assertSee('src="'.asset('games/thumbs/classic_black.webp').'"', false);
     $this->get(route('casino', ['filter' => 'roulette']))->assertOk()->assertSee('Classic Black Roulette')->assertDontSee('Berry Blast');
 });
 
@@ -71,12 +72,30 @@ test('its game page leads back to the casino roulette tab, not to slots', functi
         ->assertSee('online roulette', false);
 });
 
-test('without Roulette in the API there is no tile, tab or page', function () {
+test('without Roulette in the API there is no tile or tab, and its page is an empty shelf', function () {
     $this->rouletteProducts = [];
 
     expect(app(GameCatalogue::class)->title('classic_black'))->toBeNull()
         ->and(app(Lobby::class)->filters())->not->toHaveKey('roulette');
 
-    $this->get(route('casino'))->assertOk()->assertDontSee('Classic Black Roulette')->assertDontSee(route('casino', ['filter' => 'roulette']), false);
-    $this->get(route('casino', ['filter' => 'roulette']))->assertNotFound();
+    $tabs = fn (string $html) => Str::between($html, 'aria-label="Casino shelves"', '</nav>');
+    expect($tabs($this->get(route('casino'))->assertOk()->assertDontSee('Classic Black Roulette')->getContent()))
+        ->not->toContain(route('casino', ['filter' => 'roulette']));
+
+    // The side menu links here without reading the catalogue, so the page stays, as an empty shelf.
+    $this->get(route('casino', ['filter' => 'roulette']))->assertOk()
+        ->assertSee('Nothing to play here right now')
+        ->assertDontSee('Classic Black Roulette');
+});
+
+test('Roulette products without configured artwork keep a fallback tile', function () {
+    $this->rouletteProducts = [['code' => 'new_table', 'name' => 'New Table']];
+
+    $title = app(GameCatalogue::class)->title('new_table');
+
+    expect($title)->not->toBeNull()
+        ->and($title->thumbnail)->toBeNull();
+
+    $this->get(route('casino', ['filter' => 'roulette']))->assertOk()
+        ->assertSee('class="nt-art-fallback" aria-hidden="true">New Table</span>', false);
 });

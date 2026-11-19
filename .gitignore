@@ -46,6 +46,7 @@ PRODUCT.md
 /public/games/scratch_games
 /public/games/roulette_games
 /public/games/coin_flip_games
+/public/inspiration_logos/
 
 # Playwright MCP console/page snapshots
 /.playwright-mcp/

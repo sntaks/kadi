@@ -12,7 +12,8 @@ use Livewire\Component;
 /**
  * /casino and /casino/{filter}: every slot and scratch card, or one shelf of them (slots, scratch
  * cards, jackpot slots, favourites, a collection). A browse page for players, so not indexed: the
- * crawlable pages are /slots, /scratch-cards and /games/{slug}.
+ * crawlable pages are /slots, /scratch-cards and /games/{slug}. Coin flip and Roulette always have a page (the side
+ * menu links to them without reading the catalogue); with nothing on offer they show the empty shelf.
  */
 class Casino extends Component
 {
@@ -24,7 +25,7 @@ class Casino extends Component
     public function mount(Lobby $lobby, ?string $filter = null): void
     {
         // "All games" lives at /casino only, so each shelf has one address.
-        abort_if($filter !== null && ($filter === 'all' || ! array_key_exists($filter, $lobby->filters())), 404);
+        abort_if($filter !== null && ($filter === 'all' || ! array_key_exists($filter, $lobby->pages())), 404);
 
         $this->filter = $filter ?? 'all';
     }
@@ -34,15 +35,16 @@ class Casino extends Component
         $user = auth()->user();
         $user = $user instanceof User ? $user : null;
         $filters = $lobby->filters();
+        $label = $lobby->pages()[$this->filter];
 
         return view('livewire.lobby.casino', [
             'filters' => $filters,
-            'label' => $filters[$this->filter],
+            'label' => $label,
             'titles' => $lobby->filter($this->filter, $user) ?? collect(),
             'favourites' => $user ? $this->favouriteCodes() : null,
             'guest' => $user === null,
         ])
             ->layout('layouts.site', ['shell' => 'app', 'noindex' => true, 'page' => 'casino', 'og' => $this->filter === 'scratch-cards' ? 'og-scratch.jpg' : 'og-slots.jpg'])
-            ->title(($this->filter === 'all' ? 'Casino' : $filters[$this->filter]).' · Kadi');
+            ->title(($this->filter === 'all' ? 'Casino' : $label).' · Kadi');
     }
 }

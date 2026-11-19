@@ -26,14 +26,14 @@ class WebManifest
             'scope' => '/',
             'display' => 'standalone',
             'orientation' => 'any',
-            'background_color' => '#0a0a0a',
+            'background_color' => '#0e0d0b',
             'theme_color' => '#0e0d0b',
             'lang' => 'en',
             'categories' => ['games', 'entertainment'],
             'icons' => [
-                ['src' => '/pwa-icons/icon-192.png', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
-                ['src' => '/pwa-icons/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
-                ['src' => '/pwa-icons/icon-maskable-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
+                ['src' => '/v2/pwa-icons/icon-192.png', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/v2/pwa-icons/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
+                ['src' => '/v2/pwa-icons/icon-maskable-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
             ],
             'shortcuts' => $this->shortcuts(),
         ];
