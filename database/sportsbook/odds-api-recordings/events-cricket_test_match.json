@@ -1,0 +1,31 @@
+{
+    "recorded_at": "2026-11-19T23:21:04Z",
+    "endpoint": "events",
+    "sport_key": "cricket_test_match",
+    "data": [
+        {
+            "id": "d68619f9f0d18808c5629bc369dbe651",
+            "sport_key": "cricket_test_match",
+            "sport_title": "Test Matches",
+            "commence_time": "2026-11-19T22:00:00Z",
+            "home_team": "New Zealand",
+            "away_team": "India"
+        },
+        {
+            "id": "3ac77bb99de3659a594003dd344ac335",
+            "sport_key": "cricket_test_match",
+            "sport_title": "Test Matches",
+            "commence_time": "2026-11-20T05:30:00Z",
+            "home_team": "Pakistan",
+            "away_team": "Sri Lanka"
+        },
+        {
+            "id": "f9819ae8e1834658dcc03ef41f68fdd2",
+            "sport_key": "cricket_test_match",
+            "sport_title": "Test Matches",
+            "commence_time": "2026-11-23T08:00:00Z",
+            "home_team": "South Africa",
+            "away_team": "Bangladesh"
+        }
+    ]
+}

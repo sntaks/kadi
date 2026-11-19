@@ -49,11 +49,11 @@ test('a dry run changes nothing', function () {
 });
 
 test('a key no configured sport covers is skipped', function () {
-    $this->artisan('sportsbook:enable-competitions', ['competition' => ['tennis_atp_finals']])
-        ->expectsTable(['Competition', 'Result'], [['tennis_atp_finals', 'skipped: no configured sport has this prefix']])
+    $this->artisan('sportsbook:enable-competitions', ['competition' => ['americanfootball_nfl']])
+        ->expectsTable(['Competition', 'Result'], [['americanfootball_nfl', 'skipped: no configured sport has this prefix']])
         ->assertSuccessful();
 
-    expect(Competition::where('odds_api_key', 'tennis_atp_finals')->exists())->toBeFalse();
+    expect(Competition::where('odds_api_key', 'americanfootball_nfl')->exists())->toBeFalse();
 });
 
 test('asks for keys when given none', function () {

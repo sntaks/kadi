@@ -1,5 +1,5 @@
 {
-    "recorded_at": "2026-11-14T12:09:39Z",
+    "recorded_at": "2026-11-19T23:20:56Z",
     "endpoint": "sports",
     "sport_key": null,
     "data": [
@@ -120,6 +120,14 @@
             "group": "Cricket",
             "title": "Big Bash",
             "description": "Big Bash League",
+            "active": true,
+            "has_outrights": false
+        },
+        {
+            "key": "cricket_international_t20",
+            "group": "Cricket",
+            "title": "International Twenty20",
+            "description": "International Twenty20",
             "active": true,
             "has_outrights": false
         },
@@ -250,6 +258,14 @@
             "description": "2028 US Presidential Election Winner",
             "active": true,
             "has_outrights": true
+        },
+        {
+            "key": "rugbyleague_nrl",
+            "group": "Rugby League",
+            "title": "NRL",
+            "description": "Aussie Rugby League",
+            "active": true,
+            "has_outrights": false
         },
         {
             "key": "soccer_argentina_primera_division",

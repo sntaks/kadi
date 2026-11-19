@@ -1,0 +1,255 @@
+{
+    "recorded_at": "2026-11-19T23:21:08Z",
+    "endpoint": "odds",
+    "sport_key": "cricket_international_t20",
+    "data": [
+        {
+            "id": "88effd7d2c1313bf6c1de12f924f149d",
+            "sport_key": "cricket_international_t20",
+            "sport_title": "International Twenty20",
+            "commence_time": "2026-11-21T08:15:00Z",
+            "home_team": "Australia",
+            "away_team": "England",
+            "bookmakers": [
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:22Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:22Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.72
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betvictor",
+                    "title": "Bet Victor",
+                    "last_update": "2026-11-19T23:20:56Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.05
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.8
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.18
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.84
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:13Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:13Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.72
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "boylesports",
+                    "title": "BoyleSports",
+                    "last_update": "2026-11-19T23:20:09Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:09Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.67
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:22Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:22Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.72
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betano_uk",
+                    "title": "Betano (UK)",
+                    "last_update": "2026-11-19T23:19:14Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:14Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.05
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.75
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "matchbook",
+                    "title": "Matchbook",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.8
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.18
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Australia",
+                                    "price": 1.84
+                                },
+                                {
+                                    "name": "England",
+                                    "price": 2.24
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

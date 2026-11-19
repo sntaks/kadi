@@ -1,0 +1,4664 @@
+{
+    "recorded_at": "2026-11-19T23:21:02Z",
+    "endpoint": "odds",
+    "sport_key": "boxing_boxing",
+    "data": [
+        {
+            "id": "888e7a7347f634d39b6e47b831e096bd",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T18:00:00Z",
+            "home_team": "Sean Arkwright",
+            "away_team": "Jake Goodwin",
+            "bookmakers": [
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jake Goodwin",
+                                    "price": 5.1
+                                },
+                                {
+                                    "name": "Sean Arkwright",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jake Goodwin",
+                                    "price": 5.1
+                                },
+                                {
+                                    "name": "Sean Arkwright",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jake Goodwin",
+                                    "price": 5.1
+                                },
+                                {
+                                    "name": "Sean Arkwright",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jake Goodwin",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "Sean Arkwright",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 13
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:44Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jake Goodwin",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "Sean Arkwright",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 13
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jake Goodwin",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "Sean Arkwright",
+                                    "price": 1.2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4b01ab5b0f5c1709a8cf135c80ed0386",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T19:00:00Z",
+            "home_team": "Willy Gilheaney",
+            "away_team": "Alberto Ignacio Palmetta",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.37
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 1.31
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.56
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.51
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:51Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.36
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 3.1
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:44Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 3.1
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 2.8
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.47
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 2.8
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.47
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 2.8
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.47
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 2.87
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:42Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alberto Ignacio Palmetta",
+                                    "price": 3
+                                },
+                                {
+                                    "name": "Willy Gilheaney",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "1985219fd04a6f3079d6d5e5abb82ded",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T21:00:00Z",
+            "home_team": "Rhys Edwards",
+            "away_team": "Lee McGregor",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.1
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.41
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 130
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:52Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.2
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.35
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.33
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.25
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:44Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.33
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.25
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.75
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.21
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.75
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.21
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.75
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.21
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lee McGregor",
+                                    "price": 4.33
+                                },
+                                {
+                                    "name": "Rhys Edwards",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5a536ccef9df3900d7fe7fa0ee63623a",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T21:30:00Z",
+            "home_team": "Lauren Price",
+            "away_team": "Michaela Kotaskova",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 20
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 930
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 990
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 12
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:52Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:44Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Lauren Price",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Michaela Kotaskova",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "348d3807dfe3e279c98a4a3ca46e48ec",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T22:00:00Z",
+            "home_team": "David Lopez",
+            "away_team": "Alan Crisosto",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alan Crisosto",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "David Lopez",
+                                    "price": 1.02
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alan Crisosto",
+                                    "price": 18
+                                },
+                                {
+                                    "name": "David Lopez",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:44Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:44Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alan Crisosto",
+                                    "price": 18
+                                },
+                                {
+                                    "name": "David Lopez",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alan Crisosto",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "David Lopez",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alan Crisosto",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "David Lopez",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "b7561a780975dbd0df80705397f0b2ec",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T22:00:00Z",
+            "home_team": "Amir Anderson",
+            "away_team": "Daniel Buciuc",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amir Anderson",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Daniel Buciuc",
+                                    "price": 14
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:42Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amir Anderson",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Daniel Buciuc",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amir Anderson",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Daniel Buciuc",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "bae624083238cf391d6d154889a533a5",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T22:00:00Z",
+            "home_team": "Cayden Griffiths",
+            "away_team": "Jean Rivera-Pacheco",
+            "bookmakers": [
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:52Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 11
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 14
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:42Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Cayden Griffiths",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jean Rivera-Pacheco",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f0ca9293de19eee7d8779e4f6320f24a",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-20T22:00:00Z",
+            "home_team": "Leonardo Sanchez",
+            "away_team": "Victor Morales Jr",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Leonardo Sanchez",
+                                    "price": 1.2
+                                },
+                                {
+                                    "name": "Victor Morales Jr",
+                                    "price": 3.8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Leonardo Sanchez",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Victor Morales Jr",
+                                    "price": 4.2
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 13
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Leonardo Sanchez",
+                                    "price": 1.29
+                                },
+                                {
+                                    "name": "Victor Morales Jr",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 13
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Leonardo Sanchez",
+                                    "price": 1.25
+                                },
+                                {
+                                    "name": "Victor Morales Jr",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "d673e82db285a33cdb6d29de5067ec50",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-21T03:15:00Z",
+            "home_team": "Gabriela Fundora",
+            "away_team": "Jasmina Zapotoczna",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 25
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15.5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 13
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:03Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:54Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 11.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 11.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 11.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Gabriela Fundora",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Jasmina Zapotoczna",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4f75149304d6bc15cfe462258488241c",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-21T04:00:00Z",
+            "home_team": "Amari Jones",
+            "away_team": "Deaundre Pettus",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 40
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 990
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 990
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 26
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 41
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:54Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 12
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Amari Jones",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Deaundre Pettus",
+                                    "price": 15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "48bcbd1190da8e0cd6081b17cbdbd50a",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-21T18:00:00Z",
+            "home_team": "Isabel Rivero",
+            "away_team": "Sumire Yamanaka",
+            "bookmakers": [
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Isabel Rivero",
+                                    "price": 2.1
+                                },
+                                {
+                                    "name": "Sumire Yamanaka",
+                                    "price": 1.8
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 12
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4260f7557b6c1031ee1098f435482b8d",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-26T12:00:00Z",
+            "home_team": "Masamichi Yabuki",
+            "away_team": "Miel Fajardo",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 2.7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 2.66
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.36
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.2
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 3.9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.25
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 4.33
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.2
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 3.8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 4.33
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:03Z",
+                            "outcomes": [
+                                {
+                                    "name": "Masamichi Yabuki",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Miel Fajardo",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "c18243206995f61294d952c26661373b",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-28T21:00:00Z",
+            "home_team": "Agit Kabayel",
+            "away_team": "Nelson Hysa",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 9
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 26
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.06
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.06
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.06
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.06
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 10
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 34
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Agit Kabayel",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Nelson Hysa",
+                                    "price": 7.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "35aff424a542edb3ed32edbc12888002",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-29T10:00:00Z",
+            "home_team": "David Jimenez",
+            "away_team": "Seigo Yuri Akui",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 1.36
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 2.06
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 18
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.18
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 5
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 75
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.15
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.75
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.73
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.2
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:03Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.2
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Jimenez",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Seigo Yuri Akui",
+                                    "price": 1.67
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4afca42deff5ca6c123b3dff545d0901",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-29T11:00:00Z",
+            "home_team": "Kenshiro Teraji",
+            "away_team": "Jassiel Amador",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.02
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.25
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 150
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 5.5
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.12
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.12
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jassiel Amador",
+                                    "price": 5.25
+                                },
+                                {
+                                    "name": "Kenshiro Teraji",
+                                    "price": 1.11
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fa5ff410f4cf4432424aee65f4e6f2fa",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-11-29T12:00:00Z",
+            "home_team": "Riku Masuda",
+            "away_team": "Seiya Tsutsumi",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.02
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 990
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.45
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.45
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.53
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.62
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:19:04Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:04Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.5
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.7
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Riku Masuda",
+                                    "price": 1.4
+                                },
+                                {
+                                    "name": "Seiya Tsutsumi",
+                                    "price": 2.62
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "1888f02c308437d8e14890fc73dec98b",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-04T22:00:00Z",
+            "home_team": "Adam Azim",
+            "away_team": "Gabriel Gollaz Valenzuela",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Adam Azim",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Gabriel Gollaz Valenzuela",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.04
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Adam Azim",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Gabriel Gollaz Valenzuela",
+                                    "price": 40
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Adam Azim",
+                                    "price": 1.08
+                                },
+                                {
+                                    "name": "Gabriel Gollaz Valenzuela",
+                                    "price": 6.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "584e2c7af822b1c2501131dd941d5fdc",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-05T22:00:00Z",
+            "home_team": "Conah Walker",
+            "away_team": "Alexis Rocha",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alexis Rocha",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Conah Walker",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.02
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alexis Rocha",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Conah Walker",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 90
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alexis Rocha",
+                                    "price": 1.34
+                                },
+                                {
+                                    "name": "Conah Walker",
+                                    "price": 3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alexis Rocha",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Conah Walker",
+                                    "price": 3
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Alexis Rocha",
+                                    "price": 1.33
+                                },
+                                {
+                                    "name": "Conah Walker",
+                                    "price": 3
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "9841c39a8e2ad46da8b9419fb39335f5",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-06T01:00:00Z",
+            "home_team": "Nikita Tszyu",
+            "away_team": "Roberto Valenzuela Jr",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Nikita Tszyu",
+                                    "price": 1.21
+                                },
+                                {
+                                    "name": "Roberto Valenzuela Jr",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.01
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Nikita Tszyu",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Roberto Valenzuela Jr",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Nikita Tszyu",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Roberto Valenzuela Jr",
+                                    "price": 4.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Nikita Tszyu",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Roberto Valenzuela Jr",
+                                    "price": 4.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fac779f4dad09a10c034155d1ca8acd6",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-06T02:00:00Z",
+            "home_team": "Emiliano Vargas",
+            "away_team": "Omar Juarez",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Emiliano Vargas",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Omar Juarez",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.01
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Emiliano Vargas",
+                                    "price": 1.24
+                                },
+                                {
+                                    "name": "Omar Juarez",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Emiliano Vargas",
+                                    "price": 1.08
+                                },
+                                {
+                                    "name": "Omar Juarez",
+                                    "price": 6.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Emiliano Vargas",
+                                    "price": 1.08
+                                },
+                                {
+                                    "name": "Omar Juarez",
+                                    "price": 6
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "7925d57df203c5ae97477fec65f62c83",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-06T03:00:00Z",
+            "home_team": "Vergil Ortiz Jr",
+            "away_team": "Keith Thurman",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Keith Thurman",
+                                    "price": 7.5
+                                },
+                                {
+                                    "name": "Vergil Ortiz Jr",
+                                    "price": 1.06
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Keith Thurman",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Vergil Ortiz Jr",
+                                    "price": 1.09
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.76
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Keith Thurman",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Vergil Ortiz Jr",
+                                    "price": 1.19
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Keith Thurman",
+                                    "price": 7.5
+                                },
+                                {
+                                    "name": "Vergil Ortiz Jr",
+                                    "price": 1.1
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Keith Thurman",
+                                    "price": 6.5
+                                },
+                                {
+                                    "name": "Vergil Ortiz Jr",
+                                    "price": 1.05
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "1d72c387fbcd738b8ae53f7982e6535c",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-06T04:00:00Z",
+            "home_team": "David Benavidez",
+            "away_team": "Michal Cieslak",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Benavidez",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Michal Cieslak",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Benavidez",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Michal Cieslak",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.02
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Benavidez",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Michal Cieslak",
+                                    "price": 200
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 700
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Benavidez",
+                                    "price": 1.08
+                                },
+                                {
+                                    "name": "Michal Cieslak",
+                                    "price": 8
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "David Benavidez",
+                                    "price": 1.04
+                                },
+                                {
+                                    "name": "Michal Cieslak",
+                                    "price": 7
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "0b629a238b2f333babea078766b9a4bb",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-12T02:00:00Z",
+            "home_team": "Tyson Fury",
+            "away_team": "Anthony Joshua",
+            "bookmakers": [
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.63
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.52
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.63
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.52
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.63
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.51
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.74
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.68
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 22
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.78
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.69
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 24
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.62
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.57
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "sport888",
+                    "title": "888sport",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.5
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.57
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.62
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.53
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.5
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.54
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Joshua",
+                                    "price": 2.4
+                                },
+                                {
+                                    "name": "Tyson Fury",
+                                    "price": 1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "9b1dcce04470c40c5647966302e51a43",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-13T05:00:00Z",
+            "home_team": "Erislandy Lara",
+            "away_team": "Tim Tszyu",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Erislandy Lara",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Tim Tszyu",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.88
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Erislandy Lara",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Tim Tszyu",
+                                    "price": 7.2
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 970
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Erislandy Lara",
+                                    "price": 1.78
+                                },
+                                {
+                                    "name": "Tim Tszyu",
+                                    "price": 1.95
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:56Z",
+                            "outcomes": [
+                                {
+                                    "name": "Erislandy Lara",
+                                    "price": 1.73
+                                },
+                                {
+                                    "name": "Tim Tszyu",
+                                    "price": 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "98d4d39d24bb5922ea4f2534111d4c8f",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-19T22:00:00Z",
+            "home_team": "Anthony Cacace",
+            "away_team": "Nick Ball",
+            "bookmakers": [
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.45
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.49
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 1.4
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.97
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 4.3
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 990
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 990
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.44
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.45
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.88
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.5
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.45
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:25Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:25Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.53
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.62
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 17
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:43Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:43Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.53
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.62
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Anthony Cacace",
+                                    "price": 1.48
+                                },
+                                {
+                                    "name": "Nick Ball",
+                                    "price": 2.4
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4453fea37e575796ab833b75f4c17a39",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-20T03:00:00Z",
+            "home_team": "Brian Norman Jr",
+            "away_team": "Abel Ramos",
+            "bookmakers": [
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abel Ramos",
+                                    "price": 5
+                                },
+                                {
+                                    "name": "Brian Norman Jr",
+                                    "price": 1.12
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abel Ramos",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Brian Norman Jr",
+                                    "price": 1.15
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.01
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abel Ramos",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Brian Norman Jr",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Abel Ramos",
+                                    "price": 5.25
+                                },
+                                {
+                                    "name": "Brian Norman Jr",
+                                    "price": 1.12
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "4d1792b1827c82c24c4f786a9115cf93",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2026-12-20T04:00:00Z",
+            "home_team": "Devin Haney",
+            "away_team": "Liam Paro",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Devin Haney",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Liam Paro",
+                                    "price": 7
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Devin Haney",
+                                    "price": 1.12
+                                },
+                                {
+                                    "name": "Liam Paro",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.07
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Devin Haney",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Liam Paro",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Devin Haney",
+                                    "price": 1.07
+                                },
+                                {
+                                    "name": "Liam Paro",
+                                    "price": 6.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "dd09e47844a3626bbddd3410714b719f",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2027-01-09T22:00:00Z",
+            "home_team": "Ryan Garner",
+            "away_team": "James Dickens",
+            "bookmakers": [
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "James Dickens",
+                                    "price": 4.2
+                                },
+                                {
+                                    "name": "Ryan Garner",
+                                    "price": 1.19
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "James Dickens",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Ryan Garner",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.01
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "James Dickens",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Ryan Garner",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "James Dickens",
+                                    "price": 3.9
+                                },
+                                {
+                                    "name": "Ryan Garner",
+                                    "price": 1.2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ee667837ffbc78895e0568db3850534d",
+            "sport_key": "boxing_boxing",
+            "sport_title": "Boxing",
+            "commence_time": "2027-01-23T21:00:00Z",
+            "home_team": "Jacob Bank",
+            "away_team": "Zhanibek Alimkhanuly",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:59Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 1.05
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1.12
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:59Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1000
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 90
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:58Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:58Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 2.48
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1.57
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 2.48
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1.57
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 2.48
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1.56
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 16
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "unibet_uk",
+                    "title": "Unibet (UK)",
+                    "last_update": "2026-11-19T23:20:11Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:11Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 2.38
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "casumo",
+                    "title": "Casumo",
+                    "last_update": "2026-11-19T23:19:57Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:19:57Z",
+                            "outcomes": [
+                                {
+                                    "name": "Jacob Bank",
+                                    "price": 2.38
+                                },
+                                {
+                                    "name": "Zhanibek Alimkhanuly",
+                                    "price": 1.5
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

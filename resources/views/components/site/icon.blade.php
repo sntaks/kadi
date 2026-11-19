@@ -6,6 +6,11 @@
         'basketball' => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/><path d="M5.8 5.8c2.5 2.6 2.5 9.8 0 12.4M18.2 5.8c-2.5 2.6-2.5 9.8 0 12.4"/>',
         // Ice hockey: a stick with its blade to the right and a puck beside it.
         'ice-hockey' => '<path d="M9 3l6.2 13.4c.4.9 1.3 1.6 2.3 1.6H21"/><ellipse cx="6.5" cy="17" rx="3.5" ry="1.5"/><path d="M3 17v1.6c0 .8 1.6 1.5 3.5 1.5s3.5-.7 3.5-1.5V17"/>',
+        'tennis' => '<circle cx="12" cy="12" r="9"/><path d="M5.3 5.8c3.4 3.5 3.4 8.9 0 12.4M18.7 5.8c-3.4 3.5-3.4 8.9 0 12.4"/>',
+        'cricket' => '<path d="m20.5 3.5-4.2 4.2"/><path d="m15 6.5 2.5 2.5-9.8 9.8a1.8 1.8 0 0 1-2.5 0 1.8 1.8 0 0 1 0-2.5z"/><circle cx="18" cy="18" r="2.5"/>',
+        'rugby' => '<ellipse cx="12" cy="12" rx="10" ry="5.5" transform="rotate(-45 12 12)"/><path d="m8.5 15.5 7-7M9.5 11.5l3 3M11.5 9.5l3 3"/>',
+        'boxing' => '<path d="M7.5 15V8.5A5.5 5.5 0 0 1 13 3h.5A5.5 5.5 0 0 1 19 8.5V12a4 4 0 0 1-4 4H9.5"/><path d="M7.5 14a2.5 2.5 0 0 1 0-5h3"/><path d="M8 16.5h8.5V21H8z"/>',
+        'mma' => '<path d="M8.3 3h7.4L21 8.3v7.4L15.7 21H8.3L3 15.7V8.3z"/><path d="M10.2 7.5h3.6l2.7 2.7v3.6l-2.7 2.7h-3.6l-2.7-2.7v-3.6z"/>',
         'cards' => '<rect x="3.5" y="5" width="11" height="15" rx="2" transform="rotate(-8 9 12.5)"/><rect x="9.5" y="4" width="11" height="15" rx="2"/><path d="M15 8.5c-1.2 1.4-2 2.3-2 3.2a2 2 0 0 0 4 0c0-.9-.8-1.8-2-3.2Z"/>',
         // The card on the "i" of the Kadi logo: one playing card tilted 15°, a corner pip and a spade.
         'kadi' => '<g transform="rotate(15 12 12)"><rect x="6.2" y="3.2" width="11.6" height="17.6" rx="2.2"/><path d="M8.9 6.3v.01"/><path d="M12 8.7c-1.9 1.8-3.1 2.8-3.1 4.2a1.7 1.7 0 0 0 2.8 1.3l-.5 1.5h1.6l-.5-1.5a1.7 1.7 0 0 0 2.8-1.3c0-1.4-1.2-2.4-3.1-4.2Z"/></g>',
