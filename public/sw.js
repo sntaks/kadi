@@ -10,7 +10,7 @@
  *     offline page when the network itself fails.
  *   - Every push MUST show a visible notification, or iOS revokes the subscription.
  */
-const VERSION = 'v2';
+const VERSION = 'v3';
 const CACHE_PREFIX = 'kadi-static-';
 const STATIC_CACHE = `${CACHE_PREFIX}${VERSION}`;
 const OFFLINE_URL = '/offline.html';
@@ -19,8 +19,8 @@ const OFFLINE_URL = '/offline.html';
 // tests/Feature/Pwa/PwaAssetsTest.php recomputes it. If that test fails you changed something
 // browsers already hold, so bump VERSION above (making every browser re-download it) and paste
 // the new fingerprint here. See docs/pwa-push.md ("Service worker versioning").
-// precache-fingerprint: 60574c239b03ac8c
-const PRECACHE = [OFFLINE_URL, '/pwa-icons/icon-192.png'];
+// precache-fingerprint: 39e81c758b69e558
+const PRECACHE = [OFFLINE_URL, '/v2/pwa-icons/icon-192.png'];
 
 // Routes the worker must leave completely alone (OAuth redirects, auth, sessions, game launches,
 // Livewire, uploads, and the Godot game assets).
@@ -81,7 +81,7 @@ self.addEventListener('fetch', (event) => {
     }
 
     // Icons keep stable names, so serve from cache but refresh in the background.
-    if (url.pathname.startsWith('/pwa-icons/')) {
+    if (url.pathname.startsWith('/pwa-icons/') || url.pathname.startsWith('/v2/pwa-icons/')) {
         event.respondWith(staleWhileRevalidate(request));
         return;
     }
@@ -129,8 +129,8 @@ self.addEventListener('push', (event) => {
     const title = payload.title || 'Kadi';
     const options = {
         body: payload.body || '',
-        icon: payload.icon || '/pwa-icons/icon-192.png',
-        badge: payload.badge || '/pwa-icons/badge-72.png',
+        icon: payload.icon || '/v2/pwa-icons/icon-192.png',
+        badge: payload.badge || '/v2/pwa-icons/badge-72.png',
         image: payload.image,
         tag: payload.tag,
         data: payload.data || {},

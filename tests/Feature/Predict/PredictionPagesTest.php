@@ -8,6 +8,7 @@ use App\Predict\Data\Market;
 use App\Predict\MarketFeed;
 use App\Predict\Markets;
 use App\Support\SiteNavigation;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
@@ -63,7 +64,7 @@ function fakePredictPages(array $world, array $kadi = [], array $markets = [], i
     Http::fake($routes);
 }
 
-test('guests see the lobby with world markets, and the Kadi section only when there are Kadi markets', function () {
+test('guests see the lobby with world markets, and the Local section only when there are local markets', function () {
     config(['platform.predictions_betting' => false]);
     fakePredictPages([pageMarket(1, ['question' => 'Will it rain in Nairobi?'])]);
 
@@ -71,7 +72,7 @@ test('guests see the lobby with world markets, and the Kadi section only when th
         ->assertOk()
         ->assertSee('World markets')
         ->assertSee('Will it rain in Nairobi?')
-        ->assertDontSee('Kadi markets')
+        ->assertDontSeeHtml('aria-labelledby="pm-kadi"')
         ->assertSee('Betting on predictions opens soon');
 });
 
@@ -143,31 +144,118 @@ test('cards show time left, and volume only once there is some', function () {
         ->and($card(2))->toContain('KES 11.1K vol')->toContain('19 bets');
 });
 
-test('load more adds the next page under the first, and stops at the last page', function () {
-    $page = fn (int $n, array $items, int $last = 3) => Http::response(['success' => true, 'data' => [
-        'items' => $items, 'pagination' => ['page' => $n, 'per_page' => 24, 'total' => 5, 'last_page' => $last],
+test('local markets come before world markets', function () {
+    fakePredictPages([pageMarket(1, ['question' => 'A world question?'])], [pageMarket(2, ['question' => 'A Kadi question?', 'source' => 'custom'])]);
+
+    $this->get('/predictions')
+        ->assertOk()
+        ->assertSeeInOrder(['id="pm-kadi"', 'Local markets', 'A Kadi question?', 'id="pm-world"', 'World markets', 'A world question?'], false);
+});
+
+test('the source pills and ?source show one section, read only that list, and keep its empty states', function () {
+    fakePredictPages([pageMarket(1, ['question' => 'A world question?'])], [pageMarket(2, ['question' => 'A Kadi question?', 'source' => 'custom'])]);
+
+    $this->get('/predictions?source=local')->assertOk()
+        ->assertSee('A Kadi question?')->assertDontSee('A world question?')
+        ->assertDontSeeHtml('aria-labelledby="pm-world"');
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), 'source=polymarket'));
+
+    $lobby = Livewire::test(Lobby::class)
+        ->assertSeeHtml('wire:click="setSource(\'local\')"')
+        ->assertSeeHtml('wire:click="setSource(\'world\')"')
+        ->call('setSource', 'world')
+        ->assertSet('source', 'world')
+        ->assertSee('A world question?')->assertDontSee('A Kadi question?');
+
+    // Anything else shows both.
+    $lobby->call('setSource', 'everything')->assertSet('source', '')->assertSee('A Kadi question?')->assertSee('A world question?');
+});
+
+test('with only local markets picked, an empty list says so instead of hiding the section', function () {
+    fakePredictPages([pageMarket(1)]);
+
+    $this->get('/predictions?source=local')->assertOk()
+        ->assertSeeHtml('aria-labelledby="pm-kadi"')
+        ->assertSee('No markets here yet');
+});
+
+test('an unknown ?source shows both sections', function () {
+    fakePredictPages([pageMarket(1, ['question' => 'A world question?'])], [pageMarket(2, ['question' => 'A Kadi question?', 'source' => 'custom'])]);
+
+    $this->get('/predictions?source=bogus')->assertOk()->assertSee('A Kadi question?')->assertSee('A world question?');
+});
+
+test('the predictions menu offers all, local and world markets, and marks the one shown', function () {
+    $items = fn () => collect((new SiteNavigation(null))->groups())->firstWhere('key', 'predictions')['items'];
+
+    expect(collect($items())->pluck('label')->take(3)->all())->toBe(['All markets', 'Local markets', 'World markets'])
+        ->and(collect($items())->firstWhere('label', 'Local markets')['href'])->toBe(route('predictions', ['source' => 'local']))
+        ->and(collect($items())->firstWhere('label', 'World markets')['href'])->toBe(route('predictions', ['source' => 'world']));
+
+    $this->get('/predictions?source=world');
+    expect(collect($items())->firstWhere('label', 'World markets')['active'])->toBeTrue()
+        ->and(collect($items())->firstWhere('label', 'All markets')['active'])->toBeFalse();
+});
+
+/** One page of a lobby list. */
+function pagedList(int $page, array $items, int $last = 3, int $total = 5): PromiseInterface
+{
+    return Http::response(['success' => true, 'data' => [
+        'items' => $items, 'pagination' => ['page' => $page, 'per_page' => 24, 'total' => $total, 'last_page' => $last],
     ]]);
+}
+
+test('world load more adds the next page under the first, stops at the last page, and leaves the Kadi list alone', function () {
     Http::fake([
-        '*/predict/markets?*source=custom*' => Http::response(['success' => true, 'data' => ['items' => [], 'pagination' => ['page' => 1, 'per_page' => 24, 'total' => 0, 'last_page' => 1]]]),
-        '*/predict/markets?*&page=2&*' => $page(2, [pageMarket(3), pageMarket(4)]),
-        '*/predict/markets?*&page=3&*' => $page(3, [pageMarket(5), pageMarket(2)]),
-        '*/predict/markets?*' => $page(1, [pageMarket(1), pageMarket(2)]),
+        '*/predict/markets?*source=custom*' => pagedList(1, [pageMarket(91)], last: 2, total: 2),
+        '*/predict/markets?*&page=2&*' => pagedList(2, [pageMarket(3), pageMarket(4)]),
+        '*/predict/markets?*&page=3&*' => pagedList(3, [pageMarket(5), pageMarket(2)]),
+        '*/predict/markets?*' => pagedList(1, [pageMarket(1), pageMarket(2)]),
     ]);
 
     $lobby = Livewire::test(Lobby::class)
         ->assertSee('Showing 2 of 5')
-        ->assertSeeHtml('data-predict-load-more');
+        ->assertSeeHtml('data-predict-load-more="loadMoreWorld"');
 
-    $lobby->call('loadMore')->assertSee('Showing 4 of 5');
+    $lobby->call('loadMoreWorld')->assertSee('Showing 4 of 5');
 
     // A market that moved to a later page between reads shows once; the last page ends the list.
-    $lobby->call('loadMore')
+    $lobby->call('loadMoreWorld')
         ->assertSee('Showing 5 of 5')
-        ->assertDontSeeHtml('data-predict-load-more')
-        ->assertSet('pages', 3);
+        ->assertDontSeeHtml('data-predict-load-more="loadMoreWorld"')
+        ->assertSeeHtml('data-predict-load-more="loadMoreKadi"')
+        ->assertSet('worldPages', 3)
+        ->assertSet('kadiPages', 1);
 
-    $lobby->call('loadMore')->assertSet('pages', 3);
-    expect(collect($lobby->viewData('world')['markets'])->pluck('id')->all())->toBe([1, 2, 3, 4, 5]);
+    $lobby->call('loadMoreWorld')->assertSet('worldPages', 3);
+    expect(collect($lobby->viewData('world')['markets'])->pluck('id')->all())->toBe([1, 2, 3, 4, 5])
+        ->and(collect($lobby->viewData('kadi')['markets'])->pluck('id')->all())->toBe([91]);
+});
+
+test('Kadi load more adds the next page under the first, stops at the last page, and leaves the world list alone', function () {
+    $kadi = fn (int $id) => pageMarket($id, ['source' => 'custom']);
+    Http::fake([
+        '*/predict/markets?source=custom*&page=2&*' => pagedList(2, [$kadi(13), $kadi(14)]),
+        '*/predict/markets?source=custom*&page=3&*' => pagedList(3, [$kadi(15), $kadi(12)]),
+        '*/predict/markets?source=custom*' => pagedList(1, [$kadi(11), $kadi(12)]),
+        '*/predict/markets?*' => pagedList(1, [pageMarket(1)], last: 2, total: 2),
+    ]);
+
+    $lobby = Livewire::test(Lobby::class)
+        ->assertSeeHtml('data-predict-load-more="loadMoreKadi"')
+        ->assertSeeHtml('data-predict-load-more="loadMoreWorld"');
+
+    $lobby->call('loadMoreKadi')->assertSet('kadiPages', 2)->assertSet('worldPages', 1);
+
+    $lobby->call('loadMoreKadi')
+        ->assertDontSeeHtml('data-predict-load-more="loadMoreKadi"')
+        ->assertSeeHtml('data-predict-load-more="loadMoreWorld"')
+        ->assertSet('kadiPages', 3)
+        ->assertSet('worldPages', 1);
+
+    $lobby->call('loadMoreKadi')->assertSet('kadiPages', 3);
+    expect(collect($lobby->viewData('kadi')['markets'])->pluck('id')->all())->toBe([11, 12, 13, 14, 15])
+        ->and(collect($lobby->viewData('world')['markets'])->pluck('id')->all())->toBe([1]);
 });
 
 test('the next page is read after the response, so load more finds it ready', function () {
@@ -177,15 +265,29 @@ test('the next page is read after the response, so load more finds it ready', fu
 
     Http::assertSent(fn ($request) => str_contains($request->url(), '&page=2&') && str_contains($request->url(), 'source=polymarket'));
     Http::assertNotSent(fn ($request) => str_contains($request->url(), '&page=3&'));
+    // The Kadi list is empty, so its section is hidden and needs no next page.
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), '&page=2&') && str_contains($request->url(), 'source=custom'));
 });
 
-test('changing the category or the sort starts again from the first page', function () {
-    fakePredictPages([pageMarket(1)], lastPage: 4);
+test('the next Kadi page is read after the response too', function () {
+    fakePredictPages([pageMarket(1)], [pageMarket(2, ['source' => 'custom'])], lastPage: 3);
+
+    $this->get('/predictions')->assertOk();
+
+    Http::assertSent(fn ($request) => str_contains($request->url(), '&page=2&') && str_contains($request->url(), 'source=custom'));
+    Http::assertSent(fn ($request) => str_contains($request->url(), '&page=2&') && str_contains($request->url(), 'source=polymarket'));
+});
+
+test('changing the source, category or sort starts both lists again from the first page', function () {
+    fakePredictPages([pageMarket(1)], [pageMarket(2, ['source' => 'custom'])], lastPage: 4);
 
     Livewire::test(Lobby::class)
-        ->call('loadMore')->assertSet('pages', 2)
-        ->call('setCategory', 'sport')->assertSet('pages', 1)
-        ->call('loadMore')->call('setSort', 'new')->assertSet('pages', 1);
+        ->call('loadMoreWorld')->call('loadMoreKadi')->assertSet('worldPages', 2)->assertSet('kadiPages', 2)
+        ->call('setCategory', 'sport')->assertSet('worldPages', 1)->assertSet('kadiPages', 1)
+        ->call('loadMoreWorld')->call('loadMoreKadi')
+        ->call('setSort', 'new')->assertSet('worldPages', 1)->assertSet('kadiPages', 1)
+        ->call('loadMoreWorld')->call('loadMoreKadi')
+        ->call('setSource', 'local')->assertSet('worldPages', 1)->assertSet('kadiPages', 1);
 });
 
 test('a suspended market says betting is paused', function () {

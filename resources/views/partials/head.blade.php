@@ -26,10 +26,12 @@
     :og="$og ?? null"
 />
 
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" sizes="180x180" href="/pwa-icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" href="/v2/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="/v2/pwa-icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/v2/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/v2/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/v2/favicon-48x48.png">
+<link rel="icon" type="image/svg+xml" href="/v2/favicon.svg">
 
 {{-- PWA: installable web app (manifest, service worker registered from resources/js/pwa) --}}
 <link rel="manifest" href="/manifest.webmanifest">

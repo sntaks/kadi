@@ -279,10 +279,10 @@ test('hidden titles are configured products', function () {
     }
 });
 
-test('config presents all 120 slots and 12 scratch cards, each with artwork and a built thumbnail', function () {
+test('all configured slots, scratch cards, Coin Flip and Roulette titles have artwork and built thumbnails', function () {
     $products = GameArtwork::configuredProducts();
 
-    expect(array_count_values($products))->toEqual(['scratch' => 12, 'slots' => 120]);
+    expect(array_count_values($products))->toEqual(['scratch' => 12, 'slots' => 120, 'coinflip' => 1, 'roulette' => 1]);
 
     foreach ($products as $code => $game) {
         expect(GameArtwork::source($game, $code))->not->toBeNull()

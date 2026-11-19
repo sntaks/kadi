@@ -15,13 +15,17 @@ test('the manifest is valid JSON with the fields installability needs', function
 
     expect($manifest['display'])->toBe('standalone')
         ->and(mb_strlen($manifest['short_name']))->toBeLessThanOrEqual(12)
-        ->and($manifest['start_url'])->toStartWith($manifest['scope']);
+        ->and($manifest['start_url'])->toStartWith($manifest['scope'])
+        ->and($manifest['id'])->toBe('/')
+        ->and($manifest['background_color'])->toBe('#0e0d0b')
+        ->and($manifest['theme_color'])->toBe('#0e0d0b');
 });
 
 test('every manifest icon exists at its declared size', function () {
     foreach (manifest()['icons'] as $icon) {
         $path = public_path(ltrim($icon['src'], '/'));
 
+        expect($icon['src'])->toStartWith('/v2/pwa-icons/');
         expect(file_exists($path))->toBeTrue("{$icon['src']} is missing");
         expect(implode('x', array_slice(getimagesize($path), 0, 2)))->toBe($icon['sizes']);
     }
@@ -35,13 +39,13 @@ test('the maskable icon is its own entry rather than a combined purpose', functi
 });
 
 test('the apple touch icon is opaque and the notification badge is a transparent glyph', function () {
-    $apple = imagecreatefrompng(public_path('pwa-icons/apple-touch-icon.png'));
-    $badge = imagecreatefrompng(public_path('pwa-icons/badge-72.png'));
+    $apple = imagecreatefrompng(public_path('v2/pwa-icons/apple-touch-icon.png'));
+    $badge = imagecreatefrompng(public_path('v2/pwa-icons/badge-72.png'));
 
-    expect(getimagesize(public_path('pwa-icons/apple-touch-icon.png'))[0])->toBe(180);
+    expect(getimagesize(public_path('v2/pwa-icons/apple-touch-icon.png'))[0])->toBe(180);
     expect((imagecolorat($apple, 0, 0) >> 24) & 127)->toBe(0); // iOS paints transparency black
 
-    expect(getimagesize(public_path('pwa-icons/badge-72.png'))[0])->toBe(72);
+    expect(getimagesize(public_path('v2/pwa-icons/badge-72.png'))[0])->toBe(72);
     expect((imagecolorat($badge, 0, 0) >> 24) & 127)->toBe(127); // transparent corner
 });
 
@@ -83,6 +87,7 @@ test('the icons live in pwa-icons because Apache aliases /icons/ to its own dire
     // once broke the manifest icons and the service worker install in production.
     expect(is_dir(public_path('icons')))->toBeFalse('public/icons must not exist; keep the icons in public/pwa-icons');
     expect(is_dir(public_path('pwa-icons')))->toBeTrue();
+    expect(is_dir(public_path('v2/pwa-icons')))->toBeTrue();
 
     $offenders = collect([
         'public/sw.js', 'public/offline.html', 'app/Support/WebManifest.php',
@@ -129,7 +134,12 @@ test('pages expose the manifest, pwa meta tags and a csrf token', function () {
     $html = $this->get(route('login'))->assertOk()->getContent();
 
     expect($html)->toContain('<link rel="manifest" href="/manifest.webmanifest">')
-        ->toContain('href="/pwa-icons/apple-touch-icon.png"')
+        ->toContain('href="/v2/pwa-icons/apple-touch-icon.png"')
+        ->toContain('type="image/svg+xml" href="/v2/favicon.svg"')
+        ->toContain('href="/v2/favicon.ico"')
+        ->toContain('href="/v2/favicon-16x16.png"')
+        ->toContain('href="/v2/favicon-32x32.png"')
+        ->toContain('href="/v2/favicon-48x48.png"')
         ->toContain('name="apple-mobile-web-app-capable"')
         ->toContain('name="mobile-web-app-capable"')
         ->toContain('viewport-fit=cover')
@@ -179,4 +189,13 @@ test('a shortcut never points at a page that is switched off', function () {
     config(['platform.token_launch' => true]);
 
     expect(collect(manifest()['shortcuts'])->pluck('url')->all())->toContain('/casino/slots?source=pwa-shortcut');
+});
+
+test('standard app icons are transparent while maskable icons have an opaque background', function () {
+    foreach (manifest()['icons'] as $icon) {
+        $image = imagecreatefrompng(public_path(ltrim($icon['src'], '/')));
+        $cornerAlpha = (imagecolorat($image, 0, 0) >> 24) & 127;
+
+        expect($cornerAlpha)->toBe($icon['purpose'] === 'maskable' ? 0 : 127);
+    }
 });

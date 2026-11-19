@@ -44,7 +44,7 @@
 
         <div class="absolute inset-0 grid place-items-center p-6 text-center" x-show="!loaded" x-transition.opacity>
             <div>
-                <img src="/logo/kadi-card.png" alt="" class="mx-auto mb-3 h-16 w-16 animate-pulse">
+                <img src="/v2/master-2048.svg" alt="" class="mx-auto mb-3 h-16 w-16 animate-pulse">
                 <p class="text-xl font-bold text-ivory" x-text="error ? @js($name).concat(' didn\'t open') : 'Opening '.concat(@js($name))"></p>
                 <p class="mt-1 text-sm text-ash" x-show="error" x-text="error"></p>
                 <div class="mx-auto mt-4 h-1.5 w-60 overflow-hidden rounded-full bg-white/10" x-show="!error">
