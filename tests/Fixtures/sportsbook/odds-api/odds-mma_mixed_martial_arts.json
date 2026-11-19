@@ -1,0 +1,257 @@
+[
+  {
+    "id": "3252a6edf971e56a6d153f473f6b6edd",
+    "sport_key": "mma_mixed_martial_arts",
+    "sport_title": "MMA",
+    "commence_time": "2026-11-21T15:35:00Z",
+    "home_team": "Alik Lorenz",
+    "away_team": "Diyar Nurgozhay",
+    "bookmakers": [
+      {
+        "key": "virginbet",
+        "title": "Virgin Bet",
+        "last_update": "2026-11-19T23:20:54Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:53Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 3.05
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.38
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "livescorebet",
+        "title": "LiveScore Bet",
+        "last_update": "2026-11-19T23:19:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:19:58Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 3.05
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.38
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "grosvenor",
+        "title": "Grosvenor",
+        "last_update": "2026-11-19T23:20:34Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:34Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.75
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.27
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "paddypower",
+        "title": "Paddy Power",
+        "last_update": "2026-11-19T23:19:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:19:58Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.88
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.36
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "skybet",
+        "title": "Sky Bet",
+        "last_update": "2026-11-19T23:20:33Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:33Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.88
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.36
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betfair_sb_uk",
+        "title": "Betfair Sportsbook",
+        "last_update": "2026-11-19T23:20:49Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:49Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.88
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.36
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betway",
+        "title": "Betway",
+        "last_update": "2026-11-19T23:19:57Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:19:57Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.75
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.44
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "casumo",
+        "title": "Casumo",
+        "last_update": "2026-11-19T23:20:18Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:18Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.8
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.36
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "unibet_uk",
+        "title": "Unibet (UK)",
+        "last_update": "2026-11-19T23:20:33Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:33Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.85
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "sport888",
+        "title": "888sport",
+        "last_update": "2026-11-19T23:19:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:19:58Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 2.95
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betfair_ex_uk",
+        "title": "Betfair",
+        "last_update": "2026-11-19T23:20:49Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:49Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 3.2
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.42
+              }
+            ]
+          },
+          {
+            "key": "h2h_lay",
+            "last_update": "2026-11-19T23:20:49Z",
+            "outcomes": [
+              {
+                "name": "Alik Lorenz",
+                "price": 3.4
+              },
+              {
+                "name": "Diyar Nurgozhay",
+                "price": 1.46
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

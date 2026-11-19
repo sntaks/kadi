@@ -1,0 +1,655 @@
+{
+    "recorded_at": "2026-11-19T23:21:05Z",
+    "endpoint": "odds",
+    "sport_key": "cricket_test_match",
+    "data": [
+        {
+            "id": "d68619f9f0d18808c5629bc369dbe651",
+            "sport_key": "cricket_test_match",
+            "sport_title": "Test Matches",
+            "commence_time": "2026-11-19T22:00:00Z",
+            "home_team": "New Zealand",
+            "away_team": "India",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:53Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 4.5
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 2.16
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.05
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 4.6
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 2.2
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:20:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 1.91
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:53Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 3.65
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:40Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:40Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 3.65
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 3.65
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 2.05
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.25
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "India",
+                                    "price": 4
+                                },
+                                {
+                                    "name": "New Zealand",
+                                    "price": 2
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 3.1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "3ac77bb99de3659a594003dd344ac335",
+            "sport_key": "cricket_test_match",
+            "sport_title": "Test Matches",
+            "commence_time": "2026-11-20T05:30:00Z",
+            "home_team": "Pakistan",
+            "away_team": "Sri Lanka",
+            "bookmakers": [
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:53Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Pakistan",
+                                    "price": 1.02
+                                },
+                                {
+                                    "name": "Sri Lanka",
+                                    "price": 42
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 1000
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Pakistan",
+                                    "price": 1.03
+                                },
+                                {
+                                    "name": "Sri Lanka",
+                                    "price": 55
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Pakistan",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Sri Lanka",
+                                    "price": 14
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 21
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:20:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Pakistan",
+                                    "price": 1.01
+                                },
+                                {
+                                    "name": "Sri Lanka",
+                                    "price": 34
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 126
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f9819ae8e1834658dcc03ef41f68fdd2",
+            "sport_key": "cricket_test_match",
+            "sport_title": "Test Matches",
+            "commence_time": "2026-11-23T08:00:00Z",
+            "home_team": "South Africa",
+            "away_team": "Bangladesh",
+            "bookmakers": [
+                {
+                    "key": "coral",
+                    "title": "Coral",
+                    "last_update": "2026-11-19T23:20:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 9
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_ex_uk",
+                    "title": "Betfair",
+                    "last_update": "2026-11-19T23:20:53Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 5.5
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 20
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.39
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 10
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "ladbrokes_uk",
+                    "title": "Ladbrokes",
+                    "last_update": "2026-11-19T23:20:52Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:52Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 9
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.22
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betway",
+                    "title": "Betway",
+                    "last_update": "2026-11-19T23:20:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 9.5
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betvictor",
+                    "title": "Bet Victor",
+                    "last_update": "2026-11-19T23:20:24Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:24Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 9.5
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betano_uk",
+                    "title": "Betano (UK)",
+                    "last_update": "2026-11-19T23:20:23Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:23Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 9.5
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "paddypower",
+                    "title": "Paddy Power",
+                    "last_update": "2026-11-19T23:20:37Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:37Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 10
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "betfair_sb_uk",
+                    "title": "Betfair Sportsbook",
+                    "last_update": "2026-11-19T23:20:20Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:20Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 10
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.17
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "livescorebet",
+                    "title": "LiveScore Bet",
+                    "last_update": "2026-11-19T23:20:39Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:39Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "grosvenor",
+                    "title": "Grosvenor",
+                    "last_update": "2026-11-19T23:20:40Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:40Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "virginbet",
+                    "title": "Virgin Bet",
+                    "last_update": "2026-11-19T23:20:53Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 12
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.13
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 9.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "sport888",
+                    "title": "888sport",
+                    "last_update": "2026-11-19T23:20:41Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:41Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 11
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 8.5
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "key": "matchbook",
+                    "title": "Matchbook",
+                    "last_update": "2026-11-19T23:20:53Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 5.6
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.18
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 5.1
+                                }
+                            ]
+                        },
+                        {
+                            "key": "h2h_lay",
+                            "last_update": "2026-11-19T23:20:53Z",
+                            "outcomes": [
+                                {
+                                    "name": "Bangladesh",
+                                    "price": 20
+                                },
+                                {
+                                    "name": "South Africa",
+                                    "price": 1.39
+                                },
+                                {
+                                    "name": "Draw",
+                                    "price": 10
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,180 @@
+[
+  {
+    "id": "d68619f9f0d18808c5629bc369dbe651",
+    "sport_key": "cricket_test_match",
+    "sport_title": "Test Matches",
+    "commence_time": "2026-11-19T22:00:00Z",
+    "home_team": "New Zealand",
+    "away_team": "India",
+    "bookmakers": [
+      {
+        "key": "betfair_ex_uk",
+        "title": "Betfair",
+        "last_update": "2026-11-19T23:20:53Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:53Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 4.5
+              },
+              {
+                "name": "New Zealand",
+                "price": 2.16
+              },
+              {
+                "name": "Draw",
+                "price": 3.05
+              }
+            ]
+          },
+          {
+            "key": "h2h_lay",
+            "last_update": "2026-11-19T23:20:53Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 4.6
+              },
+              {
+                "name": "New Zealand",
+                "price": 2.2
+              },
+              {
+                "name": "Draw",
+                "price": 3.1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "paddypower",
+        "title": "Paddy Power",
+        "last_update": "2026-11-19T23:20:37Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:37Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 4
+              },
+              {
+                "name": "New Zealand",
+                "price": 1.91
+              },
+              {
+                "name": "Draw",
+                "price": 3.1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "virginbet",
+        "title": "Virgin Bet",
+        "last_update": "2026-11-19T23:20:53Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:53Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 3.65
+              },
+              {
+                "name": "New Zealand",
+                "price": 2.05
+              },
+              {
+                "name": "Draw",
+                "price": 3.25
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "grosvenor",
+        "title": "Grosvenor",
+        "last_update": "2026-11-19T23:20:40Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:40Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 3.65
+              },
+              {
+                "name": "New Zealand",
+                "price": 2.05
+              },
+              {
+                "name": "Draw",
+                "price": 3.25
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "livescorebet",
+        "title": "LiveScore Bet",
+        "last_update": "2026-11-19T23:20:39Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:39Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 3.65
+              },
+              {
+                "name": "New Zealand",
+                "price": 2.05
+              },
+              {
+                "name": "Draw",
+                "price": 3.25
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betfair_sb_uk",
+        "title": "Betfair Sportsbook",
+        "last_update": "2026-11-19T23:20:20Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:20Z",
+            "outcomes": [
+              {
+                "name": "India",
+                "price": 4
+              },
+              {
+                "name": "New Zealand",
+                "price": 2
+              },
+              {
+                "name": "Draw",
+                "price": 3.1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

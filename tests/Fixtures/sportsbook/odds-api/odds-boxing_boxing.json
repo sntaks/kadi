@@ -1,0 +1,158 @@
+[
+  {
+    "id": "888e7a7347f634d39b6e47b831e096bd",
+    "sport_key": "boxing_boxing",
+    "sport_title": "Boxing",
+    "commence_time": "2026-11-20T18:00:00Z",
+    "home_team": "Sean Arkwright",
+    "away_team": "Jake Goodwin",
+    "bookmakers": [
+      {
+        "key": "virginbet",
+        "title": "Virgin Bet",
+        "last_update": "2026-11-19T23:20:41Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:41Z",
+            "outcomes": [
+              {
+                "name": "Jake Goodwin",
+                "price": 5.1
+              },
+              {
+                "name": "Sean Arkwright",
+                "price": 1.19
+              },
+              {
+                "name": "Draw",
+                "price": 19
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "grosvenor",
+        "title": "Grosvenor",
+        "last_update": "2026-11-19T23:20:11Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:11Z",
+            "outcomes": [
+              {
+                "name": "Jake Goodwin",
+                "price": 5.1
+              },
+              {
+                "name": "Sean Arkwright",
+                "price": 1.19
+              },
+              {
+                "name": "Draw",
+                "price": 19
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "livescorebet",
+        "title": "LiveScore Bet",
+        "last_update": "2026-11-19T23:20:58Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:57Z",
+            "outcomes": [
+              {
+                "name": "Jake Goodwin",
+                "price": 5.1
+              },
+              {
+                "name": "Sean Arkwright",
+                "price": 1.19
+              },
+              {
+                "name": "Draw",
+                "price": 19
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "paddypower",
+        "title": "Paddy Power",
+        "last_update": "2026-11-19T23:19:04Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:19:04Z",
+            "outcomes": [
+              {
+                "name": "Jake Goodwin",
+                "price": 4.5
+              },
+              {
+                "name": "Sean Arkwright",
+                "price": 1.17
+              },
+              {
+                "name": "Draw",
+                "price": 13
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "betfair_sb_uk",
+        "title": "Betfair Sportsbook",
+        "last_update": "2026-11-19T23:20:44Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:44Z",
+            "outcomes": [
+              {
+                "name": "Jake Goodwin",
+                "price": 4.5
+              },
+              {
+                "name": "Sean Arkwright",
+                "price": 1.17
+              },
+              {
+                "name": "Draw",
+                "price": 13
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "unibet_uk",
+        "title": "Unibet (UK)",
+        "last_update": "2026-11-19T23:20:11Z",
+        "markets": [
+          {
+            "key": "h2h",
+            "last_update": "2026-11-19T23:20:11Z",
+            "outcomes": [
+              {
+                "name": "Jake Goodwin",
+                "price": 4
+              },
+              {
+                "name": "Sean Arkwright",
+                "price": 1.2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
