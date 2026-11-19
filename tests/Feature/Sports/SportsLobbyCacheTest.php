@@ -16,10 +16,11 @@ test('a copy cached by an earlier release does not break the side menu', functio
     $this->get('/login')->assertOk();
 });
 
-test('a cached competition without a sport is skipped, not fatal', function () {
+test('a cached competition without a sport or region is skipped, not fatal', function () {
     Cache::put(SportsLobby::COMPETITIONS_KEY, [
         ['name' => 'Premier League', 'slug' => 'premier-league', 'count' => 3],
-        ['name' => 'NBA', 'slug' => 'nba', 'count' => 2, 'sport' => 'basketball', 'popular' => true],
+        ['name' => 'La Liga', 'slug' => 'la-liga', 'count' => 4, 'sport' => 'football', 'popular' => true],
+        ['name' => 'NBA', 'slug' => 'nba', 'count' => 2, 'sport' => 'basketball', 'popular' => true, 'region' => 'us', 'aliases' => ''],
     ], 60);
 
     expect(app(SportsLobby::class)->sports())->toBe([

@@ -2,6 +2,7 @@
 
 namespace App\Predict;
 
+use App\Livewire\Predict\Trending;
 use App\Predict\Data\Market;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
@@ -175,7 +176,7 @@ class Markets
             }
         }
 
-        $this->warm(['sort' => 'trending']);
+        $this->warm(Trending::FILTERS);
         // The landing hero's market slides (App\Games\HeroSlides::markets()) read this one from the cache only.
         $this->warm(['source' => 'custom', 'sort' => 'trending']);
     }

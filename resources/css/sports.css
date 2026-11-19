@@ -83,8 +83,6 @@
     .nt-jp-banner b { font-size: 17px; font-weight: 800; }
     .nt-jp-banner span span { font-size: 13px; color: var(--color-soft); }
     .nt-jp-banner .nt-btn { margin-left: auto; }
-    .nt-comp-chips .nt-chip { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
-    .nt-comp-chips .nt-chip span { color: var(--color-ash); font-size: 12px; }
 
     /* ── Match page and panel ──────────────────────────────── */
     .nt-match-details { display: grid; gap: 14px; }
@@ -339,7 +337,76 @@
     .nt-sportnav-sport small { font-size: 12px; color: var(--color-ash); }
     .nt-sportnav-sport:hover { border-color: var(--color-line-2); color: var(--color-ivory); }
     .nt-sportnav-sport[aria-current] { background: var(--color-felt-3); border-color: var(--color-line-2); color: var(--color-gold); }
-    .nt-sportnav-list { display: none; }
+    .nt-sportnav > .nt-sportnav-list { display: none; }
+
+    /* Narrow: one button that opens the league sheet. */
+    .nt-lp-trigger {
+        display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 8px 14px; text-align: left;
+        background: var(--color-felt-2); border: 1px solid var(--color-line); border-radius: var(--radius-control);
+        color: var(--color-ivory); transition: border-color .15s, background-color .15s;
+    }
+    .nt-lp-trigger:hover { border-color: var(--color-line-2); }
+    .nt-lp-trigger:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+    .nt-lp-trigger > svg { width: 20px; height: 20px; flex: none; color: var(--color-gold); }
+    .nt-lp-trigger > svg:last-of-type { width: 16px; height: 16px; margin-left: auto; color: var(--color-ash); }
+    .nt-lp-trigger .nt-lp-two { flex: 1; }
+
+    /* Round flags (public/images/flags), or a globe for a region without one. */
+    .nt-flag {
+        flex: none; display: inline-grid; place-items: center; width: var(--nt-flag, 20px); height: var(--nt-flag, 20px);
+        border-radius: 999px; overflow: hidden; background: var(--color-felt-3); box-shadow: 0 0 0 1px var(--color-line-2);
+        color: var(--color-ash);
+    }
+    .nt-flag img { width: 100%; height: 100%; object-fit: cover; }
+    .nt-flag svg { width: 72%; height: 72%; }
+
+    /* The league list itself: in the sidebar and in the sheet. */
+    .nt-lp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; min-width: 0; }
+    .nt-lp h3 { margin: 12px 8px 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ash); }
+    .nt-lp-browse, .nt-lp-results, .nt-lp-leagues { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; min-width: 0; }
+    .nt-lp-search {
+        position: relative; display: flex; align-items: center; margin-bottom: 6px;
+    }
+    .nt-lp-search svg { position: absolute; left: 12px; width: 16px; height: 16px; color: var(--color-ash); pointer-events: none; }
+    .nt-lp-search input {
+        width: 100%; min-width: 0; height: 40px; padding: 0 12px 0 36px; border-radius: var(--radius-control);
+        background: var(--color-felt-2); border: 1px solid var(--color-line); color: var(--color-ivory); font-size: 14px;
+    }
+    .nt-lp-search input::placeholder { color: var(--color-ash); }
+    .nt-lp-search input:focus { outline: none; border-color: var(--color-gold); }
+    .nt-lp-row {
+        display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 4px 10px; border-radius: 10px; cursor: pointer;
+        font-size: 14px; color: var(--color-soft); transition: background-color .15s, color .15s;
+    }
+    .nt-lp-row > svg { width: 16px; height: 16px; flex: none; color: var(--color-ash); }
+    .nt-lp-row > span:not(.nt-flag) { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nt-lp-row small { font-size: 12px; color: var(--color-ash); }
+    .nt-lp-row:hover { background: var(--color-felt-2); color: var(--color-ivory); }
+    .nt-lp-row:focus-visible { outline: 2px solid var(--color-gold); outline-offset: -2px; }
+    .nt-lp-row[aria-current='page'] { background: var(--color-felt-3); color: var(--color-gold); }
+    .nt-lp-row[aria-current='page'] > svg { color: var(--color-gold); }
+    .nt-lp-two { display: grid; line-height: 1.25; }
+    .nt-lp-two b, .nt-lp-two em { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .nt-lp-two b { font-weight: 600; }
+    .nt-lp-two em { font-style: normal; font-size: 12px; color: var(--color-ash); }
+    .nt-lp-country > summary { list-style: none; }
+    .nt-lp-country > summary::-webkit-details-marker { display: none; }
+    .nt-lp-country > summary > svg:last-child { transform: rotate(-90deg); transition: transform .2s; }
+    .nt-lp-country[open] > summary { color: var(--color-ivory); }
+    .nt-lp-country[open] > summary > svg:last-child { transform: none; color: var(--color-gold); }
+    .nt-lp-leagues { margin: 2px 0 6px 19px; padding-left: 11px; border-left: 1px solid var(--color-line); }
+    .nt-lp-leagues .nt-lp-row { min-height: 36px; }
+    .nt-lp-none { padding: 14px 10px; font-size: 14px; color: var(--color-ash); }
+
+    /* In the sheet: bigger tap targets, and a steady height so it doesn't jump while you type. */
+    .nt-sheet.nt-lp-sheet { min-height: min(85dvh, 720px); }
+    .nt-lp-sheet .nt-lp-search input { height: 44px; font-size: 16px; }
+    .nt-lp-sheet .nt-lp-row { min-height: 48px; }
+    .nt-lp-sheet .nt-lp-leagues .nt-lp-row { min-height: 44px; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nt-lp-country > summary > svg:last-child, .nt-lp-row, .nt-lp-trigger { transition: none; }
+    }
 
     @container sport-page (min-width: 860px) {
         .nt-sport-layout { grid-template-columns: 228px minmax(0, 1fr); align-items: start; }
@@ -350,19 +417,8 @@
         .nt-sportnav-sports { display: grid; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--color-line); }
         .nt-sportnav-sport { width: 100%; }
         .nt-sportnav-sport span { flex: 1; }
-        .nt-sportnav-chips { display: none; }
-        .nt-sportnav-list { display: grid; gap: 2px; }
-        .nt-sportnav-list h3 { margin: 12px 8px 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ash); }
-        .nt-sportnav-list a {
-            display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 10px; border-radius: 10px;
-            font-size: 14px; color: var(--color-soft); transition: background-color .15s, color .15s;
-        }
-        .nt-sportnav-list a svg { width: 16px; height: 16px; flex: none; color: var(--color-ash); }
-        .nt-sportnav-list a span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .nt-sportnav-list a small { font-size: 12px; color: var(--color-ash); }
-        .nt-sportnav-list a:hover { background: var(--color-felt-2); color: var(--color-ivory); }
-        .nt-sportnav-list a[aria-current='page'] { background: var(--color-felt-3); color: var(--color-gold); }
-        .nt-sportnav-list a[aria-current='page'] svg { color: var(--color-gold); }
+        .nt-sportnav-pick { display: none; }
+        .nt-sportnav > .nt-sportnav-list { display: grid; }
     }
     .nt-fx-line { font-size: 12px; color: var(--color-ash); text-align: center; }
 }

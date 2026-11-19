@@ -405,4 +405,100 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Countries and regions (sport page picker)
+    |--------------------------------------------------------------------------
+    |
+    | The Odds API has no country field, so App\Sportsbook\Support\CompetitionRegion works one out: `competitions`
+    | first (key => code), then the first word(s) of the key after the sport prefix matched against `countries`
+    | (soccer_spain_la_liga → spain → es; the match is the name in snake case, or `match` when the key spells it
+    | differently). Anything else is International: never hidden, never guessed from the name. A code with a file in
+    | public/images/flags/{code}.svg shows that flag; regions without one (International, Africa, South America) show
+    | a globe. `aliases` are extra words the picker's search matches (EPL, UCL...).
+    |
+    */
+
+    'regions' => [
+        // Shown before the countries, in this order.
+        'regions' => [
+            'world' => 'International',
+            'eu' => 'Europe',
+            'south-america' => 'South America',
+            'africa' => 'Africa',
+        ],
+        'countries' => [
+            'ar' => ['name' => 'Argentina'],
+            'at' => ['name' => 'Austria'],
+            'au' => ['name' => 'Australia'],
+            'be' => ['name' => 'Belgium'],
+            'br' => ['name' => 'Brazil'],
+            'ch' => ['name' => 'Switzerland'],
+            'cl' => ['name' => 'Chile'],
+            'cn' => ['name' => 'China'],
+            'de' => ['name' => 'Germany'],
+            'dk' => ['name' => 'Denmark'],
+            'es' => ['name' => 'Spain'],
+            'fi' => ['name' => 'Finland'],
+            'fr' => ['name' => 'France'],
+            'gb-eng' => ['name' => 'England'],
+            'gb-sct' => ['name' => 'Scotland'],
+            'gr' => ['name' => 'Greece'],
+            'ie' => ['name' => 'Ireland'],
+            'it' => ['name' => 'Italy'],
+            'jp' => ['name' => 'Japan'],
+            'kr' => ['name' => 'South Korea', 'match' => 'korea'],
+            'mx' => ['name' => 'Mexico'],
+            'nl' => ['name' => 'Netherlands'],
+            'no' => ['name' => 'Norway'],
+            'pl' => ['name' => 'Poland'],
+            'pt' => ['name' => 'Portugal'],
+            'ru' => ['name' => 'Russia'],
+            'sa' => ['name' => 'Saudi Arabia'],
+            'se' => ['name' => 'Sweden'],
+            'tr' => ['name' => 'Turkey'],
+            'us' => ['name' => 'USA'],
+        ],
+        // Keys the rule above can't place (no country word, or the wrong one).
+        'competitions' => [
+            'soccer_epl' => 'gb-eng',
+            'soccer_efl_champ' => 'gb-eng',
+            'soccer_fa_cup' => 'gb-eng',
+            'soccer_spl' => 'gb-sct',
+            'soccer_league_of_ireland' => 'ie',
+            'soccer_uefa_champs_league' => 'eu',
+            'soccer_uefa_champs_league_women' => 'eu',
+            'soccer_uefa_europa_league' => 'eu',
+            'soccer_uefa_europa_conference_league' => 'eu',
+            'soccer_uefa_nations_league' => 'eu',
+            'soccer_uefa_european_championship' => 'eu',
+            'soccer_uefa_euro_qualification' => 'eu',
+            'soccer_fifa_world_cup_qualifiers_europe' => 'eu',
+            'soccer_fifa_world_cup_qualifiers_south_america' => 'south-america',
+            'soccer_conmebol_copa_libertadores' => 'south-america',
+            'soccer_conmebol_copa_sudamericana' => 'south-america',
+            'soccer_africa_cup_of_nations' => 'africa',
+            'basketball_euroleague' => 'eu',
+            'basketball_nba' => 'us',
+            'basketball_ncaab' => 'us',
+            'basketball_wncaab' => 'us',
+            'basketball_nbl' => 'au',
+            'icehockey_nhl' => 'us',
+            'icehockey_ahl' => 'us',
+            'icehockey_liiga' => 'fi',
+            'icehockey_mestis' => 'fi',
+        ],
+        'aliases' => [
+            'soccer_epl' => 'premier league epl',
+            'soccer_efl_champ' => 'championship efl',
+            'soccer_uefa_champs_league' => 'ucl champions league',
+            'soccer_uefa_europa_league' => 'uel',
+            'soccer_uefa_europa_conference_league' => 'uecl conference',
+            'soccer_spain_la_liga' => 'laliga',
+            'soccer_germany_bundesliga' => 'buli',
+            'soccer_africa_cup_of_nations' => 'afcon',
+            'soccer_usa_mls' => 'major league soccer',
+        ],
+    ],
+
 ];
