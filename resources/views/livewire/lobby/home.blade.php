@@ -1,9 +1,10 @@
 {{--
-    The landing for guests and players (plan §2): the hero carousel, whose first slide is the Kadi table with today's
-    big match beside it, then the football list while sports is on (Phase 9), then the casino panel. The bet slip
+    The landing for guests and players (plan §2): the hero carousel (shuffled slides, so the page's one h1 is its own,
+    visually hidden), then the football list while sports is on (Phase 9), then the casino panel. The bet slip
     sits in the rail.
 --}}
 <div class="nt-lobby nt-view-in">
+    <h1 class="sr-only">Kadi Online: play Kadi, casino games, sports and predictions</h1>
     <x-lobby.hero :slides="$heroSlides" :$seats :big-match="$sports ? $bigMatch : null" :$also :also-today="$alsoIsToday" />
 
     @if ($sports)

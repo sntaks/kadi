@@ -12,6 +12,7 @@ use App\Sportsbook\Catalogue\SportsLobby;
 use App\Support\PredictPages;
 use App\Support\SportsPages;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Livewire;
@@ -20,6 +21,15 @@ use Livewire\Livewire;
 class Welcome extends Component
 {
     use TogglesFavourites;
+
+    /** Shuffles the hero's slides once per visit: Livewire re-renders (favourites, polls) keep the same slides. */
+    #[Locked]
+    public int $heroSeed = 0;
+
+    public function mount(): void
+    {
+        $this->heroSeed = random_int(1, PHP_INT_MAX);
+    }
 
     /**
      * The landing (plan §2, Phase 5): the Kadi table with real seat counts, then the casino panel
@@ -69,7 +79,7 @@ class Welcome extends Component
             'bigMatch' => $bigMatch,
             'also' => $beside['fixtures'],
             'alsoIsToday' => $beside['today'],
-            'heroSlides' => app(HeroSlides::class)->forLanding(bigMatch: $bigMatch !== null),
+            'heroSlides' => app(HeroSlides::class)->forLanding(bigMatch: $bigMatch !== null, seed: $this->heroSeed),
         ])
             ->layout('layouts.site', [
                 'shell' => 'app',

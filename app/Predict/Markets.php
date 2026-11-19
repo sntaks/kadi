@@ -116,7 +116,7 @@ class Markets
      * @param  array{source?: ?string, category?: ?string, sort?: ?string, page?: ?int}  $filters
      * @return array{markets: list<Market>, page: int, last_page: int, total: int, available: bool}
      */
-    public function list(array $filters = []): array
+    public function list(array $filters = [], bool $cachedOnly = false): array
     {
         $filters = $this->filters($filters);
         $key = 'predict.list.'.md5((string) json_encode($filters));
@@ -130,7 +130,7 @@ class Markets
             $this->prime(array_values(array_filter($response->data['items'], is_array(...))));
 
             return $response->data;
-        });
+        }, $cachedOnly);
 
         if ($data === null) {
             return ['markets' => [], 'page' => $filters['page'], 'last_page' => 1, 'total' => 0, 'available' => false];
@@ -176,12 +176,14 @@ class Markets
         }
 
         $this->warm(['sort' => 'trending']);
+        // The landing hero's market slides (App\Games\HeroSlides::markets()) read this one from the cache only.
+        $this->warm(['source' => 'custom', 'sort' => 'trending']);
     }
 
     /**
      * One market, or null when the API does not show it (unknown id, a draft) or cannot be read.
      */
-    public function find(int $id): ?Market
+    public function find(int $id, bool $cachedOnly = false): ?Market
     {
         $data = $this->remember("predict.market.{$id}", (int) config('predict.cache.market_seconds', 5), function () use ($id) {
             $response = $this->api->market($id);
@@ -191,7 +193,7 @@ class Markets
             }
 
             return $response->ok() && is_numeric($response->data['id'] ?? null) ? ['market' => $response->data] : null;
-        });
+        }, $cachedOnly);
 
         if (! is_array($data['market'] ?? null)) {
             return null;
@@ -308,10 +310,12 @@ class Markets
      * Fresh copy, else ask the API (unless backing off), else the last good copy. `$fetch` answers the data to keep,
      * or null on failure.
      *
+     * With $cachedOnly the API is never asked: whatever copy is cached, or null.
+     *
      * @param  callable(): ?array<string, mixed>  $fetch
      * @return array<string, mixed>|null
      */
-    private function remember(string $key, int $seconds, callable $fetch): ?array
+    private function remember(string $key, int $seconds, callable $fetch, bool $cachedOnly = false): ?array
     {
         $fresh = Cache::get("{$key}.fresh");
 
@@ -322,7 +326,7 @@ class Markets
         $stale = Cache::get("{$key}.stale");
         $stale = is_array($stale) ? $stale : null;
 
-        if (Cache::has("{$key}.backoff")) {
+        if ($cachedOnly || Cache::has("{$key}.backoff")) {
             return $stale;
         }
 

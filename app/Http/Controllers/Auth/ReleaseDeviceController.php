@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Activity\PlayerActivity;
 use App\Auth\SingleSession;
-use App\Listeners\EndGameSessionsOnLogout;
 use App\Mail\ReleaseDeviceEmail;
 use App\Models\User;
-use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -29,8 +27,7 @@ class ReleaseDeviceController
     /** Sends the link. Answers the same whatever happened, so it never says whether an account exists. */
     public function send(Request $request): RedirectResponse
     {
-        $userId = $request->session()->pull(SingleSession::PENDING_KEY);
-        $user = $userId !== null ? User::find($userId) : null;
+        $user = app(SingleSession::class)->pullPending($request->session())['user'] ?? null;
 
         if ($user !== null) {
             $nonce = Str::random(48);
@@ -53,12 +50,7 @@ class ReleaseDeviceController
             return redirect()->route('login')->withErrors(['email' => 'That link has expired or was already used. Try signing in again.']);
         }
 
-        app(SingleSession::class)->endOtherSessions($user);
-        $user->setRememberToken(Str::random(60));
-        $user->save();
-
-        // The released device is signed out, so its games and sports token end too, as on any logout.
-        app(EndGameSessionsOnLogout::class)->handle(new Logout('web', $user));
+        app(SingleSession::class)->releaseOtherDevices($user);
         app(PlayerActivity::class)->record('other_device_released', $user);
 
         return redirect()->route('login')->with('status', 'Your other device is signed out. You can sign in now.');

@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\GoogleLinkController;
 use App\Http\Controllers\Auth\NameUpdateController;
 use App\Http\Controllers\Auth\ReleaseDeviceController;
+use App\Http\Controllers\Auth\TakeOverDeviceController;
 use App\Http\Controllers\Dev\MailPreviewController;
 use App\Http\Controllers\Dev\UiGalleryController;
 use App\Http\Controllers\GameLaunchController;
@@ -45,6 +46,7 @@ use App\Sportsbook\Models\Competition;
 use Illuminate\Support\Facades\Route;
 
 // One signed-in device (App\Auth\SingleSession): a refused player can have the other device signed out by e-mail.
+Route::post('/login/take-over', TakeOverDeviceController::class)->middleware(['guest', 'throttle:6,1'])->name('login.take-over');
 Route::post('/login/release-device', [ReleaseDeviceController::class, 'send'])->middleware(['guest', 'throttle:6,1'])->name('login.release-device');
 Route::get('/login/release-device/{nonce}', [ReleaseDeviceController::class, 'confirm'])->middleware(['signed', 'throttle:6,1'])->name('login.release-device.confirm');
 

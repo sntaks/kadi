@@ -1,6 +1,7 @@
 <?php
 
 use App\Games\HeroSlides;
+use App\Predict\Markets;
 use App\Sportsbook\Enums\JackpotStatus;
 use App\Sportsbook\Support\Money;
 use Illuminate\Support\Facades\Date;
@@ -14,9 +15,14 @@ use Illuminate\Support\Facades\Http;
 const HERO_API = 'https://kadi-api.test/api/v1/';
 
 /** @param  list<string>  $slots  title keys; the API's codes carry the `slots_` prefix */
-function heroCatalogue(array $slots): array
+function heroCatalogue(array $slots, array $casino = []): array
 {
-    return ['data' => [
+    $extra = collect($casino)->map(fn (array $codes, string $game) => [
+        'code' => $game, 'name' => ucfirst($game), 'launch_url' => "https://{$game}.kadi.online", 'status' => 'active', 'sort_order' => 3,
+        'products' => array_map(fn (string $code) => ['code' => $code, 'name' => ucwords(str_replace('_', ' ', $code)), 'status' => 'active'], $codes),
+    ])->values()->all();
+
+    return ['data' => [...$extra,
         ['code' => 'kadi', 'name' => 'Kadi', 'launch_url' => 'https://play.kadi.online', 'status' => 'active', 'sort_order' => 1, 'products' => [
             ['code' => 'kadi', 'name' => 'Kadi', 'status' => 'active'],
         ]],
@@ -25,6 +31,19 @@ function heroCatalogue(array $slots): array
             $slots,
         )],
     ]];
+}
+
+/**
+ * A Local trending list for the market slides: one open market per [id, category, event].
+ *
+ * @param  list<array{0: int, 1: string, 2?: string|null}>  $markets
+ */
+function heroMarketList(array $markets): array
+{
+    $sample = predictFixture('markets-list')['data']['items'][0];
+    $items = array_map(fn (array $m) => [...$sample, 'id' => $m[0], 'category' => $m[1], 'question' => "Market {$m[0]}?", 'event' => isset($m[2]) ? ['title' => $m[2]] : null], $markets);
+
+    return ['success' => true, 'data' => ['items' => $items, 'pagination' => ['page' => 1, 'per_page' => 20, 'total' => count($items), 'last_page' => 1]]];
 }
 
 beforeEach(function () {
@@ -37,14 +56,18 @@ beforeEach(function () {
         'kadi.promotions.enabled' => true,
         'kadi.promotions.signup_bonus_amount' => 20,
         'kadi.referrals.enabled' => true,
+        'hero.max_slides' => 6,
     ]);
 
     $this->slots = ['pharaohs_fortune', 'crown_of_embers', 'berry_blast'];
+    $this->casino = [];
+    $this->marketList = heroMarketList([]);
 
     Http::preventStrayRequests();
     Http::fake(function ($request) {
         return match (true) {
-            $request->url() === HERO_API.'games' => Http::response(heroCatalogue($this->slots)),
+            $request->url() === HERO_API.'games' => Http::response(heroCatalogue($this->slots, $this->casino)),
+            str_starts_with($request->url(), HERO_API.'predict/markets') => Http::response($this->marketList),
             default => Http::response([], 200),
         };
     });
@@ -55,13 +78,12 @@ function heroKeys(): array
     return app(HeroSlides::class)->forLanding()->pluck('key')->all();
 }
 
-test('the Kadi slide is always first, even with every other gate off', function () {
+test('with every other gate off only the Kadi slide is left', function () {
     config([
         'platform.token_launch' => false,
         'platform.sports' => false,
         'kadi.promotions.enabled' => false,
         'kadi.referrals.enabled' => false,
-        'hero.slides' => array_values(array_filter(config('hero.slides'), fn ($s) => $s['kind'] !== 'install')),
     ]);
 
     expect(heroKeys())->toBe(['kadi']);
@@ -72,12 +94,16 @@ test('slides follow their switches', function (string $switch, string $slide) {
 
     config([$switch => false]);
 
-    expect(heroKeys())->not->toContain($slide)->and(heroKeys()[0])->toBe('kadi');
+    expect(heroKeys())->not->toContain($slide);
 })->with([
-    'welcome bonus' => ['kadi.promotions.enabled', 'welcome'],
     'invite & earn' => ['kadi.referrals.enabled', 'invite'],
     'slots' => ['platform.token_launch', 'slots'],
+    'slot jackpots' => ['platform.token_launch', 'slot-jackpots'],
 ]);
+
+test('the welcome bonus and install slides are gone', function () {
+    expect(collect(config('hero.slides'))->pluck('key'))->not->toContain('welcome')->not->toContain('install');
+});
 
 test('a games slide lists only titles the catalogue offers', function () {
     $this->slots = ['pharaohs_fortune', 'berry_blast'];
@@ -134,26 +160,166 @@ test('an unknown gate fails closed', function () {
     expect(heroKeys())->not->toContain('odd');
 });
 
-test('never more than max_slides, Kadi first', function () {
+test('never more than max_slides', function () {
     $extra = array_map(fn (int $i) => ['key' => "extra-{$i}", 'kind' => 'promo', 'label' => "Extra {$i}", 'title' => "Extra {$i}"], range(1, 5));
     config(['hero.slides' => [...config('hero.slides'), ...$extra], 'hero.max_slides' => 6]);
 
-    $keys = heroKeys();
-
-    expect($keys)->toHaveCount(6)->and($keys[0])->toBe('kadi');
+    expect(heroKeys())->toHaveCount(6)
+        ->and(app(HeroSlides::class)->forLanding(seed: 7)->pluck('key')->all())->toHaveCount(6);
 });
 
-test('the welcome title carries the configured amount', function () {
-    $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'welcome');
+test('a seed shuffles the live slides, the same way every time for the same seed', function () {
+    config(['hero.max_slides' => 20]);
+    $live = heroKeys();
+    $orders = collect(range(1, 40))->map(fn (int $seed) => app(HeroSlides::class)->forLanding(seed: $seed)->pluck('key')->all());
 
-    expect($slide->title)->toBe('KES 20 welcome bonus');
+    expect(app(HeroSlides::class)->forLanding(seed: 5)->pluck('key')->all())->toBe(app(HeroSlides::class)->forLanding(seed: 5)->pluck('key')->all())
+        ->and($orders->every(fn (array $keys) => collect($keys)->sort()->values()->all() === collect($live)->sort()->values()->all()))->toBeTrue()
+        ->and($orders->map(fn (array $keys) => $keys[0])->unique()->count())->toBeGreaterThan(1);
+});
+
+test('the Kadi slide can be left out when there are more live slides than room', function () {
+    $extra = array_map(fn (int $i) => ['key' => "extra-{$i}", 'kind' => 'promo', 'label' => "Extra {$i}", 'title' => "Extra {$i}"], range(1, 10));
+    config(['hero.slides' => [...config('hero.slides'), ...$extra], 'hero.max_slides' => 3]);
+
+    $withKadi = collect(range(1, 40))->filter(fn (int $seed) => app(HeroSlides::class)->forLanding(seed: $seed)->pluck('key')->contains('kadi'));
+
+    expect($withKadi->count())->toBeGreaterThan(0)->toBeLessThan(40);
+});
+
+test('the big match is always kept and never the first slide', function () {
+    $extra = array_map(fn (int $i) => ['key' => "extra-{$i}", 'kind' => 'promo', 'label' => "Extra {$i}", 'title' => "Extra {$i}"], range(1, 10));
+    config(['hero.slides' => [...config('hero.slides'), ...$extra], 'hero.max_slides' => 4]);
+
+    foreach (range(1, 40) as $seed) {
+        $keys = app(HeroSlides::class)->forLanding(bigMatch: true, seed: $seed)->pluck('key');
+
+        expect($keys->first())->not->toBe('football')->and($keys)->toContain('football');
+    }
+});
+
+test('casino slides stay away while the catalogue does not offer their game', function () {
+    expect(heroKeys())->not->toContain('scratch')->not->toContain('coinflip')->not->toContain('roulette');
+});
+
+test('casino slides carry the configured figures and their titles', function () {
+    $this->casino = ['scratch' => ['scratch_dragon', 'scratch_fruit'], 'coinflip' => ['coinflip_gold_rush'], 'roulette' => ['roulette_classic_black']];
+    $slides = app(HeroSlides::class)->forLanding()->keyBy('key');
+
+    expect($slides['scratch']->title)->toBe('KSh 1,000,000 is up for grabs')
+        ->and(collect($slides['scratch']->extra['titles'])->pluck('code')->all())->toBe(['scratch_dragon', 'scratch_fruit'])
+        ->and($slides['coinflip']->copy)->toContain('up to 30x your stake')
+        ->and($slides['coinflip']->ctaUrl)->toBe(route('casino', ['filter' => 'coin-flip']))
+        ->and($slides['roulette']->copy)->toContain('up to 35x your stake')
+        ->and($slides['roulette']->ctaUrl)->toBe(route('casino', ['filter' => 'roulette']));
+});
+
+test('a casino slide whose figure is not configured is dropped, never shown without it', function () {
+    $this->casino = ['coinflip' => ['coinflip_gold_rush']];
+    config(['games.games.coinflip.max_multiplier' => null]);
+
+    expect(heroKeys())->not->toContain('coinflip');
+});
+
+test('the slot jackpot slide lists the configured tiers while slots are offered', function () {
+    $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'slot-jackpots');
+
+    expect(collect($slide->extra['tiers'])->map(fn (array $t) => [$t['name'], $t['amount']])->all())
+        ->toBe([['Gold', 2_000_000], ['Silver', 300_000], ['Bronze', 60_000], ['Iron', 20_000]]);
+});
+
+test('the slot jackpot slide stays away while no slots are offered', function () {
+    $this->slots = [];
+
+    expect(heroKeys())->not->toContain('slot-jackpots');
+});
+
+describe('market slides', function () {
+    beforeEach(fn () => $this->travelTo(Date::parse('2026-11-15 09:00:00', 'UTC')));
+
+    test('read the cache only: with nothing cached there are none, and the API is not asked', function () {
+        expect(heroKeys())->not->toContain('market-1')->not->toContain('market-2');
+
+        Http::assertNotSent(fn ($request) => str_contains($request->url(), 'predict/'));
+    });
+
+    test('show the trending Local markets, politics first, one per event', function () {
+        $this->marketList = heroMarketList([[1, 'sport'], [2, 'politics', 'Election'], [3, 'politics', 'Election'], [4, 'politics']]);
+        app(Markets::class)->warmLobby();
+
+        $slides = app(HeroSlides::class)->forLanding()->keyBy('key');
+
+        expect($slides['market-1']->extra['market']->id)->toBe(2)
+            ->and($slides['market-1']->title)->toBe('Election')
+            ->and($slides['market-2']->extra['market']->id)->toBe(4)
+            ->and($slides['market-1']->ctaUrl)->toBe(route('predictions', ['source' => 'local']));
+    });
+
+    test('pinned markets come first', function () {
+        $this->marketList = heroMarketList([[1, 'sport'], [2, 'politics'], [3, 'politics']]);
+        app(Markets::class)->warmLobby();
+        config(['hero.markets' => [3]]);
+
+        expect(collect(app(HeroSlides::class)->markets())->pluck('id')->all())->toBe([3, 2]);
+    });
+
+    test('a market that is one choice of an event shows the event and every choice, likeliest first', function () {
+        $this->marketList = heroMarketList([[10, 'politics', 'Who wins?'], [11, 'politics', 'Who wins?'], [12, 'politics', 'Who wins?']]);
+        foreach ([[10, 0.2], [11, 0.5], [12, 0.3]] as $i => [$id, $p]) {
+            $this->marketList['data']['items'][$i]['odds']['yes_probability'] = $p;
+        }
+        app(Markets::class)->warmLobby();
+        config(['hero.markets' => [10]]);
+
+        $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'market-1');
+
+        expect($slide->title)->toBe('Who wins?')
+            ->and(collect($slide->extra['choices'])->pluck('id')->all())->toBe([11, 12, 10]);
+    });
+
+    test('the event slide renders every choice on the landing', function () {
+        $this->marketList = heroMarketList([[10, 'politics', 'Who wins?'], [11, 'politics', 'Who wins?'], [12, 'politics', 'Who wins?']]);
+        app(Markets::class)->warmLobby();
+        config(['hero.markets' => [10]]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        expect($html)->toContain('nt-hero-choices')->toContain('3 choices')
+            ->toContain('data-predict-market="10"')->toContain('data-predict-market="11"')->toContain('data-predict-market="12"');
+    });
+
+    test('closed markets are never shown', function () {
+        $this->marketList = heroMarketList([[1, 'politics']]);
+        $this->marketList['data']['items'][0]['status'] = 'resolved';
+        app(Markets::class)->warmLobby();
+
+        expect(app(HeroSlides::class)->markets())->toBe([]);
+    });
+
+    test('stay away while predictions are off', function () {
+        $this->marketList = heroMarketList([[1, 'politics'], [2, 'politics']]);
+        app(Markets::class)->warmLobby();
+        config(['platform.predictions' => false]);
+
+        expect(heroKeys())->not->toContain('market-1');
+    });
+
+    test('render the live market card on the landing', function () {
+        $this->marketList = heroMarketList([[41, 'politics'], [42, 'politics']]);
+        app(Markets::class)->warmLobby();
+        config(['hero.max_slides' => 20]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        expect($html)->toContain('data-slide="market-1"')->toContain('data-predict-market="41"')->toContain('Market 42?');
+    });
 });
 
 test('slides take their durations from config', function () {
     $slides = app(HeroSlides::class)->forLanding();
 
     expect($slides->first()->duration)->toBe(config('hero.slides.0.duration'))
-        ->and($slides->firstWhere('key', 'welcome')->duration)->toBe(config('hero.durations.default'));
+        ->and($slides->firstWhere('key', 'invite')->duration)->toBe(config('hero.durations.default'));
 });
 
 test('every hero image the config uses has been built', function () {
@@ -174,11 +340,28 @@ test('every hero image the config uses has been built', function () {
 
 // ─── On the landing ──────────────────────────────────────────────────────────
 
-test('the landing opens on the Kadi table, then the big match, each its own slide', function () {
+test('the landing shows the Kadi table and the big match, each its own slide, under one page h1', function () {
     $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
     pricedFixture(['home_team' => 'Liverpool', 'away_team' => 'Everton', 'kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
 
-    $this->get('/')->assertOk()->assertSeeInOrder(['data-hero', 'data-slide="kadi"', 'kadi-table-title', 'data-slide="football"', 'bigmatch-title', 'data-slide="welcome"'], false);
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toMatch('/data-slide="kadi".*kadi-table-title/s')->toMatch('/data-slide="football".*bigmatch-title/s')
+        ->and(substr_count($html, '<h1'))->toBe(1)
+        ->and($html)->toContain('<h1 class="sr-only">');
+});
+
+test('the landing opens on a different slide from visit to visit, but never on the big match', function () {
+    $this->travelTo(Date::parse('2026-11-07 06:00:00', 'UTC'));
+    pricedFixture(['kicks_off_at' => Date::parse('2026-11-07 15:00:00', 'UTC')]);
+
+    $firsts = collect(range(1, 15))->map(function () {
+        preg_match('/<article[^>]*data-slide="([^"]+)"/', $this->get('/')->getContent(), $m);
+
+        return $m[1];
+    });
+
+    expect($firsts->unique()->count())->toBeGreaterThan(1)->and($firsts)->not->toContain('football');
 });
 
 test('without a big match there is no football slide', function () {
@@ -213,7 +396,6 @@ test('every slide but the first is hidden and inert, and survives a Livewire re-
 test('one slide shows no carousel controls', function () {
     config([
         'platform.token_launch' => false, 'platform.sports' => false, 'kadi.promotions.enabled' => false, 'kadi.referrals.enabled' => false,
-        'hero.slides' => array_values(array_filter(config('hero.slides'), fn ($s) => $s['kind'] !== 'install')),
     ]);
 
     $html = $this->get('/')->assertOk()->getContent();
@@ -233,6 +415,7 @@ test('the hero has no visible controls at any width, only the hidden autoplay cl
 });
 
 test('the Kadi slide shows the published jackpot prizes, the same figures as the games guide', function () {
+    config(['games.games.slots.jackpots' => []]);
     $gold = config('games.games.kadi.jackpots.gold');
     $html = $this->get('/')->assertOk()->getContent();
 
@@ -256,7 +439,7 @@ test('the Kadi slide shows the published jackpot prizes, the same figures as the
 });
 
 test('without a configured jackpot the Kadi slide shows no prize pool', function () {
-    config(['games.games.kadi.hero_jackpot' => null]);
+    config(['games.games.kadi.hero_jackpot' => null, 'games.games.slots.jackpots' => []]);
 
     expect($this->get('/')->assertOk()->getContent())->not->toContain('data-prize-pool');
 });
@@ -295,8 +478,15 @@ test('the slider script survives a Livewire re-render', function () {
     expect($html)->toMatch('/<section[^>]*data-hero[^>]*x-data="heroSlider"[^>]*wire:ignore\.self/s');
 });
 
+test('the slot jackpot slide shows each tier with its own colour and icon', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    expect($html)->toContain('nt-hero-tiers')->toContain('data-tone="iron"')
+        ->toContain('KSh 2,000,000')->toContain('KSh 300,000')->toContain('KSh 60,000')->toContain('KSh 20,000');
+});
+
 test('the football slide follows the big match', function () {
-    expect(app(HeroSlides::class)->forLanding(bigMatch: true)->pluck('key')->take(2)->all())->toBe(['kadi', 'football'])
+    expect(app(HeroSlides::class)->forLanding(bigMatch: true)->pluck('key')->all())->toContain('football')
         ->and(heroKeys())->not->toContain('football');
 
     config(['platform.sports' => false]);

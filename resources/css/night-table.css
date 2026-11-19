@@ -33,6 +33,10 @@
     --color-medal-silver: #c0c0c0;
     --color-medal-bronze: #cd7f32;
     --color-medal-blue: #60a5fa;
+    --color-medal-iron: #8a9199;
+    /* Scrollbars: a thin neutral thumb on a transparent track (gold-tinted on hover). */
+    --color-scrollbar: #4a453a;
+    --color-scrollbar-hover: #7a6a3f;
 
     --font-card: 'Cinzel', Georgia, serif;
 
@@ -44,6 +48,21 @@
     --shadow-lift: 0 18px 40px rgb(0 0 0 / 0.55);
 
     --ease-table: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Thin scrollbars everywhere. Strips that hide theirs (chips, tabs, tile rows) keep `scrollbar-width: none`:
+   component classes win over this base layer. The standard properties cover Firefox and Chrome 121+; the
+   ::-webkit-scrollbar rules are for Safari. */
+@layer base {
+    * { scrollbar-width: thin; scrollbar-color: var(--color-scrollbar) transparent; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--color-scrollbar); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color-scrollbar-hover); }
+
+    @media (max-width: 767px) {
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+    }
 }
 
 @layer components {

@@ -7,13 +7,20 @@
 <div class="grid gap-4">
     @if (session('status') && in_array(session('signin_form'), [null, 'login'], true))<p class="nt-ok" role="status">{{ session('status') }}</p>@endif
 
-    {{-- Refused by the one-device rule (App\Auth\SingleSession): offer the e-mailed link that signs the other device out. --}}
+    {{-- Refused by the one-device rule (App\Auth\SingleSession): offer to sign the other device out right here (the
+         player has just passed the sign-in checks), or the e-mailed link as a fallback. --}}
     @if (session()->has(\App\Auth\SingleSession::PENDING_KEY))
-        <form method="POST" action="{{ route('login.release-device') }}" class="grid gap-2 rounded-panel border border-line p-3" data-test="release-device">
-            @csrf
-            <p class="m-0 text-sm text-soft">Lost that device, or can't reach it? We'll e-mail you a link that signs it out.</p>
-            <x-ui.button type="submit" variant="ghost" block>E-mail me a sign-out link</x-ui.button>
-        </form>
+        <div class="grid gap-2 rounded-panel border border-line p-3">
+            <form method="POST" action="{{ route('login.take-over') }}" class="grid gap-2" data-test="take-over-device">
+                @csrf
+                <p class="m-0 text-sm text-soft">Not using that device any more? Sign it out and carry on here.</p>
+                <x-ui.button type="submit" block>Sign out the other device and play here</x-ui.button>
+            </form>
+            <form method="POST" action="{{ route('login.release-device') }}" data-test="release-device">
+                @csrf
+                <x-ui.button type="submit" variant="ghost" size="sm" block>Or e-mail me a sign-out link</x-ui.button>
+            </form>
+        </div>
     @endif
 
     <x-auth.google-button :return-to="$returnTo" />

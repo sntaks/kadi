@@ -288,8 +288,9 @@ test('one worker tick follows the feed and keeps the lobby lists warm', function
     $this->artisan('predict:feed', ['--once' => true])->assertSuccessful();
 
     expect(app(MarketFeed::class)->live(7))->not->toBeNull();
-    // Every category (and All) times both sections, default sort, plus the landing's trending shelf.
-    $lists = 2 * (1 + count(config('predict.categories'))) + 1;
+    // Every category (and All) times both sections, default sort, plus the landing's trending shelf and the hero's
+    // trending Local markets.
+    $lists = 2 * (1 + count(config('predict.categories'))) + 2;
     Http::assertSentCount(1 + $lists);
 
     // Still fresh: the next tick asks for no list.
