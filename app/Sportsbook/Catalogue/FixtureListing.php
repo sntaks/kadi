@@ -41,15 +41,36 @@ class FixtureListing
      */
     public static function listMarkets(?string $sport): array
     {
-        return self::isTwoWay($sport)
-            ? ['h2h' => 'Winner', 'totals' => SportProfile::find((string) $sport)->totalsLabel ?? 'Total goals']
-            : self::LIST_MARKETS;
+        $profile = $sport !== null ? SportProfile::find($sport) : null;
+
+        // Only football derives double chance and both teams to score; other sports list their own feed markets.
+        if ($profile === null || $profile->derivedMarkets) {
+            return self::LIST_MARKETS;
+        }
+
+        $markets = ['h2h' => $profile->hasDrawAnywhere() ? '1X2' : 'Winner'];
+
+        if (in_array(MarketType::Totals, $profile->markets, true)) {
+            $markets['totals'] = $profile->totalsLabel;
+        }
+
+        return $markets;
     }
 
-    /** Whether a sport's list shows a two-way Winner (no draw). */
+    /**
+     * Whether a sport's list shows a two-way Winner (no draw). A two-way sport with some drawn competitions (Test
+     * cricket) lists 1 X 2 sport-wide, where its two-way rows leave X empty; a competition's own page asks
+     * `isTwoWayCompetition()`.
+     */
     public static function isTwoWay(?string $sport): bool
     {
-        return $sport !== null && ! (SportProfile::find($sport)->hasDraw ?? true);
+        return $sport !== null && ! (SportProfile::find($sport)?->hasDrawAnywhere() ?? true);
+    }
+
+    /** Whether one competition's match result is a two-way Winner. */
+    public static function isTwoWayCompetition(Competition $competition): bool
+    {
+        return ! SportProfile::forCompetition($competition)->hasDraw;
     }
 
     /**

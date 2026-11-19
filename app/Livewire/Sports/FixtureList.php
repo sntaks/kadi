@@ -106,7 +106,8 @@ class FixtureList extends Component
     public function render(): View
     {
         $tz = (string) config('sportsbook.timezone');
-        $twoWay = FixtureListing::isTwoWay($this->sport);
+        // A competition page follows its own match result (a T20's Winner, a Test's 1X2); a sport list its sport's.
+        $twoWay = $this->competition !== null ? FixtureListing::isTwoWayCompetition($this->competition) : FixtureListing::isTwoWay($this->sport);
 
         return view('livewire.sports.fixture-list', [
             'groups' => $this->fixtures->groupBy(fn (Fixture $fixture): string => $fixture->kicks_off_at->timezone($tz)->toDateString().'|'.$fixture->competition->name),

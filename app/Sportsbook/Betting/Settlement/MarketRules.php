@@ -86,7 +86,7 @@ class MarketRules
     {
         $leg->loadMissing('fixture.competition.sport');
 
-        return SportProfile::forSport($leg->fixture?->competition?->sport)->hasDraw;
+        return SportProfile::forCompetition($leg->fixture?->competition)->hasDraw;
     }
 
     /**

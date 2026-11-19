@@ -2,6 +2,7 @@
 
 namespace App\Sportsbook\Models;
 
+use App\Sportsbook\Support\SportProfile;
 use Carbon\CarbonImmutable;
 use Database\Factories\Sportsbook\Models\CompetitionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -50,9 +51,11 @@ class Competition extends SportsbookModel
     protected static function booted(): void
     {
         static::creating(function (self $competition): void {
-            // Competitions listed as manual are settled from the admin panel instead of the scores feed.
+            // Competitions listed as manual, and every competition of a sport set to settle by hand until its feed
+            // results are checked (`auto_settle: false`), are settled from the admin panel instead of the scores feed.
             if ($competition->getAttribute('auto_settle') === null) {
-                $competition->auto_settle = ! in_array($competition->odds_api_key, (array) config('sportsbook.settlement.manual_competitions'), true);
+                $competition->auto_settle = ! in_array($competition->odds_api_key, (array) config('sportsbook.settlement.manual_competitions'), true)
+                    && (SportProfile::forCompetitionKey((string) $competition->odds_api_key)->autoSettle ?? true);
             }
 
             if (filled($competition->slug)) {
