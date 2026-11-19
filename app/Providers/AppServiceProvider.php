@@ -13,6 +13,7 @@ use App\Listeners\SendSecurityNotification;
 use App\Models\User;
 use App\Services\BugsApiService;
 use App\Services\KadiApiService;
+use App\Session\DeviceSessionHandler;
 use App\Sportsbook\Betting\ApiSportsWallet;
 use App\Sportsbook\Betting\SportsWallet;
 use App\Sportsbook\OddsApi\CreditBudget;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -83,6 +85,15 @@ class AppServiceProvider extends ServiceProvider
     /** The web guard: Laravel's session guard plus the one-device rule (App\Auth\SingleSession). */
     private function configureSingleSessionGuard(): void
     {
+        // The database session driver also records the browser's device id (sessions.device_id), so the one-device
+        // rule can tell the same device signing in again from another one.
+        Session::extend('database', fn (Application $app) => new DeviceSessionHandler(
+            $app['db']->connection($app['config']->get('session.connection')),
+            $app['config']->get('session.table'),
+            $app['config']->get('session.lifetime'),
+            $app,
+        ));
+
         Auth::extend('single-session', function (Application $app, string $name, array $config) {
             $guard = new SingleSessionGuard(
                 $name,

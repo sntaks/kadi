@@ -92,6 +92,8 @@ document.addEventListener('alpine:init', () => {
             this.slides().forEach((slide, i) => this.rest(slide, i === this.index));
             this.$root.classList.add('is-armed');
             this.sync();
+            // The slide showing and the next one: the page may open on any slide (they are shuffled per visit).
+            this.warm(this.slides()[this.index]);
             this.warm(this.slides()[this.step(1)]);
             this.startTimer();
         },
@@ -109,6 +111,8 @@ document.addEventListener('alpine:init', () => {
             }
 
             slides.forEach((slide, i) => this.rest(slide, i === this.index));
+            this.warm(slides[this.index]);
+            this.warm(slides[this.step(1)]);
             this.sync();
             this.startTimer();
         },
