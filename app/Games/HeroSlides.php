@@ -276,7 +276,43 @@ class HeroSlides
     {
         $market = $this->markets()[(int) ($slide['slot'] ?? 0)] ?? null;
 
-        return $market === null ? null : $this->make($slide, ['question' => $market->question], null, ['market' => $market]);
+        if ($market === null) {
+            return null;
+        }
+
+        // A market that is one choice of an event ("Who will win…?", one market per candidate) shows the whole event:
+        // its question as the headline and every choice on the slide.
+        $choices = $this->eventChoices($market);
+
+        return $choices === []
+            ? $this->make($slide, ['question' => $market->question], null, ['market' => $market])
+            : $this->make($slide, ['question' => (string) $market->eventTitle], null, ['market' => $market, 'choices' => $choices]);
+    }
+
+    /**
+     * Every open choice of the market's event, likeliest first, from the cached Local lists only (its category's, all
+     * Local, trending Local: the ones Markets::warmLobby() keeps warm). Empty for a market without an event, or when
+     * fewer than two choices are cached.
+     *
+     * @return list<Market>
+     */
+    private function eventChoices(Market $market): array
+    {
+        if ($market->eventTitle === null) {
+            return [];
+        }
+
+        $now = Date::now();
+        $lists = [['source' => 'custom', 'category' => $market->category], ['source' => 'custom'], ['source' => 'custom', 'sort' => 'trending']];
+
+        $choices = collect($lists)
+            ->flatMap(fn (array $filters) => $this->markets->list(array_filter($filters), cachedOnly: true)['markets'])
+            ->filter(fn (Market $choice) => $choice->eventTitle === $market->eventTitle && $choice->sideAvailable('yes', $now) && ! $choice->odds?->paysBelowStake('yes'))
+            ->unique(fn (Market $choice) => $choice->id)
+            ->sortByDesc(fn (Market $choice) => $choice->odds->yesProbability ?? -1)
+            ->values();
+
+        return $choices->count() >= 2 ? $choices->all() : [];
     }
 
     /** @return Collection<int, GameTitle> */

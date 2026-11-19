@@ -250,7 +250,7 @@ describe('market slides', function () {
         $slides = app(HeroSlides::class)->forLanding()->keyBy('key');
 
         expect($slides['market-1']->extra['market']->id)->toBe(2)
-            ->and($slides['market-1']->title)->toBe('Market 2?')
+            ->and($slides['market-1']->title)->toBe('Election')
             ->and($slides['market-2']->extra['market']->id)->toBe(4)
             ->and($slides['market-1']->ctaUrl)->toBe(route('predictions', ['source' => 'local']));
     });
@@ -261,6 +261,31 @@ describe('market slides', function () {
         config(['hero.markets' => [3]]);
 
         expect(collect(app(HeroSlides::class)->markets())->pluck('id')->all())->toBe([3, 2]);
+    });
+
+    test('a market that is one choice of an event shows the event and every choice, likeliest first', function () {
+        $this->marketList = heroMarketList([[10, 'politics', 'Who wins?'], [11, 'politics', 'Who wins?'], [12, 'politics', 'Who wins?']]);
+        foreach ([[10, 0.2], [11, 0.5], [12, 0.3]] as $i => [$id, $p]) {
+            $this->marketList['data']['items'][$i]['odds']['yes_probability'] = $p;
+        }
+        app(Markets::class)->warmLobby();
+        config(['hero.markets' => [10]]);
+
+        $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'market-1');
+
+        expect($slide->title)->toBe('Who wins?')
+            ->and(collect($slide->extra['choices'])->pluck('id')->all())->toBe([11, 12, 10]);
+    });
+
+    test('the event slide renders every choice on the landing', function () {
+        $this->marketList = heroMarketList([[10, 'politics', 'Who wins?'], [11, 'politics', 'Who wins?'], [12, 'politics', 'Who wins?']]);
+        app(Markets::class)->warmLobby();
+        config(['hero.markets' => [10]]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        expect($html)->toContain('nt-hero-choices')->toContain('3 choices')
+            ->toContain('data-predict-market="10"')->toContain('data-predict-market="11"')->toContain('data-predict-market="12"');
     });
 
     test('closed markets are never shown', function () {

@@ -63,9 +63,25 @@
     @endif
 
     {{-- A Local prediction market (App\Games\HeroSlides::markets()), live like the lobby's cards. --}}
+    {{-- An event's market (one per candidate) lists every choice: its chance and what Yes pays, all on the slide. --}}
     @if ($slide->kind === 'market')
         <div class="nt-hero-market" data-layer="card" style="--i: 0" data-predict-live>
-            <x-predict.market-card :market="$slide->extra['market']" :now="now()" />
+            @if ($choices = $slide->extra['choices'] ?? null)
+                @php $labels = \App\Predict\Markets::outcomeLabels($choices); @endphp
+                <article class="nt-pm-card nt-hero-choices" data-predict-event aria-label="{{ $slide->title }}">
+                    <ul class="nt-pm-rows">
+                        @foreach ($choices as $choice)
+                            <x-predict.event-row :market="$choice" :now="now()" :label="$labels[$choice->id] ?? null" />
+                        @endforeach
+                    </ul>
+                    <footer class="nt-pm-card-foot">
+                        <span class="nt-num">{{ count($choices) }} choices</span>
+                        <span class="nt-pm-left nt-num">{{ \App\Predict\Format::timeLeft($choices[0]->bettingClosesAt, now()) ?? 'Closed' }}</span>
+                    </footer>
+                </article>
+            @else
+                <x-predict.market-card :market="$slide->extra['market']" :now="now()" />
+            @endif
         </div>
     @endif
 
