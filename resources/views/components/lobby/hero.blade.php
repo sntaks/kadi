@@ -1,6 +1,6 @@
 {{--
-    The landing hero carousel, at every width. Slides come from App\Games\HeroSlides; the first is always the Kadi
-    table, then today's big match while sports is on. Below 768px the big match (data-below) leaves the rotation and
+    The landing hero carousel, at every width. Slides come from App\Games\HeroSlides, shuffled per visit (never
+    opening on the big match). Below 768px the big match (data-below) leaves the rotation and
     shows under the carousel. It never gets `hidden` (Tailwind's base [hidden] rule is !important, so nothing could
     show it again): hero.css hides it from 768px until the script arms.
 
@@ -18,7 +18,7 @@
         @foreach ($slides as $slide)
             <article class="nt-hero-slide" id="nt-hero-{{ $slide->key }}" data-slide="{{ $slide->key }}" data-kind="{{ $slide->kind }}"
                      data-transition="{{ $slide->transition }}" data-duration="{{ $slide->duration }}" data-label="{{ $slide->label }}"
-                     data-state="{{ $loop->first ? 'active' : 'idle' }}" @if ($slide->kind === 'install') data-requires-install @endif
+                     data-state="{{ $loop->first ? 'active' : 'idle' }}"
                      role="group" aria-roledescription="slide" aria-label="{{ $loop->iteration }} of {{ $count }}: {{ $slide->label }}"
                      @if ($below = $slide->kind === 'match') data-below @endif
                      wire:key="hero-{{ $slide->key }}" wire:ignore.self @unless ($loop->first || $below) hidden inert @endunless>

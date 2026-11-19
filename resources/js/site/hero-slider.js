@@ -34,7 +34,6 @@ document.addEventListener('alpine:init', () => {
 
             const root = this.$root;
             const stage = root.querySelector('[data-hero-stage]');
-            root.addEventListener('click', (e) => this.onClick(e));
             root.addEventListener('keydown', (e) => this.onKey(e));
             root.addEventListener('animationend', (e) => {
                 if (e.animationName === 'nt-hero-timer' && !this.stopped) this.next();
@@ -60,18 +59,15 @@ document.addEventListener('alpine:init', () => {
             this.wide.removeEventListener('change', this.onWide);
             document.removeEventListener('visibilitychange', this.onVisibility);
             this.seen?.disconnect();
-            clearTimeout(this.settle);
             clearTimeout(this.done);
             cancelAnimationFrame(this.frame);
         },
 
         slides() { return [...this.$root.querySelectorAll('[data-slide]')]; },
 
-        // The install slide only counts on a device that can install the app; the big match slide only from 768px.
+        // The big match slide only counts from 768px.
         available(slide) {
-            return !!slide
-                && (!slide.hasAttribute('data-requires-install') || !!window.Alpine.store('pwaInstall')?.visible)
-                && !(slide.hasAttribute('data-below') && this.below());
+            return !!slide && !(slide.hasAttribute('data-below') && this.below());
         },
 
         // Phones: the big match sits under the carousel, visible and usable, outside the rotation.
@@ -98,8 +94,6 @@ document.addEventListener('alpine:init', () => {
             this.sync();
             this.warm(this.slides()[this.step(1)]);
             this.startTimer();
-            // The install store settles a few seconds after load (pwa/install.js): look again then.
-            this.settle = setTimeout(() => this.sync(), 3500);
         },
 
         // Crossing 768px: the big match joins or leaves the rotation. Leaving it while on it goes to the first slide.
@@ -247,10 +241,6 @@ document.addEventListener('alpine:init', () => {
         announce(slide) {
             const live = this.$root.querySelector('[data-hero-live]');
             if (live) live.textContent = this.stopped ? slide.getAttribute('aria-label') : '';
-        },
-
-        onClick(e) {
-            if (e.target.closest('[data-hero-install]')) window.Alpine.store('pwaInstall')?.activate();
         },
 
         onKey(e) {

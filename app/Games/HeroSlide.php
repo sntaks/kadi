@@ -5,10 +5,11 @@ namespace App\Games;
 /**
  * One slide of the landing hero, resolved by HeroSlides from config/hero.php.
  *
- * `kind` is kadi, match, promo, games, jackpot or install. `art` lists the built images
+ * `kind` is kadi, match, promo, games, casino, tiers, market or jackpot. `art` lists the built images
  * (`src` the largest, `srcset` every width, `w`/`h` of the largest, `role` bg, card or object; game cards add `alt`
  * and `href`, their game page or null).
- * `extra` holds per-kind data: `titles` (list<GameTitle>) for games, `prize` (cents) and `closesAt` for jackpot, and
+ * `extra` holds per-kind data: `titles` (list<GameTitle>) for games and casino, `tiers` (config rows) for tiers, `market`
+ * (App\Predict\Data\Market) for market, `prize` (cents) and `closesAt` for jackpot, and
  * `needsAccount` for every slide (its CTA is an account-only page).
  */
 final readonly class HeroSlide

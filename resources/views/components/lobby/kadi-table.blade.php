@@ -20,7 +20,7 @@
             @if ($seats && $seats['total'] > 0)
                 <div class="nt-live"><i aria-hidden="true"></i><span class="nt-num">{{ number_format($seats['total']) }} {{ Str::plural('player', $seats['total']) }} at the Kadi tables now</span></div>
             @endif
-            <h1 id="kadi-table-title" class="nt-table-head">Fortune Favors the Bold</h1>
+            <h2 id="kadi-table-title" class="nt-table-head">Fortune Favors the Bold</h2>
             <p>Kenya's card game, head to head for real money. Sit down at a single game, join a tournament or chase a jackpot.</p>
             @if ($seats)
                 <dl class="nt-seats" aria-label="Players at the Kadi tables now">

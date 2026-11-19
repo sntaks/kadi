@@ -83,6 +83,14 @@ return [
             'titles' => true,
             'tagline' => 'Themed slots, one wallet.',
             'artwork' => 'games/slots_games/{code}.webp',
+            // The slot jackpot tiers (KSh) the landing hero's slot jackpot slide shows: the business's published
+            // figures, the one copy. Icon is a hugeicons name; tone a --color-medal-* token (gold uses gold-2).
+            'jackpots' => [
+                ['name' => 'Gold', 'amount' => 2_000_000, 'icon' => 'crown', 'tone' => 'gold'],
+                ['name' => 'Silver', 'amount' => 300_000, 'icon' => 'diamond-02', 'tone' => 'silver'],
+                ['name' => 'Bronze', 'amount' => 60_000, 'icon' => 'gold-ingots', 'tone' => 'bronze'],
+                ['name' => 'Iron', 'amount' => 20_000, 'icon' => 'anvil', 'tone' => 'iron'],
+            ],
             /*
             | Titles taken off the site by key (the code without `slots_`): no tile, page or launch,
             | whatever the API says. It can only hide titles, never add one. Favourites are kept.
@@ -121,6 +129,8 @@ return [
         'scratch' => [
             'titles' => true,
             'tagline' => 'Scratch the foil, see the prize.',
+            // The top prize the landing hero's scratch slide advertises (KSh, the business's published figure).
+            'hero_prize' => 1_000_000,
             'artwork_map' => [
                 'dragon' => 'games/scratch_games/dragons-hoard.png',
                 'enchanted' => 'games/scratch_games/enchanted-forest.png',
@@ -154,6 +164,8 @@ return [
             // which then appear without a code change. No artwork yet, so the plain fallback tile.
             'titles' => true,
             'tagline' => 'Call it: heads or tails.',
+            // The most a win pays, as a multiple of the stake (the landing hero's "up to 30x").
+            'max_multiplier' => 30,
             'artwork_map' => [
                 'gold_rush' => 'games/coin_flip_games/gold_rush.png',
             ],
@@ -163,6 +175,8 @@ return [
             // One tile and game page per product, like Coin Flip. No artwork yet, so the plain fallback tile.
             'titles' => true,
             'tagline' => 'Place your chips, watch the wheel.',
+            // The most a win pays, as a multiple of the stake (a straight-up number, the landing hero's "up to 35x").
+            'max_multiplier' => 35,
             'artwork_map' => [
                 'classic_black' => 'games/roulette_games/classic_black.png',
             ],

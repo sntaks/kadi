@@ -25,6 +25,10 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         config(['games.games.slots.hidden' => [], 'games.games.scratch.hidden' => []]);
+
+        // The landing shows a random max_slides of its live hero slides; with room for all of them, landing tests never
+        // depend on which were drawn. HeroSlidesTest sets its own cap to test the draw.
+        config(['hero.max_slides' => 50]);
     }
 
     protected function skipUnlessFortifyHas(string $feature, ?string $message = null): void

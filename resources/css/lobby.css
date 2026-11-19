@@ -22,7 +22,7 @@
     .nt-table .nt-live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 13px; color: var(--color-soft); }
     .nt-table .nt-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--color-win); }
     @media (prefers-reduced-motion: no-preference) { .nt-table .nt-live i { animation: nt-pulse 2s ease-in-out infinite; } }
-    .nt-table h1 { margin: 0 0 10px; max-width: 11ch; font-size: clamp(30px, 3.1vw, 46px); font-weight: 800; line-height: 1.02; letter-spacing: -.01em; color: var(--color-ivory); }
+    .nt-table .nt-table-head { margin: 0 0 10px; max-width: 11ch; font-size: clamp(30px, 3.1vw, 46px); font-weight: 800; line-height: 1.02; letter-spacing: -.01em; color: var(--color-ivory); }
     .nt-table p { margin: 0 0 20px; max-width: 38ch; color: var(--color-soft); }
     .nt-seats { display: flex; flex-wrap: wrap; gap: 26px; margin: 0 0 22px; }
     .nt-seats b { display: block; font-size: 26px; font-weight: 800; line-height: 1.1; color: var(--color-gold); }
@@ -47,7 +47,7 @@
         .nt-table .nt-hand { right: 6%; transform: translateY(-50%); }
     }
 
-    .nt-table h1.nt-table-head { color: var(--color-gold); text-wrap: balance; }
+    .nt-table .nt-table-head { color: var(--color-gold); text-wrap: balance; }
 
     /*
      * The prize pool, after the old site's: a warm gold-tinted panel, a medal per place in its own colour with a soft
@@ -79,6 +79,7 @@
     .nt-prize-row[data-tone="silver"] { --tone: var(--color-medal-silver); }
     .nt-prize-row[data-tone="bronze"] { --tone: var(--color-medal-bronze); }
     .nt-prize-row[data-tone="blue"] { --tone: var(--color-medal-blue); }
+    .nt-prize-row[data-tone="iron"] { --tone: var(--color-medal-iron); }
     .nt-prize-row dt {
         display: flex; align-items: center; gap: 10px; min-width: 0;
         font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: color-mix(in srgb, var(--tone) 72%, transparent);

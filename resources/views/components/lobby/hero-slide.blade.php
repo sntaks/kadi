@@ -1,5 +1,6 @@
 {{--
-    One config slide of the landing hero (App\Games\HeroSlide): background, art layers, then the copy. Every layer
+    One config slide of the landing hero (App\Games\HeroSlide): background, art layers, then the copy; tiers slides add
+    a prize table and market slides a live market card. Every layer
     carries data-layer and a stagger index (--i) for its entrance (resources/css/hero.css). Images start as a 1x1
     placeholder with data-src/data-srcset: the slider script loads them only when their slide is next or showing.
 --}}
@@ -38,9 +39,7 @@
             <p class="nt-hero-text" data-layer="copy" style="--i: 2">{{ $slide->copy }}</p>
         @endif
 
-        @if ($slide->kind === 'install')
-            <x-ui.button size="lg" data-hero-install data-layer="cta" style="--i: 3">Install the app</x-ui.button>
-        @elseif ($slide->ctaUrl)
+        @if ($slide->ctaUrl)
             @if ($needsAccount)
                 <x-ui.button size="lg" :href="$slide->ctaUrl" data-needs-account data-layer="cta" style="--i: 3">{{ $slide->ctaLabel }}</x-ui.button>
             @else
@@ -48,6 +47,27 @@
             @endif
         @endif
     </div>
+
+    {{-- Slot jackpot tiers: the Kadi prize pool's table (lobby.css .nt-prize), one medal colour and icon per tier. --}}
+    @if ($slide->kind === 'tiers')
+        <aside class="nt-prize nt-hero-tiers" data-layer="card" style="--i: 0" aria-label="{{ $slide->label }}" data-prize-pool>
+            <dl class="nt-prize-rows" x-data="prizeCount">
+                @foreach ($slide->extra['tiers'] as $tier)
+                    <div @class(['nt-prize-row', 'is-top' => $loop->first]) data-tone="{{ $tier['tone'] ?? 'gold' }}">
+                        <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.($tier['icon'] ?? 'award-01'))</span>{{ $tier['name'] }}</dt>
+                        <dd class="nt-num" data-count-to="{{ $tier['amount'] }}" data-count-final="KSh {{ number_format($tier['amount']) }}">KSh {{ number_format($tier['amount']) }}</dd>
+                    </div>
+                @endforeach
+            </dl>
+        </aside>
+    @endif
+
+    {{-- A Local prediction market (App\Games\HeroSlides::markets()), live like the lobby's cards. --}}
+    @if ($slide->kind === 'market')
+        <div class="nt-hero-market" data-layer="card" style="--i: 0" data-predict-live>
+            <x-predict.market-card :market="$slide->extra['market']" :now="now()" />
+        </div>
+    @endif
 
     @if ($cards->isNotEmpty())
         <div class="nt-hero-fan" style="--n: {{ $cards->count() }}">
