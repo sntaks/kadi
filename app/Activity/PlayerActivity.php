@@ -29,6 +29,7 @@ class PlayerActivity
         'sign_in_refused' => [],
         'sign_in_failed' => [],
         'other_device_released' => [],
+        'device_taken_over' => [],
         'game_launched' => ['game', 'title', 'status', 'reason'],
         'bet_placed' => ['status'],
         'jackpot_entered' => ['status'],
@@ -47,7 +48,7 @@ class PlayerActivity
     public const CLIENT_EVENTS = ['page_view', 'click', 'game_closed'];
 
     /** Events that also store the IP address and browser. */
-    private const SECURITY_EVENTS = ['signed_in', 'sign_in_refused', 'sign_in_failed', 'other_device_released'];
+    private const SECURITY_EVENTS = ['signed_in', 'sign_in_refused', 'sign_in_failed', 'other_device_released', 'device_taken_over'];
 
     /**
      * @param  array<string, mixed>  $properties  Filtered against EVENTS; unknown keys are dropped.

@@ -18,7 +18,7 @@ class SingleSessionGuard extends SessionGuard
         $singleSession = app(SingleSession::class);
 
         if ($singleSession->signedInElsewhere($user, $this->session->getId())) {
-            $this->session->put(SingleSession::PENDING_KEY, $user->getAuthIdentifier());
+            $singleSession->park($this->session, $user, (bool) $remember);
 
             if ($user instanceof User) {
                 SignInRefused::dispatch($user);

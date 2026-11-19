@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
  */
 class SignedInElsewhere extends ValidationException
 {
-    public const MESSAGE = 'You are signed in on another device. Sign out there first, or we can e-mail you a link that signs it out.';
+    public const MESSAGE = 'You are signed in on another device. You can sign it out and play here instead.';
 
     public static function make(): self
     {

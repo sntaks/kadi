@@ -43,8 +43,8 @@ test('a player signed in on another device is refused, and offered the sign-out 
     signIn($user)->assertRedirect(route('login'))->assertSessionHasErrors(['email' => SignedInElsewhere::MESSAGE]);
 
     $this->assertGuest();
-    expect(session(SingleSession::PENDING_KEY))->toBe($user->id);
-    $this->get(route('login'))->assertSee('E-mail me a sign-out link');
+    expect(session(SingleSession::PENDING_KEY)['id'])->toBe($user->id);
+    $this->get(route('login'))->assertSee('Sign out the other device and play here')->assertSee('Or e-mail me a sign-out link');
     Mail::assertQueued(SecurityAlertEmail::class, fn (SecurityAlertEmail $mail) => str_contains($mail->change, 'stopped because you are signed in on another device'));
 });
 
@@ -178,5 +178,87 @@ describe('sign-in alerts', function () {
         $this->post(route('login.store'), ['email' => 'nobody@example.com', 'password' => 'wrong']);
 
         Mail::assertNothingQueued();
+    });
+});
+
+describe('signing the other device out and playing here', function () {
+    test('ends the other session and signs the player in on this device', function () {
+        $user = User::factory()->create();
+        $user->setRememberToken('old-device-token');
+        $user->save();
+        signedInElsewhere($user);
+        signIn($user);
+
+        $this->post(route('login.take-over'))->assertRedirect('/');
+
+        $this->assertAuthenticatedAs($user);
+        expect(DB::table('sessions')->where('id', 'device-a-'.$user->id)->exists())->toBeFalse()
+            ->and($user->fresh()->getRememberToken())->not->toBe('old-device-token')
+            ->and(session()->has(SingleSession::PENDING_KEY))->toBeFalse();
+        $this->assertDatabaseHas('activity_log', ['log_name' => 'player', 'event' => 'device_taken_over', 'causer_id' => $user->id]);
+    });
+
+    test('keeps the remember-me choice made on the sign-in form', function () {
+        $user = User::factory()->create();
+        signedInElsewhere($user);
+        $this->post(route('login.store'), ['email' => $user->email, 'password' => 'password', 'remember' => 'on']);
+
+        $this->post(route('login.take-over'));
+
+        expect(Auth::guard('web')->viaRemember())->toBeFalse()
+            ->and($user->fresh()->getRememberToken())->not->toBeNull();
+        $this->assertAuthenticatedAs($user);
+    });
+
+    test('works once', function () {
+        $user = User::factory()->create();
+        signedInElsewhere($user);
+        signIn($user);
+
+        $this->post(route('login.take-over'));
+        Auth::logout();
+        signedInElsewhere(User::factory()->create());
+
+        $this->post(route('login.take-over'))->assertRedirect(route('login'))->assertSessionHasErrors('email');
+        $this->assertGuest();
+    });
+
+    test('expires a few minutes after the refusal', function () {
+        $user = User::factory()->create();
+        signedInElsewhere($user);
+        signIn($user);
+
+        $this->travel(SingleSession::TAKEOVER_SECONDS + 1)->seconds();
+
+        $this->post(route('login.take-over'))->assertRedirect(route('login'))->assertSessionHasErrors('email');
+        $this->assertGuest();
+        expect(DB::table('sessions')->where('id', 'device-a-'.$user->id)->exists())->toBeTrue();
+    });
+
+    test('needs a refused sign-in first: a wrong password or no attempt is not enough', function () {
+        $user = User::factory()->create();
+        signedInElsewhere($user);
+
+        $this->post(route('login.take-over'))->assertRedirect(route('login'))->assertSessionHasErrors('email');
+        $this->post(route('login.store'), ['email' => $user->email, 'password' => 'wrong']);
+        $this->post(route('login.take-over'))->assertRedirect(route('login'));
+
+        $this->assertGuest();
+        expect(DB::table('sessions')->where('id', 'device-a-'.$user->id)->exists())->toBeTrue();
+    });
+
+    test('a two-factor player must pass the challenge before they can take over', function () {
+        $user = User::factory()->create([
+            'two_factor_secret' => encrypt('secret'),
+            'two_factor_recovery_codes' => encrypt(json_encode(['code-1'])),
+            'two_factor_confirmed_at' => now(),
+        ]);
+        signedInElsewhere($user);
+
+        signIn($user)->assertRedirect(route('two-factor.login'));
+        expect(session()->has(SingleSession::PENDING_KEY))->toBeFalse();
+
+        $this->post(route('login.take-over'))->assertRedirect(route('login'));
+        $this->assertGuest();
     });
 });
