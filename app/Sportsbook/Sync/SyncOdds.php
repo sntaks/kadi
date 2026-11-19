@@ -80,6 +80,6 @@ class SyncOdds
 
     private function profile(Competition $competition): SportProfile
     {
-        return SportProfile::forSport($competition->sport);
+        return SportProfile::forCompetition($competition);
     }
 }

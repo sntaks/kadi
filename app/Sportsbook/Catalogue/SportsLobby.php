@@ -221,12 +221,10 @@ class SportsLobby
      */
     private function withOpenMatchResult(Builder $query): Builder
     {
-        // The big match is a football card (1X2, kick-off): sports without a draw never take it.
-        $twoWay = array_keys(array_filter(SportProfile::all(), fn (SportProfile $profile): bool => ! $profile->hasDraw));
-
+        // The big match is a football card (1X2, kick-off): only football takes it, never another sport with a draw
+        // (boxing, Test cricket). Football's scope also covers a sport missing from config, as it always has.
         return $query->upcoming()
-            ->whereHas('competition', fn (Builder $competitions) => $competitions->synced()
-                ->whereDoesntHave('sport', fn (Builder $sports) => $sports->whereIn('slug', $twoWay)))
+            ->whereHas('competition', fn (Builder $competitions) => SportProfile::scopeCompetitions($competitions->synced(), 'football'))
             ->whereHas('matchResultMarket', fn (Builder $markets) => $markets->where('status', MarketStatus::Open));
     }
 

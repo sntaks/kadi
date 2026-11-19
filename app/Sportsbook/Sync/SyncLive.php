@@ -86,7 +86,7 @@ class SyncLive
      */
     private function tick(Competition $competition, Collection $fixtures, ConsensusPricer $pricer): void
     {
-        $profile = SportProfile::forSport($competition->sport);
+        $profile = SportProfile::forCompetition($competition);
         $byEventId = $fixtures->keyBy('external_id');
 
         foreach ($this->oddsApi->scores($competition->odds_api_key, 0, OddsApiPurpose::Live) as $game) {

@@ -131,7 +131,7 @@ class Market extends SportsbookModel
             return $this->selections->contains('outcome', 'draw');
         }
 
-        return SportProfile::forSport($this->fixture?->competition?->sport)->hasDraw;
+        return SportProfile::forCompetition($this->fixture?->competition)->hasDraw;
     }
 
     public function isDerived(): bool
