@@ -27,7 +27,7 @@
                 @elseif ($slide->kind === 'match')
                     <div class="nt-hero-feature" data-layer="card" style="--i: 0"><x-sports.big-match :fixture="$bigMatch" :$also :also-today="$alsoToday" /></div>
                 @else
-                    <x-lobby.hero-slide :$slide />
+                    <x-lobby.hero-slide :$slide :eager="$loop->first" />
                 @endif
             </article>
         @endforeach

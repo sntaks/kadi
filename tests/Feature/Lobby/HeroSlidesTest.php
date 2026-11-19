@@ -452,17 +452,49 @@ test('slide figures come from the server: the jackpot prize, never player counts
     expect($html)->toContain(e(Money::format($jackpot->totalPrizes())));
 });
 
-test('hero images wait for their slide: nothing is requested until the slider asks', function () {
+test('hero images wait for their slide, except the slide the page opens on', function () {
+    $this->casino = ['scratch' => ['scratch_dragon', 'scratch_fruit']];
     $html = $this->get('/')->assertOk()->getContent();
 
-    preg_match_all('/<img[^>]*data-srcset[^>]*>/s', $html, $images);
+    preg_match_all('/<article[^>]*data-slide="([^"]+)"[^>]*>(.*?)<\/article>/s', $html, $slides, PREG_SET_ORDER);
+    $lazy = 0;
 
-    expect($images[0])->not->toBeEmpty()->and($html)->not->toContain('<source');
+    foreach ($slides as $i => [, $key, $body]) {
+        preg_match_all('/<img[^>]*>/s', $body, $images);
 
-    foreach ($images[0] as $img) {
-        expect($img)->toMatch('/ src="data:image\/gif;base64,[^"]+"/')
-            ->and($img)->toContain('data-src="')
-            ->and($img)->not->toMatch('/ srcset="/');
+        foreach ($images[0] as $img) {
+            if ($i === 0) {
+                // The opening slide (shuffled: any slide) shows its art without waiting for the script.
+                expect($img)->not->toContain('data-src')->and($img)->toMatch('/ srcset="[^"]+"/')->and($img)->not->toContain('data:image/gif');
+            } elseif (str_contains($img, 'data-srcset')) {
+                $lazy++;
+                expect($img)->toMatch('/ src="data:image\/gif;base64,[^"]+"/')->and($img)->not->toMatch('/ srcset="/');
+            }
+        }
+    }
+
+    expect($lazy)->toBeGreaterThan(0)->and($html)->not->toContain('<source');
+});
+
+test('an opening slide renders its real images, any other slide the placeholder', function () {
+    $slide = app(HeroSlides::class)->forLanding()->firstWhere('key', 'invite');
+
+    $eager = (string) $this->blade('<x-lobby.hero-slide :slide="$slide" :eager="true" />', ['slide' => $slide]);
+    $lazy = (string) $this->blade('<x-lobby.hero-slide :slide="$slide" />', ['slide' => $slide]);
+
+    expect($eager)->toContain('src="'.$slide->art[0]['src'].'"')->not->toContain('data-src')
+        ->and($lazy)->toContain('data-src="'.$slide->art[0]['src'].'"')->toContain('src="data:image/gif');
+});
+
+test('slide images are kept out of Livewire re-renders, so a loaded image never goes back to the placeholder', function () {
+    $html = $this->get('/')->assertOk()->getContent();
+
+    preg_match_all('/<div class="nt-hero-(?:bg|fan|object)"[^>]*>/', $html, $layers);
+
+    expect($layers[0])->not->toBeEmpty();
+
+    foreach ($layers[0] as $layer) {
+        expect($layer)->toContain('wire:ignore');
     }
 });
 

@@ -7,6 +7,7 @@ use App\Http\Middleware\CapturePromoCode;
 use App\Http\Middleware\CaptureReferralCode;
 use App\Http\Middleware\DetectCurrency;
 use App\Http\Middleware\EnsureConsentGiven;
+use App\Http\Middleware\EnsureDeviceCookie;
 use App\Http\Middleware\EnsureNameIsValid;
 use App\Http\Middleware\LogoutInactiveUsers;
 use App\Http\Middleware\RedirectLegacyDomain;
@@ -43,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
+            EnsureDeviceCookie::class,
             DetectCurrency::class,
             SetCacheHeaders::class,
             LogoutInactiveUsers::class,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Auth\DeviceId;
 use App\Auth\SignedInElsewhere;
 use App\Auth\SingleSession;
 use App\Mail\ReleaseDeviceEmail;
@@ -19,11 +20,12 @@ beforeEach(function () {
     Mail::fake();
 });
 
-function signedInElsewhere(User $user, int $minutesAgo = 1): void
+function signedInElsewhere(User $user, int $minutesAgo = 1, ?string $deviceId = null): void
 {
     DB::table('sessions')->insert([
         'id' => 'device-a-'.$user->id,
         'user_id' => $user->id,
+        'device_id' => $deviceId,
         'ip_address' => null,
         'user_agent' => null,
         'payload' => '',
@@ -260,5 +262,86 @@ describe('signing the other device out and playing here', function () {
 
         $this->post(route('login.take-over'))->assertRedirect(route('login'));
         $this->assertGuest();
+    });
+});
+
+describe('the same device signing in again', function () {
+    test('every browser gets a long-lived device cookie on its first visit', function () {
+        $response = $this->get(route('login'));
+
+        $cookie = collect($response->headers->getCookies())->first(fn ($c) => $c->getName() === DeviceId::COOKIE);
+
+        expect($cookie)->not->toBeNull()
+            ->and($cookie->isHttpOnly())->toBeTrue()
+            ->and($cookie->getExpiresTime())->toBeGreaterThan(now()->addDays(300)->getTimestamp());
+    });
+
+    test('a browser that lost its session cookie (phone call, browser killed) signs straight back in', function () {
+        $user = User::factory()->create();
+        $device = str_repeat('a', 40);
+        signedInElsewhere($user, deviceId: $device);
+
+        $this->withCookie(DeviceId::COOKIE, $device);
+        signIn($user)->assertSessionHasNoErrors();
+
+        $this->assertAuthenticatedAs($user);
+        expect(DB::table('sessions')->where('id', 'device-a-'.$user->id)->exists())->toBeFalse()
+            ->and(session()->has(SingleSession::PENDING_KEY))->toBeFalse();
+        Mail::assertNotQueued(SecurityAlertEmail::class, fn (SecurityAlertEmail $mail) => str_contains($mail->change, 'stopped because'));
+    });
+
+    test('a different device is still refused and offered the takeover', function () {
+        $user = User::factory()->create();
+        signedInElsewhere($user, deviceId: str_repeat('a', 40));
+
+        $this->withCookie(DeviceId::COOKIE, str_repeat('b', 40));
+        signIn($user)->assertSessionHasErrors(['email' => SignedInElsewhere::MESSAGE]);
+
+        $this->assertGuest();
+    });
+
+    test('a session recorded without a device id counts as another device', function () {
+        $user = User::factory()->create();
+        signedInElsewhere($user);
+
+        $this->withCookie(DeviceId::COOKIE, str_repeat('a', 40));
+        signIn($user)->assertSessionHasErrors('email');
+    });
+
+    test('the same device is still refused while another device is signed in too', function () {
+        $user = User::factory()->create();
+        $device = str_repeat('a', 40);
+        signedInElsewhere($user, deviceId: $device);
+        DB::table('sessions')->insert(['id' => 'device-b', 'user_id' => $user->id, 'device_id' => str_repeat('b', 40), 'payload' => '', 'last_activity' => now()->getTimestamp()]);
+
+        $this->withCookie(DeviceId::COOKIE, $device);
+        signIn($user)->assertSessionHasErrors('email');
+
+        expect(DB::table('sessions')->where('id', 'device-a-'.$user->id)->exists())->toBeTrue();
+    });
+
+    test('a remember-me cookie on the same device is not refused', function () {
+        $user = User::factory()->create();
+        $user->setRememberToken('remembered-token');
+        $user->save();
+        $device = str_repeat('a', 40);
+        signedInElsewhere($user, deviceId: $device);
+
+        request()->cookies->set(DeviceId::COOKIE, $device);
+        $guard = Auth::guard('web');
+        $guard->setRequest(request());
+        request()->cookies->set($guard->getRecallerName(), $user->id.'|remembered-token|'.$user->getAuthPassword());
+
+        expect($guard->user()?->is($user))->toBeTrue();
+    });
+
+    test('the session row records the device id', function () {
+        $user = User::factory()->create();
+        $device = str_repeat('c', 40);
+
+        $this->withCookie(DeviceId::COOKIE, $device);
+        signIn($user)->assertSessionHasNoErrors();
+
+        expect(DB::table('sessions')->where('user_id', $user->id)->value('device_id'))->toBe($device);
     });
 });

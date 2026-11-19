@@ -2,9 +2,11 @@
     One config slide of the landing hero (App\Games\HeroSlide): background, art layers, then the copy; tiers slides add
     a prize table and market slides a live market card. Every layer
     carries data-layer and a stagger index (--i) for its entrance (resources/css/hero.css). Images start as a 1x1
-    placeholder with data-src/data-srcset: the slider script loads them only when their slide is next or showing.
+    placeholder with data-src/data-srcset: the slider script loads them only when their slide is next or showing. The
+    slide the page opens on (`eager`) has its real images in the HTML, so they show without waiting for the script.
+    Image layers are wire:ignore: a Livewire re-render of the landing must not put the placeholders back.
 --}}
-@props(['slide'])
+@props(['slide', 'eager' => false])
 @php
     $art = collect($slide->art);
     $bg = $art->firstWhere('role', 'bg');
@@ -12,12 +14,16 @@
     $objects = $art->where('role', 'object')->values();
     $pixel = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     $sizes = ['bg' => '(min-width: 1500px) 60vw, 100vw', 'object' => '(min-width: 768px) 34vw, 200px', 'card' => '(min-width: 768px) 200px, 90px'];
+    // The <img> source attributes: real ones on the opening slide, the lazy placeholder on the others.
+    $img = fn (array $image, string $sizes) => $eager
+        ? 'src="'.e($image['src']).'" srcset="'.e($image['srcset']).'" sizes="'.e($sizes).'"'
+        : 'src="'.$pixel.'" data-src="'.e($image['src']).'" data-srcset="'.e($image['srcset']).'" data-sizes="'.e($sizes).'"';
     $needsAccount = ($slide->extra['needsAccount'] ?? false) && ! auth()->check();
 @endphp
 <div class="nt-hero-card" data-kind="{{ $slide->kind }}">
     @if ($bg)
-        <div class="nt-hero-bg" data-layer="bg" aria-hidden="true">
-            <img src="{{ $pixel }}" data-src="{{ $bg['src'] }}" data-srcset="{{ $bg['srcset'] }}" data-sizes="{{ $sizes['bg'] }}"
+        <div class="nt-hero-bg" data-layer="bg" aria-hidden="true" wire:ignore>
+            <img {!! $img($bg, $sizes['bg']) !!}
                      alt="" width="{{ $bg['w'] }}" height="{{ $bg['h'] }}" decoding="async">
         </div>
     @endif
@@ -86,12 +92,12 @@
     @endif
 
     @if ($cards->isNotEmpty())
-        <div class="nt-hero-fan" style="--n: {{ $cards->count() }}">
+        <div class="nt-hero-fan" style="--n: {{ $cards->count() }}" wire:ignore>
             @foreach ($cards as $card)
                 @php $tag = $card['href'] ? 'a' : 'span'; @endphp
                 <{{ $tag }} class="nt-hero-fan-card" data-layer="card" style="--i: {{ $loop->index }}"
                     @if ($card['href']) href="{{ $card['href'] }}" wire:navigate aria-label="{{ $card['alt'] }}" @endif>
-                    <img src="{{ $pixel }}" data-src="{{ $card['src'] }}" data-srcset="{{ $card['srcset'] }}" data-sizes="{{ $sizes['card'] }}"
+                    <img {!! $img($card, $sizes['card']) !!}
                      alt="" width="{{ $card['w'] }}" height="{{ $card['h'] }}" decoding="async">
                 </{{ $tag }}>
             @endforeach
@@ -99,8 +105,8 @@
     @endif
 
     @foreach ($objects as $object)
-        <div class="nt-hero-object" data-layer="object" style="--i: {{ $loop->index }}" aria-hidden="true">
-            <img src="{{ $pixel }}" data-src="{{ $object['src'] }}" data-srcset="{{ $object['srcset'] }}" data-sizes="{{ $sizes['object'] }}"
+        <div class="nt-hero-object" data-layer="object" style="--i: {{ $loop->index }}" aria-hidden="true" wire:ignore>
+            <img {!! $img($object, $sizes['object']) !!}
                      alt="" width="{{ $object['w'] }}" height="{{ $object['h'] }}" decoding="async">
         </div>
     @endforeach

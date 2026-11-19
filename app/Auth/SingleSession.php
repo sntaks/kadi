@@ -36,7 +36,12 @@ class SingleSession
         return (bool) config('auth.single_session', true) && config('session.driver') === 'database';
     }
 
-    public function signedInElsewhere(Authenticatable $user, ?string $currentSessionId): bool
+    /**
+     * Whether the player has a live session on another device. Sessions of this same device ($deviceId, the browser's
+     * DeviceId cookie) never count: that is the player coming back, e.g. after the phone's OS killed the browser and
+     * its session cookie with it. A session without a device id counts as another device.
+     */
+    public function signedInElsewhere(Authenticatable $user, ?string $currentSessionId, ?string $deviceId = null): bool
     {
         if (! $this->enforced()) {
             return false;
@@ -45,7 +50,23 @@ class SingleSession
         return $this->sessions($user)
             ->where('last_activity', '>=', now()->subMinutes($this->liveMinutes())->getTimestamp())
             ->when($currentSessionId !== null, fn (Builder $query) => $query->where('id', '!=', $currentSessionId))
+            ->when($deviceId !== null, fn (Builder $query) => $query->where(
+                fn (Builder $query) => $query->whereNull('device_id')->orWhere('device_id', '!=', $deviceId),
+            ))
             ->exists();
+    }
+
+    /** Ends the player's earlier sessions on this same device (left behind when it lost its session cookie). */
+    public function endSameDeviceSessions(Authenticatable $user, ?string $deviceId, ?string $keepSessionId): int
+    {
+        if (! $this->enforced() || $deviceId === null) {
+            return 0;
+        }
+
+        return $this->sessions($user)
+            ->where('device_id', $deviceId)
+            ->when($keepSessionId !== null, fn (Builder $query) => $query->where('id', '!=', $keepSessionId))
+            ->delete();
     }
 
     /** Signs the player out everywhere except (optionally) the given session. Returns how many sessions ended. */
