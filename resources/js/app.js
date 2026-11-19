@@ -11,6 +11,7 @@ import './site/signin.js';
 import './sports/betslip.js';
 import './sports/match-panel.js';
 import './sports/countdown.js';
+import './sports/league-picker.js';
 import './predict/live.js';
 import './predict/panel.js';
 import { initInstall } from './pwa/install.js';

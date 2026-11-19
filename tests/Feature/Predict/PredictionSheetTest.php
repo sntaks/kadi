@@ -103,16 +103,22 @@ test('cards open markets in the sheet, and "+N more" opens the event list from t
         ->toContain('+1 more');
 });
 
-test('the landing shelf shows trending markets, one per event, after the page', function () {
-    $event = ['event' => ['id' => 1, 'title' => 'EPL: 2027 Champion']];
+test('the landing shelf shows trending Local politics markets, one per event, after the page', function () {
+    $local = ['source' => 'custom', 'category' => 'politics'];
+    $event = [...$local, 'event' => ['id' => 1, 'title' => 'Kenya: 2027 election']];
     Http::fake(['*/predict/markets?*' => Http::response(sheetList([
-        sheetMarket(1, $event), sheetMarket(2, $event), sheetMarket(3), sheetMarket(4), sheetMarket(5), sheetMarket(6),
+        sheetMarket(1, $event), sheetMarket(2, $event), sheetMarket(3, $local), sheetMarket(4, $local),
+        sheetMarket(5, ['category' => 'politics']), sheetMarket(6, ['source' => 'custom', 'category' => 'sport']),
+        sheetMarket(7, $local), sheetMarket(8, $local),
     ]))]);
 
     Livewire::test(Trending::class)
-        ->assertViewHas('markets', fn (array $markets) => collect($markets)->pluck('id')->all() === [1, 3, 4, 5]);
+        ->assertViewHas('markets', fn (array $markets) => collect($markets)->pluck('id')->all() === [1, 3, 4, 7])
+        ->assertSee('All politics markets');
 
-    Http::assertSent(fn ($request) => ($request->data()['sort'] ?? null) === 'trending');
+    Http::assertSent(fn ($request) => ($request->data()['sort'] ?? null) === 'trending'
+        && ($request->data()['source'] ?? null) === 'custom'
+        && ($request->data()['category'] ?? null) === 'politics');
 });
 
 test('the landing renders without waiting on the prediction API', function () {
@@ -123,7 +129,7 @@ test('the landing renders without waiting on the prediction API', function () {
 });
 
 test('pick keeps the API order and skips repeated events', function () {
-    $m = fn (int $id, ?string $event) => Market::fromArray(['id' => $id, 'question' => "Q{$id}?", 'event' => $event ? ['title' => $event] : null]);
+    $m = fn (int $id, ?string $event) => Market::fromArray(['id' => $id, 'question' => "Q{$id}?", 'source' => 'custom', 'category' => 'politics', 'event' => $event ? ['title' => $event] : null]);
 
     expect(collect(Trending::pick([$m(1, 'A'), $m(2, 'A'), $m(3, null), $m(4, 'B'), $m(5, null), $m(6, 'C')]))->pluck('id')->all())
         ->toBe([1, 3, 4, 5]);

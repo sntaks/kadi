@@ -1,57 +1,49 @@
-{{-- The sport sidebar (like bcgame.ke's): the sports, then this sport's Highlights · Today and its leagues with real
-     counts, popular leagues first. It sits beside the list when the page has room (container query in sports.css),
-     and is a chip row above it otherwise. `active` is the competition slug on a competition page. --}}
+{{-- The sport sidebar: the sports, then this sport's leagues by country (<x-sports.league-picker>) with real counts.
+     It sits beside the list when the page has room (container query in sports.css). Narrower, the sports stay a
+     row and the leagues open from one button in a sheet. The sheet is teleported to <body>: .nt-sport-wrap is a
+     size container, which would trap a fixed sheet inside it. `active` is the competition slug on a competition page. --}}
 @props(['sport', 'sports' => [], 'competitions' => [], 'active' => null, 'tab' => null])
+@use('App\Sportsbook\Support\CompetitionRegion')
 @php
-    $home = \App\Sportsbook\Catalogue\SportsLobby::sportUrl($sport);
-    $onSport = $active === null;
-    $popular = array_values(array_filter($competitions, fn (array $c) => $c['popular']));
-    $others = array_values(array_filter($competitions, fn (array $c) => ! $c['popular']));
-    $current = fn (bool $on) => $on ? 'aria-current=page' : '';
+    $current = collect($competitions)->firstWhere('slug', $active);
+    $sportName = collect($sports)->firstWhere('slug', $sport)['name'] ?? \App\Sportsbook\Support\SportProfile::find($sport)?->name ?? 'Sports';
+    $total = array_sum(array_column($competitions, 'count'));
 @endphp
 <nav {{ $attributes->class('nt-sportnav') }} aria-label="Sports and leagues">
     @if (count($sports) > 1)
         <div class="nt-sportnav-sports">
             @foreach ($sports as $item)
                 <a class="nt-sportnav-sport" href="{{ \App\Sportsbook\Catalogue\SportsLobby::sportUrl($item['slug']) }}" wire:navigate
-                   @if ($item['slug'] === $sport) aria-current="{{ $onSport ? 'page' : 'true' }}" @endif>
+                   @if ($item['slug'] === $sport) aria-current="{{ $active === null ? 'page' : 'true' }}" @endif>
                     <x-site.icon :name="$item['icon']" /><span>{{ $item['name'] }}</span><small class="nt-num">{{ $item['count'] }}</small>
                 </a>
             @endforeach
         </div>
     @endif
 
-    {{-- Wide: a sidebar list. --}}
-    <div class="nt-sportnav-list">
-        <a href="{{ $home }}" wire:navigate {{ $current($onSport && ($tab === null || $tab === 'highlights')) }}><x-site.icon name="ball" />Highlights</a>
-        <a href="{{ $home }}?tab=today" wire:navigate {{ $current($onSport && $tab === 'today') }}><x-site.icon name="clock" />Today</a>
+    {{-- Wide: the leagues in the sidebar. --}}
+    <x-sports.league-picker class="nt-sportnav-list" :$sport :$competitions :$active :$tab id="lp-side" />
 
-        @if ($popular !== [])
-            <h3>Popular</h3>
-            @foreach ($popular as $competition)
-                <a href="{{ route('sports.competition', $competition['slug']) }}" wire:navigate {{ $current($active === $competition['slug']) }}>
-                    <x-site.icon name="trophy" /><span>{{ $competition['name'] }}</span><small class="nt-num">{{ $competition['count'] }}</small>
-                </a>
-            @endforeach
-        @endif
-
-        @if ($others !== [])
-            <h3>{{ $popular === [] ? 'Leagues' : 'All leagues' }}</h3>
-            @foreach ($others as $competition)
-                <a href="{{ route('sports.competition', $competition['slug']) }}" wire:navigate {{ $current($active === $competition['slug']) }}>
-                    <x-site.icon name="trophy" /><span>{{ $competition['name'] }}</span><small class="nt-num">{{ $competition['count'] }}</small>
-                </a>
-            @endforeach
-        @endif
-    </div>
-
-    {{-- Narrow: the same leagues as chips. --}}
+    {{-- Narrow: one button for the leagues, opening the sheet. --}}
     @if ($competitions !== [])
-        <div class="nt-chips nt-comp-chips nt-sportnav-chips">
-            @foreach ([...$popular, ...$others] as $competition)
-                <a class="nt-chip" href="{{ route('sports.competition', $competition['slug']) }}" wire:navigate
-                   @if ($active === $competition['slug']) aria-selected="true" @endif>{{ $competition['name'] }} <span class="nt-num">{{ $competition['count'] }}</span></a>
-            @endforeach
+        <div class="nt-sportnav-pick" x-data>
+            <button type="button" class="nt-lp-trigger" aria-haspopup="dialog" x-on:click="$dispatch('open-sheet', 'league-picker')">
+                @if ($current)
+                    <x-ui.flag :flag="CompetitionRegion::flag($current['region'])" :size="22" />
+                    <span class="nt-lp-two"><b>{{ CompetitionRegion::shortName($current['name'], $current['region']) }}</b><em>{{ CompetitionRegion::name($current['region']) }}</em></span>
+                @else
+                    <x-site.icon name="trophy" />
+                    <span class="nt-lp-two"><b>All {{ $sportName }} leagues</b><em>{{ count($competitions) }} leagues · {{ $total }} matches</em></span>
+                @endif
+                <x-site.icon name="chev" />
+                <span class="sr-only">Choose a league</span>
+            </button>
+
+            <template x-teleport="body">
+                <x-ui.sheet name="league-picker" :title="$sportName.' leagues'" class="nt-lp-sheet">
+                    <x-sports.league-picker :$sport :$competitions :$active :$tab id="lp-sheet" />
+                </x-ui.sheet>
+            </template>
         </div>
     @endif
 </nav>

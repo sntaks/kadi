@@ -1,7 +1,7 @@
 <section class="nt-panel nt-pm-shelf" aria-labelledby="pm-trending" data-predict-live>
-    <x-ui.section-head id="pm-trending" title="Predictions" sub="Trending markets">
+    <x-ui.section-head id="pm-trending" title="Predictions" sub="Trending in Kenyan politics">
         <x-slot:actions>
-            <a href="{{ route('predictions') }}" class="nt-btn nt-btn-quiet nt-btn-sm" wire:navigate>All markets</a>
+            <a href="{{ route('predictions', ['source' => 'local', 'category' => 'politics']) }}" class="nt-btn nt-btn-quiet nt-btn-sm" wire:navigate>All politics markets</a>
         </x-slot:actions>
     </x-ui.section-head>
     @if ($markets === [])

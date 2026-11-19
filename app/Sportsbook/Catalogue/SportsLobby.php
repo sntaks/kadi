@@ -6,6 +6,7 @@ use App\Sportsbook\Enums\MarketStatus;
 use App\Sportsbook\Models\Competition;
 use App\Sportsbook\Models\Fixture;
 use App\Sportsbook\Models\Jackpot;
+use App\Sportsbook\Support\CompetitionRegion;
 use App\Sportsbook\Support\SportProfile;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +27,7 @@ class SportsLobby
      * Bump a key's version whenever the shape of what it stores changes: for up to a minute after a deploy the new
      * code would otherwise read the previous release's copy (Sentry KADI-Q).
      */
-    public const COMPETITIONS_KEY = 'sports.lobby.v2.competitions';
+    public const COMPETITIONS_KEY = 'sports.lobby.v3.competitions';
 
     public const JACKPOT_KEY = 'sports.lobby.v2.jackpot';
 
@@ -35,7 +36,7 @@ class SportsLobby
     /**
      * Competitions with matches open for betting, in their curated order, optionally of one sport (by slug).
      *
-     * @return list<array{name: string, slug: string, count: int, sport: string, popular: bool}>
+     * @return list<array{name: string, slug: string, count: int, sport: string, popular: bool, region: string, aliases: string}>
      */
     public function competitions(?string $sport = null): array
     {
@@ -53,6 +54,8 @@ class SportsLobby
                 'count' => (int) $competition->getAttribute('open_count'),
                 'sport' => SportProfile::forSport($competition->sport)->slug,
                 'popular' => in_array($competition->odds_api_key, SportProfile::forSport($competition->sport)->popular, true),
+                'region' => CompetitionRegion::code($competition->odds_api_key),
+                'aliases' => CompetitionRegion::aliases($competition->odds_api_key),
             ])
             ->values()
             ->all());
@@ -66,7 +69,7 @@ class SportsLobby
     /** Whether a cached competition has every field the menu reads (a copy from an earlier release may not). */
     private static function wellFormed(mixed $competition): bool
     {
-        return is_array($competition) && isset($competition['name'], $competition['slug'], $competition['count'], $competition['sport']);
+        return is_array($competition) && isset($competition['name'], $competition['slug'], $competition['count'], $competition['sport'], $competition['region'], $competition['aliases']);
     }
 
     /**
