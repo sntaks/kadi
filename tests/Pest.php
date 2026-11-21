@@ -15,6 +15,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Tests\Support\FakePredictApi;
 use Tests\Support\FakeWagerApi;
+
+require_once __DIR__.'/Support/wallet-webhook.php';
 use Tests\TestCase;
 
 /*

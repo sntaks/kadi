@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportEvents\SupportEvents;
 
-// Reuses webhookUser()/webhookPayload()/sign()/callWebhook()/WEBHOOK_SECRET from WalletWebhookTest.php
-// (global helpers, same webhook endpoint) — its own beforeEach() is file-scoped, so this file needs
-// its own copy to get a configured secret.
+// Reuses webhookUser()/webhookPayload()/sign()/callWebhook()/WEBHOOK_SECRET (tests/Support/wallet-webhook.php);
+// WalletWebhookTest's beforeEach() is file-scoped, so this file sets its own secret.
 beforeEach(function () {
     config(['kadi.wallet_webhook.secrets' => [WEBHOOK_SECRET]]);
 });

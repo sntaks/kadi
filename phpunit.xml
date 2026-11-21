@@ -61,5 +61,12 @@
         <env name="PLATFORM_PREDICTIONS_BETTING" value="true"/>
         <env name="PREDICT_BETTING_TESTERS" value=""/>
         <env name="KADI_IN_FRAME" value="true"/>
+        <!-- Pinned to the config defaults so a developer's .env never changes test results: any name not set here
+             comes from the local .env (e.g. referrals switched off, or a shorter in-play list). -->
+        <env name="KADI_REFERRALS_ENABLED" value="true"/>
+        <env name="KADI_PROMOTIONS_ENABLED" value="true"/>
+        <env name="SPORTSBOOK_IN_PLAY_COMPETITIONS" value="soccer_epl,soccer_spain_la_liga,soccer_italy_serie_a,soccer_germany_bundesliga,soccer_france_ligue_one,soccer_uefa_champs_league,basketball_euroleague"/>
+        <env name="SPORTSBOOK_IN_PLAY_MAX_STAKE" value="5000"/>
+        <env name="SPORTSBOOK_IN_PLAY_MAX_PAYOUT" value="250000"/>
     </php>
 </phpunit>
