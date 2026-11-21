@@ -81,9 +81,11 @@
     .nt-prize-row[data-tone="blue"] { --tone: var(--color-medal-blue); }
     .nt-prize-row[data-tone="iron"] { --tone: var(--color-medal-iron); }
     .nt-prize-row dt {
-        display: flex; align-items: center; gap: 10px; min-width: 0;
+        display: flex; flex: 1 1 auto; align-items: center; gap: 10px; min-width: 0;
         font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: color-mix(in srgb, var(--tone) 72%, transparent);
     }
+    /* A long place name gives way (ellipsis) before it can run into the amount. */
+    .nt-prize-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .nt-prize-medal { flex: none; display: grid; color: var(--tone); filter: drop-shadow(0 0 8px color-mix(in srgb, var(--tone) 42%, transparent)); }
     .nt-prize-medal svg { width: 24px; height: 24px; }
     .nt-prize-row dd {

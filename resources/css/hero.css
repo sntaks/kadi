@@ -20,6 +20,12 @@
     /* Armed: inactive slides keep their space (invisible, inert), so the stage is always the tallest slide's height
        and changing slides never makes the page jump. */
     .nt-hero.is-armed .nt-hero-slide[data-state="idle"] { visibility: hidden; pointer-events: none; }
+    /* One height floor for every slide from 768px (scales with the hero's width), so the stage looks the same
+       whichever six slides a visit draws, and no slide is a thin strip on a wide screen. */
+    @media (min-width: 768px) {
+        .nt-hero { --hero-min-h: clamp(320px, 30cqi, 400px); }
+        .nt-hero-card, .nt-hero-feature > * { min-height: var(--hero-min-h); }
+    }
 
     /* ── Kadi and football slides: the landing's own cards, full width ── */
     .nt-hero-feature { display: grid; height: 100%; min-width: 0; }
@@ -39,14 +45,23 @@
         .nt-hero-feature .nt-table, .nt-hero-feature .nt-bigmatch { align-content: center; }
         .nt-hero-feature .nt-bigmatch { align-items: center; }
         /* Docked bet slip and side menu leave the hero ~600px: one column, hand beside the copy, no extra list. */
+        /* Docked bet slip, side menu or a tablet leave the hero ~560-760px: one column, no extra list, and the Kadi
+           prize pool down to its top prize (its link lists every place), so this one slide doesn't make the stage
+           (and every other slide) almost 600px tall. */
         @container hero (max-width: 759px) {
             .nt-hero-feature .nt-bigmatch { grid-template-columns: minmax(0, 1fr); }
             .nt-hero-feature .nt-also { display: none; }
+            .nt-hero-feature .nt-table { padding: 26px 28px; }
             .nt-hero-feature .nt-table .nt-ctas { margin-bottom: 0; }
-            .nt-hero-feature .nt-table .nt-hand { right: -34px; top: 50%; bottom: auto; transform: translateY(-50%) scale(.6); transform-origin: 100% 50%; }
-            .nt-hero-feature .nt-hand-host .nt-table-body > :not(.nt-hand) { max-width: 64%; }
             .nt-hero-feature .nt-table .nt-table-head { max-width: none; font-size: 32px; }
             .nt-hero-feature .nt-table-copy > p { display: none; }
+            .nt-hero-feature .nt-table .nt-live { margin-bottom: 10px; }
+            .nt-hero-feature .nt-seats { margin: 4px 0 18px; }
+            .nt-hero-feature .nt-table-body { gap: 18px; }
+            .nt-hero-feature .nt-prize { padding: 12px 16px 10px; }
+            .nt-hero-feature .nt-prize-head { padding-bottom: 8px; margin-bottom: 4px; }
+            .nt-hero-feature .nt-prize-row:not(.is-top) { display: none; }
+            .nt-hero-feature .nt-prize-terms { margin-top: 4px; }
         }
     }
 
@@ -63,15 +78,16 @@
     .nt-hero-copy { position: relative; z-index: 3; grid-column: 1; max-width: 34rem; }
     .nt-hero-eyebrow { margin: 0 0 12px; font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--color-gold); }
     .nt-hero-title { margin: 0; font-size: clamp(28px, 3.4cqi, 46px); line-height: 1.06; font-weight: 800; letter-spacing: -.02em; color: var(--color-ivory); text-wrap: balance; }
-    .nt-hero-text { margin: 14px 0 0; max-width: 30rem; font-size: 15.5px; line-height: 1.55; color: var(--color-soft); }
+    .nt-hero-text { margin: 14px 0 0; max-width: 32rem; font-size: clamp(15px, 1.35cqi, 17px); line-height: 1.55; color: var(--color-soft); }
     .nt-hero-copy .nt-btn { margin-top: 24px; }
 
     .nt-hero-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
     .nt-hero-bg img { width: 100%; height: 100%; object-fit: cover; transform-origin: 70% 40%; }
     .nt-hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-night) 8%, transparent 78%); }
 
-    .nt-hero-object { position: absolute; z-index: 2; right: 3%; top: 56%; width: min(44%, 400px); transform: translateY(-50%); pointer-events: none; }
-    .nt-hero-object img { width: 100%; height: auto; filter: drop-shadow(0 24px 34px rgb(0 0 0 / .55)); }
+    /* Art is sized by the card's height (and capped by its width), so tall art never sticks out of the card. */
+    .nt-hero-object { position: absolute; z-index: 2; right: 4%; top: 50%; height: 84%; max-width: 42%; transform: translateY(-50%); pointer-events: none; display: grid; place-items: center; }
+    .nt-hero-object img { width: auto; height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 24px 34px rgb(0 0 0 / .55)); }
 
     /* Slot jackpot tiers and a live prediction market sit in the right column, in the card's grid. */
     .nt-hero-tiers, .nt-hero-market { position: relative; z-index: 2; grid-column: 2; justify-self: end; width: min(100%, 340px); }
@@ -88,10 +104,11 @@
     .nt-hero-choices .nt-pm-side-chip { min-height: 26px; min-width: 92px; padding: 2px 9px; justify-content: center; }
     .nt-hero-choices .nt-pm-card-foot { margin-top: 10px; }
     .nt-hero-card[data-kind="market"] .nt-hero-title { font-size: clamp(22px, 2.3cqi, 32px); line-height: 1.15; }
-    .nt-hero-fan { position: absolute; z-index: 2; right: 6%; top: 50%; width: 46%; height: 82%; transform: translateY(-50%); }
+    .nt-hero-fan { position: absolute; z-index: 2; right: 4%; top: 50%; width: 46%; height: 84%; transform: translateY(-50%); container-type: size; }
+    /* Cards are as tall as the fan allows (minus room for the tilt), never wider than about a third of it. */
     .nt-hero-fan-card {
         --off: calc(var(--i) - (var(--n) - 1) / 2);
-        position: absolute; left: 50%; top: 50%; width: min(36%, 180px); aspect-ratio: 2 / 3;
+        position: absolute; left: 50%; top: 50%; height: min(82cqh, 54cqw); aspect-ratio: 2 / 3;
         border-radius: var(--radius-tile); overflow: hidden; border: 1px solid var(--color-line-2); box-shadow: var(--shadow-lift);
         transform: translate(calc(-50% + var(--off) * 72%), calc(-50% + var(--off) * var(--off) * 7%)) rotate(calc(var(--off) * 9deg));
         transition: transform .35s var(--ease-table), box-shadow .35s;
@@ -107,8 +124,33 @@
 
     @container hero (max-width: 999px) {
         .nt-hero-card { padding: 30px 28px; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
-        .nt-hero-object { width: min(40%, 300px); right: 1%; }
+        .nt-hero-object { right: 2%; max-width: 40%; }
         .nt-hero-fan { width: 44%; right: 1%; }
+    }
+    /* ~560-760px heroes (from 768px): copy keeps ~58%, art and tiers the rest; a market's card goes under the copy
+       (two thin columns can't hold a long question and a card), its intro line dropped to keep the height. */
+    @media (min-width: 768px) {
+        @container hero (max-width: 759px) {
+            .nt-hero-card { padding: 28px 26px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 18px; }
+            .nt-hero-copy { max-width: none; }
+            .nt-hero-title { font-size: 28px; }
+            .nt-hero-object { right: 3%; max-width: 38%; height: 78%; }
+            .nt-hero-fan { width: 42%; }
+            .nt-hero-tiers { width: 100%; padding: 14px 14px 8px; }
+            .nt-hero-tiers .nt-prize-row { gap: 8px; padding: 7px 0; }
+            .nt-hero-tiers .nt-prize-row dt { gap: 8px; letter-spacing: .08em; }
+            .nt-hero-tiers .nt-prize-row dd { font-size: 15px; }
+            .nt-hero-tiers .nt-prize-row.is-top dd { font-size: 18px; }
+            .nt-hero-tiers .nt-prize-medal svg { width: 22px; height: 22px; }
+            .nt-hero-card[data-kind="market"] { grid-template-columns: minmax(0, 1fr); align-content: center; row-gap: 16px; }
+            .nt-hero-card[data-kind="market"] .nt-hero-text { display: none; }
+            .nt-hero-card[data-kind="market"] .nt-hero-title { font-size: 22px; }
+            .nt-hero-card[data-kind="market"] .nt-hero-copy .nt-btn { margin-top: 16px; }
+            .nt-hero-market, .nt-hero-market:has(.nt-hero-choices) { grid-column: 1; justify-self: stretch; width: auto; }
+            /* The slide's heading already asks the question: one line of it on the card is enough here. */
+            .nt-hero-market .nt-pm-q { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-clamp: 1; overflow: hidden; }
+            .nt-hero-card[data-kind="tiers"] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+        }
     }
 
     /* ── Timer: no visible controls; this invisible element's animation is the autoplay clock ── */
@@ -133,11 +175,15 @@
         .nt-hero-object { width: auto; height: 100px; }
         .nt-hero-object img { width: auto; height: 100%; }
         .nt-hero-fan { width: 100%; height: 112px; }
+        /* Every phone slide is as tall as the tallest one: the art takes the free space above the copy (up to
+           220px) instead of a small strip under an empty band. */
+        .nt-hero-card:has(.nt-hero-object, .nt-hero-fan) { grid-template-rows: minmax(100px, 1fr) auto; align-content: stretch; }
+        .nt-hero-card:has(.nt-hero-object, .nt-hero-fan) .nt-hero-copy { grid-row: 2; align-self: end; }
+        .nt-hero-card .nt-hero-object, .nt-hero-card .nt-hero-fan { align-self: center; height: min(100%, 220px); min-height: 100px; }
         .nt-hero-tiers, .nt-hero-market { grid-column: 1; grid-row: 2; justify-self: stretch; width: auto; margin-top: 14px; }
         .nt-hero-tiers { padding: 12px 14px 8px; }
         .nt-hero-market:has(.nt-hero-choices) { width: auto; }
         .nt-hero-tiers .nt-prize-row { padding: 6px 0; }
-        .nt-hero-fan-card { width: 68px; }
 
         /* The Kadi card: counts in a row, the hand tucked top right, content centred in the shared height. */
         .nt-hero-feature .nt-table { padding: 20px 18px; display: grid; align-content: center; }
@@ -148,7 +194,11 @@
         .nt-hero-feature .nt-seats b { font-size: 20px; }
         .nt-hero-feature .nt-seats span { font-size: 11.5px; line-height: 1.25; }
         .nt-hero-feature .nt-table .nt-ctas { margin-bottom: 0; }
-        .nt-hero-feature .nt-table .nt-ctas > * { flex: 1; }
+        /* Both buttons on one row (they only wrap on the smallest phones), and nothing wider than the card. */
+        .nt-hero-feature .nt-table-body { grid-template-columns: minmax(0, 1fr); }
+        .nt-hero-feature .nt-table .nt-ctas > * { flex: 1 1 auto; padding-inline: 14px; }
+        .nt-hero-feature .nt-seats span { display: block; white-space: normal; }
+        .nt-hero-feature .nt-prize-row.is-top dd { font-size: clamp(15px, 4.6vw, 18px); }
         .nt-hero-feature .nt-table .nt-hand { right: -40px; top: 6px; bottom: auto; transform: scale(.42); transform-origin: 100% 0; }
         /* The prize pool shrinks to its top prize (the link lists every place), so this slide doesn't set a tall
            height for all of them. */

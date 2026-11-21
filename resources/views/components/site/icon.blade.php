@@ -40,6 +40,8 @@
         'search' => '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
         'chev' => '<path d="m6 9 6 6 6-6"/>',
         'x' => '<path d="M6 6l12 12M18 6 6 18"/>',
+        'check' => '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+        'minus' => '<path d="M6 12h12"/>',
         'slip' => '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2Z"/><path d="M9 8h6M9 12h6"/>',
         'phone' => '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
         'mail' => '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/>',

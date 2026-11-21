@@ -88,9 +88,14 @@
     .nt-bets { display: grid; gap: 10px; margin: 0; padding: 4px 22px 18px; list-style: none; }
     .nt-bet { border: 1px solid var(--color-line); border-radius: var(--radius-tile); background: var(--color-felt-2); overflow: hidden; }
     .nt-bet[data-status='won'] { border-color: rgb(60 197 106 / .35); }
+    .nt-bet[data-status='lost'] { border-color: rgb(232 96 79 / .3); }
     .nt-bet-slip > summary { list-style: none; cursor: pointer; }
     .nt-bet-slip > summary::-webkit-details-marker { display: none; }
-    .nt-bet-head { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+    .nt-bet-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; }
+    /* Why the bet won or lost, always visible (also on a collapsed card). */
+    .nt-bet-reason { order: 9; flex-basis: 100%; font-size: 13px; line-height: 1.4; color: var(--color-soft); }
+    .nt-bet-reason[data-status='lost'] { color: var(--color-hot-soft); }
+    .nt-bet-reason[data-status='won'] { color: var(--color-win-soft); }
     .nt-bet-head:focus-visible { outline: 2px solid var(--color-gold); outline-offset: -2px; }
     .nt-bet-head > svg { flex: none; width: 16px; height: 16px; color: var(--color-ash); transition: transform .2s; }
     .nt-bet-slip[open] > .nt-bet-head > svg { transform: rotate(180deg); color: var(--color-gold); }
@@ -108,17 +113,30 @@
     .nt-bet-badge[data-status='open'] { color: var(--color-gold); box-shadow: inset 0 0 0 1px var(--color-line-2); }
     .nt-bet-badge[data-status='won'] { background: rgb(60 197 106 / .14); color: var(--color-win-soft); }
     .nt-bet-badge[data-status='lost'] { background: rgb(232 96 79 / .14); color: var(--color-hot-soft); }
+    .nt-bet-badge[data-status='live'] { color: var(--color-gold); background: color-mix(in srgb, var(--color-gold) 12%, transparent); }
+    .nt-bet-badge[data-status='moot'] { background: transparent; color: var(--color-ash); box-shadow: inset 0 0 0 1px var(--color-line); }
     .nt-bet-badge-sm { min-height: 20px; padding: 1px 8px; font-size: 11px; }
     .nt-bet-legs { margin: 0; padding: 0 14px; list-style: none; border-top: 1px solid var(--color-line); }
-    .nt-bet-leg { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--color-line); }
-    .nt-bet-dot { flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 999px; background: var(--color-ash); }
-    .nt-bet-dot[data-status='open'] { background: var(--color-gold); }
-    .nt-bet-dot[data-status='won'] { background: var(--color-win); }
-    .nt-bet-dot[data-status='lost'] { background: var(--color-hot); }
+    /* A pick: mark (✓ won, ✗ lost, – void or not needed, clock pending, live), match, your pick, then score, odds
+       and its own status. The pick that lost a bet is tinted so it is found at a glance. */
+    .nt-bet-leg { display: flex; align-items: flex-start; gap: 10px; margin: 0 -14px; padding: 10px 14px; border-bottom: 1px dashed var(--color-line); }
+    .nt-bet-leg[data-status='lost'] { background: rgb(232 96 79 / .07); box-shadow: inset 3px 0 0 var(--color-hot); }
+    .nt-bet-leg[data-status='moot'] .nt-bet-leg-main, .nt-bet-leg[data-status='moot'] .nt-bet-odds { opacity: .6; }
+    .nt-bet-mark {
+        flex: none; display: grid; place-items: center; width: 22px; height: 22px; margin-top: 1px; border-radius: 999px;
+        background: var(--color-felt-3); color: var(--color-ash);
+    }
+    .nt-bet-mark svg { width: 14px; height: 14px; stroke-width: 2.6; }
+    .nt-bet-mark[data-status='won'] { background: var(--color-win); color: var(--color-night); }
+    .nt-bet-mark[data-status='lost'] { background: var(--color-hot); color: var(--color-night); }
+    .nt-bet-mark[data-status='open'], .nt-bet-mark[data-status='live'] { color: var(--color-gold); box-shadow: inset 0 0 0 1px var(--color-line-2); }
     .nt-bet-leg-main { flex: 1; min-width: 0; display: grid; line-height: 1.35; }
-    .nt-bet-leg-main b { color: var(--color-ivory); font-weight: 600; }
-    .nt-bet-leg-end { display: grid; justify-items: end; gap: 4px; }
-    .nt-bet-leg-end b { color: var(--color-gold); }
+    .nt-bet-leg-main > b { color: var(--color-ivory); font-weight: 600; }
+    .nt-bet-pick { margin-top: 2px; font-size: 13px; color: var(--color-soft); }
+    .nt-bet-pick b { color: var(--color-ivory); font-weight: 700; }
+    .nt-bet-leg-end { display: grid; justify-items: end; gap: 4px; text-align: right; }
+    .nt-bet-score { font-size: 13px; font-weight: 700; color: var(--color-ivory); white-space: nowrap; }
+    .nt-bet-odds { font-weight: 700; color: var(--color-gold); }
     .nt-bet-sum { display: grid; gap: 4px; margin: 0; padding: 10px 14px 14px; font-size: 13px; }
     .nt-bet-sum div { display: flex; justify-content: space-between; gap: 12px; }
     .nt-bet-sum dt { color: var(--color-ash); }
