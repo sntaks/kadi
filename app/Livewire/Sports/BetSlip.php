@@ -37,6 +37,7 @@ use Livewire\Component;
  * @property-read Collection<int, FreeBet> $freeBets
  * @property-read ?FreeBet $selectedFreeBet
  * @property-read Collection<int, Bet> $openBets
+ * @property-read Collection<int, Bet> $settledBets
  * @property-read ?float $knownBalance
  * @property-read ?string $blocked
  */
@@ -144,7 +145,7 @@ class BetSlip extends Component
         $this->slipKey = (string) Str::uuid();
         $this->stake = '';
         $this->freeBetId = '';
-        unset($this->freeBets, $this->selectedFreeBet, $this->placedBet, $this->openBets);
+        unset($this->freeBets, $this->selectedFreeBet, $this->placedBet, $this->openBets, $this->settledBets);
         $this->dispatch('betslip-clear');
         $this->dispatch('wallet-refreshed');
         $this->trackPlaced($bet);
@@ -153,7 +154,7 @@ class BetSlip extends Component
     /** Polled while a placement is being checked with the wallet. */
     public function refreshPlaced(): void
     {
-        unset($this->placedBet, $this->openBets);
+        unset($this->placedBet, $this->openBets, $this->settledBets);
 
         if ($this->placedBet?->status === BetStatus::Open) {
             $this->trackPlaced($this->placedBet);
@@ -213,15 +214,38 @@ class BetSlip extends Component
     }
 
     /**
-     * The player's open and pending bets, newest first, for the column under the slip.
+     * The player's open and pending bets, newest first, for My bets. Each opens as a full slip in place, so the legs'
+     * fixtures and results come along (sports-bet-card).
      *
      * @return Collection<int, Bet>
      */
     #[Computed]
     public function openBets(): Collection
     {
+        return $this->myBets([BetStatus::Open, BetStatus::Pending]);
+    }
+
+    /**
+     * The player's latest finished bets (settled, void, cancelled or not placed) for My bets; the full history stays
+     * on Activity › Sports.
+     *
+     * @return Collection<int, Bet>
+     */
+    #[Computed]
+    public function settledBets(): Collection
+    {
+        return $this->myBets([BetStatus::Won, BetStatus::Lost, BetStatus::Void, BetStatus::Cancelled, BetStatus::Rejected]);
+    }
+
+    /**
+     * @param  list<BetStatus>  $statuses
+     * @return Collection<int, Bet>
+     */
+    private function myBets(array $statuses): Collection
+    {
         return auth()->check()
-            ? Bet::query()->where('user_id', auth()->id())->whereIn('status', [BetStatus::Open, BetStatus::Pending])->with('legs')->latest('placed_at')->limit(5)->get()
+            ? Bet::query()->where('user_id', auth()->id())->whereIn('status', $statuses)
+                ->with('legs.fixture.result')->latest('placed_at')->limit(5)->get()
             : new Collection;
     }
 

@@ -60,7 +60,7 @@
             <dl class="nt-prize-rows" x-data="prizeCount">
                 @foreach ($slide->extra['tiers'] as $tier)
                     <div @class(['nt-prize-row', 'is-top' => $loop->first]) data-tone="{{ $tier['tone'] ?? 'gold' }}">
-                        <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.($tier['icon'] ?? 'award-01'))</span>{{ $tier['name'] }}</dt>
+                        <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.($tier['icon'] ?? 'award-01'))</span><span class="nt-prize-name">{{ $tier['name'] }}</span></dt>
                         <dd class="nt-num" data-count-to="{{ $tier['amount'] }}" data-count-final="KSh {{ number_format($tier['amount']) }}">KSh {{ number_format($tier['amount']) }}</dd>
                     </div>
                 @endforeach

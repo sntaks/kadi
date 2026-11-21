@@ -52,7 +52,7 @@
                     @foreach ($jackpot['prizes'] as [$place, $amount])
                         @php [$medal, $tone] = $places[$loop->index] ?? end($places); @endphp
                         <div @class(['nt-prize-row', 'is-top' => $loop->first]) data-tone="{{ $tone }}">
-                            <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.$medal)</span>{{ $place }}</dt>
+                            <dt><span class="nt-prize-medal" aria-hidden="true">@svg('hugeicons-'.$medal)</span><span class="nt-prize-name">{{ $place }}</span></dt>
                             <dd class="nt-num" data-count-to="{{ $amount }}" data-count-final="{{ $kes($amount) }}">{{ $kes($amount) }}</dd>
                         </div>
                     @endforeach

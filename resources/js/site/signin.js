@@ -21,5 +21,8 @@ document.addEventListener('click', (event) => {
         : target.pathname + target.search;
     const tab = link.dataset.signin === 'join' || target.pathname === '/register' ? 'join' : 'login';
 
-    window.dispatchEvent(new CustomEvent('open-signin', { detail: { tab, returnTo } }));
+    // Other sheets (the bet slip) close first, and the sign-in sheet opens a frame later, once their focus trap has
+    // let go: otherwise the slip would stay over the sign-in sheet (same layer, later in the page) or take focus back.
+    window.dispatchEvent(new CustomEvent('signin-opening'));
+    requestAnimationFrame(() => window.dispatchEvent(new CustomEvent('open-signin', { detail: { tab, returnTo } })));
 });

@@ -5,13 +5,16 @@ use App\Livewire\Account\Activity;
 use App\Livewire\Sports\BetSlip;
 use App\Livewire\Sports\JackpotPage;
 use App\Models\User;
+use App\Sportsbook\Enums\BetLegStatus;
 use App\Sportsbook\Enums\BetStatus;
 use App\Sportsbook\Enums\JackpotEntryStatus;
 use App\Sportsbook\Jobs\ReconcileWager;
 use App\Sportsbook\Models\Bet;
+use App\Sportsbook\Models\BetLeg;
 use App\Sportsbook\Models\BookingCode;
 use App\Sportsbook\Models\FreeBet;
 use App\Sportsbook\Models\JackpotEntry;
+use App\Sportsbook\Support\BetOutcome;
 use App\Sportsbook\Wagers\WagerPlacement;
 use App\Support\SiteNavigation;
 use Illuminate\Support\Facades\Cache;
@@ -302,6 +305,101 @@ test('the bet slip has a My bets tab with the player\'s open bets, and guests ar
 
     expect(Livewire::test(BetSlip::class)->html())
         ->toMatch('#<a class="nt-slip-tab" href="'.preg_quote(route('activity', ['game' => 'sports']), '#').'" data-needs-account data-test="slip-my-bets">My bets</a>#');
+});
+
+test('My bets lists open and settled bets and opens each one in full inside the slip', function () {
+    $player = User::factory()->create();
+    $open = Bet::factory()->for($player)->create(['placed_at' => now()->subMinute()]);
+    BetLeg::factory()->for($open)->create(['selection_name' => 'Wolves', 'market_name' => '1X2', 'fixture_name' => 'Wolves v Fulham', 'price' => '2.40']);
+    $won = Bet::factory()->for($player)->create(['status' => BetStatus::Won, 'payout' => 20_000, 'placed_at' => now()->subDay()]);
+    BetLeg::factory()->for($won)->create(['selection_name' => 'Everton', 'status' => BetLegStatus::Won, 'price' => '1.85']);
+    $void = Bet::factory()->for($player)->create(['status' => BetStatus::Void, 'payout' => 10_000, 'placed_at' => now()->subDays(2)]);
+    BetLeg::factory()->for($void)->create(['selection_name' => 'Brentford', 'status' => BetLegStatus::Void, 'void_reason' => 'Staff note: feed error']);
+    $other = Bet::factory()->create();
+    BetLeg::factory()->for($other)->create(['selection_name' => 'Someone Else FC']);
+
+    $html = Livewire::actingAs($player)->test(BetSlip::class)->html();
+
+    expect($html)
+        ->toContain('Open bets')->toContain('Settled')
+        ->toContain('x-on:click="showBet('.$open->id.')"')->toContain('x-on:click="showBet('.$won->id.')"')->toContain('x-on:click="showBet('.$void->id.')"')
+        // Each bet's full slip is in place: picks, market, match, odds and the bet ID, never staff void reasons.
+        ->toContain('x-show="bet === '.$open->id.'"')->toContain('Wolves v Fulham')->toContain('2.40')->toContain($open->reference)
+        ->toContain('1.85')->toContain('Void · odds 1.00')
+        ->not->toContain('Staff note')->not->toContain('Someone Else FC');
+    expect(substr_count($html, 'data-test="slip-bet-detail"'))->toBe(3);
+});
+
+test('after a bet is placed, My bets opens it inside the slip instead of leaving the page', function () {
+    $player = $this->api->player(100_000);
+    $home = selectionFor(pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]), 'home');
+
+    $html = slipFor($player, [slipPick($home)])->call('placeBet')->assertSee('Bet placed')->html();
+    $bet = Bet::query()->where('user_id', $player->id)->sole();
+
+    expect($html)->toContain('data-test="placed-my-bets"')->toContain('x-on:click="showBet('.$bet->id.')"')
+        ->toContain('x-show="bet === '.$bet->id.'"')
+        ->not->toMatch('#<a[^>]*href="'.preg_quote(route('activity', ['game' => 'sports']), '#').'"[^>]*>My bets</a>#');
+});
+
+test('a multibet with one losing pick reads as lost: the pick is marked, the rest say not needed, and the reason is given', function () {
+    $player = $this->api->player(100_000);
+    $won = pricedFixture(['home_team' => 'Wolves', 'away_team' => 'Leeds', 'kicks_off_at' => now('UTC')->addHours(3)]);
+    $lost = pricedFixture(['home_team' => 'Everton', 'away_team' => 'Burnley', 'kicks_off_at' => now('UTC')->addHours(4)]);
+    $later = pricedFixture(['home_team' => 'Fulham', 'away_team' => 'Brentford', 'kicks_off_at' => now('UTC')->addDays(2)]);
+    $bet = betOn($player, [[$won, 'home'], [$lost, 'home'], [$later, 'home']]);
+
+    recordScore($won, 2, 0);
+    recordScore($lost, 0, 1);
+
+    expect($bet->fresh()->status)->toBe(BetStatus::Lost);
+
+    $html = Livewire::actingAs($player)->test(BetSlip::class)->html();
+
+    expect($html)
+        ->toContain('Lost on Everton v Burnley (Everton). In a multibet every pick must win.')
+        ->toContain('class="nt-bet-badge" data-status="lost"')
+        ->toContain('class="nt-bet-leg" data-status="lost"')
+        ->toContain('class="nt-bet-leg" data-status="won"')
+        ->toContain('class="nt-bet-leg" data-status="moot"')->toContain('Not needed')
+        ->toContain('1 of 3 picks lost')
+        ->not->toContain('class="nt-bet-badge nt-bet-badge-sm" data-status="open"');
+});
+
+test('a bet whose pick lost reads as lost even before the bet itself is settled', function () {
+    $bet = Bet::factory()->create();
+    BetLeg::factory()->for($bet)->create(['status' => BetLegStatus::Lost, 'fixture_name' => 'Spurs v Leeds', 'selection_name' => 'Spurs']);
+    BetLeg::factory()->for($bet)->create(['status' => BetLegStatus::Open]);
+
+    $outcome = new BetOutcome($bet->load('legs'));
+
+    expect($outcome->tone)->toBe('lost')
+        ->and($outcome->label)->toBe('Lost')
+        ->and($outcome->reason)->toBe('Lost on Spurs v Leeds (Spurs). In a multibet every pick must win.')
+        ->and($outcome->legLabel($bet->legs[1], live: false))->toBe('Not needed');
+});
+
+test('an open multibet says how many picks won and how many are still to play', function () {
+    $bet = Bet::factory()->create();
+    BetLeg::factory()->for($bet)->create(['status' => BetLegStatus::Won]);
+    BetLeg::factory()->for($bet)->create(['status' => BetLegStatus::Void]);
+    BetLeg::factory()->for($bet)->create(['status' => BetLegStatus::Open]);
+
+    $outcome = new BetOutcome($bet->load('legs'));
+
+    expect($outcome->tone)->toBe('open')
+        ->and($outcome->reason)->toBe('1 of 3 won, 1 to play. 1 void pick counted at odds 1.00.')
+        ->and($outcome->legLabel($bet->legs[2], live: false))->toBe('Pending')
+        ->and($outcome->legLabel($bet->legs[2], live: true))->toBe('Live');
+});
+
+test('the bet slip sheet closes on a page change and before the sign-in sheet opens', function () {
+    $html = Livewire::test(BetSlip::class)->html();
+
+    expect($html)->toMatch('#x-on:livewire:navigated\.document="[^"]*\$store\.betslip\.isOpen = false#')
+        ->toContain('x-on:signin-opening.window="$store.betslip.isOpen = false"')
+        ->toContain('x-on:open-signin.window="$store.betslip.isOpen = false"');
+    expect(file_get_contents(resource_path('js/site/signin.js')))->toContain("new CustomEvent('signin-opening')");
 });
 
 test('My bets is one tap away from the sports pages and the menus', function () {

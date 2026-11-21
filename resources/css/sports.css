@@ -273,11 +273,27 @@
     .nt-slip-tab[aria-selected='true'] { background: var(--color-felt-2); color: var(--color-ivory); }
     .nt-open-bets h3 { margin: 0; padding: 14px 18px 8px; font-size: 15px; font-weight: 800; color: var(--color-ivory); }
     .nt-open-bets-none { margin: 0; padding: 4px 18px 14px; font-size: 13px; color: var(--color-ash); }
-    .nt-open-bet { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 12px 18px; border-top: 1px solid rgb(255 255 255 / .04); font-size: 14px; color: var(--color-ivory); }
+    /* A My bets row is a button: a tap opens the bet as a full slip in place (.nt-slip-bet). */
+    .nt-open-bet {
+        display: grid; grid-template-columns: minmax(0, 1fr) auto 16px; align-items: center; gap: 12px; width: 100%; padding: 12px 14px 12px 18px;
+        border-top: 1px solid rgb(255 255 255 / .04); font-size: 14px; color: var(--color-ivory); text-align: left; cursor: pointer;
+    }
+    .nt-open-bet:hover { background: rgb(255 255 255 / .03); }
+    .nt-open-bet:focus-visible { outline: 2px solid var(--color-gold); outline-offset: -2px; }
     .nt-open-bet > span { display: grid; min-width: 0; }
     .nt-open-bet > span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .nt-open-bet > span:last-child { text-align: right; }
+    .nt-open-bet > span:nth-child(2) { justify-items: end; text-align: right; }
     .nt-open-bet small { font-size: 12.5px; color: var(--color-ash); }
+    .nt-open-bet > svg { width: 16px; height: 16px; color: var(--color-ash); rotate: -90deg; }
+    .nt-slip-bet-back {
+        display: inline-flex; align-items: center; gap: 6px; margin: 12px 18px 6px; min-height: 36px; padding: 0 10px 0 4px;
+        border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--color-gold);
+    }
+    .nt-slip-bet-back svg { width: 16px; height: 16px; rotate: 90deg; }
+    .nt-slip-bet-back:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+    .nt-slip-bet .nt-bets { padding: 4px 12px 16px; }
+    .nt-slip-bet .nt-bet-head { flex-wrap: wrap; gap: 8px 10px; }
+    .nt-slip-bet .nt-bet-title { flex: 1 1 60%; }
     .nt-see-all-row { display: block; padding: 12px 18px 16px; border-top: 1px solid var(--color-line); font-size: 13px; font-weight: 600; color: var(--color-gold); }
 
     .nt-bottom-slip { position: relative; }

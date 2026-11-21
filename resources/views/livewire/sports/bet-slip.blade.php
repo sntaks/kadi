@@ -20,8 +20,12 @@
 <div class="nt-slip-host"
      x-data="{
         rail: document.body.classList.contains('nt-has-rail'),
-        {{-- Bet slip or My bets (the player's open bets). A change to the picks always shows the slip. --}}
+        {{-- Bet slip or My bets (the player's open and latest settled bets). A change to the picks always shows the slip. --}}
         view: 'slip',
+        {{-- The bet open in full inside My bets (its id), or null for the list. --}}
+        bet: null,
+        showBet(id) { this.view = 'bets'; this.bet = id; this.$nextTick(() => document.getElementById(`slip-bet-${id}-back`)?.focus()) },
+        closeBet() { const id = this.bet; this.bet = null; this.$nextTick(() => document.getElementById(`slip-bet-${id}-row`)?.focus()) },
         wide: window.innerWidth >= 1240,
         dock: 88,
         asSheet() { return ! (this.rail && this.wide) },
@@ -34,7 +38,11 @@
      }"
      x-on:scroll.window.passive="rail && wide && place()"
      x-on:resize.window.debounce.100ms="wide = window.innerWidth >= 1240; place()"
-     x-on:livewire:navigated.document="rail = document.body.classList.contains('nt-has-rail'); place()"
+     {{-- A page change always closes the sheet (the store outlives the page: the slip is @persist-ed). --}}
+     x-on:livewire:navigated.document="rail = document.body.classList.contains('nt-has-rail'); $store.betslip.isOpen = false; bet = null; place()"
+     {{-- The sign-in sheet shares the slip's layer and the slip comes later in the page: close the slip first. --}}
+     x-on:signin-opening.window="$store.betslip.isOpen = false"
+     x-on:open-signin.window="$store.betslip.isOpen = false"
      x-bind:class="{ 'is-open': $store.betslip.isOpen }"
      x-init="place(); if ($store.betslip.count() > 0) { $wire.syncPicks($store.betslip.picks) }"
      x-on:betslip-changed.window="view = 'slip'; $wire.syncPicks($event.detail.picks)"
@@ -62,13 +70,13 @@
                 <h2 class="sr-only" id="slip-title">Bet slip</h2>
                 <div class="nt-slip-tabs" role="tablist" aria-label="Bet slip or my bets">
                     <button type="button" role="tab" class="nt-slip-tab" aria-controls="slip-view-slip" aria-selected="true"
-                            x-bind:aria-selected="view === 'slip' ? 'true' : 'false'" x-on:click="view = 'slip'">
+                            x-bind:aria-selected="view === 'slip' ? 'true' : 'false'" x-on:click="view = 'slip'; bet = null">
                         Bet slip
                         <span class="nt-slip-count nt-num" x-bind:class="{ 'is-on': $store.betslip.count() > 0 }" x-text="$store.betslip.count()">{{ count($quote->lines) }}</span>
                     </button>
                     @auth
                         <button type="button" role="tab" class="nt-slip-tab" aria-controls="slip-view-bets" aria-selected="false" data-test="slip-my-bets"
-                                x-bind:aria-selected="view === 'bets' ? 'true' : 'false'" x-on:click="view = 'bets'">
+                                x-bind:aria-selected="view === 'bets' ? 'true' : 'false'" x-on:click="view = 'bets'; bet = null">
                             My bets
                             @if ($this->openBets->isNotEmpty())<span class="nt-slip-count nt-num">{{ $this->openBets->count() }}</span>@endif
                         </button>
@@ -114,9 +122,7 @@
                         @endif
                         @if ($placed->status !== BetStatus::Pending)
                             <div class="nt-slip-actions">
-                                @if (Route::has('activity'))
-                                    <a class="nt-btn nt-btn-ghost" href="{{ route('activity', ['game' => 'sports']) }}" wire:navigate>My bets</a>
-                                @endif
+                                <button type="button" class="nt-btn nt-btn-ghost" x-on:click="showBet({{ $placed->id }})" data-test="placed-my-bets">My bets</button>
                                 <button type="button" class="nt-btn nt-btn-gold" wire:click="newSlip">New slip</button>
                             </div>
                         @endif
@@ -303,21 +309,37 @@
             </div>
 
             @auth
-                {{-- My bets: the player's open bets, newest first; every bet as a full slip on Activity › Sports. --}}
+                {{-- My bets: the player's open bets and latest settled ones, newest first. A tap opens the bet as a full
+                     slip right here (the same card as Activity › Sports); the whole history stays on Activity. --}}
+                @php $myBets = $this->openBets->concat($this->settledBets); @endphp
                 <div class="nt-open-bets" id="slip-view-bets" role="tabpanel" x-show="view === 'bets'" x-cloak>
-                    <h3>Open bets</h3>
-                    @forelse ($this->openBets as $bet)
-                        <div class="nt-open-bet" wire:key="open-bet-{{ $bet->id }}">
-                            <span>{{ $bet->legs->pluck('selection_name')->take(3)->implode(', ') }}{{ $bet->legs->count() > 3 ? ' +'.($bet->legs->count() - 3) : '' }}
-                                <small>{{ $bet->status === BetStatus::Pending ? 'Checking…' : ($bet->legs->count() > 1 ? 'Multibet, '.$bet->legs->count().' picks' : 'Single') }}@if ($bet->status === BetStatus::Open && $bet->legs->count() > 1) · {{ $bet->legs->where('status', \App\Sportsbook\Enums\BetLegStatus::Won)->count() }} of {{ $bet->legs->count() }} won so far @endif</small></span>
-                            <span class="nt-num">{{ Money::format($bet->stake) }}<small>pays {{ Money::format($bet->potential_payout) }}</small></span>
+                    <div x-show="bet === null">
+                        <h3>Open bets</h3>
+                        @forelse ($this->openBets as $bet)
+                            @include('livewire.sports.partials.slip-bet-row', ['bet' => $bet])
+                        @empty
+                            <p class="nt-open-bets-none">No open bets right now.</p>
+                        @endforelse
+                        @if ($this->settledBets->isNotEmpty())
+                            <h3>Settled</h3>
+                            @foreach ($this->settledBets as $bet)
+                                @include('livewire.sports.partials.slip-bet-row', ['bet' => $bet])
+                            @endforeach
+                        @endif
+                        @if (Route::has('activity'))
+                            <a class="nt-see-all-row" href="{{ route('activity', ['game' => 'sports']) }}" wire:navigate>All my bets, open and settled</a>
+                        @endif
+                    </div>
+                    @foreach ($myBets as $bet)
+                        <div class="nt-slip-bet" x-show="bet === {{ $bet->id }}" x-cloak wire:key="slip-bet-{{ $bet->id }}" data-test="slip-bet-detail">
+                            <button type="button" class="nt-slip-bet-back" id="slip-bet-{{ $bet->id }}-back" x-on:click="closeBet()">
+                                <x-site.icon name="chev" /> My bets
+                            </button>
+                            <ol class="nt-bets" aria-label="Bet details">
+                                @include('livewire.account.partials.sports-bet-card', ['bet' => $bet, 'expanded' => true])
+                            </ol>
                         </div>
-                    @empty
-                        <p class="nt-open-bets-none">No open bets. Your settled bets and what they paid are in My bets.</p>
-                    @endforelse
-                    @if (Route::has('activity'))
-                        <a class="nt-see-all-row" href="{{ route('activity', ['game' => 'sports']) }}" wire:navigate>All my bets, open and settled</a>
-                    @endif
+                    @endforeach
                 </div>
             @endauth
         </section>
