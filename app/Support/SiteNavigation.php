@@ -153,6 +153,7 @@ final class SiteNavigation
             array_values(array_filter([
                 $this->link('Wallet', 'wallet', 'wallet'),
                 $this->activityLink(),
+                $this->sportsBetsLink(),
                 config('kadi.referrals.enabled') ? $this->link('Invite & Earn', 'referrals', 'invite') : null,
                 $this->responsiblePlayOn() ? $this->link('Responsible play', 'responsible-play', 'shield') : null,
             ])),
@@ -265,6 +266,22 @@ final class SiteNavigation
     }
 
     /**
+     * "My bets": the player's sports bets as slips (Activity › Sports). Null while the sports pages are off.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function sportsBetsLink(bool $needsAccount = false): ?array
+    {
+        if (! $this->sportsOn() || ! Route::has('activity')) {
+            return null;
+        }
+
+        $active = request()->routeIs('activity') && request()->query('game') === 'sports';
+
+        return $this->item('My bets', route('activity', ['game' => 'sports']), 'slip', active: $active, needsAccount: $needsAccount && $this->isGuest()) + ['route' => 'activity'];
+    }
+
+    /**
      * The side menu's Sports group (plan §2): each sport with matches open (Football, Basketball) and its real count,
      * the sports jackpot while it takes entries, and In play: with its real count of matches in play while in-play
      * betting is on, otherwise a list only, marked Soon.
@@ -288,6 +305,10 @@ final class SiteNavigation
 
         $items[] = $this->link('In play', 'sports.live', 'live')
             + (InPlay::on() ? ['count' => app(FixtureListing::class)->inPlayCount()] : ['badge' => 'Soon']);
+
+        if (($bets = $this->sportsBetsLink(needsAccount: true)) !== null) {
+            $items[] = $bets;
+        }
 
         return $items;
     }

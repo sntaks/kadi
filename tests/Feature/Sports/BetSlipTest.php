@@ -13,7 +13,9 @@ use App\Sportsbook\Models\BookingCode;
 use App\Sportsbook\Models\FreeBet;
 use App\Sportsbook\Models\JackpotEntry;
 use App\Sportsbook\Wagers\WagerPlacement;
+use App\Support\SiteNavigation;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 
@@ -246,6 +248,75 @@ test('activity lists the player\'s own sports bets: open, settled and jackpot en
     recordScore($fixture, 2, 0);
 
     $activity->call('showSports', 'open')->assertSee('No open bets');
-    $activity->call('showSports', 'settled')->assertSee('Wolves')->assertSee('+KES 210.00');
+    $activity->call('showSports', 'settled')->assertSee('Wolves')->assertSee('Won KES 210.00')->assertSee('You won')->assertSee('FT 2-0');
     $activity->call('showSports', 'jackpot')->assertSee('No jackpot entries yet');
+});
+
+test('a settled multibet shows as a slip: every pick with its odds and result, and what the player lost', function () {
+    $player = $this->api->player(100_000);
+    $won = pricedFixture(['home_team' => 'Wolves', 'away_team' => 'Leeds', 'kicks_off_at' => now('UTC')->addHours(3)]);
+    $lost = pricedFixture(['home_team' => 'Everton', 'away_team' => 'Burnley', 'kicks_off_at' => now('UTC')->addHours(4)]);
+    $bet = betOn($player, [[$won, 'home'], [$lost, 'home']]);
+
+    Livewire::actingAs($player)->test(Activity::class)->call('show', 'sports')
+        ->assertSee('Multibet · 2 picks')->assertSee('Bet ID '.$bet->reference)
+        ->assertSee('Wolves v Leeds')->assertSee('Everton v Burnley')->assertSee('2.10')
+        ->assertSee('Possible payout (before tax)');
+
+    recordScore($won, 2, 0);
+    recordScore($lost, 0, 1);
+
+    $html = Livewire::actingAs($player)->test(Activity::class)->call('show', 'sports')->call('showSports', 'settled')
+        ->assertSee('Lost KES 100.00')->assertSee('You lost')->assertSee('FT 2-0')->assertSee('FT 0-1')
+        ->html();
+
+    expect(substr_count($html, 'class="nt-bet-badge nt-bet-badge-sm" data-status="won"'))->toBe(1)
+        ->and(substr_count($html, 'class="nt-bet-badge nt-bet-badge-sm" data-status="lost"'))->toBe(1)
+        ->and($html)->toContain('class="nt-bet-badge" data-status="lost"');
+});
+
+test('the bet list loads every leg, match and result in a fixed number of queries', function () {
+    $player = $this->api->player(100_000);
+
+    foreach (range(1, 3) as $i) {
+        betOn($player, [[pricedFixture(['kicks_off_at' => now('UTC')->addHours($i)]), 'home'], [pricedFixture(['kicks_off_at' => now('UTC')->addHours($i + 5)]), 'away']]);
+    }
+
+    $component = Livewire::actingAs($player)->test(Activity::class)->call('show', 'sports');
+    DB::enableQueryLog();
+    $component->call('goTo', 1);
+    $queries = collect(DB::getQueryLog())->filter(fn (array $q) => str_contains($q['query'], 'sb_'))->count();
+
+    expect($queries)->toBeLessThanOrEqual(5);
+});
+
+test('the bet slip has a My bets tab with the player\'s open bets, and guests are asked to sign in', function () {
+    $player = $this->api->player(100_000);
+    betOn($player, [[pricedFixture(['home_team' => 'Wolves', 'kicks_off_at' => now('UTC')->addHours(3)]), 'home']]);
+
+    Livewire::actingAs($player)->test(BetSlip::class)
+        ->assertSeeHtml('data-test="slip-my-bets"')->assertSee('Open bets')->assertSee('Wolves')
+        ->assertSeeHtml('href="'.route('activity', ['game' => 'sports']).'"');
+
+    auth()->logout();
+
+    expect(Livewire::test(BetSlip::class)->html())
+        ->toMatch('#<a class="nt-slip-tab" href="'.preg_quote(route('activity', ['game' => 'sports']), '#').'" data-needs-account data-test="slip-my-bets">My bets</a>#');
+});
+
+test('My bets is one tap away from the sports pages and the menus', function () {
+    $player = $this->api->player(100_000);
+    pricedFixture(['kicks_off_at' => now('UTC')->addHours(3)]);
+    $href = route('activity', ['game' => 'sports']);
+
+    $page = $this->actingAs($player)->get('/sports')->assertOk()->assertSee('data-test="sports-my-bets"', false)->getContent();
+    $nav = new SiteNavigation($player);
+
+    expect(substr_count($page, 'href="'.$href.'"'))->toBeGreaterThanOrEqual(2) // sport sidebar and side menu
+        ->and(collect($nav->accountMenu()[1])->pluck('href'))->toContain($href);
+
+    config(['platform.sports' => false]);
+
+    expect((new SiteNavigation($player))->sportsBetsLink())->toBeNull()
+        ->and(collect((new SiteNavigation($player))->accountMenu()[1])->pluck('href'))->not->toContain($href);
 });

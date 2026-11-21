@@ -3,10 +3,13 @@
 namespace App\Livewire\Account;
 
 use App\Account\Wagers;
+use App\Games\Game;
+use App\Games\GameCatalogue;
 use App\Models\User;
 use App\Sportsbook\Enums\BetStatus;
 use App\Sportsbook\Models\Bet;
 use App\Sportsbook\Models\JackpotEntry;
+use App\Support\PredictPages;
 use App\Support\SportsPages;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
@@ -16,7 +19,10 @@ use Livewire\Component;
 /**
  * /activity (plan Phase 6): everything the player played. Kadi keeps its game history and dispute tools
  * (App\Livewire\Games\History, unchanged); slots and scratch cards list the player's wagers from KadiApi.
- * Sports lists the player's own bets and jackpot entries from sb_bets / sb_jackpot_entries (Phase 9).
+ * Sports lists the player's own bets and jackpot entries from sb_bets / sb_jackpot_entries (Phase 9), each bet as a
+ * slip with its picks. Every other casino game KadiApi offers (Coin Flip, Roulette…) lists its wagers like slots,
+ * and Predictions shows the prediction bets (App\Livewire\Predict\MyBets, embedded). The games are picked from one
+ * dropdown (<x-account.game-select>).
  */
 class Activity extends Component
 {
@@ -24,6 +30,18 @@ class Activity extends Component
     public const SPORTS_VIEWS = ['open' => 'Open', 'settled' => 'Settled', 'jackpot' => 'Jackpot'];
 
     private const SPORTS_PER_PAGE = 15;
+
+    /** Always offered, so a catalogue outage never hides a player's slot or scratch card history. */
+    private const CASINO = ['slots' => 'Slots', 'scratch' => 'Scratch cards'];
+
+    /** Games with a page of their own here, never listed again from the catalogue. */
+    private const NOT_CASINO = ['kadi', 'sports', 'sportsbook', 'predictions', 'predict'];
+
+    /** @var array<string, string> */
+    public const ICONS = ['kadi' => 'kadi', 'sports' => 'football', 'slots' => 'slot', 'scratch' => 'gift', 'predictions' => 'predict'];
+
+    /** @var array<string, string>|null */
+    private ?array $tabs = null;
 
     #[Url(as: 'game', except: 'kadi')]
     public string $tab = 'kadi';
@@ -88,20 +106,44 @@ class Activity extends Component
             ->whereIn('status', $this->sportsView === 'open'
                 ? [BetStatus::Open, BetStatus::Pending]
                 : [BetStatus::Won, BetStatus::Lost, BetStatus::Void, BetStatus::Cancelled, BetStatus::Rejected])
-            ->with('legs')
+            ->with(['legs.fixture.result'])
             ->latest($this->sportsView === 'open' ? 'placed_at' : 'settled_at')->latest('id')
             ->paginate(self::SPORTS_PER_PAGE, page: $this->page);
     }
 
-    /** @return array<string, string> */
+    /**
+     * Kadi, Sports, every casino game with a wagers history (slots and scratch cards always, the rest only while
+     * the catalogue offers them, never from config alone), then Predictions.
+     *
+     * @return array<string, string>
+     */
     public function tabs(): array
     {
-        return array_filter([
+        if ($this->tabs !== null) {
+            return $this->tabs;
+        }
+
+        $casino = self::CASINO;
+
+        foreach (app(GameCatalogue::class)->games() as $code => $game) {
+            /** @var Game $game */
+            if (! in_array($code, self::NOT_CASINO, true) && preg_match('/^[a-z0-9_]{1,40}$/', (string) $code)) {
+                $casino[$code] ??= $game->name;
+            }
+        }
+
+        return $this->tabs = array_filter([
             'kadi' => 'Kadi',
-            'slots' => 'Slots',
-            'scratch' => 'Scratch cards',
             'sports' => SportsPages::on() ? 'Sports' : null,
+            ...$casino,
+            'predictions' => PredictPages::on() ? 'Predictions' : null,
         ]);
+    }
+
+    /** Whether a tab lists casino wagers from KadiApi (`GET customers/{id}/wagers?game=`). */
+    public function isCasino(string $tab): bool
+    {
+        return ! in_array($tab, ['kadi', 'sports', 'predictions'], true) && array_key_exists($tab, $this->tabs());
     }
 
     public function render(Wagers $wagers): View
@@ -109,7 +151,7 @@ class Activity extends Component
         $user = auth()->user();
         $list = null;
 
-        if ($this->loaded && in_array($this->tab, ['slots', 'scratch'], true) && $user instanceof User) {
+        if ($this->loaded && $this->isCasino($this->tab) && $user instanceof User) {
             $list = $wagers->page($user, $this->tab, $this->page);
         }
 
@@ -119,6 +161,7 @@ class Activity extends Component
 
         return view('livewire.account.activity', [
             'tabs' => $this->tabs(),
+            'casino' => $this->isCasino($this->tab),
             'list' => $list,
             'sports' => $this->tab === 'sports' && $user instanceof User ? $this->sportsPage($user) : null,
         ])

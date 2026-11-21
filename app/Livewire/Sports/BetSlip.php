@@ -221,7 +221,7 @@ class BetSlip extends Component
     public function openBets(): Collection
     {
         return auth()->check()
-            ? Bet::query()->where('user_id', auth()->id())->whereIn('status', [BetStatus::Open, BetStatus::Pending])->with('legs')->latest('placed_at')->limit(3)->get()
+            ? Bet::query()->where('user_id', auth()->id())->whereIn('status', [BetStatus::Open, BetStatus::Pending])->with('legs')->latest('placed_at')->limit(5)->get()
             : new Collection;
     }
 

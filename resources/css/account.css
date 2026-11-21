@@ -62,11 +62,77 @@
     .nt-list-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 18px 22px 10px; }
     .nt-list-head h2 { margin: 0; font-size: 18px; font-weight: 800; color: var(--color-ivory); }
     .nt-list-head .nt-tabs { margin-left: auto; }
+    /* Activity's game filter (<x-account.game-select>): the league picker's trigger, opening a menu below it. */
+    .nt-gs { position: relative; margin-left: auto; width: min(100%, 300px); }
+    .nt-gs-menu > summary { list-style: none; cursor: pointer; }
+    .nt-gs-menu > summary::-webkit-details-marker { display: none; }
+    .nt-gs-menu > summary > svg:last-of-type { transition: transform .2s; }
+    .nt-gs-menu[open] > summary { border-color: var(--color-gold); }
+    .nt-gs-menu[open] > summary > svg:last-of-type { transform: rotate(180deg); color: var(--color-gold); }
+    .nt-gs-list {
+        position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; right: 0; display: grid; gap: 2px; padding: 6px;
+        max-height: min(60dvh, 420px); overflow-y: auto; background: var(--color-felt-2); border: 1px solid var(--color-line-2);
+        border-radius: var(--radius-control); box-shadow: 0 18px 40px rgb(0 0 0 / .45);
+    }
+    .nt-gs-list .nt-lp-row { min-height: 44px; }
+    .nt-gs-hint { margin: 6px 2px 0; font-size: 12px; color: var(--color-ash); }
     .nt-list-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 22px 18px; font-size: 13px; color: var(--color-ash); }
     @media (max-width: 640px) {
         .nt-list-head { padding: 16px 16px 10px; }
         .nt-list-head .nt-tabs { margin-left: 0; width: 100%; }
+        .nt-gs { margin-left: 0; width: 100%; }
         .nt-list-foot { padding: 12px 16px 16px; }
+    }
+
+    /* Activity › Sports: each bet as a slip (account/partials/sports-bet-card). Green/red only for won/lost. */
+    .nt-bets { display: grid; gap: 10px; margin: 0; padding: 4px 22px 18px; list-style: none; }
+    .nt-bet { border: 1px solid var(--color-line); border-radius: var(--radius-tile); background: var(--color-felt-2); overflow: hidden; }
+    .nt-bet[data-status='won'] { border-color: rgb(60 197 106 / .35); }
+    .nt-bet-slip > summary { list-style: none; cursor: pointer; }
+    .nt-bet-slip > summary::-webkit-details-marker { display: none; }
+    .nt-bet-head { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+    .nt-bet-head:focus-visible { outline: 2px solid var(--color-gold); outline-offset: -2px; }
+    .nt-bet-head > svg { flex: none; width: 16px; height: 16px; color: var(--color-ash); transition: transform .2s; }
+    .nt-bet-slip[open] > .nt-bet-head > svg { transform: rotate(180deg); color: var(--color-gold); }
+    .nt-bet-title { flex: 1; min-width: 0; display: grid; line-height: 1.3; }
+    .nt-bet-title b { color: var(--color-ivory); font-weight: 700; font-size: 15px; }
+    .nt-bet-title small, .nt-bet-result small, .nt-bet-leg-main small { font-size: 12px; color: var(--color-ash); }
+    .nt-bet-result { display: grid; justify-items: end; text-align: right; line-height: 1.3; }
+    .nt-bet-result b { color: var(--color-ivory); font-weight: 700; }
+    .nt-bet .nt-in { color: var(--color-win); }
+    .nt-bet .nt-out { color: var(--color-hot); }
+    .nt-bet-badge {
+        flex: none; display: inline-flex; align-items: center; min-height: 24px; padding: 2px 10px; border-radius: 999px;
+        font-size: 12px; font-weight: 700; background: var(--color-felt-3); color: var(--color-soft); white-space: nowrap;
+    }
+    .nt-bet-badge[data-status='open'] { color: var(--color-gold); box-shadow: inset 0 0 0 1px var(--color-line-2); }
+    .nt-bet-badge[data-status='won'] { background: rgb(60 197 106 / .14); color: var(--color-win-soft); }
+    .nt-bet-badge[data-status='lost'] { background: rgb(232 96 79 / .14); color: var(--color-hot-soft); }
+    .nt-bet-badge-sm { min-height: 20px; padding: 1px 8px; font-size: 11px; }
+    .nt-bet-legs { margin: 0; padding: 0 14px; list-style: none; border-top: 1px solid var(--color-line); }
+    .nt-bet-leg { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--color-line); }
+    .nt-bet-dot { flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 999px; background: var(--color-ash); }
+    .nt-bet-dot[data-status='open'] { background: var(--color-gold); }
+    .nt-bet-dot[data-status='won'] { background: var(--color-win); }
+    .nt-bet-dot[data-status='lost'] { background: var(--color-hot); }
+    .nt-bet-leg-main { flex: 1; min-width: 0; display: grid; line-height: 1.35; }
+    .nt-bet-leg-main b { color: var(--color-ivory); font-weight: 600; }
+    .nt-bet-leg-end { display: grid; justify-items: end; gap: 4px; }
+    .nt-bet-leg-end b { color: var(--color-gold); }
+    .nt-bet-sum { display: grid; gap: 4px; margin: 0; padding: 10px 14px 14px; font-size: 13px; }
+    .nt-bet-sum div { display: flex; justify-content: space-between; gap: 12px; }
+    .nt-bet-sum dt { color: var(--color-ash); }
+    .nt-bet-sum dd { margin: 0; color: var(--color-ivory); text-align: right; }
+    .nt-bet-sum .nt-bet-total { margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--color-line); font-size: 14px; font-weight: 700; }
+    .nt-bet-sum .nt-bet-total dt { color: var(--color-soft); }
+    @media (max-width: 640px) {
+        .nt-bets { padding: 4px 16px 16px; }
+        .nt-bet-head { flex-wrap: wrap; gap: 8px 10px; padding: 12px; }
+        .nt-bet-title { flex-basis: calc(100% - 120px); }
+        .nt-bet-result { order: 4; flex: 1; display: flex; align-items: baseline; gap: 8px; text-align: left; }
+        .nt-bet-head > svg { order: 5; }
+        .nt-bet-legs { padding: 0 12px; }
+        .nt-bet-sum { padding: 10px 12px 12px; }
     }
 
     /* ── Responsible play ─────────────────────────────────── */

@@ -1,4 +1,4 @@
-{{-- Site footer: who we are, 18+, the same links as the menu, and every way to reach support. --}}
+{{-- Site footer: who we are, 18+, the BCLB licence, the same links as the menu, and every way to reach support. --}}
 @props(['nav'])
 @php
     use App\Support\Contact;
@@ -8,6 +8,8 @@
         Contact::whatsapp() ? ['href' => Contact::whatsapp(), 'label' => 'WhatsApp', 'icon' => 'chat', 'external' => true] : null,
         Contact::email() ? ['href' => 'mailto:'.Contact::email(), 'label' => Contact::email(), 'icon' => 'mail'] : null,
     ]));
+    // Shown on every page (the landing included) once KADI_LICENCE_NUMBER is set; hidden while blank.
+    $licence = trim((string) config('kadi.legal.licence_number'));
 @endphp
 {{-- On a gate (consent, choose a name) the footer is inert too: its Play Kadi can post off-site, where no gate runs. --}}
 <footer @class(['nt-footer', 'nt-gated' => $nav->isGated()]) @if ($nav->isGated()) inert @endif>
@@ -15,6 +17,9 @@
         <img src="{{ asset('logo/kadi-logo.webp') }}" alt="Kadi" width="228" height="96" loading="lazy">
         <p class="m-0 mb-3 max-w-[46ch]">Kenya's card game, head to head for real money. Stake only what you can afford to lose.</p>
         <p class="m-0"><span class="nt-age-badge">18+</span>Only for players aged 18 and over.</p>
+        @if ($licence !== '')
+            <p class="nt-licence" data-test="bclb-licence">Licensed by the Betting Control and Licensing Board (BCLB) of Kenya, licence no. <span class="nt-num">{{ $licence }}</span>.</p>
+        @endif
         @if ($socials = Contact::socials())
             <ul class="nt-socials" aria-label="Follow Kadi">
                 @foreach ($socials as $social)

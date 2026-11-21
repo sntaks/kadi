@@ -157,6 +157,47 @@ test('the sports tab appears only with the sports pages', function (bool $sports
     expect(array_key_exists('sports', Livewire::actingAs(accountPlayer())->test(Activity::class)->instance()->tabs()))->toBe($sports);
 })->with([true, false]);
 
+test('the activity dropdown lists every game the catalogue offers, and its wagers come from KadiApi', function () {
+    $this->answers['/games'] = Http::response(['data' => [
+        ['code' => 'kadi', 'name' => 'Kadi', 'launch_url' => 'https://play.kadi.online', 'status' => 'active', 'sort_order' => 1, 'products' => [['code' => 'kadi', 'name' => 'Kadi', 'status' => 'active']]],
+        ['code' => 'coinflip', 'name' => 'Coin Flip', 'launch_url' => 'https://coin.kadi.online/launch.php', 'status' => 'active', 'sort_order' => 4, 'products' => [['code' => 'gold_rush', 'name' => 'Gold Rush', 'status' => 'active']]],
+    ]]);
+    $this->answers['/wagers'] = Http::response(['success' => true, 'data' => [
+        'items' => [['reference' => 'w-9', 'game' => 'coinflip', 'product' => 'gold_rush', 'funding' => 'cash', 'stake' => 50, 'status' => 'won', 'payout' => 95, 'bonus' => 0, 'tax' => 0, 'placed_at' => '2026-11-20T10:00:00+03:00']],
+        'pagination' => ['page' => 1, 'per_page' => 20, 'total' => 1, 'last_page' => 1],
+    ]]);
+
+    $activity = Livewire::actingAs(accountPlayer())->test(Activity::class);
+
+    expect($activity->instance()->tabs())->toHaveKeys(['kadi', 'slots', 'scratch', 'coinflip'])->not->toHaveKey('roulette');
+
+    $activity->assertSeeHtml('data-test="activity-game-select"')->assertSee('Pick a game to see your plays and how they ended.')
+        ->assertSeeHtml('href="'.route('activity', ['game' => 'coinflip']).'"')
+        ->call('show', 'coinflip')->call('load')
+        ->assertSet('tab', 'coinflip')->assertSee('Gold Rush')->assertSee('+KES 95.00');
+
+    Http::assertSent(fn ($request) => str_contains($request->url(), '/wagers') && $request['game'] === 'coinflip');
+});
+
+test('slots and scratch cards stay in the dropdown when the catalogue is empty, and unknown games fall back to Kadi', function () {
+    $activity = Livewire::actingAs(accountPlayer())->withQueryParams(['game' => 'roulette'])->test(Activity::class);
+
+    expect($activity->instance()->tabs())->toHaveKeys(['kadi', 'slots', 'scratch'])->not->toHaveKey('roulette');
+    $activity->assertSet('tab', 'kadi')->call('show', 'nope')->assertSet('tab', 'kadi');
+});
+
+test('predictions show in activity while the prediction pages are on', function (bool $on) {
+    config(['platform.predictions' => $on]);
+
+    $activity = Livewire::actingAs(accountPlayer())->test(Activity::class);
+
+    expect(array_key_exists('predictions', $activity->instance()->tabs()))->toBe($on);
+
+    if ($on) {
+        $activity->call('show', 'predictions')->assertSeeLivewire('predict.my-bets');
+    }
+})->with([true, false]);
+
 // ─── Responsible play ────────────────────────────────────────────────────────
 
 test('the page shows the limits KadiApi holds and a running break', function () {

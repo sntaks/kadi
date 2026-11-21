@@ -15,7 +15,7 @@ use Livewire\Component;
 /**
  * /predictions/bets: the player's prediction bets, Open and Settled, newest first, with "Load more". A bet whose
  * outcome is still unknown shows at the top in its own slip ("We're checking your bet", "Try again" with the same
- * reference). Markets open in the prediction sheet.
+ * reference). Markets open in the prediction sheet. /activity embeds it (`embedded`) as its Predictions tab.
  */
 class MyBets extends Component
 {
@@ -27,6 +27,10 @@ class MyBets extends Component
 
     #[Locked]
     public int $pages = 1;
+
+    /** Shown inside /activity (Predictions): the list without its page heading. */
+    #[Locked]
+    public bool $embedded = false;
 
     public function setTab(string $tab): void
     {

@@ -1,10 +1,9 @@
 @php
-    use App\Sportsbook\Enums\BetStatus;
     use App\Sportsbook\Enums\JackpotEntryStatus;
     use App\Sportsbook\Support\Money;
     $tz = config('sportsbook.timezone');
 @endphp
-{{-- Activity › Sports: the player's bets (open, settled) and jackpot entries, newest first. --}}
+{{-- Activity › Sports: the player's bets (open, settled) as slips, and jackpot entries, newest first. --}}
 <div class="px-[22px] pb-2 max-[640px]:px-4">
     <div class="nt-chips" role="group" aria-label="Which bets">
         @foreach (\App\Livewire\Account\Activity::SPORTS_VIEWS as $key => $label)
@@ -27,9 +26,9 @@
         @endif
     </div>
 @else
-    <ul class="nt-list">
-        @foreach ($page as $item)
-            @if ($sportsView === 'jackpot')
+    @if ($sportsView === 'jackpot')
+        <ul class="nt-list">
+            @foreach ($page as $item)
                 @php
                     $status = match ($item->status) {
                         JackpotEntryStatus::Pending => ['Checking…', null],
@@ -55,41 +54,15 @@
                         @endif
                     </span>
                 </li>
-            @else
-                <li class="nt-row" wire:key="bet-{{ $item->id }}">
-                    <span class="nt-row-icon" aria-hidden="true"><x-site.icon name="ball" /></span>
-                    <span class="min-w-0">
-                        <b>{{ $item->legs->pluck('selection_name')->take(4)->implode(', ') }}{{ $item->legs->count() > 4 ? ' +'.($item->legs->count() - 4) : '' }}</b>
-                        <span class="nt-meta nt-num">
-                            {{ $item->placed_at->timezone($tz)->format('j M, H:i') }} · {{ $item->reference }}
-                            · {{ $item->legs->count() > 1 ? 'Multibet, '.$item->legs->count().' legs' : 'Single' }} at {{ $item->total_odds }}
-                            · Stake {{ Money::format($item->stake) }}{{ $item->isFreeBet() ? ' (free bet)' : '' }}
-                        </span>
-                    </span>
-                    <span class="nt-trail nt-num">
-                        @switch($item->status)
-                            @case(BetStatus::Won)
-                                <span class="nt-in">+{{ Money::format($item->netPayout() ?? 0) }}</span>
-                                @if ($item->tax)<span class="nt-meta">after {{ Money::format($item->tax) }} tax</span>@endif
-                                @break
-                            @case(BetStatus::Open)
-                                <span class="nt-meta">Pays {{ Money::format($item->potential_payout) }}</span>
-                                @break
-                            @case(BetStatus::Pending)
-                                <span class="nt-meta">Checking…</span>
-                                @break
-                            @case(BetStatus::Void)
-                            @case(BetStatus::Cancelled)
-                                <span class="nt-meta">{{ $item->status->label() }}{{ $item->payout ? ' · '.Money::format($item->payout).' back' : '' }}</span>
-                                @break
-                            @default
-                                <span class="nt-meta">{{ $item->status->label() }}</span>
-                        @endswitch
-                    </span>
-                </li>
-            @endif
-        @endforeach
-    </ul>
+            @endforeach
+        </ul>
+    @else
+        <ol class="nt-bets" aria-label="Your bets">
+            @foreach ($page as $bet)
+                @include('livewire.account.partials.sports-bet-card', ['bet' => $bet])
+            @endforeach
+        </ol>
+    @endif
     @if ($page->lastPage() > 1)
         <div class="nt-list-foot">
             <span>Page {{ $page->currentPage() }} of {{ $page->lastPage() }}</span>

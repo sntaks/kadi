@@ -263,7 +263,16 @@
     .nt-code-error { margin: -6px 18px 12px; }
     .nt-slip-foot { margin: 0; padding: 12px 18px; border-top: 1px solid var(--color-line); font-size: 12.5px; color: var(--color-ash); text-align: center; }
 
-    .nt-open-bets h2 { margin: 0; padding: 16px 18px 8px; font-size: 17px; font-weight: 800; color: var(--color-ivory); }
+    .nt-slip-tabs { display: flex; gap: 4px; min-width: 0; }
+    .nt-slip-tab {
+        display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 10px; border-radius: 10px;
+        font-size: 15px; font-weight: 800; color: var(--color-ash); white-space: nowrap;
+    }
+    .nt-slip-tab:hover { color: var(--color-ivory); }
+    .nt-slip-tab:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+    .nt-slip-tab[aria-selected='true'] { background: var(--color-felt-2); color: var(--color-ivory); }
+    .nt-open-bets h3 { margin: 0; padding: 14px 18px 8px; font-size: 15px; font-weight: 800; color: var(--color-ivory); }
+    .nt-open-bets-none { margin: 0; padding: 4px 18px 14px; font-size: 13px; color: var(--color-ash); }
     .nt-open-bet { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 12px 18px; border-top: 1px solid rgb(255 255 255 / .04); font-size: 14px; color: var(--color-ivory); }
     .nt-open-bet > span { display: grid; min-width: 0; }
     .nt-open-bet > span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -336,6 +345,7 @@
     .nt-sportnav-sport svg { width: 18px; height: 18px; }
     .nt-sportnav-sport small { font-size: 12px; color: var(--color-ash); }
     .nt-sportnav-sport:hover { border-color: var(--color-line-2); color: var(--color-ivory); }
+    .nt-sportnav-bets { color: var(--color-gold); }
     .nt-sportnav-sport[aria-current] { background: var(--color-felt-3); border-color: var(--color-line-2); color: var(--color-gold); }
     .nt-sportnav > .nt-sportnav-list { display: none; }
 
