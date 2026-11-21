@@ -1,10 +1,12 @@
 {{-- /predictions/bets (App\Livewire\Predict\MyBets): Open and Settled prediction bets, and a bet still being checked. --}}
 <div class="nt-predict nt-view-in">
-    <x-ui.page-head title="My bets" crumb="Predictions" description="Your prediction bets. Open bets on pool markets show estimates until the market closes.">
-        <x-slot:actions>
-            <x-ui.button variant="ghost" size="sm" :href="route('predictions')" wire:navigate>All markets</x-ui.button>
-        </x-slot:actions>
-    </x-ui.page-head>
+    @unless ($embedded)
+        <x-ui.page-head title="My bets" crumb="Predictions" description="Your prediction bets. Open bets on pool markets show estimates until the market closes.">
+            <x-slot:actions>
+                <x-ui.button variant="ghost" size="sm" :href="route('predictions')" wire:navigate>All markets</x-ui.button>
+            </x-slot:actions>
+        </x-ui.page-head>
+    @endunless
 
     @if ($pending)
         <section class="nt-pm-pending" aria-labelledby="pm-pending">

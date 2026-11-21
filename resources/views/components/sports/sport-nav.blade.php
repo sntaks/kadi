@@ -8,16 +8,26 @@
     $current = collect($competitions)->firstWhere('slug', $active);
     $sportName = collect($sports)->firstWhere('slug', $sport)['name'] ?? \App\Sportsbook\Support\SportProfile::find($sport)?->name ?? 'Sports';
     $total = array_sum(array_column($competitions, 'count'));
+    $myBets = \App\Support\SiteNavigation::current()->sportsBetsLink(needsAccount: true);
 @endphp
 <nav {{ $attributes->class('nt-sportnav') }} aria-label="Sports and leagues">
-    @if (count($sports) > 1)
+    @if (count($sports) > 1 || $myBets)
         <div class="nt-sportnav-sports">
-            @foreach ($sports as $item)
-                <a class="nt-sportnav-sport" href="{{ \App\Sportsbook\Catalogue\SportsLobby::sportUrl($item['slug']) }}" wire:navigate
-                   @if ($item['slug'] === $sport) aria-current="{{ $active === null ? 'page' : 'true' }}" @endif>
-                    <x-site.icon :name="$item['icon']" /><span>{{ $item['name'] }}</span><small class="nt-num">{{ $item['count'] }}</small>
+            @if (count($sports) > 1)
+                @foreach ($sports as $item)
+                    <a class="nt-sportnav-sport" href="{{ \App\Sportsbook\Catalogue\SportsLobby::sportUrl($item['slug']) }}" wire:navigate
+                       @if ($item['slug'] === $sport) aria-current="{{ $active === null ? 'page' : 'true' }}" @endif>
+                        <x-site.icon :name="$item['icon']" /><span>{{ $item['name'] }}</span><small class="nt-num">{{ $item['count'] }}</small>
+                    </a>
+                @endforeach
+            @endif
+            {{-- The player's bets as slips (Activity › Sports). Guests get the sign-in sheet; the URL works without JS. --}}
+            @if ($myBets)
+                <a class="nt-sportnav-sport nt-sportnav-bets" href="{{ $myBets['href'] }}" data-test="sports-my-bets"
+                   @if ($myBets['needsAccount']) data-needs-account @else wire:navigate @endif>
+                    <x-site.icon name="slip" /><span>My bets</span>
                 </a>
-            @endforeach
+            @endif
         </div>
     @endif
 
