@@ -32,7 +32,7 @@ class Markets
     /** How a category reads in menus and chips. */
     public static function categoryLabel(string $category): string
     {
-        return ['sport' => 'Sport', 'politics' => 'Politics', 'entertainment' => 'Entertainment'][$category] ?? ucfirst($category);
+        return ['sport' => 'Sport', 'politics' => 'Politics', 'economy' => 'Economy', 'entertainment' => 'Entertainment'][$category] ?? ucfirst($category);
     }
 
     /**

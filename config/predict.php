@@ -85,7 +85,7 @@ return [
 
     'sources' => ['polymarket', 'custom'],
 
-    'categories' => ['sport', 'politics', 'entertainment'],
+    'categories' => ['sport', 'politics', 'economy', 'entertainment'],
 
     'sorts' => ['closing_soon', 'trending', 'new'],
 

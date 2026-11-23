@@ -13,6 +13,7 @@ use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
+use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 
 /**
@@ -197,6 +198,12 @@ test('the predictions menu offers all, local and world markets, and marks the on
         ->and(collect($items())->firstWhere('label', 'All markets')['active'])->toBeFalse();
 });
 
+/** @return list<int> the World list's market ids, in the order shown. */
+function worldMarketIds(Testable $lobby): array
+{
+    return collect($lobby->viewData('worldGroups'))->flatMap(fn (array $group) => $group['markets'])->pluck('id')->all();
+}
+
 /** One page of a lobby list. */
 function pagedList(int $page, array $items, int $last = 3, int $total = 5): PromiseInterface
 {
@@ -214,14 +221,14 @@ test('world load more adds the next page under the first, stops at the last page
     ]);
 
     $lobby = Livewire::test(Lobby::class)
-        ->assertSee('Showing 2 of 5')
         ->assertSeeHtml('data-predict-load-more="loadMoreWorld"');
+    expect(worldMarketIds($lobby))->toBe([1, 2]);
 
-    $lobby->call('loadMoreWorld')->assertSee('Showing 4 of 5');
+    $lobby->call('loadMoreWorld');
+    expect(worldMarketIds($lobby))->toBe([1, 2, 3, 4]);
 
     // A market that moved to a later page between reads shows once; the last page ends the list.
     $lobby->call('loadMoreWorld')
-        ->assertSee('Showing 5 of 5')
         ->assertDontSeeHtml('data-predict-load-more="loadMoreWorld"')
         ->assertSeeHtml('data-predict-load-more="loadMoreKadi"')
         ->assertSet('worldPages', 3)
