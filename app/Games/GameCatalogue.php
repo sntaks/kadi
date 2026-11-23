@@ -224,7 +224,7 @@ class GameCatalogue
         $code = $raw['code'] ?? null;
         $launchUrl = $raw['launch_url'] ?? null;
 
-        if (! is_string($code) || ! is_string($launchUrl) || ($raw['status'] ?? 'active') !== 'active') {
+        if (! is_string($code) || ! is_string($launchUrl) || ($raw['status'] ?? null) !== 'active') {
             return null;
         }
 
@@ -242,7 +242,7 @@ class GameCatalogue
         $products = collect(is_array($raw['products'] ?? null) ? $raw['products'] : [])
             ->filter(fn ($product) => is_array($product)
                 && is_string($product['code'] ?? null)
-                && ($product['status'] ?? 'active') === 'active'
+                && ($product['status'] ?? null) === 'active'
                 && ! in_array(GameTitle::keyFor($code, $product['code']), $hidden, true))
             ->values();
 

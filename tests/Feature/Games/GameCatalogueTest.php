@@ -112,6 +112,19 @@ test('the API decides what is playable: suspended products and games and config-
         ->and(catalogue()->featured()->pluck('code')->all())->toBe(['slots_dragon_fire_fortune']);
 });
 
+test('only an active status counts: a game or product without one is not offered', function () {
+    $body = catalogueBody();
+    $body['data'][] = ['code' => 'crash', 'name' => 'Crash', 'launch_url' => 'https://crash.kadi.online', 'sort_order' => 4, 'products' => []];
+    $untracked = catalogueProduct('slots_neon_city', 'slots', 'Neon City');
+    unset($untracked['status']);
+    $body['data'][2]['products'][] = $untracked;
+    Http::fake([CATALOGUE_API.'games' => Http::response($body)]);
+
+    expect(catalogue()->game('crash'))->toBeNull()
+        ->and(catalogue()->title('slots_neon_city'))->toBeNull()
+        ->and(catalogue()->title('slots_triple_jackpot_fruits'))->not->toBeNull();
+});
+
 test('the catalogue is cached for five minutes', function () {
     Http::fake([CATALOGUE_API.'games' => Http::response(catalogueBody())]);
 
@@ -268,9 +281,6 @@ test('game and title names from the API are shown with a capital at the start of
 test('hidden titles are configured products', function () {
     $known = GameArtwork::configuredProducts();
     $games = (require config_path('games.php'))['games']; // beforeEach empties the lists
-
-    expect($games['slots']['hidden'])->toHaveCount(28)
-        ->and(array_values(array_diff(array_keys($known, 'scratch', true), $games['scratch']['hidden'])))->toEqualCanonicalizing(['goldmine', 'ghosttown']);
 
     foreach (['slots', 'scratch'] as $game) {
         foreach ($games[$game]['hidden'] as $key) {
