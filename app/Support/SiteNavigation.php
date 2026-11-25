@@ -81,6 +81,7 @@ final class SiteNavigation
                 $this->casinoLink('Scratch cards', 'scratch-cards'),
                 $this->casinoLink('Coin flip', 'coin-flip'),
                 $this->casinoLink('Roulette', 'roulette'),
+                $this->casinoLink('Jet', 'jet'),
                 $this->casinoLink('Jackpot slots', 'jackpot'),
                 $this->casinoLink('Favourites', 'favourites'),
             ]];

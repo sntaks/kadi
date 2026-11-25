@@ -12,7 +12,7 @@ use Livewire\Component;
 /**
  * /casino and /casino/{filter}: every slot and scratch card, or one shelf of them (slots, scratch
  * cards, jackpot slots, favourites, a collection). A browse page for players, so not indexed: the
- * crawlable pages are /slots, /scratch-cards and /games/{slug}. Coin flip and Roulette always have a page (the side
+ * crawlable pages are /slots, /scratch-cards and /games/{slug}. Coin flip, Roulette and Jet always have a page (the side
  * menu links to them without reading the catalogue); with nothing on offer they show the empty shelf.
  */
 class Casino extends Component

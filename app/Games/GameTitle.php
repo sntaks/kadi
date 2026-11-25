@@ -74,6 +74,7 @@ final readonly class GameTitle
             'scratch' => 'Scratch card',
             'coinflip' => 'Coin flip',
             'roulette' => 'Roulette',
+            'jet' => 'Jet',
             default => 'Slot',
         };
     }
