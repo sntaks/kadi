@@ -19,13 +19,13 @@ class Lobby
     ) {}
 
     /** Built-in /casino shelves. A collection may not reuse one of these keys (it would be shadowed). */
-    public const BUILT_IN_FILTERS = ['all' => 'All games', 'slots' => 'Slots', 'scratch-cards' => 'Scratch cards', 'coin-flip' => 'Coin flip', 'roulette' => 'Roulette', 'jackpot' => 'Jackpot slots', 'favourites' => 'Favourites'];
+    public const BUILT_IN_FILTERS = ['all' => 'All games', 'slots' => 'Slots', 'scratch-cards' => 'Scratch cards', 'coin-flip' => 'Coin flip', 'roulette' => 'Roulette', 'jet' => 'Jet', 'jackpot' => 'Jackpot slots', 'favourites' => 'Favourites'];
 
     /**
      * Shelves the side menu always links to (it never reads the catalogue), so their pages always exist: while the
      * API offers none of the game, the page shows an empty shelf and only the casino tab is hidden.
      */
-    public const MENU_FILTERS = ['coin-flip', 'roulette'];
+    public const MENU_FILTERS = ['coin-flip', 'roulette', 'jet'];
 
     /** @var array<string, Collection<int, GameTitle>> */
     private array $byGame = [];
@@ -58,6 +58,12 @@ class Lobby
     public function roulettes(): Collection
     {
         return $this->titlesOf('roulette');
+    }
+
+    /** Kadi Jet's products, one tile each. Empty while KadiApi doesn't offer the game. @return Collection<int, GameTitle> */
+    public function jets(): Collection
+    {
+        return $this->titlesOf('jet');
     }
 
     /** config/games.php collections that may be shelves (none named like a built-in one). @return array<string, array<string, mixed>> */
@@ -138,6 +144,10 @@ class Lobby
             unset($filters['roulette']);
         }
 
+        if ($this->jets()->isEmpty()) {
+            unset($filters['jet']);
+        }
+
         foreach ($this->collectionConfig() as $key => $collection) {
             $filters[$key] = $collection['label'];
         }
@@ -164,6 +174,7 @@ class Lobby
             $key === 'scratch-cards' => $this->scratchCards(),
             $key === 'coin-flip' => $this->coinFlips()->isEmpty() ? null : $this->coinFlips(),
             $key === 'roulette' => $this->roulettes()->isEmpty() ? null : $this->roulettes(),
+            $key === 'jet' => $this->jets()->isEmpty() ? null : $this->jets(),
             $key === 'jackpot' => $this->jackpotSlots(),
             $key === 'favourites' => $this->favourites->titles($user),
             array_key_exists($key, $this->collectionConfig()) => $this->catalogue->collection($key),

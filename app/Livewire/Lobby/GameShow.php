@@ -30,7 +30,7 @@ class GameShow extends Component
     }
 
     /** Casino tab of each game without its own index page. */
-    private const CASINO_TABS = ['coin-flip' => 'coinflip', 'roulette' => 'roulette'];
+    private const CASINO_TABS = ['coin-flip' => 'coinflip', 'roulette' => 'roulette', 'jet' => 'jet'];
 
     public function render(GameCatalogue $catalogue, Lobby $lobby): View
     {

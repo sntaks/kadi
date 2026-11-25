@@ -105,11 +105,12 @@ test('Coin Flip products without configured artwork keep a fallback tile', funct
         ->assertSee('class="nt-art-fallback" aria-hidden="true">New Table</span>', false);
 });
 
-test('the casino side menu always links to Coin flip and Roulette, without reading the catalogue', function () {
+test('the casino side menu always links to Coin flip, Roulette and Jet, without reading the catalogue', function () {
     $this->coinProducts = [];
     $items = collect(collect((new SiteNavigation(null))->groups())->firstWhere('key', 'casino')['items']);
 
-    expect($items->pluck('label')->all())->toContain('Coin flip', 'Roulette')
+    expect($items->pluck('label')->all())->toContain('Coin flip', 'Roulette', 'Jet')
         ->and($items->firstWhere('label', 'Coin flip')['href'])->toBe(route('casino', ['filter' => 'coin-flip']))
-        ->and($items->firstWhere('label', 'Roulette')['href'])->toBe(route('casino', ['filter' => 'roulette']));
+        ->and($items->firstWhere('label', 'Roulette')['href'])->toBe(route('casino', ['filter' => 'roulette']))
+        ->and($items->firstWhere('label', 'Jet')['href'])->toBe(route('casino', ['filter' => 'jet']));
 });

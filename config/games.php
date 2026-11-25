@@ -142,6 +142,12 @@ return [
             ],
             'hidden' => [],
         ],
+        'jet' => [
+            // Kadi Jet: one tile and game page per product, like Roulette. No artwork yet, so the plain fallback tile.
+            'titles' => true,
+            'tagline' => 'Take off with Kadi Jet.',
+            'hidden' => [],
+        ],
     ],
 
     /*
